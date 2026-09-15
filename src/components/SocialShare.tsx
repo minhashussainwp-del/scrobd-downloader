@@ -11,7 +11,7 @@ interface SocialShareProps {
 export function SocialShare({
   url,
   shareUrl,
-  title = "Scribd PDF Downloader - Free High Speed Document & Slide Converter",
+  title = "Scribd Downloader - Free High Speed Document & Slide Converter",
   className = "",
 }: SocialShareProps) {
   const [copied, setCopied] = useState(false);

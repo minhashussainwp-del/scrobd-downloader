@@ -87,19 +87,27 @@ export function AdminPanel({
   tags: propTags = ["Scribd", "PDF", "Downloader", "Conversion", "Free", "Offline", "Mobile", "system"],
 }: AdminPanelProps) {
   // Authentication & session state
-  const [currentUser, setCurrentUser] = useState<AdminUser | null>(() => {
-    try {
-      const stored = sessionStorage.getItem("scribd_admin_user");
-      if (stored) return JSON.parse(stored);
-    } catch (e) {
-      console.error(e);
-    }
-    return {
-      username: "admin",
-      role: "superadmin",
-      name: "Administrator",
-    };
-  });
+  const [currentUser, setCurrentUser] = useState<any>(null);
+  const [authLoading, setAuthLoading] = useState(true);
+
+  React.useEffect(() => {
+    import("../../lib/firebase").then(({ auth }) => {
+      const { onAuthStateChanged } = require("firebase/auth");
+      const unsubscribe = onAuthStateChanged(auth, (user: any) => {
+        if (user && user.email === "minhashussainbaltistani@gmail.com") {
+          setCurrentUser({
+            username: user.email,
+            role: "superadmin",
+            name: "Administrator",
+          });
+        } else {
+          setCurrentUser(null);
+        }
+        setAuthLoading(false);
+      });
+      return unsubscribe;
+    });
+  }, []);
 
   // Internal persistent states
   const [internalPosts, setInternalPosts] = useState<BlogPost[]>(() => {
@@ -211,9 +219,10 @@ export function AdminPanel({
   const currentDownloadSettings = propDownloadSettings || internalDownloadSettings;
   const currentMedia = propMediaItems || internalMedia;
 
-  const [loginUsername, setLoginUsername] = useState("admin");
-  const [loginPassword, setLoginPassword] = useState("admin123");
+  const [loginUsername, setLoginUsername] = useState("minhashussainbaltistani@gmail.com");
+  const [loginPassword, setLoginPassword] = useState("");
   const [loginError, setLoginError] = useState("");
+  const [loginInProgress, setLoginInProgress] = useState(false);
   const [activeTab, setActiveTab] = useState<
     | "dashboard"
     | "mcp"
@@ -228,25 +237,46 @@ export function AdminPanel({
     | "media"
   >("dashboard");
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (loginUsername === "admin" && loginPassword === "admin123") {
-      const user: AdminUser = {
-        username: "admin",
-        role: "superadmin",
-        name: "Administrator",
-      };
-      setCurrentUser(user);
-      sessionStorage.setItem("scribd_admin_user", JSON.stringify(user));
-      setLoginError("");
-    } else {
-      setLoginError("Invalid credentials. Try: admin / admin123");
+    if (loginUsername !== "minhashussainbaltistani@gmail.com") {
+      setLoginError("Only admin is allowed to sign in.");
+      return;
+    }
+    setLoginInProgress(true);
+    setLoginError("");
+
+    try {
+      const { auth } = await import("../../lib/firebase");
+      const { signInWithEmailAndPassword, createUserWithEmailAndPassword } = await import("firebase/auth");
+      
+      try {
+        await signInWithEmailAndPassword(auth, loginUsername, loginPassword);
+      } catch (err: any) {
+        if (err.code === "auth/user-not-found" || err.code === "auth/invalid-credential") {
+           // Attempt to create the user if they don't exist yet (this handles the first-time setup as requested)
+           try {
+              await createUserWithEmailAndPassword(auth, loginUsername, loginPassword);
+           } catch (createErr: any) {
+              setLoginError("Login failed: " + createErr.message);
+           }
+        } else {
+          setLoginError("Login failed: " + err.message);
+        }
+      }
+    } catch (err: any) {
+      setLoginError("Error connecting to Auth: " + err.message);
+    } finally {
+      setLoginInProgress(false);
     }
   };
 
-  const handleLogout = () => {
-    setCurrentUser(null);
-    sessionStorage.removeItem("scribd_admin_user");
+  const handleLogout = async () => {
+    try {
+      const { auth } = await import("../../lib/firebase");
+      const { signOut } = await import("firebase/auth");
+      await signOut(auth);
+    } catch(e) {}
   };
 
   // Switch role for demo & testing (Super Admin vs Editor vs Viewer)
@@ -254,8 +284,15 @@ export function AdminPanel({
     if (!currentUser) return;
     const updated = { ...currentUser, role };
     setCurrentUser(updated);
-    sessionStorage.setItem("scribd_admin_user", JSON.stringify(updated));
   };
+
+  if (authLoading) {
+    return (
+      <div className="min-h-screen bg-slate-900 flex items-center justify-center p-4">
+        <div className="text-white">Loading Admin...</div>
+      </div>
+    );
+  }
 
   // If not logged in, show login form
   if (!currentUser) {
@@ -282,13 +319,14 @@ export function AdminPanel({
 
           <form onSubmit={handleLogin} className="space-y-4">
             <div className="space-y-1.5">
-              <label className="text-xs font-bold text-slate-700">Username</label>
+              <label className="text-xs font-bold text-slate-700">Email Address (Admin Only)</label>
               <input
-                type="text"
+                type="email"
                 required
+                readOnly
                 value={loginUsername}
                 onChange={(e) => setLoginUsername(e.target.value)}
-                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm font-semibold"
+                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm font-semibold bg-slate-50 opacity-70 cursor-not-allowed"
               />
             </div>
 
@@ -305,9 +343,10 @@ export function AdminPanel({
 
             <button
               type="submit"
-              className="w-full py-3 px-4 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs shadow-md shadow-indigo-500/20 transition cursor-pointer active:scale-98"
+              disabled={loginInProgress}
+              className="w-full py-3 px-4 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs shadow-md shadow-indigo-500/20 transition cursor-pointer active:scale-98 disabled:opacity-50 disabled:cursor-not-allowed flex justify-center items-center gap-2"
             >
-              Sign In to Admin Panel
+              {loginInProgress ? "Signing in..." : "Sign In to Admin Panel"}
             </button>
           </form>
 

@@ -1,0 +1,30 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Global Safety Net
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    function isAdmin() {
+      return request.auth != null && request.auth.token.email == 'minhashussainbaltistani@gmail.com' && request.auth.token.email_verified == true;
+    }
+    
+    function isAdminWithoutVerified() {
+      // In case we create the user with email/pass and they aren't verified yet
+      return request.auth != null && request.auth.token.email == 'minhashussainbaltistani@gmail.com';
+    }
+
+    // Example collection rules for documents
+    match /documents/{docId} {
+      // Only the admin can read/write everything.
+      allow read, write: if isAdminWithoutVerified();
+    }
+    
+    // Matches and queries for anything else
+    match /settings/{docId} {
+      allow read, write: if isAdminWithoutVerified();
+    }
+  }
+}

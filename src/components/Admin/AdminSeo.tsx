@@ -105,7 +105,7 @@ export function AdminSeo({ customPages: propCustomPages, posts: propPosts }: Adm
   const handleAutoBuildRobots = (preset: "standard" | "strict" | "allow-all" = "standard") => {
     let built = "";
     if (preset === "standard") {
-      built = `# robots.txt for Scribd PDF Downloader
+      built = `# robots.txt for Scribd Downloader
 # Auto-built via Admin Control Panel
 
 User-agent: *

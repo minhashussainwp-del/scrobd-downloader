@@ -25,22 +25,21 @@ export function Header({ currentPage, onNavigate, currentLang = "en", onSelectLa
     <header className="bg-white border-b border-slate-100 sticky top-0 z-40">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 h-20 flex items-center justify-between">
         {/* Logo */}
-        <div 
-          className="flex items-center gap-3 cursor-pointer group"
+        <a 
+          id="brand-logo"
+          className="flex items-center gap-2.5 cursor-pointer group no-underline select-none"
           onClick={() => onNavigate("home")}
         >
-          <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center border border-blue-100 group-hover:bg-blue-600 group-hover:text-white transition-colors">
-            <FileDown className="w-6 h-6" />
+          <div className="relative flex items-center justify-center w-10 h-10 rounded-xl overflow-hidden bg-slate-900 group-hover:shadow-[0_8px_16px_-6px_rgba(99,102,241,0.4)] transition-all duration-300">
+             <div className="absolute inset-0 bg-gradient-to-br from-indigo-500 to-cyan-500 opacity-0 group-hover:opacity-100 transition-opacity duration-500"/>
+             <FileDown className="w-5 h-5 text-white relative z-10 group-hover:scale-110 transition-transform duration-300" />
           </div>
-          <div className="flex flex-col">
-            <h1 className="text-2xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600 tracking-tight leading-tight drop-shadow-sm">
-              Scribd Downloader
-            </h1>
-            <p className="text-[11px] text-slate-500 font-semibold tracking-widest uppercase">
-              Download Documents Easily
-            </p>
+          <div className="flex flex-col justify-center">
+            <span className="text-2xl font-black tracking-tight text-slate-900">
+              Scribd <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 to-cyan-500">Downloader</span>
+            </span>
           </div>
-        </div>
+        </a>
 
         {/* Desktop Nav */}
         <nav className="hidden md:flex items-center gap-8">

@@ -51,7 +51,7 @@ const CORE_SYSTEM_PAGES: PageConfig[] = [
     title: "Homepage & PDF Downloader",
     slug: "/",
     status: "published",
-    metaTitle: "Scribd PDF Downloader - Free High Speed Document & Slide Deck Converter",
+    metaTitle: "Scribd Downloader - Free High Speed Document & Slide Deck Converter",
     metaDescription: "Download Scribd documents, presentations, and research papers as high-resolution PDF files with zero wait time. 100% free.",
     lastModified: "Today",
   },
@@ -81,7 +81,7 @@ const CORE_SYSTEM_PAGES: PageConfig[] = [
     title: "About Our Project",
     slug: "/about",
     status: "published",
-    metaTitle: "About Scribd PDF Downloader - Our Mission & Engineering Lab",
+    metaTitle: "About Scribd Downloader - Our Mission & Engineering Lab",
     metaDescription: "Discover our open-access educational document conversion utility, mission, privacy guarantees, and tech stack.",
     lastModified: "2 weeks ago",
   },
@@ -101,7 +101,7 @@ const CORE_SYSTEM_PAGES: PageConfig[] = [
     title: "Privacy Policy (GDPR / CCPA)",
     slug: "/privacy",
     status: "published",
-    metaTitle: "Privacy Policy - Scribd PDF Downloader",
+    metaTitle: "Privacy Policy - Scribd Downloader",
     metaDescription: "Learn about our strict zero-retention data privacy guarantees. All temp files purged automatically.",
     lastModified: "1 month ago",
   },
@@ -111,7 +111,7 @@ const CORE_SYSTEM_PAGES: PageConfig[] = [
     title: "Terms of Service & Fair Use",
     slug: "/terms",
     status: "published",
-    metaTitle: "Terms of Service & Fair Use - Scribd PDF Downloader",
+    metaTitle: "Terms of Service & Fair Use - Scribd Downloader",
     metaDescription: "Review our terms of service, fair-use guidelines, and DMCA copyright policies.",
     lastModified: "1 month ago",
   },
@@ -124,7 +124,7 @@ const TEMPLATES = {
     subtitle: "Common answers to document downloading, DRM handling, and formats",
     content: `# Frequently Asked Questions
 
-Find answers to common questions about using Scribd PDF Downloader.
+Find answers to common questions about using Scribd Downloader.
 
 ## 1. How does the document conversion work?
 Our high-speed scraper connects to the document's vector streams, retrieves clean high-resolution page tiles, and re-compiles them into a standard Adobe-compliant PDF.
@@ -232,7 +232,7 @@ export function AdminPages() {
       showInHeader: false,
       showInFooter: true,
       language: "all",
-      metaTitle: `${tpl.title} - Scribd PDF Downloader`,
+      metaTitle: `${tpl.title} - Scribd Downloader`,
       metaDescription: tpl.subtitle || "Learn more about our document conversion utility.",
       lastModified: "Today",
       authorName: "Admin Staff",
@@ -749,7 +749,7 @@ export function AdminPages() {
                           ...editingPage,
                           title: newTitle,
                           slug: autoSlug,
-                          metaTitle: `${newTitle} - Scribd PDF Downloader`,
+                          metaTitle: `${newTitle} - Scribd Downloader`,
                         });
                       } else {
                         setEditingPage({ ...editingPage, title: newTitle });

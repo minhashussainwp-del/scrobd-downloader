@@ -10,7 +10,7 @@ interface SeoHeadProps {
 
 export function SeoHead({ page, post, customTitle, customDescription }: SeoHeadProps) {
   useEffect(() => {
-    let title = "Scribd PDF Downloader - Free High-Speed Document & Slide Deck Converter";
+    let title = "Scribd Downloader - Free High-Speed Document & Slide Deck Converter";
     let description =
       "Download Scribd documents, academic research papers, and slide presentations as standard high-resolution PDF files with zero wait time. 100% free and mobile-friendly.";
 
@@ -23,22 +23,22 @@ export function SeoHead({ page, post, customTitle, customDescription }: SeoHeadP
       title = "Scribd Document Tips, Tutorials & Guides - Official Blog";
       description = "Read comprehensive guides, tips, and step-by-step tutorials for downloading, converting, and reading Scribd documents offline.";
     } else if (page === "blog-article" && post) {
-      title = `${post.title} | Scribd PDF Downloader Blog`;
+      title = `${post.title} | Scribd Downloader Blog`;
       description = post.excerpt;
     } else if (page === "about") {
-      title = "About Scribd PDF Downloader - Our Mission & Engineering Lab";
+      title = "About Scribd Downloader - Our Mission & Engineering Lab";
       description = "Discover our open-access educational document conversion utility, mission, privacy guarantees, and tech stack.";
     } else if (page === "contact") {
       title = "Contact Us & Document Extraction Support";
       description = "Get in touch with our engineering team for troubleshooting, bug reports, or feature requests.";
     } else if (page === "privacy") {
-      title = "Privacy Policy - Scribd PDF Downloader";
+      title = "Privacy Policy - Scribd Downloader";
       description = "Learn about our strict zero-retention data privacy guarantees. All temp files purged automatically.";
     } else if (page === "terms") {
-      title = "Terms of Service & Fair Use - Scribd PDF Downloader";
+      title = "Terms of Service & Fair Use - Scribd Downloader";
       description = "Review our terms of service, fair-use guidelines, and DMCA copyright policies.";
     } else if (page === "admin") {
-      title = "Admin Dashboard | Scribd PDF Downloader Control Center";
+      title = "Admin Dashboard | Scribd Downloader Control Center";
       description = "Administrative management system for blog articles, pages, advertisements, and system analytics.";
     }
 
@@ -85,7 +85,7 @@ export function SeoHead({ page, post, customTitle, customDescription }: SeoHeadP
       {
         "@context": "https://schema.org",
         "@type": "SoftwareApplication",
-        "name": "Scribd PDF Downloader",
+        "name": "Scribd Downloader",
         "operatingSystem": "All",
         "applicationCategory": "UtilitiesApplication",
         "offers": {

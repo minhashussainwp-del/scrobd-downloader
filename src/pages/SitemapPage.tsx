@@ -82,7 +82,7 @@ ${BLOG_POSTS.map(
                 Search Engine Sitemap (XML & HTML)
               </h1>
               <p className="text-xs sm:text-sm text-slate-600 mt-1">
-                Index of all public pages, tools, and research guides published on Scribd PDF Downloader.
+                Index of all public pages, tools, and research guides published on Scribd Downloader.
               </p>
             </div>
 

@@ -575,7 +575,7 @@ export default function App() {
                     Step-by-Step Guide
                   </span>
                   <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900">
-                    How Scribd PDF Downloader Operates
+                    How Scribd Downloader Operates
                   </h1>
                   <p className="text-sm sm:text-base text-slate-600">
                     Learn how our smart system safely retrieves pages and compiles them into a beautiful, easy-to-read PDF document in seconds.

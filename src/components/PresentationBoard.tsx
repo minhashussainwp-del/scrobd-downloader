@@ -60,7 +60,7 @@ export function PresentationBoard({ onOpenLiveSite }: PresentationBoardProps) {
               <span>UI/UX Design Showcase & Design System</span>
             </div>
             <h1 className="text-2xl sm:text-4xl font-extrabold text-white tracking-tight">
-              Scribd PDF Downloader — Design Board
+              Scribd Downloader — Design Board
             </h1>
             <p className="text-xs sm:text-sm text-slate-400 max-w-2xl">
               Cohesive design system, production artboards, responsive 1440px desktop layouts, and 390px mobile viewports for a modern SaaS document converter.
@@ -277,7 +277,7 @@ export function PresentationBoard({ onOpenLiveSite }: PresentationBoardProps) {
                       <div className="w-8 h-8 rounded-lg bg-indigo-600 text-white flex items-center justify-center font-bold text-xs">
                         <FileDown className="w-4 h-4" />
                       </div>
-                      <span className="font-extrabold text-sm text-slate-900">Scribd PDF Downloader</span>
+                      <span className="font-extrabold text-sm text-slate-900">Scribd Downloader</span>
                     </div>
 
                     <div className="flex items-center gap-4 text-xs font-semibold text-slate-600">

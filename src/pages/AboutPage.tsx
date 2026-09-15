@@ -75,7 +75,7 @@ export function AboutPage({ onNavigate, onCtaClick, currentLang = "en" }: AboutP
             {pageData?.title || "Making Public Knowledge Accessible, Offline and Permanent"}
           </h1>
           <p className="text-base sm:text-lg text-slate-600 leading-relaxed whitespace-pre-wrap">
-            {pageData?.content || "Scribd PDF Downloader was built to bridge the gap between web-only document platforms and offline reading tools like e-ink tablets, laptops, and academic binders."}
+            {pageData?.content || "Scribd Downloader was built to bridge the gap between web-only document platforms and offline reading tools like e-ink tablets, laptops, and academic binders."}
           </p>
         </div>
 

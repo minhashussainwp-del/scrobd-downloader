@@ -198,7 +198,7 @@ export function CustomPageView({ page, onNavigate, adSettings }: CustomPageViewP
             <div className="space-y-1 text-xs text-slate-600">
               <h5 className="font-bold text-slate-900">Research &amp; Fair Use Disclaimer</h5>
               <p>
-                Scribd PDF Downloader is an educational utility designed for scholars, researchers,
+                Scribd Downloader is an educational utility designed for scholars, researchers,
                 and students to review publicly shared documents and slide decks. We maintain strict
                 zero-retention policies and purge temporary cache files immediately upon delivery.
               </p>

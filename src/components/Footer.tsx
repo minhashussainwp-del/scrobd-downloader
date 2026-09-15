@@ -17,22 +17,20 @@ export function Footer({ onNavigate, siteSettings }: FooterProps) {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10 lg:gap-12">
           {/* Brand Col */}
           <div className="space-y-4">
-            <div
-              className="flex items-center gap-3 cursor-pointer group"
+            <a
+              className="flex items-center gap-2.5 cursor-pointer group no-underline select-none"
               onClick={() => onNavigate("home")}
             >
-              <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center border border-blue-100 group-hover:bg-blue-600 group-hover:text-white transition-colors">
-                <FileDown className="w-6 h-6" />
+              <div className="relative flex items-center justify-center w-10 h-10 rounded-xl overflow-hidden bg-slate-800 group-hover:shadow-[0_8px_16px_-6px_rgba(99,102,241,0.4)] transition-all duration-300">
+                 <div className="absolute inset-0 bg-gradient-to-br from-indigo-500 to-cyan-500 opacity-0 group-hover:opacity-100 transition-opacity duration-500"/>
+                 <FileDown className="w-5 h-5 text-white relative z-10 group-hover:scale-110 transition-transform duration-300" />
               </div>
-              <div className="flex flex-col">
-                <span className="text-2xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-400 tracking-tight leading-tight drop-shadow-sm">
-                  {siteSettings?.siteName || "Scribd Downloader"}
-                </span>
-                <span className="text-[11px] text-slate-400 font-semibold tracking-widest uppercase mt-0.5">
-                  Download Documents Easily
+              <div className="flex flex-col justify-center">
+                <span className="text-2xl font-black tracking-tight text-white">
+                  Scribd <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-cyan-400">Downloader</span>
                 </span>
               </div>
-            </div>
+            </a>
             <p className="text-sm text-slate-400 font-medium leading-relaxed pr-4 pt-2">
               A free high-speed online utility for reading, converting, and downloading educational
               Scribd documents and slide decks offline with zero data retention.

@@ -39,17 +39,17 @@ export const DEFAULT_DOWNLOAD_SETTINGS: DownloadSettings = {
 };
 
 export const DEFAULT_SITE_SETTINGS: SiteSettings = {
-  siteName: "Scribd PDF Downloader",
+  siteName: "Scribd Downloader",
   tagline: "Free High-Resolution Document & Slide Deck Converter",
   logoText: "Scribd Downloader",
   noticeBannerEnabled: false,
   noticeBannerText: "📢 Notice: High-speed extraction engine upgraded with 16x parallel workers.",
   contactEmail: "support@scribddownloader.org",
-  footerCopyright: "© 2026 Scribd PDF Downloader. Free educational document conversion.",
+  footerCopyright: "© 2026 Scribd Downloader. Free educational document conversion.",
   headerScripts: "",
   footerScripts: "",
   maintenanceMode: false,
-  defaultMetaTitle: "Scribd PDF Downloader - Free, Fast & Lossless Document Converter",
+  defaultMetaTitle: "Scribd Downloader - Free, Fast & Lossless Document Converter",
   defaultMetaDescription: "Download Scribd documents, presentations, and research papers as high-resolution PDF files with zero wait time. 100% free and mobile friendly.",
 };
 
@@ -89,11 +89,11 @@ export const INITIAL_PAGE_CONTENT: PageContent[] = [
     id: "home-en",
     pageKey: "home",
     language: "en",
-    title: "The Ultimate Free Scribd PDF Downloader",
+    title: "The Ultimate Free Scribd Downloader",
     subtitle: "Clean, lossless document extraction and offline reading converter",
     content: `Welcome to the ultimate guide and tool for downloading Scribd documents, academic research, and presentations completely free. No registration is required. We understand that accessing educational materials offline is crucial for students, researchers, and professionals. Unlike other tools that make you wait or require paid subscriptions, our smart engine compiles full, high-resolution PDF documents instantly.
 
-In today's fast-paced digital world, having offline access to vital reading materials, research papers, and presentations is more important than ever. Our Scribd PDF Downloader empowers you to save important documents directly to your device, ensuring you can read, study, and share them anytime, anywhere—even without an internet connection.
+In today's fast-paced digital world, having offline access to vital reading materials, research papers, and presentations is more important than ever. Our Scribd Downloader empowers you to save important documents directly to your device, ensuring you can read, study, and share them anytime, anywhere—even without an internet connection.
 
 Whether you're a university student gathering sources for a thesis, a professional saving industry reports, or an avid reader compiling an offline library, this tool is designed for you. It bypasses the frustrating barriers of forced logins and premium paywalls, delivering pure, readable PDF files instantly.`
   },
@@ -203,7 +203,7 @@ Simpan materi kuliah dan presentasi langsung ke ponsel atau laptop Anda agar dap
     id: "how-it-works-en",
     pageKey: "how-it-works",
     language: "en",
-    title: "How Scribd PDF Downloader Operates",
+    title: "How Scribd Downloader Operates",
     subtitle: "Step-by-step breakdown of document streaming and PDF compilation",
     content: "Our document extractor inspects public manifest streams, processes high-resolution slide canvases, and compiles vector PDF documents with original typographic alignment in under 10 seconds. Simply paste your URL, verify thumbnails, and save your universal PDF."
   },
@@ -255,7 +255,7 @@ Simpan materi kuliah dan presentasi langsung ke ponsel atau laptop Anda agar dap
     language: "en",
     title: "Contact & Support",
     subtitle: "We are here to assist with document formats and platform questions",
-    content: "Our engineering team is here to help with any issues you encounter while using the Scribd PDF Downloader. Whether you are facing problems downloading a specific document, have a feature request, or want to report a bug, please reach out to us."
+    content: "Our engineering team is here to help with any issues you encounter while using the Scribd Downloader. Whether you are facing problems downloading a specific document, have a feature request, or want to report a bug, please reach out to us."
   },
   {
     id: "contact-br",
@@ -476,7 +476,7 @@ export function loadPageContent(): PageContent[] {
         if (p.pageKey === "home" || p.id?.startsWith("home-")) {
           const cleanContent = p.content
             ? p.content
-                .replace(/^## The Ultimate Free Scribd PDF Downloader\s*\n?/m, "")
+                .replace(/^## The Ultimate Free Scribd Downloader\s*\n?/m, "")
                 .replace(/^## Download Seguro e Sem Assinatura\s*\n?/m, "")
                 .replace(/^## Descargas Rápidas y Sin Registros\s*\n?/m, "")
                 .replace(/^## Accès Hors Ligne Garanti\s*\n?/m, "")
@@ -544,14 +544,14 @@ export const DEFAULT_CUSTOM_PAGES: CustomPage[] = [
     showInHeader: false,
     showInFooter: true,
     language: "all",
-    metaTitle: "DMCA Copyright Compliance - Scribd PDF Downloader",
+    metaTitle: "DMCA Copyright Compliance - Scribd Downloader",
     metaDescription: "Learn about our compliance with the Digital Millennium Copyright Act (DMCA) and how to submit takedown notices.",
     lastModified: "2026-09-15",
     createdAt: "2026-09-01",
     authorName: "Legal Compliance Team",
     content: `# DMCA Copyright Compliance & Notice
 
-Scribd PDF Downloader ("the Service") respects the intellectual property rights of authors, publishers, and content creators. We comply with the provisions of Title 17 of the United States Code, Section 512, commonly known as the **Digital Millennium Copyright Act ("DMCA")**.
+Scribd Downloader ("the Service") respects the intellectual property rights of authors, publishers, and content creators. We comply with the provisions of Title 17 of the United States Code, Section 512, commonly known as the **Digital Millennium Copyright Act ("DMCA")**.
 
 ## Notice of Non-Hosting & Transient Processing
 Our service operates purely as a transient protocol converter and client-side document retrieval utility. We do **not** permanently store, host, re-publish, or index proprietary documents on public databases. All temporary processing files are purged automatically from cache memory every 24 hours.
@@ -580,16 +580,16 @@ Please send all official DMCA notices to:
     showInHeader: false,
     showInFooter: true,
     language: "all",
-    metaTitle: "Frequently Asked Questions (FAQ) - Scribd PDF Downloader",
+    metaTitle: "Frequently Asked Questions (FAQ) - Scribd Downloader",
     metaDescription: "Answers to common questions about downloading Scribd documents, high-resolution PDFs, supported formats, and troubleshooting.",
     lastModified: "2026-09-15",
     createdAt: "2026-09-05",
     authorName: "Support Team",
     content: `# Frequently Asked Questions (FAQ)
 
-Find answers to common questions about using Scribd PDF Downloader, supported document types, and troubleshooting extraction issues.
+Find answers to common questions about using Scribd Downloader, supported document types, and troubleshooting extraction issues.
 
-## 1. Is Scribd PDF Downloader completely free to use?
+## 1. Is Scribd Downloader completely free to use?
 Yes! Our online converter is 100% free with no hidden charges, required account registration, or premium subscription tiers. You can download and convert public documents without submitting personal information.
 
 ## 2. What types of Scribd documents are supported?
@@ -694,7 +694,7 @@ export function saveCustomPages(pages: CustomPage[]) {
 // -------------------------------------------------------------
 export function buildDefaultRobotsTxt(origin?: string): string {
   const base = origin || (typeof window !== "undefined" ? window.location.origin : "https://example.com");
-  return `# robots.txt for Scribd PDF Downloader
+  return `# robots.txt for Scribd Downloader
 # Auto-generated by Admin SEO Controller
 
 User-agent: *

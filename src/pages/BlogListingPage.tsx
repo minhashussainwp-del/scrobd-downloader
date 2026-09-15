@@ -75,7 +75,7 @@ export function BlogListingPage({
                 Knowledge Base & Research
               </span>
               <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
-                Scribd PDF Downloader Blog
+                Scribd Downloader Blog
               </h1>
               <p className="text-sm sm:text-base text-slate-600 max-w-xl">
                 Practical guides, step-by-step document conversion tutorials, and research productivity methods.

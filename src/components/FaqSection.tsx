@@ -6,7 +6,7 @@ export function FaqSection() {
 
   const faqs = [
     {
-      q: "How does the Scribd PDF Downloader work?",
+      q: "How does the Scribd Downloader work?",
       a: "Our system connects to the public Scribd document manifest using ultra-fast extraction technology. It systematically extracts each vector page tile or high-resolution slide render, normalizes the dimensions, and compiles them into a clean, unified standard PDF document with direct high-speed streaming.",
     },
     {
@@ -19,7 +19,7 @@ export function FaqSection() {
     },
     {
       q: "Is account registration or a payment card required?",
-      a: "No registration, email signup, or credit card is ever required. Scribd PDF Downloader is 100% free and open for public educational research, academic document backup, and offline study purposes.",
+      a: "No registration, email signup, or credit card is ever required. Scribd Downloader is 100% free and open for public educational research, academic document backup, and offline study purposes.",
     },
     {
       q: "What file format is supported?",

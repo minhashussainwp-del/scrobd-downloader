@@ -1,0 +1,18 @@
+{
+  "collections": [
+    {
+      "name": "documents",
+      "schema": {
+        "title": "string",
+        "url": "string",
+        "createdAt": "timestamp"
+      },
+      "rules": [
+        {
+          "allow": ["read", "write"],
+          "condition": "request.auth != null && request.auth.token.email == 'minhashussainbaltistani@gmail.com'"
+        }
+      ]
+    }
+  ]
+}

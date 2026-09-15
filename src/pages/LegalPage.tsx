@@ -92,7 +92,7 @@ export function LegalPage({ initialTab = "privacy", onNavigate, currentLang = "e
                     Privacy Policy & Ephemeral Data Processing
                   </h2>
                   <p className="text-xs text-slate-500 mt-1">
-                    How Scribd PDF Downloader guarantees user privacy and data hygiene.
+                    How Scribd Downloader guarantees user privacy and data hygiene.
                   </p>
                 </div>
                 {pageData?.content && (
@@ -141,7 +141,7 @@ export function LegalPage({ initialTab = "privacy", onNavigate, currentLang = "e
                 <div className="space-y-2">
                   <h3 className="text-sm font-bold text-slate-900">1. Educational & Fair Use Purpose</h3>
                   <p>
-                    Scribd PDF Downloader is provided solely for educational study, non-commercial academic research, personal archiving, and offline access to public materials. You agree not to distribute, resell, or publicly republish copyrighted works acquired through this utility.
+                    Scribd Downloader is provided solely for educational study, non-commercial academic research, personal archiving, and offline access to public materials. You agree not to distribute, resell, or publicly republish copyrighted works acquired through this utility.
                   </p>
                 </div>
 

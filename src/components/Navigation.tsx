@@ -81,17 +81,16 @@ export function Navigation({
             id="brand-logo"
             onClick={(e) => { e.preventDefault(); handleLinkClick("home"); }}
             href="#"
-            className="flex items-center space-x-3 group cursor-pointer"
+            className="flex items-center gap-2.5 cursor-pointer group no-underline select-none"
           >
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 to-brand-purple flex items-center justify-center text-white shadow-md shadow-brand-500/20 group-hover:scale-105 transition-transform duration-200">
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                <path d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" strokeLinecap="round" strokeLinejoin="round"></path>
-                <path d="M9 13h6m-6 4h4" strokeLinecap="round" strokeLinejoin="round"></path>
-              </svg>
+            <div className="relative flex items-center justify-center w-10 h-10 rounded-xl overflow-hidden bg-slate-900 group-hover:shadow-[0_8px_16px_-6px_rgba(99,102,241,0.4)] transition-all duration-300">
+               <div className="absolute inset-0 bg-gradient-to-br from-indigo-500 to-cyan-500 opacity-0 group-hover:opacity-100 transition-opacity duration-500"/>
+               <FileDown className="w-5 h-5 text-white relative z-10 group-hover:scale-110 transition-transform duration-300" />
             </div>
-            <div className="flex flex-col">
-              <span className="text-lg font-bold tracking-tight text-slate-900 leading-none">Scribd PDF</span>
-              <span className="text-xs font-semibold uppercase tracking-wider text-brand-600 mt-0.5">Downloader</span>
+            <div className="flex flex-col justify-center">
+              <span className="text-2xl font-black tracking-tight text-slate-900">
+                Scribd <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 to-cyan-500">Downloader</span>
+              </span>
             </div>
           </a>
 

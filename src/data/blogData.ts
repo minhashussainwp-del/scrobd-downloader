@@ -44,7 +44,7 @@ export const BLOG_POSTS: BlogPost[] = [
           heading: "2. Step-by-Step: Copying & Pasting the Document URL",
           body: [
             "To begin, navigate to the target document on Scribd in your browser and copy its address from the URL bar.",
-            "Paste the link into the Scribd PDF Downloader input field. The system automatically verifies that the domain and document ID are valid before initiating the extract stream.",
+            "Paste the link into the Scribd Downloader input field. The system automatically verifies that the domain and document ID are valid before initiating the extract stream.",
           ],
         },
         {
@@ -520,7 +520,7 @@ export const BLOG_POSTS: BlogPost[] = [
           heading: "1. E-Ink Displays: Kindle, Kobo, and reMarkable",
           body: [
             "E-ink screens offer zero glare and unmatched battery life. When exporting PDFs for e-ink, maintaining clean typography and high contrast is vital.",
-            "Scribd PDF Downloader cleans extraneous background artifacts to ensure documents render crisply on monochrome displays.",
+            "Scribd Downloader cleans extraneous background artifacts to ensure documents render crisply on monochrome displays.",
           ],
         },
       ],
