@@ -455,12 +455,7 @@ export function AdminPanel({
           />
         )}
         {activeTab === "pages" && (
-          <AdminPages
-            onNavigateToPage={(slug) => {
-              window.history.pushState({}, "", `/${slug}`);
-              window.dispatchEvent(new PopStateEvent("popstate"));
-            }}
-          />
+          <AdminPages />
         )}
         {activeTab === "seo" && <AdminSeoCrawler posts={currentPosts} />}
         {activeTab === "page_content" && <AdminPagesContent />}

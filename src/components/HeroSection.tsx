@@ -11,7 +11,7 @@ import {
   X,
   Download
 } from "lucide-react";
-import { DownloadJob, AdSettings, SupportedLanguage } from "../types";
+import { DownloadJob, AdSettings, SupportedLanguage, DownloadFormat } from "../types";
 import { JobProgress } from "./JobProgress";
 import { JobResult } from "./JobResult";
 import { t } from "../data/translations";
@@ -19,8 +19,8 @@ import { t } from "../data/translations";
 interface HeroSectionProps {
   url: string;
   setUrl: (url: string) => void;
-  format: string;
-  setFormat: (format: string) => void;
+  format: DownloadFormat;
+  setFormat: (format: DownloadFormat) => void;
   demoMode: boolean;
   setDemoMode: (mode: boolean) => void;
   currentJob: DownloadJob | null;
@@ -203,10 +203,9 @@ export function HeroSection({
             </div>
           )}
 
-          {/* Input Form (Shown when not showing result) */}
-          {!currentJob && (
-            <div className="w-full max-w-3xl mx-auto mt-4">
-              <form onSubmit={handleSubmit} className="relative z-20 w-full">
+          {/* Input Form */}
+          <div className="w-full max-w-3xl mx-auto mt-4">
+            <form onSubmit={handleSubmit} className="relative z-20 w-full">
                 <div className="group relative bg-white/95 backdrop-blur-md rounded-2xl p-2 sm:p-2.5 border border-slate-200/90 shadow-xl shadow-slate-900/5 hover:shadow-2xl hover:shadow-blue-900/10 focus-within:ring-4 focus-within:ring-blue-500/15 focus-within:border-blue-500 transition-all duration-300 flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3">
                   {/* Left Icon Pill */}
                   <div className="hidden sm:flex w-12 h-12 rounded-xl bg-slate-100 group-focus-within:bg-blue-50 text-slate-400 group-focus-within:text-blue-600 items-center justify-center transition-colors shrink-0">
@@ -326,7 +325,6 @@ export function HeroSection({
                 </button>
               </div>
             </div>
-          )}
 
           <ul className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 pt-4">
             {[t("hero.check1", currentLang), t("hero.check2", currentLang), t("hero.check3", currentLang)].map((item) => (

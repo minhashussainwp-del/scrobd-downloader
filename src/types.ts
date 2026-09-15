@@ -1,4 +1,4 @@
-export type DownloadFormat = "pdf";
+export type DownloadFormat = "pdf" | "images";
 
 export type PageRoute =
   | "home"
@@ -189,7 +189,7 @@ export interface AnalyticsStats {
 export interface DownloadJob {
   id: string;
   url: string;
-  format: "pdf";
+  format: DownloadFormat;
   status: "queued" | "fetching" | "extracting" | "converting" | "completed" | "failed";
   progress: number;
   stepMessage: string;

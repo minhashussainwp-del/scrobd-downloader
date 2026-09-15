@@ -33,11 +33,11 @@ export function Header({ currentPage, onNavigate, currentLang = "en", onSelectLa
             <FileDown className="w-6 h-6" />
           </div>
           <div className="flex flex-col">
-            <h1 className="text-xl font-bold text-slate-900 tracking-tight leading-tight">
+            <h1 className="text-2xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600 tracking-tight leading-tight drop-shadow-sm">
               Scribd Downloader
             </h1>
-            <p className="text-[11px] text-slate-500 font-medium tracking-wide">
-              Download Scribd Documents Easily
+            <p className="text-[11px] text-slate-500 font-semibold tracking-widest uppercase">
+              Download Documents Easily
             </p>
           </div>
         </div>

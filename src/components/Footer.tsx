@@ -18,19 +18,22 @@ export function Footer({ onNavigate, siteSettings }: FooterProps) {
           {/* Brand Col */}
           <div className="space-y-4">
             <div
-              className="flex items-center gap-2 cursor-pointer"
+              className="flex items-center gap-3 cursor-pointer group"
               onClick={() => onNavigate("home")}
             >
-              <div className="w-8 h-8 rounded-lg bg-blue-500 text-white flex items-center justify-center">
-                <FileDown className="w-5 h-5" />
+              <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center border border-blue-100 group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                <FileDown className="w-6 h-6" />
               </div>
               <div className="flex flex-col">
-                <span className="text-lg font-bold text-white tracking-tight leading-none">
+                <span className="text-2xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-400 tracking-tight leading-tight drop-shadow-sm">
                   {siteSettings?.siteName || "Scribd Downloader"}
+                </span>
+                <span className="text-[11px] text-slate-400 font-semibold tracking-widest uppercase mt-0.5">
+                  Download Documents Easily
                 </span>
               </div>
             </div>
-            <p className="text-sm text-slate-400 font-medium leading-relaxed pr-4">
+            <p className="text-sm text-slate-400 font-medium leading-relaxed pr-4 pt-2">
               A free high-speed online utility for reading, converting, and downloading educational
               Scribd documents and slide decks offline with zero data retention.
             </p>
@@ -78,15 +81,6 @@ export function Footer({ onNavigate, siteSettings }: FooterProps) {
                 Subscribe
               </button>
             </form>
-
-            <div className="mt-6 pt-4 border-t border-slate-800/80">
-              <button
-                onClick={() => onNavigate("admin")}
-                className="text-xs text-slate-500 hover:text-slate-400 font-mono transition-colors"
-              >
-                ⚙ Admin Portal
-              </button>
-            </div>
           </div>
         </div>
 
@@ -103,14 +97,6 @@ export function Footer({ onNavigate, siteSettings }: FooterProps) {
             <button onClick={() => onNavigate("terms")} className="hover:text-white transition-colors cursor-pointer">
               Terms of Service
             </button>
-            <span>•</span>
-            <button onClick={() => onNavigate("sitemap")} className="hover:text-white transition-colors cursor-pointer">
-              Sitemap
-            </button>
-            <span>•</span>
-            <a href="/robots.txt" target="_blank" rel="noreferrer" className="hover:text-white transition-colors">
-              robots.txt
-            </a>
           </div>
         </div>
       </div>
