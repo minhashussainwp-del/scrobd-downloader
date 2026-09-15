@@ -1,0 +1,6 @@
+{
+  "name": "Scribd Downloader",
+  "description": "A modern, high-fidelity SaaS website and UI/UX design showcase for Scribd PDF Downloader. Fast, lightweight, and responsive document conversion.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

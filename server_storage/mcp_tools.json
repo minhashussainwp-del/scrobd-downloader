@@ -1,0 +1,710 @@
+[
+  {
+    "name": "seo_audit_page",
+    "description": "Performs a deep On-Page & Technical SEO audit on any website route (title, description, canonical, OG tags, Twitter cards, H1/H2 hierarchy, schema, performance, and accessibility).",
+    "category": "seo_onpage",
+    "enabled": true,
+    "executionCount": 0,
+    "systemInstruction": "Audit page metadata according to optimal search engine guidelines and WCAG AA standards.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string",
+          "description": "The page route to audit (e.g., '/', '/blog', '/how-it-works', '/privacy', or custom slug)."
+        }
+      },
+      "required": [
+        "path"
+      ]
+    }
+  },
+  {
+    "name": "seo_update_metadata",
+    "description": "Updates meta title, meta description, keywords, OpenGraph social tags, and Twitter cards for any page or route.",
+    "category": "seo_onpage",
+    "enabled": true,
+    "executionCount": 0,
+    "systemInstruction": "Keep title within 40-60 characters and description within 120-160 characters.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string",
+          "description": "The route or page to update."
+        },
+        "title": {
+          "type": "string",
+          "description": "New SEO title (<title> and og:title)."
+        },
+        "description": {
+          "type": "string",
+          "description": "New meta description (<meta name='description'>)."
+        },
+        "keywords": {
+          "type": "string",
+          "description": "Comma-separated target SEO keywords."
+        },
+        "canonicalUrl": {
+          "type": "string",
+          "description": "Canonical URL override."
+        },
+        "ogImage": {
+          "type": "string",
+          "description": "OpenGraph featured image preview URL."
+        }
+      },
+      "required": [
+        "path",
+        "title",
+        "description"
+      ]
+    }
+  },
+  {
+    "name": "seo_keyword_density_analyzer",
+    "description": "Calculates target keyword density, frequency count, heading placement, TF-IDF prominence, and warns against keyword stuffing penalties.",
+    "category": "seo_onpage",
+    "enabled": true,
+    "executionCount": 0,
+    "systemInstruction": "Ensure target keyword density stays within the natural 1.0% to 2.5% zone.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string",
+          "description": "Route or page to analyze (default: '/')."
+        },
+        "targetKeywords": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "List of focus keywords to check (e.g., ['scribd downloader', 'pdf download'])."
+        }
+      }
+    }
+  },
+  {
+    "name": "seo_get_robots",
+    "description": "Reads the live robots.txt directives and configured crawler rules on the server.",
+    "category": "seo_technical",
+    "enabled": true,
+    "executionCount": 0,
+    "inputSchema": {
+      "type": "object",
+      "properties": {}
+    }
+  },
+  {
+    "name": "seo_update_robots",
+    "description": "Modifies the server's live robots.txt file with custom crawler directives, disallow paths, or preset templates.",
+    "category": "seo_technical",
+    "enabled": true,
+    "executionCount": 0,
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "content": {
+          "type": "string",
+          "description": "The exact raw robots.txt file content."
+        },
+        "preset": {
+          "type": "string",
+          "enum": [
+            "standard_seo",
+            "strict_private",
+            "open_access"
+          ],
+          "description": "Optional preset name to auto-apply standard configurations."
+        }
+      },
+      "required": [
+        "content"
+      ]
+    }
+  },
+  {
+    "name": "seo_generate_sitemap",
+    "description": "Dynamically rebuilds the live XML sitemap (/sitemap.xml) scanning core routes, international languages, blog articles, and custom pages with priority and changefreq settings.",
+    "category": "seo_technical",
+    "enabled": true,
+    "executionCount": 0,
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "domain": {
+          "type": "string",
+          "description": "Base domain URL (e.g. https://scribd-downloader.com)."
+        },
+        "includeCustomPages": {
+          "type": "boolean",
+          "description": "Whether to include user-created custom pages (default: true)."
+        },
+        "includeBlogs": {
+          "type": "boolean",
+          "description": "Whether to include all published blog posts (default: true)."
+        }
+      }
+    }
+  },
+  {
+    "name": "seo_test_crawler",
+    "description": "Simulates search engine crawlers (Googlebot, Bingbot, YandexBot, Baiduspider) against paths to verify crawl permission.",
+    "category": "seo_technical",
+    "enabled": true,
+    "executionCount": 0,
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "userAgent": {
+          "type": "string",
+          "description": "Bot name (e.g., Googlebot, Bingbot, Baiduspider, Applebot)."
+        },
+        "path": {
+          "type": "string",
+          "description": "Target URL path (e.g., /admin123, /api/download, /blog)."
+        }
+      },
+      "required": [
+        "userAgent",
+        "path"
+      ]
+    }
+  },
+  {
+    "name": "seo_schema_generator",
+    "description": "Generates, validates, and deploys Google Rich Results JSON-LD schemas (SoftwareApplication, Article, FAQPage, Organization, BreadcrumbList).",
+    "category": "seo_technical",
+    "enabled": true,
+    "executionCount": 0,
+    "systemInstruction": "Produce valid Schema.org JSON-LD compliant with Google Rich Results testing standards.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "schemaType": {
+          "type": "string",
+          "enum": [
+            "SoftwareApplication",
+            "Article",
+            "FAQPage",
+            "Organization",
+            "BreadcrumbList"
+          ],
+          "description": "Target Schema.org type."
+        },
+        "pageRoute": {
+          "type": "string",
+          "description": "Page route where schema applies (default: '/')."
+        },
+        "customProps": {
+          "type": "object",
+          "description": "Custom fields to override or append in the schema."
+        }
+      },
+      "required": [
+        "schemaType"
+      ]
+    }
+  },
+  {
+    "name": "seo_broken_link_checker",
+    "description": "Crawls and verifies all internal links, navigation menu anchors, footer references, and outbound links to detect 404 dead URLs or broken fragments.",
+    "category": "seo_technical",
+    "enabled": true,
+    "executionCount": 0,
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "checkExternal": {
+          "type": "boolean",
+          "description": "Whether to test external links (default: false)."
+        },
+        "maxDepth": {
+          "type": "number",
+          "description": "Crawl depth for internal pages (default: 2)."
+        }
+      }
+    }
+  },
+  {
+    "name": "content_list_blogs",
+    "description": "Retrieves all blog posts, guides, and articles with metadata, tags, and status.",
+    "category": "content",
+    "enabled": true,
+    "executionCount": 0,
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "published",
+            "draft",
+            "all"
+          ],
+          "description": "Filter by status."
+        },
+        "limit": {
+          "type": "number",
+          "description": "Max number of posts to return."
+        }
+      }
+    }
+  },
+  {
+    "name": "content_manage_blog",
+    "description": "Creates, edits, updates, publishes, or deletes blog articles and tutorials with full markdown or block editor content.",
+    "category": "content",
+    "enabled": true,
+    "executionCount": 0,
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "action": {
+          "type": "string",
+          "enum": [
+            "create",
+            "update",
+            "delete",
+            "publish",
+            "draft"
+          ],
+          "description": "Action to take."
+        },
+        "id": {
+          "type": "string",
+          "description": "Post ID (required for update/delete)."
+        },
+        "title": {
+          "type": "string",
+          "description": "Article title."
+        },
+        "slug": {
+          "type": "string",
+          "description": "URL permalink slug."
+        },
+        "excerpt": {
+          "type": "string",
+          "description": "Short summary excerpt for search results."
+        },
+        "category": {
+          "type": "string",
+          "description": "Category (e.g., Guides, Tutorials, Tech, Tips)."
+        },
+        "markdownContent": {
+          "type": "string",
+          "description": "Article body formatted in Markdown."
+        },
+        "authorName": {
+          "type": "string",
+          "description": "Author name."
+        },
+        "readTime": {
+          "type": "string",
+          "description": "Estimated read time (e.g. '4 min read')."
+        }
+      },
+      "required": [
+        "action"
+      ]
+    }
+  },
+  {
+    "name": "content_list_pages",
+    "description": "Lists all custom pages created on the platform (FAQ, DMCA, Guides, Legal pages, etc.).",
+    "category": "content",
+    "enabled": true,
+    "executionCount": 0,
+    "inputSchema": {
+      "type": "object",
+      "properties": {}
+    }
+  },
+  {
+    "name": "content_manage_page",
+    "description": "Creates, modifies, or deletes custom website pages with markdown content, slug permalinks, and navigation header/footer toggles.",
+    "category": "content",
+    "enabled": true,
+    "executionCount": 0,
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "action": {
+          "type": "string",
+          "enum": [
+            "create",
+            "update",
+            "delete"
+          ],
+          "description": "Action to perform."
+        },
+        "id": {
+          "type": "string",
+          "description": "Page ID (required for update/delete)."
+        },
+        "title": {
+          "type": "string",
+          "description": "Page title."
+        },
+        "slug": {
+          "type": "string",
+          "description": "URL slug (e.g., 'dmca-policy' or 'faq')."
+        },
+        "content": {
+          "type": "string",
+          "description": "Page markdown content."
+        },
+        "subtitle": {
+          "type": "string",
+          "description": "Optional page subtitle."
+        },
+        "metaTitle": {
+          "type": "string",
+          "description": "SEO Title for search engines."
+        },
+        "metaDescription": {
+          "type": "string",
+          "description": "SEO Description for search engines."
+        },
+        "showInHeader": {
+          "type": "boolean",
+          "description": "Display link in top header nav."
+        },
+        "showInFooter": {
+          "type": "boolean",
+          "description": "Display link in footer navigation."
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "published",
+            "draft"
+          ],
+          "description": "Publish status."
+        }
+      },
+      "required": [
+        "action"
+      ]
+    }
+  },
+  {
+    "name": "content_update_section",
+    "description": "Updates static on-page sections: Hero heading/badge, FAQ questions/answers, How-It-Works steps, or features.",
+    "category": "content",
+    "enabled": true,
+    "executionCount": 0,
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "section": {
+          "type": "string",
+          "enum": [
+            "hero",
+            "faq",
+            "features",
+            "how_it_works",
+            "notice_banner"
+          ],
+          "description": "Target section."
+        },
+        "data": {
+          "type": "object",
+          "description": "Data payload to update the section."
+        }
+      },
+      "required": [
+        "section",
+        "data"
+      ]
+    }
+  },
+  {
+    "name": "content_bulk_import_export",
+    "description": "Exports or bulk-imports blog posts, custom documentation pages, and site FAQs in clean structured JSON or Markdown packages.",
+    "category": "content",
+    "enabled": true,
+    "executionCount": 0,
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "action": {
+          "type": "string",
+          "enum": [
+            "export",
+            "import"
+          ],
+          "description": "Action to perform."
+        },
+        "contentType": {
+          "type": "string",
+          "enum": [
+            "all",
+            "blogs",
+            "pages",
+            "faq"
+          ],
+          "description": "Content scope."
+        },
+        "payload": {
+          "type": "string",
+          "description": "JSON string containing posts/pages to import."
+        }
+      },
+      "required": [
+        "action"
+      ]
+    }
+  },
+  {
+    "name": "translation_manage_strings",
+    "description": "Reads, inspects, and modifies multi-language localized strings and UI text across all 7 supported international languages (EN, ES, BR/PT, FR, DE, ID, TR).",
+    "category": "content",
+    "enabled": true,
+    "executionCount": 0,
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "language": {
+          "type": "string",
+          "description": "Target language code (en, es, pt, fr, de, id, tr)."
+        },
+        "category": {
+          "type": "string",
+          "description": "Optional category filter."
+        },
+        "updates": {
+          "type": "object",
+          "description": "Key-value dictionary of strings to update."
+        }
+      },
+      "required": [
+        "language"
+      ]
+    }
+  },
+  {
+    "name": "ui_ux_diagnose_issues",
+    "description": "Scans the website for UI/UX defects: color contrast (WCAG AA), viewport meta scaling, 44px touch targets, banner overlap, sticky header math, and typography readability.",
+    "category": "ui_ux",
+    "enabled": true,
+    "executionCount": 0,
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "route": {
+          "type": "string",
+          "description": "Route to inspect (default: '/')."
+        }
+      }
+    }
+  },
+  {
+    "name": "ui_ux_configure",
+    "description": "Controls website UI/UX layout settings: theme accents, notice banner message/colors, ad unit placements, and download experience toggles.",
+    "category": "ui_ux",
+    "enabled": true,
+    "executionCount": 0,
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "noticeBanner": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean"
+            },
+            "message": {
+              "type": "string"
+            },
+            "variant": {
+              "type": "string",
+              "enum": [
+                "info",
+                "warning",
+                "success",
+                "alert"
+              ]
+            }
+          }
+        },
+        "adPlacement": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean"
+            },
+            "headerAd": {
+              "type": "boolean"
+            },
+            "inFeedAd": {
+              "type": "boolean"
+            },
+            "sidebarAd": {
+              "type": "boolean"
+            },
+            "preDownloadAd": {
+              "type": "boolean"
+            }
+          }
+        },
+        "siteTheme": {
+          "type": "object",
+          "properties": {
+            "siteName": {
+              "type": "string"
+            },
+            "tagline": {
+              "type": "string"
+            },
+            "primaryColor": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "name": "ui_ux_fix_issue",
+    "description": "Automatically applies an automated fix to a detected UI/UX issue (e.g., adjust contrast, fix touch target padding, resolve banner overlap, or correct heading hierarchy).",
+    "category": "ui_ux",
+    "enabled": true,
+    "executionCount": 0,
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "issueType": {
+          "type": "string",
+          "enum": [
+            "contrast",
+            "mobile_viewport",
+            "banner_overlap",
+            "touch_target",
+            "heading_order",
+            "missing_alt"
+          ],
+          "description": "Type of UI/UX issue to fix."
+        },
+        "resolution": {
+          "type": "string",
+          "description": "Optional custom resolution instructions."
+        }
+      },
+      "required": [
+        "issueType"
+      ]
+    }
+  },
+  {
+    "name": "ui_ux_font_typography_checker",
+    "description": "Audits site-wide typography against accessibility and anti-slop guidelines (>=16px baseline body, 1.5-1.7 line height, step ratios >=1.25, line width <=75ch).",
+    "category": "ui_ux",
+    "enabled": true,
+    "executionCount": 0,
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "route": {
+          "type": "string",
+          "description": "Route to inspect typography for (default: '/')."
+        }
+      }
+    }
+  },
+  {
+    "name": "ads_manage_placements",
+    "description": "Programmatically inspects and configures ad unit placements (Header Leaderboard, In-Feed native, Sidebar sticky, Pre-Download interstitial) and toggles ad-free modes.",
+    "category": "ui_ux",
+    "enabled": true,
+    "executionCount": 0,
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "action": {
+          "type": "string",
+          "enum": [
+            "get",
+            "update"
+          ],
+          "description": "Action to take."
+        },
+        "placements": {
+          "type": "object",
+          "description": "Placement configuration dictionary."
+        }
+      }
+    }
+  },
+  {
+    "name": "system_status",
+    "description": "Retrieves live server diagnostics: uptime, memory usage, cache document count, active scraper speed stats, and recent download job metrics.",
+    "category": "system",
+    "enabled": true,
+    "executionCount": 0,
+    "inputSchema": {
+      "type": "object",
+      "properties": {}
+    }
+  },
+  {
+    "name": "system_manage_cache",
+    "description": "Purges or warms the scraper document cache, clears temporary files, or resets rate limits.",
+    "category": "system",
+    "enabled": true,
+    "executionCount": 0,
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "action": {
+          "type": "string",
+          "enum": [
+            "purge_all",
+            "purge_temp",
+            "prewarm_samples"
+          ],
+          "description": "Action to take."
+        }
+      },
+      "required": [
+        "action"
+      ]
+    }
+  },
+  {
+    "name": "system_rate_limit_controller",
+    "description": "Inspects and adjusts IP rate limit thresholds, maximum downloads per minute, concurrency limits, and temporary bypass whitelist rules.",
+    "category": "system",
+    "enabled": true,
+    "executionCount": 0,
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "action": {
+          "type": "string",
+          "enum": [
+            "status",
+            "update"
+          ],
+          "description": "Action to perform."
+        },
+        "maxRequestsPerMinute": {
+          "type": "number",
+          "description": "Maximum allowed requests per minute per IP."
+        },
+        "burstAllowance": {
+          "type": "number",
+          "description": "Burst request allowance."
+        },
+        "whitelistIps": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Whitelisted IP addresses."
+        }
+      }
+    }
+  }
+]

@@ -1,0 +1,18 @@
+[
+  {
+    "id": "page-1789476289044",
+    "title": "API & MCP Documentation",
+    "slug": "mcp-docs",
+    "subtitle": "",
+    "content": "# Model Context Protocol (MCP) Guide\n\nFull programmatic access via OpenCode and Antigravity.",
+    "metaTitle": "MCP Docs - Programmatic Platform Access",
+    "metaDescription": "Connect your AI agent to manage SEO, content, and UI/UX directly.",
+    "showInHeader": false,
+    "showInFooter": true,
+    "status": "published",
+    "isCustom": true,
+    "lastModified": "2026-09-15T12:44:49.044Z",
+    "createdAt": "2026-09-15T12:44:49.044Z",
+    "author": "Antigravity Agent Master"
+  }
+]
