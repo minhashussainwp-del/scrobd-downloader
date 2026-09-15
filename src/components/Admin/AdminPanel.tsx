@@ -91,9 +91,13 @@ export function AdminPanel({
   const [authLoading, setAuthLoading] = useState(true);
 
   React.useEffect(() => {
-    import("../../lib/firebase").then(({ auth }) => {
-      const { onAuthStateChanged } = require("firebase/auth");
-      const unsubscribe = onAuthStateChanged(auth, (user: any) => {
+    let unsubscribe: any;
+    
+    Promise.all([
+      import("../../lib/firebase"),
+      import("firebase/auth")
+    ]).then(([{ auth }, { onAuthStateChanged }]) => {
+      unsubscribe = onAuthStateChanged(auth, (user: any) => {
         if (user && user.email === "minhashussainbaltistani@gmail.com") {
           setCurrentUser({
             username: user.email,
@@ -105,8 +109,14 @@ export function AdminPanel({
         }
         setAuthLoading(false);
       });
-      return unsubscribe;
+    }).catch(err => {
+      console.error("Error loading auth:", err);
+      setAuthLoading(false);
     });
+    
+    return () => {
+      if (unsubscribe) unsubscribe();
+    };
   }, []);
 
   // Internal persistent states
@@ -219,7 +229,7 @@ export function AdminPanel({
   const currentDownloadSettings = propDownloadSettings || internalDownloadSettings;
   const currentMedia = propMediaItems || internalMedia;
 
-  const [loginUsername, setLoginUsername] = useState("minhashussainbaltistani@gmail.com");
+  const [loginUsername, setLoginUsername] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
   const [loginError, setLoginError] = useState("");
   const [loginInProgress, setLoginInProgress] = useState(false);
@@ -260,6 +270,8 @@ export function AdminPanel({
            } catch (createErr: any) {
               setLoginError("Login failed: " + createErr.message);
            }
+        } else if (err.code === "auth/network-request-failed") {
+          setLoginError("Network error. If you are in the AI Studio preview, your browser may be blocking third-party requests. Please open the app in a new tab to log in, or disable your adblocker.");
         } else {
           setLoginError("Login failed: " + err.message);
         }
@@ -323,10 +335,9 @@ export function AdminPanel({
               <input
                 type="email"
                 required
-                readOnly
                 value={loginUsername}
                 onChange={(e) => setLoginUsername(e.target.value)}
-                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm font-semibold bg-slate-50 opacity-70 cursor-not-allowed"
+                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
               />
             </div>
 
@@ -350,8 +361,7 @@ export function AdminPanel({
             </button>
           </form>
 
-          <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-xs text-slate-400">
-            <span>Default: <strong>admin</strong> / <strong>admin123</strong></span>
+          <div className="pt-2 border-t border-slate-100 flex items-center justify-end text-xs text-slate-400">
             <button
               type="button"
               onClick={() => onNavigate("home")}
