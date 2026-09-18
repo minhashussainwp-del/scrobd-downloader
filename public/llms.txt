@@ -1,0 +1,13 @@
+# Scribd Downloader
+
+> Free high-speed online document and slide deck downloader to convert Scribd documents, academic research papers, and presentations to PDF with zero wait time.
+
+## Documentation and Pages
+- [Home](https://scrobd-downloader.vercel.app/): Main document converter and slide viewer interface
+- [Blog](https://scrobd-downloader.vercel.app/blog): Educational guides, tutorials, and research document extraction tips
+
+## Key Features
+- High-resolution PDF generation with high speed
+- Interactive horizontal and thumbnail slide viewer
+- Zero login or account requirement
+- Complete mobile and desktop support

@@ -134,6 +134,8 @@ export function BlogArticlePage({
               <img
                 src={authorProfile.avatar || post.author.avatar}
                 alt={authorProfile.name || post.author.name}
+                width={40}
+                height={40}
                 className="w-10 h-10 rounded-full object-cover border border-slate-200"
                 referrerPolicy="no-referrer"
                 onError={(e) => handleImageError(e, DEFAULT_AUTHOR_AVATAR)}
@@ -239,6 +241,8 @@ export function BlogArticlePage({
           <img
             src={post.image}
             alt={post.title}
+            width={1200}
+            height={675}
             className="w-full h-full object-cover"
             referrerPolicy="no-referrer"
             onError={handleImageError}
@@ -377,6 +381,9 @@ export function BlogArticlePage({
                   <img
                     src={rPost.image}
                     alt={rPost.title}
+                    width={400}
+                    height={250}
+                    loading="lazy"
                     className="w-full h-full object-cover group-hover:scale-105 transition"
                     referrerPolicy="no-referrer"
                     onError={handleImageError}
@@ -385,9 +392,9 @@ export function BlogArticlePage({
                 <span className="text-[10px] uppercase font-bold text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded">
                   {rPost.category}
                 </span>
-                <h4 className="text-xs sm:text-sm font-bold text-slate-900 group-hover:text-indigo-600 transition line-clamp-2">
+                <h3 className="text-xs sm:text-sm font-bold text-slate-900 group-hover:text-indigo-600 transition line-clamp-2">
                   {rPost.title}
-                </h4>
+                </h3>
               </div>
             ))}
           </div>

@@ -27,8 +27,12 @@ export function Header({ currentPage, onNavigate, currentLang = "en", onSelectLa
         {/* Logo */}
         <a 
           id="brand-logo"
+          href="/"
           className="flex items-center gap-2.5 cursor-pointer group no-underline select-none"
-          onClick={() => onNavigate("home")}
+          onClick={(e) => {
+            e.preventDefault();
+            onNavigate("home");
+          }}
         >
           <div className="relative flex items-center justify-center w-10 h-10 rounded-xl overflow-hidden bg-slate-900 group-hover:shadow-[0_8px_16px_-6px_rgba(99,102,241,0.4)] transition-all duration-300">
              <div className="absolute inset-0 bg-gradient-to-br from-indigo-500 to-cyan-500 opacity-0 group-hover:opacity-100 transition-opacity duration-500"/>
@@ -44,15 +48,19 @@ export function Header({ currentPage, onNavigate, currentLang = "en", onSelectLa
         {/* Desktop Nav */}
         <nav className="hidden md:flex items-center gap-8">
           {navLinks.map((link) => (
-            <button
+            <a
               key={link.route}
-              onClick={() => onNavigate(link.route)}
+              href={link.route === "home" ? "/" : `/${link.route}`}
+              onClick={(e) => {
+                e.preventDefault();
+                onNavigate(link.route);
+              }}
               className={`text-sm font-semibold transition-colors ${
                 currentPage === link.route ? "text-blue-600" : "text-slate-600 hover:text-blue-600"
               }`}
             >
               {link.label}
-            </button>
+            </a>
           ))}
         </nav>
 
@@ -91,9 +99,11 @@ export function Header({ currentPage, onNavigate, currentLang = "en", onSelectLa
         <div className="md:hidden border-t border-slate-100 bg-white p-4 space-y-4 shadow-lg absolute w-full left-0">
           <nav className="flex flex-col gap-2">
             {navLinks.map((link) => (
-              <button
+              <a
                 key={link.route}
-                onClick={() => {
+                href={link.route === "home" ? "/" : `/${link.route}`}
+                onClick={(e) => {
+                  e.preventDefault();
                   onNavigate(link.route);
                   setMobileMenuOpen(false);
                 }}
@@ -102,7 +112,7 @@ export function Header({ currentPage, onNavigate, currentLang = "en", onSelectLa
                 }`}
               >
                 {link.label}
-              </button>
+              </a>
             ))}
           </nav>
           <div className="pt-2">

@@ -100,7 +100,7 @@ export function AboutAuthorCard({
               <button
                 type="button"
                 onClick={openEditModal}
-                className="text-[11px] text-slate-400 hover:text-indigo-600 transition flex items-center gap-1"
+                className="text-[11px] text-slate-600 hover:text-indigo-700 font-medium transition flex items-center gap-1 cursor-pointer"
                 title="Change author photo or bio"
               >
                 <Edit3 className="w-3.5 h-3.5" />
@@ -114,6 +114,9 @@ export function AboutAuthorCard({
               <img
                 src={profile.avatar}
                 alt={profile.name}
+                width={52}
+                height={52}
+                loading="lazy"
                 className="w-13 h-13 rounded-xl object-cover border border-slate-200 shadow-2xs"
                 referrerPolicy="no-referrer"
                 onError={(e) => handleImageError(e, DEFAULT_AUTHOR_AVATAR)}
@@ -125,9 +128,9 @@ export function AboutAuthorCard({
 
             <div className="space-y-1 min-w-0 flex-1">
               <div className="flex items-center gap-1.5 flex-wrap">
-                <h4 className="text-sm font-extrabold text-slate-900 leading-tight">
+                <h3 className="text-sm font-extrabold text-slate-900 leading-tight">
                   {profile.name}
-                </h4>
+                </h3>
                 <BadgeCheck className="w-4 h-4 text-indigo-600 shrink-0" />
               </div>
               <p className="text-xs font-semibold text-indigo-600 leading-tight">
@@ -206,6 +209,9 @@ export function AboutAuthorCard({
                 <img
                   src={profile.avatar}
                   alt={profile.name}
+                  width={112}
+                  height={112}
+                  loading="lazy"
                   className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
                   referrerPolicy="no-referrer"
                   onError={(e) => handleImageError(e, DEFAULT_AUTHOR_AVATAR)}

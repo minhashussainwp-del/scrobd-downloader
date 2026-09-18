@@ -34,11 +34,11 @@ export function ModernArticleSidebar({
       <AboutAuthorCard compact showEditTrigger />
 
       {/* Box 1: Knowledge Base */}
-      <div className="bg-[#eff6ff] border border-[#dbeafe] rounded-2xl p-5 shadow-2xs">
-        <h4 className="text-base font-bold text-[#1e40af] mb-1">
+      <div className="bg-[#eff6ff] border border-[#bfdbfe] rounded-2xl p-5 shadow-2xs">
+        <h3 className="text-base font-bold text-[#1e3a8a] mb-1">
           Knowledge Base
-        </h4>
-        <p className="text-sm text-[#3b82f6] font-medium leading-relaxed">
+        </h3>
+        <p className="text-sm text-[#1e40af] font-semibold leading-relaxed">
           No Login • High-Quality PDF • Works on All Devices
         </p>
       </div>
@@ -48,17 +48,17 @@ export function ModernArticleSidebar({
         <h3 className="text-base sm:text-lg font-bold text-slate-900">
           Latest Guides & Articles
         </h3>
-        <p className="text-sm text-slate-500 leading-relaxed">
+        <p className="text-sm text-slate-600 leading-relaxed">
           Explore tutorials on document formats, digital reading, and research methods.
         </p>
       </div>
 
       {/* Box 3: Purple CTA Box */}
-      <div className="bg-[#4f46e5] rounded-2xl p-6 sm:p-7 text-white text-center shadow-lg relative overflow-hidden space-y-3">
-        <h3 className="text-lg sm:text-xl font-extrabold leading-snug">
+      <div className="bg-[#4338ca] rounded-2xl p-6 sm:p-7 text-white text-center shadow-lg relative overflow-hidden space-y-3">
+        <h3 className="text-lg sm:text-xl font-extrabold leading-snug text-white">
           {title || "Have a Scribd Link Ready to Convert?"}
         </h3>
-        <p className="text-sm sm:text-base text-indigo-100/90 leading-relaxed font-normal">
+        <p className="text-sm sm:text-base text-white font-medium leading-relaxed">
           {subtitle ||
             "Paste the URL into our web tool right now to preview pages and download your document as a pure PDF file."}
         </p>

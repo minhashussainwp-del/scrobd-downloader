@@ -18,8 +18,12 @@ export function Footer({ onNavigate, siteSettings }: FooterProps) {
           {/* Brand Col */}
           <div className="space-y-4">
             <a
+              href="/"
               className="flex items-center gap-2.5 cursor-pointer group no-underline select-none"
-              onClick={() => onNavigate("home")}
+              onClick={(e) => {
+                e.preventDefault();
+                onNavigate("home");
+              }}
             >
               <div className="relative flex items-center justify-center w-10 h-10 rounded-xl overflow-hidden bg-slate-800 group-hover:shadow-[0_8px_16px_-6px_rgba(99,102,241,0.4)] transition-all duration-300">
                  <div className="absolute inset-0 bg-gradient-to-br from-indigo-500 to-cyan-500 opacity-0 group-hover:opacity-100 transition-opacity duration-500"/>
@@ -31,7 +35,7 @@ export function Footer({ onNavigate, siteSettings }: FooterProps) {
                 </span>
               </div>
             </a>
-            <p className="text-sm text-slate-400 font-medium leading-relaxed pr-4 pt-2">
+            <p className="text-sm text-slate-300 font-medium leading-relaxed pr-4 pt-2">
               A free high-speed online utility for reading, converting, and downloading educational
               Scribd documents and slide decks offline with zero data retention.
             </p>
@@ -39,22 +43,26 @@ export function Footer({ onNavigate, siteSettings }: FooterProps) {
 
           {/* Quick Links */}
           <div>
-            <h4 className="text-white font-bold mb-4">Quick Links</h4>
+            <h3 className="text-white font-bold mb-4 text-base">Quick Links</h3>
             <ul className="space-y-3">
               {[
-                { label: "Home", route: "home" as PageRoute },
-                { label: "How It Works", route: "how-it-works" as PageRoute },
-                { label: "Blog & Tutorials", route: "blog" as PageRoute },
-                { label: "About Our Mission", route: "about" as PageRoute },
-                { label: "Contact Support", route: "contact" as PageRoute },
+                { label: "Home", route: "home" as PageRoute, href: "/" },
+                { label: "How It Works", route: "how-it-works" as PageRoute, href: "/how-it-works" },
+                { label: "Blog & Tutorials", route: "blog" as PageRoute, href: "/blog" },
+                { label: "About Our Mission", route: "about" as PageRoute, href: "/about" },
+                { label: "Contact Support", route: "contact" as PageRoute, href: "/contact" },
               ].map((link) => (
                 <li key={link.route}>
-                  <button
-                    onClick={() => onNavigate(link.route)}
-                    className="text-sm text-slate-400 hover:text-white transition-colors cursor-pointer"
+                  <a
+                    href={link.href}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      onNavigate(link.route);
+                    }}
+                    className="text-sm text-slate-300 hover:text-white transition-colors cursor-pointer inline-block"
                   >
                     {link.label}
-                  </button>
+                  </a>
                 </li>
               ))}
             </ul>
@@ -62,8 +70,8 @@ export function Footer({ onNavigate, siteSettings }: FooterProps) {
 
           {/* Newsletter / Admin Access */}
           <div>
-            <h4 className="text-white font-bold mb-4">Newsletter &amp; Updates</h4>
-            <p className="text-sm text-slate-400 font-medium mb-4">
+            <h3 className="text-white font-bold mb-4 text-base">Newsletter &amp; Updates</h3>
+            <p className="text-sm text-slate-300 font-medium mb-4">
               Get notified of new document converters and offline features.
             </p>
             <form className="flex gap-2" onSubmit={(e) => e.preventDefault()}>
@@ -84,17 +92,31 @@ export function Footer({ onNavigate, siteSettings }: FooterProps) {
 
         {/* Bottom Bar */}
         <div className="border-t border-slate-700/50 mt-12 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-xs text-slate-500 font-medium">
+          <p className="text-xs text-slate-400 font-medium">
             © {new Date().getFullYear()} {siteSettings?.siteName || "Scribd Downloader"}. Free Educational Utility.
           </p>
-          <div className="flex flex-wrap items-center gap-4 text-xs text-slate-500 font-medium">
-            <button onClick={() => onNavigate("privacy")} className="hover:text-white transition-colors cursor-pointer">
+          <div className="flex flex-wrap items-center gap-4 text-xs text-slate-400 font-medium">
+            <a
+              href="/privacy"
+              onClick={(e) => {
+                e.preventDefault();
+                onNavigate("privacy");
+              }}
+              className="text-slate-300 hover:text-white transition-colors cursor-pointer"
+            >
               Privacy Policy
-            </button>
+            </a>
             <span>•</span>
-            <button onClick={() => onNavigate("terms")} className="hover:text-white transition-colors cursor-pointer">
+            <a
+              href="/terms"
+              onClick={(e) => {
+                e.preventDefault();
+                onNavigate("terms");
+              }}
+              className="text-slate-300 hover:text-white transition-colors cursor-pointer"
+            >
               Terms of Service
-            </button>
+            </a>
           </div>
         </div>
       </div>

@@ -168,6 +168,8 @@ export function BlogListingPage({
               <img
                 src={featuredPost.image}
                 alt={featuredPost.title}
+                width={800}
+                height={500}
                 className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
                 referrerPolicy="no-referrer"
                 onError={handleImageError}
@@ -204,6 +206,9 @@ export function BlogListingPage({
                   <img
                     src={featuredPost.author.avatar}
                     alt={featuredPost.author.name}
+                    width={32}
+                    height={32}
+                    loading="lazy"
                     className="w-8 h-8 rounded-full object-cover"
                     referrerPolicy="no-referrer"
                     onError={(e) => handleImageError(e, DEFAULT_AUTHOR_AVATAR)}
@@ -264,6 +269,9 @@ export function BlogListingPage({
                       <img
                         src={post.image}
                         alt={post.title}
+                        width={600}
+                        height={375}
+                        loading="lazy"
                         className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
                         referrerPolicy="no-referrer"
                         onError={handleImageError}
@@ -301,6 +309,9 @@ export function BlogListingPage({
                       <img
                         src={post.author.avatar}
                         alt={post.author.name}
+                        width={24}
+                        height={24}
+                        loading="lazy"
                         className="w-6 h-6 rounded-full object-cover"
                         referrerPolicy="no-referrer"
                         onError={(e) => handleImageError(e, DEFAULT_AUTHOR_AVATAR)}

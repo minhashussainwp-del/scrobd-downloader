@@ -58,6 +58,9 @@ export function BlogPreviewSection({
                   <img
                     src={post.image}
                     alt={post.title}
+                    width={640}
+                    height={400}
+                    loading="lazy"
                     className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
                     referrerPolicy="no-referrer"
                     onError={handleImageError}
@@ -97,6 +100,9 @@ export function BlogPreviewSection({
                   <img
                     src={post.author.avatar}
                     alt={post.author.name}
+                    width={24}
+                    height={24}
+                    loading="lazy"
                     className="w-6 h-6 rounded-full object-cover"
                     referrerPolicy="no-referrer"
                     onError={(e) => handleImageError(e, DEFAULT_AUTHOR_AVATAR)}

@@ -131,6 +131,8 @@ export function ModernArticleRenderer({ content }: ModernArticleRendererProps) {
               <div className="rounded-2xl overflow-hidden bg-slate-50 border border-slate-100 shadow-2xs">
                 <img
                   {...props}
+                  width={props.width || 800}
+                  height={props.height || 450}
                   className="w-full h-auto object-cover max-h-[500px]"
                   loading="lazy"
                   referrerPolicy="no-referrer"

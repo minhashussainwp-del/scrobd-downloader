@@ -1,20 +1,22 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect, useRef, useCallback, Suspense, lazy } from "react";
 import { Navigation } from "./components/Navigation";
 import { HeroSection } from "./components/HeroSection";
 import { Footer } from "./components/Footer";
 import { HomeContent } from "./components/HomeContent";
-import { PresentationBoard } from "./components/PresentationBoard";
-import { BlogListingPage } from "./pages/BlogListingPage";
-import { BlogArticlePage } from "./pages/BlogArticlePage";
-import { AboutPage } from "./pages/AboutPage";
-import { ContactPage } from "./pages/ContactPage";
-import { LegalPage } from "./pages/LegalPage";
-import { SitemapPage } from "./pages/SitemapPage";
-import { CustomPageView } from "./pages/CustomPageView";
-import { AdminPanel } from "./components/Admin/AdminPanel";
 import { SeoHead } from "./components/SeoHead";
 import { HeaderAdBanner, BelowHeroAdBanner, FooterAdBanner, AdBlockDetector } from "./components/AdBanners";
 import { BLOG_POSTS } from "./data/blogData";
+
+// Lazy-loaded pages and administrative components to reduce initial JavaScript bundle
+const PresentationBoard = lazy(() => import("./components/PresentationBoard").then((m) => ({ default: m.PresentationBoard })));
+const BlogListingPage = lazy(() => import("./pages/BlogListingPage").then((m) => ({ default: m.BlogListingPage })));
+const BlogArticlePage = lazy(() => import("./pages/BlogArticlePage").then((m) => ({ default: m.BlogArticlePage })));
+const AboutPage = lazy(() => import("./pages/AboutPage").then((m) => ({ default: m.AboutPage })));
+const ContactPage = lazy(() => import("./pages/ContactPage").then((m) => ({ default: m.ContactPage })));
+const LegalPage = lazy(() => import("./pages/LegalPage").then((m) => ({ default: m.LegalPage })));
+const SitemapPage = lazy(() => import("./pages/SitemapPage").then((m) => ({ default: m.SitemapPage })));
+const CustomPageView = lazy(() => import("./pages/CustomPageView").then((m) => ({ default: m.CustomPageView })));
+const AdminPanel = lazy(() => import("./components/Admin/AdminPanel").then((m) => ({ default: m.AdminPanel })));
 import {
   DownloadFormat,
   DownloadJob,
@@ -521,7 +523,9 @@ export default function App() {
           onSelectLang={handleLanguageChange}
         />
         <main className="flex-1">
-          <PresentationBoard onOpenLiveSite={() => setViewportMode("responsive")} />
+          <Suspense fallback={<div className="min-h-[400px] flex items-center justify-center text-slate-400">Loading...</div>}>
+            <PresentationBoard onOpenLiveSite={() => setViewportMode("responsive")} />
+          </Suspense>
         </main>
       </div>
     );
@@ -597,144 +601,146 @@ export default function App() {
         )}
 
         <main className="flex-1">
-          {/* 1. HOMEPAGE */}
-          {currentPage === "home" && (
-            <>
-              <HeroSection
-                url={url}
-                setUrl={setUrl}
-                format={format}
-                setFormat={setFormat}
-                demoMode={demoMode}
-                setDemoMode={setDemoMode}
-                currentJob={currentJob}
-                setCurrentJob={setCurrentJob}
-                isLoading={isLoading}
-                setIsLoading={setIsLoading}
-                adSettings={adSettings}
-                currentLang={currentLang}
-                autoDownload={autoDownload}
-                setAutoDownload={setAutoDownload}
-              />
-              {/* Below Hero / Downloader Ad Slot */}
-              {adSettings?.enabled && adSettings?.belowHeroAd && (
-                <div className="max-w-7xl mx-auto px-4 sm:px-6">
-                  <BelowHeroAdBanner settings={adSettings} />
-                </div>
-              )}
-              <HomeContent
-                onNavigate={handleNavigate}
-                posts={posts}
-                onSelectPost={handleSelectPost}
-                currentLang={currentLang}
-                pageContent={currentHomeContent}
-              />
-            </>
-          )}
+          <Suspense fallback={<div className="min-h-[400px] flex items-center justify-center text-slate-400 font-medium">Loading page...</div>}>
+            {/* 1. HOMEPAGE */}
+            {currentPage === "home" && (
+              <>
+                <HeroSection
+                  url={url}
+                  setUrl={setUrl}
+                  format={format}
+                  setFormat={setFormat}
+                  demoMode={demoMode}
+                  setDemoMode={setDemoMode}
+                  currentJob={currentJob}
+                  setCurrentJob={setCurrentJob}
+                  isLoading={isLoading}
+                  setIsLoading={setIsLoading}
+                  adSettings={adSettings}
+                  currentLang={currentLang}
+                  autoDownload={autoDownload}
+                  setAutoDownload={setAutoDownload}
+                />
+                {/* Below Hero / Downloader Ad Slot */}
+                {adSettings?.enabled && adSettings?.belowHeroAd && (
+                  <div className="max-w-7xl mx-auto px-4 sm:px-6">
+                    <BelowHeroAdBanner settings={adSettings} />
+                  </div>
+                )}
+                <HomeContent
+                  onNavigate={handleNavigate}
+                  posts={posts}
+                  onSelectPost={handleSelectPost}
+                  currentLang={currentLang}
+                  pageContent={currentHomeContent}
+                />
+              </>
+            )}
 
-          {/* 2. HOW IT WORKS */}
-          {currentPage === "how-it-works" && (
-            <div className="bg-white">
-              <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-12 pb-6">
-                <div className="text-center max-w-2xl mx-auto space-y-3">
-                  <span className="text-xs font-bold uppercase tracking-wider text-purple-600 bg-purple-50 px-3 py-1 rounded-full border border-purple-100">
-                    Step-by-Step Guide
-                  </span>
-                  <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900">
-                    How Scribd Downloader Operates
-                  </h1>
-                  <p className="text-sm sm:text-base text-slate-600">
-                    Learn how our smart system safely retrieves pages and compiles them into a beautiful, easy-to-read PDF document in seconds.
-                  </p>
+            {/* 2. HOW IT WORKS */}
+            {currentPage === "how-it-works" && (
+              <div className="bg-white">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-12 pb-6">
+                  <div className="text-center max-w-2xl mx-auto space-y-3">
+                    <span className="text-xs font-bold uppercase tracking-wider text-purple-600 bg-purple-50 px-3 py-1 rounded-full border border-purple-100">
+                      Step-by-Step Guide
+                    </span>
+                    <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900">
+                      How Scribd Downloader Operates
+                    </h1>
+                    <p className="text-sm sm:text-base text-slate-600">
+                      Learn how our smart system safely retrieves pages and compiles them into a beautiful, easy-to-read PDF document in seconds.
+                    </p>
+                  </div>
                 </div>
+                <HomeContent
+                  onNavigate={handleNavigate}
+                  posts={posts}
+                  onSelectPost={handleSelectPost}
+                  currentLang={currentLang}
+                />
               </div>
-              <HomeContent
-                onNavigate={handleNavigate}
+            )}
+
+            {/* 3. BLOG LISTING PAGE */}
+            {currentPage === "blog" && (
+              <BlogListingPage
                 posts={posts}
+                currentLang={currentLang}
                 onSelectPost={handleSelectPost}
+                onNavigate={handleNavigate}
+              />
+            )}
+
+            {/* 4. BLOG ARTICLE READER PAGE */}
+            {currentPage === "blog-article" && selectedPost && (
+              <BlogArticlePage
+                post={selectedPost}
+                allPosts={posts}
+                onBackToBlog={() => handleNavigate("blog")}
+                onSelectPost={handleSelectPost}
+                onNavigate={handleNavigate}
+                onQuickDownloadClick={handleCtaClick}
+                onLanguageChange={handleLanguageChange}
+                currentLang={currentLang}
+                adSettings={adSettings}
+              />
+            )}
+
+            {/* 5. ABOUT PAGE */}
+            {currentPage === "about" && (
+              <AboutPage
+                onNavigate={handleNavigate}
+                onCtaClick={handleCtaClick}
                 currentLang={currentLang}
               />
-            </div>
-          )}
+            )}
 
-          {/* 3. BLOG LISTING PAGE */}
-          {currentPage === "blog" && (
-            <BlogListingPage
-              posts={posts}
-              currentLang={currentLang}
-              onSelectPost={handleSelectPost}
-              onNavigate={handleNavigate}
-            />
-          )}
+            {/* 6. CONTACT PAGE */}
+            {currentPage === "contact" && (
+              <ContactPage onNavigate={handleNavigate} currentLang={currentLang} />
+            )}
 
-          {/* 4. BLOG ARTICLE READER PAGE */}
-          {currentPage === "blog-article" && selectedPost && (
-            <BlogArticlePage
-              post={selectedPost}
-              allPosts={posts}
-              onBackToBlog={() => handleNavigate("blog")}
-              onSelectPost={handleSelectPost}
-              onNavigate={handleNavigate}
-              onQuickDownloadClick={handleCtaClick}
-              onLanguageChange={handleLanguageChange}
-              currentLang={currentLang}
-              adSettings={adSettings}
-            />
-          )}
+            {/* 7. PRIVACY POLICY */}
+            {currentPage === "privacy" && (
+              <LegalPage initialTab="privacy" onNavigate={handleNavigate} currentLang={currentLang} />
+            )}
 
-          {/* 5. ABOUT PAGE */}
-          {currentPage === "about" && (
-            <AboutPage
-              onNavigate={handleNavigate}
-              onCtaClick={handleCtaClick}
-              currentLang={currentLang}
-            />
-          )}
+            {/* 8. TERMS OF SERVICE & FAIR USE */}
+            {currentPage === "terms" && (
+              <LegalPage initialTab="terms" onNavigate={handleNavigate} currentLang={currentLang} />
+            )}
 
-          {/* 6. CONTACT PAGE */}
-          {currentPage === "contact" && (
-            <ContactPage onNavigate={handleNavigate} currentLang={currentLang} />
-          )}
+            {/* 9. XML SITEMAP & DIRECTORY */}
+            {currentPage === "sitemap" && (
+              <SitemapPage
+                onNavigate={handleNavigate}
+                onSelectPost={handleSelectPost}
+              />
+            )}
 
-          {/* 7. PRIVACY POLICY */}
-          {currentPage === "privacy" && (
-            <LegalPage initialTab="privacy" onNavigate={handleNavigate} currentLang={currentLang} />
-          )}
+            {/* 10. CUSTOM CREATED CMS PAGES */}
+            {currentPage === "custom-page" && (
+              <CustomPageView
+                page={selectedCustomPage || customPages[0]}
+                onNavigate={handleNavigate}
+                allCustomPages={customPages}
+                currentLang={currentLang}
+              />
+            )}
 
-          {/* 8. TERMS OF SERVICE & FAIR USE */}
-          {currentPage === "terms" && (
-            <LegalPage initialTab="terms" onNavigate={handleNavigate} currentLang={currentLang} />
-          )}
-
-          {/* 9. XML SITEMAP & DIRECTORY */}
-          {currentPage === "sitemap" && (
-            <SitemapPage
-              onNavigate={handleNavigate}
-              onSelectPost={handleSelectPost}
-            />
-          )}
-
-          {/* 10. CUSTOM CREATED CMS PAGES */}
-          {currentPage === "custom-page" && (
-            <CustomPageView
-              page={selectedCustomPage || customPages[0]}
-              onNavigate={handleNavigate}
-              allCustomPages={customPages}
-              currentLang={currentLang}
-            />
-          )}
-
-          {/* 11. COMPREHENSIVE ADMIN CONTROL PANEL */}
-          {currentPage === "admin" && (
-            <AdminPanel
-              onNavigate={handleNavigate}
-              adSettings={adSettings}
-              onSaveAdSettings={(newSettings) => {
-                setAdSettings(newSettings);
-                saveAdSettings(newSettings);
-              }}
-            />
-          )}
+            {/* 11. COMPREHENSIVE ADMIN CONTROL PANEL */}
+            {currentPage === "admin" && (
+              <AdminPanel
+                onNavigate={handleNavigate}
+                adSettings={adSettings}
+                onSaveAdSettings={(newSettings) => {
+                  setAdSettings(newSettings);
+                  saveAdSettings(newSettings);
+                }}
+              />
+            )}
+          </Suspense>
         </main>
 
         {/* Global Footer Ad Banner Slot (Above Footer) */}
