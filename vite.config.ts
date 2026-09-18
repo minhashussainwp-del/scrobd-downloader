@@ -11,11 +11,21 @@ export default defineConfig(() => {
         '@': path.resolve(__dirname, '.'),
       },
     },
+    define: {
+      'process.env.NODE_ENV': JSON.stringify('production'),
+    },
     build: {
       target: 'esnext',
+      sourcemap: true,
       rollupOptions: {
         output: {
           manualChunks(id) {
+            if (id.includes('customPagesData')) {
+              return 'site-custom-pages';
+            }
+            if (id.includes('blogData')) {
+              return 'site-blog-data';
+            }
             if (id.includes('node_modules')) {
               if (id.includes('firebase')) {
                 return 'vendor-firebase';

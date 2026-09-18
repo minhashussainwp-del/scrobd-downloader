@@ -26,8 +26,8 @@ import {
   saveSitemapXml,
   buildDefaultRobotsTxt,
   buildDynamicSitemapXml,
-  loadCustomPages,
 } from "../../data/siteConfig";
+import { loadCustomPages } from "../../data/customPagesData";
 import { BLOG_POSTS } from "../../data/blogData";
 
 interface AdminSeoProps {

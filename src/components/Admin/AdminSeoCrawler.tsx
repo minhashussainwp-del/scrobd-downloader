@@ -7,8 +7,8 @@ import {
   buildDynamicSitemapXml,
   loadSitemapXml,
   saveSitemapXml,
-  loadCustomPages,
 } from "../../data/siteConfig";
+import { loadCustomPages } from "../../data/customPagesData";
 import {
   Globe,
   FileCode,

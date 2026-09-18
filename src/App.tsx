@@ -35,7 +35,6 @@ import {
   loadAdSettings,
   saveAdSettings,
   loadPageContent,
-  loadCustomPages,
 } from "./data/siteConfig";
 
 const VALID_LANGS: SupportedLanguage[] = ["en", "br", "es", "fr", "de", "id"];
@@ -166,26 +165,35 @@ export default function App() {
   });
 
   const [pageContents, setPageContents] = useState<PageContent[]>(loadPageContent);
-  const [customPages, setCustomPages] = useState<CustomPage[]>(loadCustomPages);
-
-  // Sync custom pages from server storage
-  useEffect(() => {
-    fetch("/api/custom-pages")
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.pages && Array.isArray(data.pages) && data.pages.length > 0) {
-          setCustomPages(data.pages);
-        }
-      })
-      .catch(() => {});
-  }, []);
+  const [customPages, setCustomPages] = useState<CustomPage[]>(() => {
+    try {
+      const raw = localStorage.getItem("scribd_custom_pages");
+      if (raw) return JSON.parse(raw);
+    } catch {}
+    return [];
+  });
 
   // Initialize route from current window.location
-  const initialRoute = parseUrlRoute(window.location.pathname, window.location.hash, posts, loadCustomPages());
+  const initialRoute = parseUrlRoute(window.location.pathname, window.location.hash, posts, customPages);
   const [currentPage, setCurrentPage] = useState<PageRoute>(initialRoute.page);
   const [currentLang, setCurrentLang] = useState<SupportedLanguage>(initialRoute.lang);
   const [selectedPost, setSelectedPost] = useState<BlogPost | null>(initialRoute.post);
   const [selectedCustomPage, setSelectedCustomPage] = useState<CustomPage | null>(initialRoute.customPage);
+
+  // Lazy-load custom pages only if user navigates to custom page, admin or sitemap
+  useEffect(() => {
+    if (currentPage === "custom-page" || currentPage === "admin" || currentPage === "sitemap") {
+      import("./data/customPagesData").then((m) => {
+        const loaded = m.loadCustomPages();
+        setCustomPages(loaded);
+        if (currentPage === "custom-page" && !selectedCustomPage && loaded.length > 0) {
+          const rawSlug = window.location.pathname.replace(/^\/([a-z]{2}\/)?/, "").replace(/^\//, "").toLowerCase();
+          const match = loaded.find((p) => p.slug.toLowerCase() === rawSlug || p.id === rawSlug);
+          if (match) setSelectedCustomPage(match);
+        }
+      });
+    }
+  }, [currentPage, selectedCustomPage]);
 
   // Settings & Localization state
   const [siteSettings, setSiteSettings] = useState<SiteSettings>(loadSiteSettings);

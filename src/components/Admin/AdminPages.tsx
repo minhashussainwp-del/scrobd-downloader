@@ -24,7 +24,7 @@ import {
   loadCustomPages,
   saveCustomPages,
   DEFAULT_CUSTOM_PAGES,
-} from "../../data/siteConfig";
+} from "../../data/customPagesData";
 
 interface PageConfig {
   id: string;

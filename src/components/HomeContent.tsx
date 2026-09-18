@@ -12,8 +12,11 @@ import {
 } from "lucide-react";
 import { BlogPost, PageRoute, SupportedLanguage, PageContent } from "../types";
 import { t } from "../data/translations";
-import { ModernArticleRenderer } from "./ModernArticleRenderer";
 import { ModernArticleSidebar } from "./ModernArticleSidebar";
+
+const ModernArticleRenderer = React.lazy(() =>
+  import("./ModernArticleRenderer").then((m) => ({ default: m.ModernArticleRenderer }))
+);
 
 interface HomeContentProps {
   onNavigate: (page: PageRoute) => void;
@@ -188,7 +191,9 @@ export function HomeContent({
               {/* Guide Content Display */}
               <div className="article-body">
                 {pageContent?.content ? (
-                  <ModernArticleRenderer content={pageContent.content} />
+                  <React.Suspense fallback={<div className="animate-pulse h-32 bg-slate-50 rounded-xl" />}>
+                    <ModernArticleRenderer content={pageContent.content} />
+                  </React.Suspense>
                 ) : (
                   <div className="space-y-4">
                     <p className="text-slate-700 text-base sm:text-lg font-medium leading-relaxed m-0">
