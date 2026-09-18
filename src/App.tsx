@@ -13,7 +13,7 @@ import { SitemapPage } from "./pages/SitemapPage";
 import { CustomPageView } from "./pages/CustomPageView";
 import { AdminPanel } from "./components/Admin/AdminPanel";
 import { SeoHead } from "./components/SeoHead";
-import { HeaderAdBanner, AdBlockDetector } from "./components/AdBanners";
+import { HeaderAdBanner, BelowHeroAdBanner, FooterAdBanner, AdBlockDetector } from "./components/AdBanners";
 import { BLOG_POSTS } from "./data/blogData";
 import {
   DownloadFormat,
@@ -138,6 +138,19 @@ function buildUrl(
 }
 
 export default function App() {
+  // Force clear cache for content updates
+  React.useEffect(() => {
+    const CACHE_VERSION = 'v3-markdown-update';
+    if (localStorage.getItem('scribd_cache_version') !== CACHE_VERSION) {
+      localStorage.removeItem('scribd_blog_posts');
+      localStorage.removeItem('scribd_page_content_v6');
+      localStorage.removeItem('scribd_page_content');
+      localStorage.removeItem('scribd_custom_pages');
+      localStorage.setItem('scribd_cache_version', CACHE_VERSION);
+      window.location.reload();
+    }
+  }, []);
+
   const [viewportMode, setViewportMode] = useState<ViewportMode>("responsive");
 
   const [posts, setPosts] = useState<BlogPost[]>(() => {
@@ -201,6 +214,25 @@ export default function App() {
       navigateWithUrl("home", currentLang, null, null, true);
     }
   }, [currentLang, navigateWithUrl]);
+
+  // Dynamically inject ad network script (e.g. AdSense) if configured and enabled
+  useEffect(() => {
+    if (!adSettings?.enabled || !adSettings?.adSenseScript) return;
+    const scriptId = "scribd-ad-network-script";
+    if (document.getElementById(scriptId)) return;
+
+    const match = adSettings.adSenseScript.match(/src=["']([^"']+)["']/i);
+    const src = match ? match[1] : (adSettings.adSenseScript.startsWith("http") ? adSettings.adSenseScript.trim() : null);
+
+    if (src) {
+      const script = document.createElement("script");
+      script.id = scriptId;
+      script.async = true;
+      script.crossOrigin = "anonymous";
+      script.src = src;
+      document.head.appendChild(script);
+    }
+  }, [adSettings?.enabled, adSettings?.adSenseScript]);
 
   // Listen to browser Back/Forward navigation
   useEffect(() => {
@@ -269,6 +301,8 @@ export default function App() {
   const [demoMode, setDemoMode] = useState<boolean>(false);
   const [currentJob, setCurrentJob] = useState<DownloadJob | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [autoDownload, setAutoDownload] = useState<boolean>(true);
+  const autoDownloadedJobId = useRef<string | null>(null);
 
   const pollingRef = useRef<NodeJS.Timeout | null>(null);
   const errorCountRef = useRef<number>(0);
@@ -297,7 +331,7 @@ export default function App() {
       pollingRef.current = setTimeout(() => {
         setCurrentJob((prev) => {
           if (!prev) return null;
-          const nextProgress = Math.min(100, prev.progress + 20);
+          const nextProgress = Math.min(100, prev.progress + 25);
           const isDone = nextProgress >= 100;
           return {
             ...prev,
@@ -317,14 +351,14 @@ export default function App() {
               : prev.pdfFile,
           };
         });
-      }, 500);
+      }, 300);
 
       return () => {
         if (pollingRef.current) clearTimeout(pollingRef.current);
       };
     }
 
-    // Server-side job polling with 750ms interval, exponential backoff, and graceful error recovery
+    // Server-side job polling with ultra-responsive 250ms interval and instant auto-download trigger
     pollingRef.current = setTimeout(async () => {
       try {
         const res = await fetch(`/api/jobs/${encodeURIComponent(currentJob.id)}`);
@@ -334,6 +368,30 @@ export default function App() {
           setCurrentJob(updatedJob);
           if (updatedJob.status === "completed" || updatedJob.status === "failed") {
             setIsLoading(false);
+            // Trigger instant auto-download if enabled and not yet triggered for this job
+            if (
+              updatedJob.status === "completed" &&
+              autoDownload &&
+              updatedJob.pdfFile &&
+              autoDownloadedJobId.current !== updatedJob.id
+            ) {
+              autoDownloadedJobId.current = updatedJob.id;
+              try {
+                const link = document.createElement("a");
+                link.href = `/api/jobs/${updatedJob.id}/download`;
+                link.download = updatedJob.pdfFile.filename || "scribd-document.pdf";
+                link.target = "_blank";
+                link.rel = "noopener noreferrer";
+                link.style.display = "none";
+                document.body.appendChild(link);
+                link.click();
+                setTimeout(() => {
+                  if (document.body.contains(link)) document.body.removeChild(link);
+                }, 500);
+              } catch (e) {
+                console.warn("Auto-download link trigger note:", e);
+              }
+            }
           }
         } else if (res.status === 404) {
           errorCountRef.current = 0;
@@ -388,12 +446,12 @@ export default function App() {
           setIsLoading(false);
         }
       }
-    }, 750);
+    }, 250);
 
     return () => {
       if (pollingRef.current) clearTimeout(pollingRef.current);
     };
-  }, [currentJob]);
+  }, [currentJob, autoDownload]);
 
   // Navigate to page
   const handleNavigate = (page: PageRoute, customPageObj?: CustomPage | null) => {
@@ -555,7 +613,15 @@ export default function App() {
                 setIsLoading={setIsLoading}
                 adSettings={adSettings}
                 currentLang={currentLang}
+                autoDownload={autoDownload}
+                setAutoDownload={setAutoDownload}
               />
+              {/* Below Hero / Downloader Ad Slot */}
+              {adSettings?.enabled && adSettings?.belowHeroAd && (
+                <div className="max-w-7xl mx-auto px-4 sm:px-6">
+                  <BelowHeroAdBanner settings={adSettings} />
+                </div>
+              )}
               <HomeContent
                 onNavigate={handleNavigate}
                 posts={posts}
@@ -660,9 +726,21 @@ export default function App() {
 
           {/* 11. COMPREHENSIVE ADMIN CONTROL PANEL */}
           {currentPage === "admin" && (
-            <AdminPanel onNavigate={handleNavigate} />
+            <AdminPanel
+              onNavigate={handleNavigate}
+              adSettings={adSettings}
+              onSaveAdSettings={(newSettings) => {
+                setAdSettings(newSettings);
+                saveAdSettings(newSettings);
+              }}
+            />
           )}
         </main>
+
+        {/* Global Footer Ad Banner Slot (Above Footer) */}
+        {adSettings?.enabled && adSettings?.footerAd && currentPage !== "admin" && (
+          <FooterAdBanner settings={adSettings} />
+        )}
 
         {/* Global Multi-Column Footer */}
         <Footer

@@ -9,12 +9,14 @@ import {
   Link2,
   Clipboard,
   X,
-  Download
+  Download,
+  Zap,
 } from "lucide-react";
 import { DownloadJob, AdSettings, SupportedLanguage, DownloadFormat } from "../types";
 import { JobProgress } from "./JobProgress";
 import { JobResult } from "./JobResult";
 import { t } from "../data/translations";
+import { triggerNewTabAdIfConfigured } from "../utils/adTrigger";
 
 interface HeroSectionProps {
   url: string;
@@ -29,6 +31,8 @@ interface HeroSectionProps {
   setIsLoading: (loading: boolean) => void;
   adSettings: AdSettings;
   currentLang: SupportedLanguage;
+  autoDownload?: boolean;
+  setAutoDownload?: (val: boolean) => void;
 }
 
 const SAMPLE_DOCS = [
@@ -58,8 +62,11 @@ export function HeroSection({
   setIsLoading,
   adSettings,
   currentLang,
+  autoDownload = true,
+  setAutoDownload,
 }: HeroSectionProps) {
   const [formError, setFormError] = useState<string | null>(null);
+  const [quality, setQuality] = useState<"ultra" | "standard">("ultra");
 
   const startDownload = async (targetUrl: string, isDemo = false) => {
     let cleanUrl = targetUrl.trim();
@@ -79,7 +86,7 @@ export function HeroSection({
       const res = await fetch("/api/download", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ url: cleanUrl, format: "pdf", demoMode: isDemo || demoMode }),
+        body: JSON.stringify({ url: cleanUrl, format: "pdf", demoMode: isDemo || demoMode, quality }),
       });
 
       const data = await res.json();
@@ -136,6 +143,10 @@ export function HeroSection({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (url && url.trim()) {
+      // Trigger new tab ad ONLY if enabled and an ad URL is attached
+      triggerNewTabAdIfConfigured(adSettings);
+    }
     startDownload(url);
   };
 
@@ -205,6 +216,61 @@ export function HeroSection({
 
           {/* Input Form */}
           <div className="w-full max-w-3xl mx-auto mt-4">
+            {/* Quality & Auto-Download Selector Bar */}
+            <div className="flex flex-wrap items-center justify-between gap-2 px-2 pb-2">
+              <div className="flex items-center gap-2">
+                <div className="flex items-center gap-1.5 text-xs font-semibold text-slate-700">
+                  <Sparkles className="w-3.5 h-3.5 text-amber-500" />
+                  <span>Quality:</span>
+                </div>
+                <div className="inline-flex p-1 rounded-xl bg-slate-200/80 border border-slate-300/70 text-xs font-medium">
+                  <button
+                    type="button"
+                    onClick={() => setQuality("ultra")}
+                    className={`px-3 py-1 rounded-lg transition-all flex items-center gap-1.5 cursor-pointer ${
+                      quality === "ultra"
+                        ? "bg-white text-blue-700 font-bold shadow-xs border border-slate-200/70"
+                        : "text-slate-600 hover:text-slate-900"
+                    }`}
+                  >
+                    <Sparkles className="w-3 h-3 text-blue-600" />
+                    <span>Ultra HD Original</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setQuality("standard")}
+                    className={`px-3 py-1 rounded-lg transition-all flex items-center gap-1 cursor-pointer ${
+                      quality === "standard"
+                        ? "bg-white text-slate-900 font-bold shadow-xs border border-slate-200/70"
+                        : "text-slate-600 hover:text-slate-900"
+                    }`}
+                  >
+                    <span>Standard</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* Instant Auto-Download Toggle */}
+              {setAutoDownload && (
+                <button
+                  type="button"
+                  onClick={() => setAutoDownload(!autoDownload)}
+                  className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-xl text-xs font-semibold border transition cursor-pointer ${
+                    autoDownload
+                      ? "bg-emerald-50 text-emerald-700 border-emerald-200 shadow-xs"
+                      : "bg-slate-100 text-slate-600 border-slate-200 hover:bg-slate-200"
+                  }`}
+                  title="Automatically starts PDF download when scraping completes"
+                >
+                  <Zap className={`w-3.5 h-3.5 ${autoDownload ? "text-emerald-600 fill-emerald-500" : "text-slate-400"}`} />
+                  <span>Auto-Download PDF:</span>
+                  <span className={`px-1.5 py-0.2 rounded text-[10px] font-bold ${autoDownload ? "bg-emerald-600 text-white" : "bg-slate-300 text-slate-700"}`}>
+                    {autoDownload ? "ON (Instant)" : "OFF"}
+                  </span>
+                </button>
+              )}
+            </div>
+
             <form onSubmit={handleSubmit} className="relative z-20 w-full">
                 <div className="group relative bg-white/95 backdrop-blur-md rounded-2xl p-2 sm:p-2.5 border border-slate-200/90 shadow-xl shadow-slate-900/5 hover:shadow-2xl hover:shadow-blue-900/10 focus-within:ring-4 focus-within:ring-blue-500/15 focus-within:border-blue-500 transition-all duration-300 flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3">
                   {/* Left Icon Pill */}

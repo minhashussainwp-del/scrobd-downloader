@@ -26,6 +26,8 @@
     "pdfkit": "^0.20.2",
     "react": "^19.0.1",
     "react-dom": "^19.0.1",
+    "react-markdown": "^10.1.0",
+    "remark-gfm": "^4.0.1",
     "scribd-scraper": "^1.0.5",
     "vite": "^6.2.3"
   },

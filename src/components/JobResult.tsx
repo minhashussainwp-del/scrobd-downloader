@@ -16,12 +16,15 @@ import {
   Share2,
   Loader2,
   FileDown,
+  Sparkles,
+  Zap,
 } from "lucide-react";
 import { DownloadJob, AdSettings } from "../types";
 import { ImageModal } from "./ImageModal";
 import { HorizontalSlideViewer } from "./HorizontalSlideViewer";
 import { PreDownloadModal, PostDownloadAdBanner } from "./AdBanners";
 import { SocialShare } from "./SocialShare";
+import { triggerNewTabAdIfConfigured } from "../utils/adTrigger";
 
 interface JobResultProps {
   job: DownloadJob;
@@ -48,7 +51,7 @@ export function JobResult({ job, onReset, onTryDemo, adSettings, onAdClick }: Jo
 
   const isSuccess = job.status === "completed";
 
-  // Trigger actual file download via resilient multi-engine strategy
+  // Trigger actual file download via ultra-fast streaming direct delivery
   const triggerDirectDownload = async () => {
     if (!job.pdfFile) return;
     setIsDownloading(true);
@@ -57,7 +60,26 @@ export function JobResult({ job, onReset, onTryDemo, adSettings, onAdClick }: Jo
     const filename = job.pdfFile.filename || "scribd-document.pdf";
     const downloadUrl = `/api/jobs/${job.id}/download`;
 
-    // Strategy 1: Fetch as Blob (100% reliable inside iframes, browser sandboxes, and mobile)
+    // Strategy 1: Instant Direct Anchor (Native browser stream - zero-latency)
+    try {
+      const link = document.createElement("a");
+      link.href = downloadUrl;
+      link.download = filename;
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
+      link.style.display = "none";
+      document.body.appendChild(link);
+      link.click();
+      setTimeout(() => {
+        if (document.body.contains(link)) document.body.removeChild(link);
+        setIsDownloading(false);
+      }, 500);
+      return;
+    } catch {
+      // Fallback below
+    }
+
+    // Strategy 2: Blob fallback if direct anchor was blocked
     try {
       const res = await fetch(downloadUrl);
       if (res.ok) {
@@ -71,31 +93,23 @@ export function JobResult({ job, onReset, onTryDemo, adSettings, onAdClick }: Jo
         link.click();
         setTimeout(() => {
           window.URL.revokeObjectURL(blobUrl);
-          document.body.removeChild(link);
+          if (document.body.contains(link)) document.body.removeChild(link);
           setIsDownloading(false);
-        }, 1500);
+        }, 1000);
         return;
       }
     } catch (err) {
-      console.warn("Blob fetch failed, falling back to direct anchor:", err);
+      console.warn("Download fallback notice:", err);
     }
-
-    // Strategy 2: Direct anchor navigation fallback
-    const link = document.createElement("a");
-    link.href = downloadUrl;
-    link.download = filename;
-    link.target = "_blank";
-    link.style.display = "none";
-    document.body.appendChild(link);
-    link.click();
-    setTimeout(() => {
-      document.body.removeChild(link);
-      setIsDownloading(false);
-    }, 1000);
+    setIsDownloading(false);
   };
 
   const handleDownloadClick = (e: React.MouseEvent) => {
     e.preventDefault();
+
+    // User directive: PDF process in SAME tab, Ad opens in NEW tab ONLY if enabled AND ad is attached
+    triggerNewTabAdIfConfigured(adSettings);
+
     // If pre-download countdown ad is enabled (Item 9) and not already triggered
     if (adSettings?.enabled && adSettings?.preDownloadAd && !hasDownloaded) {
       setShowPreDownloadModal(true);
@@ -115,9 +129,15 @@ export function JobResult({ job, onReset, onTryDemo, adSettings, onAdClick }: Jo
                 <CheckCircle2 className="w-6 h-6" />
               </div>
               <div>
-                <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200">
-                  Scrape Completed Successfully
-                </span>
+                <div className="flex flex-wrap items-center gap-1.5">
+                  <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200">
+                    Scrape Completed Successfully
+                  </span>
+                  <span className="inline-flex items-center gap-1 text-xs font-bold px-2 py-0.5 rounded-full bg-blue-100 text-blue-800 border border-blue-200">
+                    <Sparkles className="w-3 h-3 text-blue-600" />
+                    Ultra HD Original (100% Crisp Quality)
+                  </span>
+                </div>
                 <h3 className="text-lg font-bold text-slate-900 mt-1 break-all">
                   {job.documentTitle || "Scribd Document"}
                 </h3>
@@ -156,8 +176,12 @@ export function JobResult({ job, onReset, onTryDemo, adSettings, onAdClick }: Jo
                 </div>
                 <div>
                   <h4 className="text-sm font-bold text-slate-900 break-all">{job.pdfFile.filename}</h4>
-                  <p className="text-xs text-slate-500 mt-0.5">
-                    Unified PDF Document • {formatBytes(job.pdfFile.sizeBytes)} • 100% Extracted
+                  <p className="text-xs text-slate-500 mt-0.5 flex flex-wrap items-center gap-1.5">
+                    <span>Unified PDF Document • {formatBytes(job.pdfFile.sizeBytes)} • 100% Extracted</span>
+                    <span className="inline-flex items-center gap-0.5 text-emerald-700 font-bold bg-emerald-50 border border-emerald-200/80 px-1.5 py-0.2 rounded text-[11px]">
+                      <Sparkles className="w-3 h-3 text-emerald-600" />
+                      Ultra HD Original
+                    </span>
                   </p>
                 </div>
               </div>
@@ -168,17 +192,17 @@ export function JobResult({ job, onReset, onTryDemo, adSettings, onAdClick }: Jo
                   id="download-pdf-cta-btn"
                   onClick={handleDownloadClick}
                   disabled={isDownloading}
-                  className="flex-1 sm:flex-initial px-6 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 active:bg-emerald-700 text-white font-semibold text-sm transition shadow-sm inline-flex items-center justify-center gap-2 cursor-pointer disabled:opacity-75"
+                  className="flex-1 sm:flex-initial px-6 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 active:bg-emerald-700 text-white font-bold text-sm transition shadow-md shadow-emerald-700/20 inline-flex items-center justify-center gap-2 cursor-pointer disabled:opacity-75"
                 >
                   {isDownloading ? (
                     <>
                       <Loader2 className="w-4 h-4 animate-spin" />
-                      <span>Downloading PDF...</span>
+                      <span>Streaming PDF...</span>
                     </>
                   ) : (
                     <>
-                      <Download className="w-4 h-4" />
-                      <span>Download PDF File</span>
+                      <Zap className="w-4 h-4 fill-white" />
+                      <span>Download PDF File (Instant)</span>
                     </>
                   )}
                 </button>
@@ -212,6 +236,7 @@ export function JobResult({ job, onReset, onTryDemo, adSettings, onAdClick }: Jo
                 documentTitle={job.documentTitle || job.pdfFile?.filename || "Scribd Document"}
                 images={job.imageFiles}
                 pdfDownloadUrl={`/api/jobs/${job.id}/download`}
+                adSettings={adSettings}
               />
             </div>
           )}

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { BlogPost, GutenbergBlock, SupportedLanguage } from "../../types";
 import { ClassicEditor } from "./ClassicEditor";
 import { SUPPORTED_LANGUAGES } from "../../data/translations";
+import { getAuthorProfile } from "../../data/authorData";
 import {
   Plus,
   Search,
@@ -112,9 +113,11 @@ export function AdminPosts({
       readTime: formReadTime,
       date: new Date().toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" }),
       author: editingPost?.author || {
-        name: "Admin",
-        role: "Editor",
-        avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=120&auto=format&fit=crop&q=80",
+        name: getAuthorProfile().name,
+        role: getAuthorProfile().role,
+        avatar: getAuthorProfile().avatar,
+        email: getAuthorProfile().email,
+        bio: getAuthorProfile().bio,
       },
       image: formImage,
       featured: formFeatured,
@@ -146,9 +149,11 @@ export function AdminPosts({
       readTime: formReadTime,
       date: editingPost ? editingPost.date : new Date().toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" }),
       author: editingPost ? editingPost.author : {
-        name: "Admin",
-        role: "Editor",
-        avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=120&auto=format&fit=crop&q=80",
+        name: getAuthorProfile().name,
+        role: getAuthorProfile().role,
+        avatar: getAuthorProfile().avatar,
+        email: getAuthorProfile().email,
+        bio: getAuthorProfile().bio,
       },
       image: formImage,
       featured: formFeatured,

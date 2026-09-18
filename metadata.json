@@ -1,6 +1,6 @@
 {
   "name": "Scribd Downloader",
-  "description": "A modern, high-fidelity SaaS website and UI/UX design showcase for Scribd PDF Downloader. Fast, lightweight, and responsive document conversion.",
+  "description": "Download Scribd documents, academic research papers, and slide presentations as clean, high-resolution PDF files with zero wait time. 100% free, secure, and mobile-friendly.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

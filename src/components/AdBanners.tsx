@@ -66,6 +66,18 @@ export function SidebarAdBanner({ settings, onAdClick }: AdBannerProps) {
     );
   }
 
+  if (settings.sidebarAdCode && settings.sidebarAdCode.trim() !== "") {
+    return (
+      <aside aria-label="Sponsored Content" className="my-4 text-center overflow-hidden" id="sidebar-custom-ad">
+        <div className="flex items-center justify-between text-[10px] uppercase font-bold tracking-wider text-slate-400 mb-1">
+          <span>Sponsored</span>
+          <span className="px-1.5 py-0.2 rounded bg-indigo-100 text-indigo-700 font-mono">Ad</span>
+        </div>
+        <div dangerouslySetInnerHTML={{ __html: settings.sidebarAdCode }} />
+      </aside>
+    );
+  }
+
   return (
     <aside aria-label="Sponsored Content" className="bg-gradient-to-br from-indigo-50/60 via-purple-50/40 to-slate-50 border border-indigo-100 rounded-2xl p-4 sm:p-5 relative overflow-hidden group shadow-xs" id="sidebar-ad-card">
       <div className="flex items-center justify-between text-[10px] uppercase font-bold tracking-wider text-slate-400 mb-2">
@@ -365,6 +377,14 @@ export function HeaderAdBanner({ settings, onAdClick }: AdBannerProps) {
 
   if (!settings.enabled || !settings.headerAd) return null;
 
+  if (settings.headerAdCode && settings.headerAdCode.trim() !== "") {
+    return (
+      <div id="header-custom-ad" className="my-2 max-w-5xl mx-auto text-center overflow-hidden">
+        <div dangerouslySetInnerHTML={{ __html: settings.headerAdCode }} />
+      </div>
+    );
+  }
+
   return (
     <div
       id="header-ad-banner"
@@ -407,6 +427,110 @@ export function HeaderAdBanner({ settings, onAdClick }: AdBannerProps) {
 }
 
 /**
+ * Below Hero Ad Banner Unit (Homepage Leaderboard)
+ */
+export function BelowHeroAdBanner({ settings, onAdClick }: AdBannerProps) {
+  useEffect(() => {
+    recordImpression();
+  }, []);
+
+  if (!settings.enabled || !settings.belowHeroAd) return null;
+
+  if (settings.belowHeroAdCode && settings.belowHeroAdCode.trim() !== "") {
+    return (
+      <div id="below-hero-custom-ad" className="my-6 max-w-5xl mx-auto text-center overflow-hidden">
+        <div dangerouslySetInnerHTML={{ __html: settings.belowHeroAdCode }} />
+      </div>
+    );
+  }
+
+  return (
+    <div
+      id="below-hero-ad-banner"
+      className="my-6 max-w-5xl mx-auto rounded-2xl bg-gradient-to-r from-blue-50/60 via-indigo-50/40 to-slate-50 border border-blue-100/90 p-4 sm:p-5 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-xs"
+    >
+      <div className="flex items-center gap-3">
+        <div className="w-9 h-9 rounded-xl bg-blue-600 text-white flex items-center justify-center font-bold text-xs shrink-0 shadow-xs">
+          <Sparkles className="w-4 h-4" />
+        </div>
+        <div>
+          <div className="flex items-center gap-2">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-blue-600">Featured Tool Partner</span>
+            <span className="px-1.5 py-0.2 rounded bg-blue-100 text-blue-800 text-[10px] font-mono">Ad</span>
+          </div>
+          <h4 className="text-xs font-extrabold text-slate-900 mt-0.5">{settings.sponsorName}</h4>
+          <p className="text-[11px] text-slate-600 leading-relaxed">{settings.sponsorTagline}</p>
+        </div>
+      </div>
+      <a
+        href={settings.newTabUrl || "https://pdfviewer.org"}
+        target="_blank"
+        rel="noopener noreferrer"
+        onClick={() => {
+          recordClick();
+          onAdClick?.();
+        }}
+        className="shrink-0 px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold flex items-center gap-1.5 transition shadow-xs"
+      >
+        <span>{settings.sponsorCta}</span>
+        <ExternalLink className="w-3.5 h-3.5" />
+      </a>
+    </div>
+  );
+}
+
+/**
+ * Footer Ad Banner Unit (Above Global Footer)
+ */
+export function FooterAdBanner({ settings, onAdClick }: AdBannerProps) {
+  useEffect(() => {
+    recordImpression();
+  }, []);
+
+  if (!settings.enabled || !settings.footerAd) return null;
+
+  if (settings.footerAdCode && settings.footerAdCode.trim() !== "") {
+    return (
+      <div id="footer-custom-ad" className="w-full text-center overflow-hidden py-3 bg-slate-900 border-t border-slate-800">
+        <div dangerouslySetInnerHTML={{ __html: settings.footerAdCode }} />
+      </div>
+    );
+  }
+
+  return (
+    <div
+      id="footer-ad-banner"
+      className="w-full bg-slate-900 text-slate-200 border-t border-slate-800 py-3.5 px-4 sm:px-6"
+    >
+      <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
+        <div className="flex items-center gap-3">
+          <div className="w-7 h-7 rounded-lg bg-indigo-500/20 text-indigo-400 flex items-center justify-center shrink-0">
+            <Sparkles className="w-3.5 h-3.5" />
+          </div>
+          <div>
+            <span className="font-bold text-white mr-2">{settings.sponsorName}:</span>
+            <span className="text-slate-400">{settings.sponsorTagline}</span>
+          </div>
+        </div>
+        <a
+          href={settings.newTabUrl || "https://pdfviewer.org"}
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={() => {
+            recordClick();
+            onAdClick?.();
+          }}
+          className="shrink-0 px-3.5 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs inline-flex items-center gap-1.5 transition shadow-xs"
+        >
+          <span>{settings.sponsorCta}</span>
+          <ExternalLink className="w-3 h-3" />
+        </a>
+      </div>
+    </div>
+  );
+}
+
+/**
  * In-Feed Ad Banner Unit (Inside blog posts and guide feeds)
  */
 export function InFeedAdBanner({ settings, onAdClick }: AdBannerProps) {
@@ -415,6 +539,14 @@ export function InFeedAdBanner({ settings, onAdClick }: AdBannerProps) {
   }, []);
 
   if (!settings.enabled || !settings.inFeedAd) return null;
+
+  if (settings.inFeedAdCode && settings.inFeedAdCode.trim() !== "") {
+    return (
+      <aside aria-label="Sponsored In-Feed Announcement" id="in-feed-custom-ad" className="my-6 text-center overflow-hidden">
+        <div dangerouslySetInnerHTML={{ __html: settings.inFeedAdCode }} />
+      </aside>
+    );
+  }
 
   return (
     <aside

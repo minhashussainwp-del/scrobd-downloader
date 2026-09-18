@@ -40,7 +40,42 @@ export function BlogListingPage({
     });
   }, [langMatchingPosts, searchQuery, selectedCategory]);
 
+  const POSTS_PER_PAGE = 9;
+  const totalPages = Math.max(1, Math.ceil(filteredPosts.length / POSTS_PER_PAGE));
+  const paginatedPosts = useMemo(() => {
+    const start = (currentPageNum - 1) * POSTS_PER_PAGE;
+    return filteredPosts.slice(start, start + POSTS_PER_PAGE);
+  }, [filteredPosts, currentPageNum]);
+
   const featuredPost = langMatchingPosts.find((p) => p.featured) || langMatchingPosts[0] || posts[0];
+
+  const getCategoryBadgeClass = (category: string) => {
+    switch (category) {
+      case "Tutorials":
+        return "bg-emerald-50 text-emerald-700 border-emerald-200";
+      case "Tech":
+        return "bg-blue-50 text-blue-700 border-blue-200";
+      case "Tips":
+        return "bg-amber-50 text-amber-800 border-amber-200";
+      case "Guides":
+      default:
+        return "bg-indigo-50 text-indigo-700 border-indigo-200";
+    }
+  };
+
+  const getReadActionLabel = (category: string) => {
+    switch (category) {
+      case "Tutorials":
+        return "Read Tutorial";
+      case "Tech":
+        return "Read Tech Analysis";
+      case "Tips":
+        return "Read Tip";
+      case "Guides":
+      default:
+        return "Read Guide";
+    }
+  };
 
   const handleSubscribe = (e: React.FormEvent) => {
     e.preventDefault();
@@ -89,7 +124,10 @@ export function BlogListingPage({
                 type="text"
                 id="blog-search-input"
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={(e) => {
+                  setSearchQuery(e.target.value);
+                  setCurrentPageNum(1);
+                }}
                 placeholder="Search tutorials, keywords..."
                 className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 focus:border-indigo-600 focus:ring-4 focus:ring-indigo-500/10 text-xs sm:text-sm bg-white outline-none transition"
               />
@@ -189,20 +227,21 @@ export function BlogListingPage({
               {selectedCategory === "All" ? "All Articles & Tutorials" : `${selectedCategory} Articles`}
             </h2>
             <span className="text-xs text-slate-500">
-              Showing {filteredPosts.length} guides
+              Showing {filteredPosts.length} {selectedCategory === "All" ? "articles" : selectedCategory.toLowerCase()}
             </span>
           </div>
 
           {filteredPosts.length === 0 ? (
             <div className="bg-white rounded-2xl p-12 text-center border border-slate-200 space-y-3">
               <BookOpen className="w-8 h-8 text-slate-400 mx-auto" />
-              <p className="text-sm font-bold text-slate-800">No matching guides found</p>
+              <p className="text-sm font-bold text-slate-800">No matching articles found</p>
               <p className="text-xs text-slate-500">Try adjusting your search terms or category filter.</p>
               <button
                 type="button"
                 onClick={() => {
                   setSearchQuery("");
                   setSelectedCategory("All");
+                  setCurrentPageNum(1);
                 }}
                 className="text-xs font-semibold text-indigo-600 hover:underline"
               >
@@ -211,7 +250,7 @@ export function BlogListingPage({
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-              {filteredPosts.map((post) => (
+              {paginatedPosts.map((post) => (
                 <article
                   key={post.id}
                   onClick={() => onSelectPost(post)}
@@ -225,7 +264,7 @@ export function BlogListingPage({
                         className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
                         referrerPolicy="no-referrer"
                       />
-                      <span className="absolute top-3 left-3 text-[10px] uppercase font-bold tracking-wider px-2.5 py-1 rounded-md bg-white/90 backdrop-blur-md text-indigo-700 shadow-xs">
+                      <span className={`absolute top-3 left-3 text-[10px] uppercase font-bold tracking-wider px-2.5 py-1 rounded-md border backdrop-blur-md shadow-xs ${getCategoryBadgeClass(post.category)}`}>
                         {post.category}
                       </span>
                     </div>
@@ -267,7 +306,7 @@ export function BlogListingPage({
                     </div>
 
                     <span className="text-xs font-bold text-indigo-600 group-hover:underline inline-flex items-center gap-1">
-                      <span>Read Guide</span>
+                      <span>{getReadActionLabel(post.category)}</span>
                       <ArrowRight className="w-3.5 h-3.5" />
                     </span>
                   </div>
@@ -277,37 +316,40 @@ export function BlogListingPage({
           )}
 
           {/* Pagination Controls */}
-          <div className="pt-8 flex items-center justify-center gap-2">
-            <button
-              type="button"
-              onClick={() => setCurrentPageNum(Math.max(1, currentPageNum - 1))}
-              disabled={currentPageNum === 1}
-              className="px-3.5 py-2 rounded-lg border border-slate-200 bg-white text-xs font-semibold text-slate-700 hover:bg-slate-50 disabled:opacity-40"
-            >
-              Previous
-            </button>
-            {[1, 2, 3].map((num) => (
+          {totalPages > 1 && (
+            <div className="pt-8 flex items-center justify-center gap-2">
               <button
-                key={num}
                 type="button"
-                onClick={() => setCurrentPageNum(num)}
-                className={`w-9 h-9 rounded-lg text-xs font-semibold transition ${
-                  currentPageNum === num
-                    ? "bg-indigo-600 text-white"
-                    : "bg-white border border-slate-200 text-slate-700 hover:bg-slate-50"
-                }`}
+                onClick={() => setCurrentPageNum(Math.max(1, currentPageNum - 1))}
+                disabled={currentPageNum === 1}
+                className="px-3.5 py-2 rounded-lg border border-slate-200 bg-white text-xs font-semibold text-slate-700 hover:bg-slate-50 disabled:opacity-40"
               >
-                {num}
+                Previous
               </button>
-            ))}
-            <button
-              type="button"
-              onClick={() => setCurrentPageNum(currentPageNum + 1)}
-              className="px-3.5 py-2 rounded-lg border border-slate-200 bg-white text-xs font-semibold text-slate-700 hover:bg-slate-50"
-            >
-              Next
-            </button>
-          </div>
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map((num) => (
+                <button
+                  key={num}
+                  type="button"
+                  onClick={() => setCurrentPageNum(num)}
+                  className={`w-9 h-9 rounded-lg text-xs font-semibold transition ${
+                    currentPageNum === num
+                      ? "bg-indigo-600 text-white"
+                      : "bg-white border border-slate-200 text-slate-700 hover:bg-slate-50"
+                  }`}
+                >
+                  {num}
+                </button>
+              ))}
+              <button
+                type="button"
+                onClick={() => setCurrentPageNum(Math.min(totalPages, currentPageNum + 1))}
+                disabled={currentPageNum === totalPages}
+                className="px-3.5 py-2 rounded-lg border border-slate-200 bg-white text-xs font-semibold text-slate-700 hover:bg-slate-50 disabled:opacity-40"
+              >
+                Next
+              </button>
+            </div>
+          )}
         </div>
 
         {/* Newsletter Box */}

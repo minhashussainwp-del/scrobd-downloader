@@ -19,6 +19,10 @@ import { BlogPost, PageRoute, AdSettings, SupportedLanguage } from "../types";
 import { GutenbergBlockRenderer } from "../components/GutenbergBlockRenderer";
 import { InFeedAdBanner, SidebarAdBanner } from "../components/AdBanners";
 import { SUPPORTED_LANGUAGES } from "../data/translations";
+import { ModernArticleRenderer } from "../components/ModernArticleRenderer";
+import { ModernArticleSidebar } from "../components/ModernArticleSidebar";
+import { AboutAuthorCard } from "../components/Blog/AboutAuthorCard";
+import { useAuthorProfile } from "../data/authorData";
 
 interface BlogArticlePageProps {
   post: BlogPost;
@@ -43,6 +47,7 @@ export function BlogArticlePage({
   currentLang = "en",
   adSettings,
 }: BlogArticlePageProps) {
+  const { profile: authorProfile } = useAuthorProfile();
   const [copiedLink, setCopiedLink] = useState(false);
 
   // Group translations for this article
@@ -126,14 +131,14 @@ export function BlogArticlePage({
             {/* Author */}
             <div className="flex items-center gap-3">
               <img
-                src={post.author.avatar}
-                alt={post.author.name}
+                src={authorProfile.avatar || post.author.avatar}
+                alt={authorProfile.name || post.author.name}
                 className="w-10 h-10 rounded-full object-cover border border-slate-200"
                 referrerPolicy="no-referrer"
               />
               <div className="text-left">
-                <p className="text-xs sm:text-sm font-bold text-slate-900">{post.author.name}</p>
-                <p className="text-[11px] text-slate-500">{post.author.role}</p>
+                <p className="text-xs sm:text-sm font-bold text-slate-900">{authorProfile.name || post.author.name}</p>
+                <p className="text-[11px] text-slate-500">{authorProfile.role || post.author.role}</p>
               </div>
             </div>
 
@@ -249,8 +254,12 @@ export function BlogArticlePage({
               </p>
             )}
 
-            {/* Gutenberg Block Editor Content if present */}
-            {post.blocks && post.blocks.length > 0 ? (
+            {/* Content Rendering: htmlContent, Gutenberg blocks, or Traditional sections */}
+            {post.htmlContent ? (
+              <div className="article-body">
+                <ModernArticleRenderer content={post.htmlContent} />
+              </div>
+            ) : post.blocks && post.blocks.length > 0 ? (
               <div className="space-y-6">
                 <GutenbergBlockRenderer blocks={post.blocks} />
               </div>
@@ -306,50 +315,44 @@ export function BlogArticlePage({
                 <span>Open PDF Downloader</span>
               </button>
             </div>
+
+            {/* About the Author Section */}
+            <div className="pt-8">
+              <AboutAuthorCard />
+            </div>
           </div>
 
           {/* Right / Sidebar */}
           <div className="lg:col-span-4 space-y-8">
-            {/* Sticky Table of Contents */}
-            <div className="bg-slate-50 rounded-2xl p-6 border border-slate-200/80 sticky top-24 space-y-4">
-              <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-slate-900">
-                <BookOpen className="w-4 h-4 text-indigo-600" />
-                <span>Table of Contents</span>
-              </div>
+            <ModernArticleSidebar
+              currentLang={currentLang}
+              onOpenDownloader={onQuickDownloadClick}
+            />
 
-              <ul className="space-y-2 text-xs text-slate-600 border-l border-slate-200 pl-3">
-                {post.content.tableOfContents.map((item, idx) => (
-                  <li key={idx} className="hover:text-indigo-600 transition cursor-pointer py-0.5">
-                    {item}
-                  </li>
-                ))}
-              </ul>
-
-              {/* Sidebar Quick Downloader Widget */}
-              <div className="pt-4 border-t border-slate-200 space-y-3">
-                <div className="flex items-center gap-2 text-xs font-bold text-slate-900">
-                  <FileDown className="w-4 h-4 text-indigo-600" />
-                  <span>Quick PDF Downloader</span>
+            {/* Sticky Table of Contents if available */}
+            {post.content?.tableOfContents && post.content.tableOfContents.length > 0 && (
+              <div className="bg-slate-50 rounded-2xl p-6 border border-slate-200/80 space-y-4">
+                <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-slate-900">
+                  <BookOpen className="w-4 h-4 text-indigo-600" />
+                  <span>Table of Contents</span>
                 </div>
-                <p className="text-[11px] text-slate-500">
-                  Instant web extraction for public documents and slide presentations.
-                </p>
-                <button
-                  type="button"
-                  onClick={onQuickDownloadClick}
-                  className="w-full py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs shadow-xs transition"
-                >
-                  Go to Downloader
-                </button>
-              </div>
 
-              {/* Sidebar Ad Banner (Item 11) */}
-              {adSettings?.enabled && adSettings?.sidebarAd && (
-                <div className="pt-2">
-                  <SidebarAdBanner settings={adSettings} />
-                </div>
-              )}
-            </div>
+                <ul className="space-y-2 text-xs text-slate-600 border-l border-slate-200 pl-3">
+                  {post.content.tableOfContents.map((item, idx) => (
+                    <li key={idx} className="hover:text-indigo-600 transition cursor-pointer py-0.5">
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {/* Sidebar Ad Banner (Item 11) */}
+            {adSettings?.enabled && adSettings?.sidebarAd && (
+              <div className="pt-2">
+                <SidebarAdBanner settings={adSettings} />
+              </div>
+            )}
           </div>
 
         </div>

@@ -15,7 +15,7 @@ export type PageRoute =
 
 export type ViewportMode = "responsive" | "desktop" | "tablet" | "mobile" | "presentation";
 
-export type SupportedLanguage = "en" | "br" | "es" | "fr" | "de" | "id" | "pt";
+export type SupportedLanguage = "en" | "br" | "es" | "fr" | "de" | "id" | "pt" | "hi";
 
 export interface LanguageOption {
   code: SupportedLanguage;
@@ -56,20 +56,33 @@ export interface GutenbergBlock {
 }
 
 export interface AdSettings {
-  enabled: boolean;
-  headerAd?: boolean;
-  inFeedAd?: boolean;
-  antiAdblock?: boolean;
-  preDownloadAd: boolean;
-  preDownloadSeconds: number;
-  postDownloadAd: boolean;
+  enabled: boolean; // Master ad toggle
+  // Download Button New-Tab Ad Trigger
   newTabOnDownload: boolean;
   newTabUrl: string;
+  // Pre-Download Interstitial Modal
+  preDownloadAd: boolean;
+  preDownloadSeconds: number;
+  // Post-Download Card Ad
+  postDownloadAd: boolean;
+  // Ad Placement Slots
+  headerAd?: boolean;
+  headerAdCode?: string;
+  belowHeroAd?: boolean;
+  belowHeroAdCode?: string;
+  inFeedAd?: boolean;
+  inFeedAdCode?: string;
   sidebarAd: boolean;
+  sidebarAdCode?: string;
+  footerAd?: boolean;
+  footerAdCode?: string;
   popupAd: boolean;
   popupDelaySeconds: number;
+  // Ad Networks & Creative
+  antiAdblock?: boolean;
   adblockNotice: boolean;
   customBannerHtml: string;
+  adSenseScript?: string;
   sponsorName: string;
   sponsorTagline: string;
   sponsorCta: string;
@@ -219,6 +232,22 @@ export interface DownloadJob {
   troubleshooting?: string[];
 }
 
+export interface AuthorProfile {
+  name: string;
+  role: string;
+  title?: string;
+  bio: string;
+  email: string;
+  avatar: string;
+  skills: string[];
+  website?: string;
+  socials?: {
+    twitter?: string;
+    linkedin?: string;
+    github?: string;
+  };
+}
+
 export interface BlogPost {
   language?: SupportedLanguage;
   translationGroupId?: string;
@@ -235,11 +264,13 @@ export interface BlogPost {
     name: string;
     role: string;
     avatar: string;
+    bio?: string;
+    email?: string;
   };
   image: string;
   featured?: boolean;
   blocks?: GutenbergBlock[];
-  content: {
+  content?: {
     intro: string;
     tableOfContents: string[];
     sections: Array<{

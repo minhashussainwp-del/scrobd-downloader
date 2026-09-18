@@ -5,13 +5,11 @@ import {
   User,
   ArrowLeft,
   Share2,
-  Clock,
-  CheckCircle2,
   HelpCircle,
-  Shield,
-  BookOpen,
 } from "lucide-react";
 import { CustomPage, PageRoute, SupportedLanguage } from "../types";
+import { ModernArticleRenderer } from "../components/ModernArticleRenderer";
+import { ModernArticleSidebar } from "../components/ModernArticleSidebar";
 
 interface CustomPageViewProps {
   page: CustomPage;
@@ -27,7 +25,6 @@ export function CustomPageView({
   currentLang = "en",
 }: CustomPageViewProps) {
   const [copied, setCopied] = React.useState(false);
-
   const handleShare = () => {
     if (typeof window !== "undefined") {
       navigator.clipboard.writeText(window.location.href);
@@ -36,134 +33,11 @@ export function CustomPageView({
     }
   };
 
-  // Simple, safe Markdown parser for headings, lists, bold, blockquotes, and paragraphs
-  const renderMarkdownContent = (text: string) => {
-    if (!text) return null;
-    const lines = text.split("\n");
-    const elements: React.ReactNode[] = [];
-    let listBuffer: string[] = [];
-    let listType: "ul" | "ol" | null = null;
-
-    const flushList = (keyPrefix: number) => {
-      if (listBuffer.length > 0) {
-        if (listType === "ul") {
-          elements.push(
-            <ul key={`ul-${keyPrefix}`} className="list-disc pl-6 space-y-2 text-slate-700 my-4 text-sm leading-relaxed">
-              {listBuffer.map((item, idx) => (
-                <li key={idx}>{parseInlineFormatting(item)}</li>
-              ))}
-            </ul>
-          );
-        } else if (listType === "ol") {
-          elements.push(
-            <ol key={`ol-${keyPrefix}`} className="list-decimal pl-6 space-y-2 text-slate-700 my-4 text-sm leading-relaxed">
-              {listBuffer.map((item, idx) => (
-                <li key={idx}>{parseInlineFormatting(item)}</li>
-              ))}
-            </ol>
-          );
-        }
-        listBuffer = [];
-        listType = null;
-      }
-    };
-
-    const parseInlineFormatting = (str: string): React.ReactNode => {
-      // Bold **text**
-      const parts = str.split(/(\*\*.*?\*\*|\*.*?\*|`.*?`)/g);
-      return parts.map((part, i) => {
-        if (part.startsWith("**") && part.endsWith("**")) {
-          return <strong key={i} className="font-bold text-slate-900">{part.slice(2, -2)}</strong>;
-        }
-        if (part.startsWith("*") && part.endsWith("*")) {
-          return <em key={i} className="italic text-slate-800">{part.slice(1, -1)}</em>;
-        }
-        if (part.startsWith("`") && part.endsWith("`")) {
-          return <code key={i} className="bg-slate-100 text-indigo-600 px-1.5 py-0.5 rounded text-xs font-mono">{part.slice(1, -1)}</code>;
-        }
-        return part;
-      });
-    };
-
-    lines.forEach((line, index) => {
-      const trimmed = line.trim();
-
-      // Heading 1 (#)
-      if (trimmed.startsWith("# ")) {
-        flushList(index);
-        elements.push(
-          <h1 key={index} className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight mt-8 mb-4 border-b border-slate-100 pb-3">
-            {trimmed.slice(2)}
-          </h1>
-        );
-      }
-      // Heading 2 (##)
-      else if (trimmed.startsWith("## ")) {
-        flushList(index);
-        elements.push(
-          <h2 key={index} className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight mt-8 mb-3">
-            {trimmed.slice(3)}
-          </h2>
-        );
-      }
-      // Heading 3 (###)
-      else if (trimmed.startsWith("### ")) {
-        flushList(index);
-        elements.push(
-          <h3 key={index} className="text-base sm:text-lg font-bold text-slate-800 tracking-tight mt-6 mb-2">
-            {trimmed.slice(4)}
-          </h3>
-        );
-      }
-      // Bullet list item (- or *)
-      else if (trimmed.startsWith("- ") || trimmed.startsWith("* ")) {
-        if (listType !== "ul") flushList(index);
-        listType = "ul";
-        listBuffer.push(trimmed.slice(2));
-      }
-      // Numbered list item (1. 2.)
-      else if (/^\d+\.\s/.test(trimmed)) {
-        if (listType !== "ol") flushList(index);
-        listType = "ol";
-        const itemText = trimmed.replace(/^\d+\.\s/, "");
-        listBuffer.push(itemText);
-      }
-      // Blockquote (> )
-      else if (trimmed.startsWith("> ")) {
-        flushList(index);
-        elements.push(
-          <blockquote key={index} className="border-l-4 border-indigo-500 bg-indigo-50/50 p-4 rounded-r-xl my-4 text-slate-700 italic text-sm">
-            {parseInlineFormatting(trimmed.slice(2))}
-          </blockquote>
-        );
-      }
-      // Empty line
-      else if (trimmed === "") {
-        flushList(index);
-      }
-      // Standard paragraph
-      else {
-        flushList(index);
-        elements.push(
-          <p key={index} className="text-slate-700 text-sm sm:text-base leading-relaxed my-3">
-            {parseInlineFormatting(trimmed)}
-          </p>
-        );
-      }
-    });
-
-    flushList(lines.length);
-    return elements;
-  };
-
-  // Other published custom pages for sidebar
   const otherPages = allCustomPages.filter((p) => p.id !== page.id && p.status === "published");
 
   return (
     <div className="bg-slate-50 min-h-screen py-8 sm:py-12" id="custom-page-view">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 space-y-8">
-        
-        {/* Breadcrumb Bar */}
         <div className="flex items-center justify-between gap-4 text-xs text-slate-500">
           <div className="flex items-center gap-2">
             <button
@@ -177,7 +51,6 @@ export function CustomPageView({
             <span>/</span>
             <span className="text-slate-900 font-bold truncate max-w-xs">{page.title}</span>
           </div>
-
           <button
             type="button"
             onClick={handleShare}
@@ -188,51 +61,32 @@ export function CustomPageView({
           </button>
         </div>
 
-        {/* Layout: Content & Sidebar */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          
-          {/* Main Document Content */}
-          <main className="lg:col-span-8 bg-white rounded-3xl p-6 sm:p-10 border border-slate-200 shadow-2xs space-y-6">
-            {/* Header Area */}
-            <div className="border-b border-slate-100 pb-6 space-y-3">
-              <div className="flex items-center gap-2 text-xs">
-                <span className="px-2.5 py-0.5 rounded-full bg-indigo-50 text-indigo-700 font-bold border border-indigo-100 uppercase tracking-wider text-[10px]">
-                  Official Document
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-10 items-start">
+          <main className="lg:col-span-8 space-y-8">
+            <div className="space-y-3">
+              <div>
+                <span className="inline-flex px-2.5 py-1 text-[11px] font-bold uppercase tracking-wider text-blue-700 bg-blue-50 border border-blue-100 rounded-md">
+                  KNOWLEDGE BASE
                 </span>
-                <span className="text-slate-400">•</span>
-                <span className="text-slate-500 flex items-center gap-1">
-                  <Calendar className="w-3.5 h-3.5" />
-                  {page.lastModified ? `Updated ${page.lastModified}` : "Current Edition"}
-                </span>
-                {page.authorName && (
-                  <>
-                    <span className="text-slate-400">•</span>
-                    <span className="text-slate-500 flex items-center gap-1">
-                      <User className="w-3.5 h-3.5" />
-                      {page.authorName}
-                    </span>
-                  </>
-                )}
               </div>
-
-              <h1 className="text-2xl sm:text-4xl font-extrabold text-slate-900 tracking-tight leading-tight">
+              <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight leading-tight">
                 {page.title}
               </h1>
-
               {page.subtitle && (
-                <p className="text-sm sm:text-base text-slate-600 font-medium leading-relaxed">
+                <p className="text-base sm:text-lg text-slate-600 font-medium leading-relaxed">
                   {page.subtitle}
                 </p>
               )}
+              <p className="text-xs text-slate-400 font-medium">
+                Guide • {page.lastModified ? `Updated ${page.lastModified}` : "Document Edition"}
+              </p>
             </div>
 
-            {/* Markdown Body */}
-            <div className="prose-clean pt-2">
-              {renderMarkdownContent(page.content)}
+            <div className="article-body">
+              <ModernArticleRenderer content={page.content} />
             </div>
 
-            {/* Bottom Support Callout */}
-            <div className="mt-10 p-5 rounded-2xl bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-100 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div className="mt-12 p-6 rounded-2xl bg-blue-50/60 border border-blue-100 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center shrink-0 shadow-xs">
                   <HelpCircle className="w-5 h-5" />
@@ -252,9 +106,12 @@ export function CustomPageView({
             </div>
           </main>
 
-          {/* Right Sidebar */}
           <aside className="lg:col-span-4 space-y-6">
-            {/* Quick Links / Other Pages */}
+            <ModernArticleSidebar
+              currentLang={currentLang}
+              onOpenDownloader={() => onNavigate("home")}
+            />
+
             {otherPages.length > 0 && (
               <div className="bg-white rounded-2xl p-5 border border-slate-200 shadow-2xs space-y-3">
                 <h3 className="text-xs font-extrabold uppercase tracking-wider text-slate-400">
@@ -266,7 +123,6 @@ export function CustomPageView({
                       key={op.id}
                       type="button"
                       onClick={() => {
-                        // Navigate to that page
                         if (typeof window !== "undefined") {
                           window.location.hash = op.slug;
                         }
@@ -285,28 +141,7 @@ export function CustomPageView({
                 </div>
               </div>
             )}
-
-            {/* Quick Downloader Navigation Banner */}
-            <div className="bg-gradient-to-br from-slate-900 to-slate-800 text-white rounded-2xl p-5 space-y-3 shadow-md">
-              <span className="text-[10px] uppercase font-bold tracking-wider text-blue-400">
-                Scribd Downloader Tool
-              </span>
-              <h4 className="text-base font-extrabold leading-snug">
-                Need to convert another document to PDF?
-              </h4>
-              <p className="text-xs text-slate-300 leading-relaxed">
-                Paste any Scribd link on our homepage to download high-resolution vectors in seconds.
-              </p>
-              <button
-                type="button"
-                onClick={() => onNavigate("home")}
-                className="w-full py-2.5 rounded-xl bg-blue-500 hover:bg-blue-600 text-white text-xs font-bold transition cursor-pointer shadow-xs"
-              >
-                Go to Downloader
-              </button>
-            </div>
           </aside>
-
         </div>
       </div>
     </div>

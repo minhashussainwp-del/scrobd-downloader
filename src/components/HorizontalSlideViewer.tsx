@@ -19,6 +19,8 @@ import {
   Eye,
   Check
 } from "lucide-react";
+import { AdSettings } from "../types";
+import { InFeedAdBanner } from "./AdBanners";
 
 export interface PageImageItem {
   filename: string;
@@ -31,6 +33,7 @@ interface HorizontalSlideViewerProps {
   documentTitle?: string;
   images: PageImageItem[];
   pdfDownloadUrl?: string;
+  adSettings?: AdSettings;
 }
 
 type ViewMode = "slides" | "carousel" | "grid";
@@ -40,6 +43,7 @@ export function HorizontalSlideViewer({
   documentTitle = "Document",
   images,
   pdfDownloadUrl,
+  adSettings,
 }: HorizontalSlideViewerProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [viewMode, setViewMode] = useState<ViewMode>("slides");
@@ -792,6 +796,13 @@ export function HorizontalSlideViewer({
               })}
             </div>
           </div>
+        </div>
+      )}
+
+      {/* In-Feed Slide Ad Unit */}
+      {adSettings?.enabled && adSettings?.inFeedAd && (
+        <div className="mt-4">
+          <InFeedAdBanner settings={adSettings} />
         </div>
       )}
     </section>
