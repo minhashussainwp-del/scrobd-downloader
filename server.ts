@@ -524,20 +524,49 @@ async function startServer() {
   // API: Preview an extracted image with aggressive cache header for instant UI display
   app.get("/api/jobs/:id/image/:imageName", (req, res) => {
     const job = jobs.get(req.params.id);
-    if (!job) {
-      return res.status(404).send("Job not found.");
+    const cleanImgName = path.basename(req.params.imageName);
+
+    let imgPath = job ? path.join(job.dir, cleanImgName) : "";
+
+    // Fallback 1: Check CACHE_ROOT directly
+    if (!imgPath || !fs.existsSync(imgPath)) {
+      const candidate = path.join(CACHE_ROOT, cleanImgName);
+      if (fs.existsSync(candidate)) {
+        imgPath = candidate;
+      }
     }
 
-    const cleanImgName = path.basename(req.params.imageName);
-    const imgPath = path.join(job.dir, cleanImgName);
+    // Fallback 2: Check subdirectories in DOWNLOADS_ROOT
+    if (!imgPath || !fs.existsSync(imgPath)) {
+      try {
+        if (fs.existsSync(DOWNLOADS_ROOT)) {
+          const dirs = fs.readdirSync(DOWNLOADS_ROOT);
+          for (const d of dirs) {
+            const sub = path.join(DOWNLOADS_ROOT, d, cleanImgName);
+            if (fs.existsSync(sub) && fs.statSync(sub).isFile()) {
+              imgPath = sub;
+              break;
+            }
+          }
+        }
+      } catch (_) {}
+    }
 
-    if (!fs.existsSync(imgPath)) {
+    // Fallback 3: Check in public/images
+    if (!imgPath || !fs.existsSync(imgPath)) {
+      const pubImg = path.join(PUBLIC_DIR, "images", cleanImgName);
+      if (fs.existsSync(pubImg)) {
+        imgPath = pubImg;
+      }
+    }
+
+    if (!imgPath || !fs.existsSync(imgPath)) {
       return res.status(404).send("Image not found.");
     }
 
     const stats = fs.statSync(imgPath);
     const ext = path.extname(cleanImgName).toLowerCase();
-    const contentType = ext === ".png" ? "image/png" : "image/jpeg";
+    const contentType = ext === ".png" ? "image/png" : ext === ".webp" ? "image/webp" : "image/jpeg";
 
     res.writeHead(200, {
       "Content-Type": contentType,
@@ -765,10 +794,20 @@ ${entries.join("\n")}
   // Mount Model Context Protocol (MCP) full-control server & management endpoints
   setupMcpEndpoints(app);
 
+  // Serve static images directly with high performance caching headers
+  app.use("/images/articles", express.static(path.join(PUBLIC_DIR, "images", "articles"), { maxAge: "1d" }));
+  app.use("/images/articles", express.static(path.join(PUBLIC_DIR, "images"), { maxAge: "1d" }));
+  app.use("/images", express.static(path.join(PUBLIC_DIR, "images"), { maxAge: "1d" }));
+  app.use("/assets", express.static(path.join(PUBLIC_DIR, "assets"), { maxAge: "1d" }));
+  app.use(express.static(PUBLIC_DIR, { maxAge: "1d" }));
+
   // Vite middleware setup
   if (process.env.NODE_ENV !== "production") {
     const vite = await createViteServer({
-      server: { middlewareMode: true },
+      server: {
+        middlewareMode: true,
+        hmr: false,
+      },
       appType: "spa",
     });
     app.use(vite.middlewares);

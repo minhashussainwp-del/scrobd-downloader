@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { useAuthorProfile } from "../../data/authorData";
 import { AuthorProfile } from "../../types";
+import { handleImageError, DEFAULT_AUTHOR_AVATAR } from "../../utils/imageFallback";
 
 const AVATAR_PRESETS = [
   "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&auto=format&fit=crop&q=80",
@@ -115,6 +116,7 @@ export function AboutAuthorCard({
                 alt={profile.name}
                 className="w-13 h-13 rounded-xl object-cover border border-slate-200 shadow-2xs"
                 referrerPolicy="no-referrer"
+                onError={(e) => handleImageError(e, DEFAULT_AUTHOR_AVATAR)}
               />
               <span className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-emerald-500 border-2 border-white flex items-center justify-center">
                 <Check className="w-2.5 h-2.5 text-white" />
@@ -206,6 +208,7 @@ export function AboutAuthorCard({
                   alt={profile.name}
                   className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
                   referrerPolicy="no-referrer"
+                  onError={(e) => handleImageError(e, DEFAULT_AUTHOR_AVATAR)}
                 />
               </div>
               <div className="absolute inset-0 rounded-2xl bg-black/40 opacity-0 group-hover:opacity-100 transition flex items-center justify-center text-white text-[11px] font-bold gap-1">
@@ -361,6 +364,7 @@ export function AboutAuthorCard({
                   alt="Author Preview"
                   className="w-16 h-16 rounded-xl object-cover border-2 border-indigo-200 shadow-2xs bg-white shrink-0"
                   referrerPolicy="no-referrer"
+                  onError={(e) => handleImageError(e, DEFAULT_AUTHOR_AVATAR)}
                 />
 
                 <div className="flex-1 min-w-0">

@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from "react";
 import { Search, Calendar, Clock, ArrowRight, BookOpen, Sparkles, Filter, CheckCircle2 } from "lucide-react";
 import { BlogPost, PageRoute, SupportedLanguage } from "../types";
+import { handleImageError, DEFAULT_AUTHOR_AVATAR } from "../utils/imageFallback";
 
 interface BlogListingPageProps {
   posts: BlogPost[];
@@ -169,6 +170,7 @@ export function BlogListingPage({
                 alt={featuredPost.title}
                 className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
                 referrerPolicy="no-referrer"
+                onError={handleImageError}
               />
               <span className="absolute top-4 left-4 text-xs uppercase font-bold tracking-wider px-3 py-1 rounded-md bg-white/95 text-indigo-700 shadow-sm">
                 Featured Guide
@@ -204,6 +206,7 @@ export function BlogListingPage({
                     alt={featuredPost.author.name}
                     className="w-8 h-8 rounded-full object-cover"
                     referrerPolicy="no-referrer"
+                    onError={(e) => handleImageError(e, DEFAULT_AUTHOR_AVATAR)}
                   />
                   <div>
                     <p className="text-xs font-bold text-slate-900">{featuredPost.author.name}</p>
@@ -263,6 +266,7 @@ export function BlogListingPage({
                         alt={post.title}
                         className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
                         referrerPolicy="no-referrer"
+                        onError={handleImageError}
                       />
                       <span className={`absolute top-3 left-3 text-[10px] uppercase font-bold tracking-wider px-2.5 py-1 rounded-md border backdrop-blur-md shadow-xs ${getCategoryBadgeClass(post.category)}`}>
                         {post.category}
@@ -299,6 +303,7 @@ export function BlogListingPage({
                         alt={post.author.name}
                         className="w-6 h-6 rounded-full object-cover"
                         referrerPolicy="no-referrer"
+                        onError={(e) => handleImageError(e, DEFAULT_AUTHOR_AVATAR)}
                       />
                       <span className="text-xs text-slate-700 font-medium">
                         {post.author.name}

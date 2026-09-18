@@ -1,6 +1,7 @@
 import React from "react";
 import { ArrowRight, Clock, Calendar, BookOpen } from "lucide-react";
 import { BlogPost, PageRoute } from "../types";
+import { handleImageError, DEFAULT_AUTHOR_AVATAR } from "../utils/imageFallback";
 
 interface BlogPreviewSectionProps {
   posts: BlogPost[];
@@ -59,6 +60,7 @@ export function BlogPreviewSection({
                     alt={post.title}
                     className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
                     referrerPolicy="no-referrer"
+                    onError={handleImageError}
                   />
                   <span className="absolute top-3 left-3 text-[10px] uppercase font-bold tracking-wider px-2.5 py-1 rounded-md bg-white/90 backdrop-blur-md text-indigo-700 shadow-xs">
                     {post.category}
@@ -97,6 +99,7 @@ export function BlogPreviewSection({
                     alt={post.author.name}
                     className="w-6 h-6 rounded-full object-cover"
                     referrerPolicy="no-referrer"
+                    onError={(e) => handleImageError(e, DEFAULT_AUTHOR_AVATAR)}
                   />
                   <span className="text-xs text-slate-700 font-medium">
                     {post.author.name}

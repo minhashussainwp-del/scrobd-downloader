@@ -88,6 +88,16 @@ export function HorizontalSlideViewer({
     }
   };
 
+  // Safe slide image error retry handler
+  const handleSlideImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    const target = e.currentTarget;
+    if (!target.dataset.retried) {
+      target.dataset.retried = "true";
+      const src = target.src;
+      target.src = src.includes("?") ? `${src}&t=${Date.now()}` : `${src}?t=${Date.now()}`;
+    }
+  };
+
   // Keyboard navigation
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -377,6 +387,7 @@ export function HorizontalSlideViewer({
                   alt={`Slide ${currentImage.pageNumber} of ${totalPages}`}
                   className="max-h-[440px] w-auto max-w-full object-contain rounded-lg shadow-2xl border border-slate-800 pointer-events-none animate-in fade-in duration-200"
                   referrerPolicy="no-referrer"
+                  onError={handleSlideImageError}
                 />
               </div>
 
@@ -497,6 +508,7 @@ export function HorizontalSlideViewer({
                         className="w-full h-full object-cover transition group-hover:scale-105"
                         loading="lazy"
                         referrerPolicy="no-referrer"
+                        onError={handleSlideImageError}
                       />
                       <span
                         className={`absolute bottom-1 right-1 px-1.5 py-0.5 rounded text-[9px] font-bold ${
@@ -582,6 +594,7 @@ export function HorizontalSlideViewer({
                       className="w-full h-full object-contain"
                       loading="lazy"
                       referrerPolicy="no-referrer"
+                      onError={handleSlideImageError}
                     />
                     <div className="absolute inset-0 bg-slate-900/40 opacity-0 group-hover:opacity-100 transition flex items-center justify-center text-white gap-1.5">
                       <Eye className="w-5 h-5" />
@@ -646,6 +659,7 @@ export function HorizontalSlideViewer({
                     className="w-full h-full object-cover transition group-hover:scale-105"
                     loading="lazy"
                     referrerPolicy="no-referrer"
+                    onError={handleSlideImageError}
                   />
                   <div className="absolute inset-0 bg-slate-900/30 opacity-0 group-hover:opacity-100 transition flex items-center justify-center text-white">
                     <Eye className="w-6 h-6" />
@@ -747,6 +761,7 @@ export function HorizontalSlideViewer({
               alt={`Slide ${currentImage.pageNumber}`}
               className="max-h-[75vh] max-w-[90vw] object-contain rounded-xl shadow-2xl border border-slate-800 select-none animate-in fade-in duration-150"
               referrerPolicy="no-referrer"
+              onError={handleSlideImageError}
             />
 
             <button
@@ -786,6 +801,7 @@ export function HorizontalSlideViewer({
                         className="w-full h-full object-cover"
                         loading="lazy"
                         referrerPolicy="no-referrer"
+                        onError={handleSlideImageError}
                       />
                     </div>
                     <span className="block text-[9px] text-center font-mono mt-0.5 text-slate-300">

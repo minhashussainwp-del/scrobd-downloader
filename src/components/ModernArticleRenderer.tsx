@@ -1,6 +1,7 @@
 import React from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import { handleImageError } from "../utils/imageFallback";
 
 interface ModernArticleRendererProps {
   content: string;
@@ -133,6 +134,7 @@ export function ModernArticleRenderer({ content }: ModernArticleRendererProps) {
                   className="w-full h-auto object-cover max-h-[500px]"
                   loading="lazy"
                   referrerPolicy="no-referrer"
+                  onError={handleImageError}
                 />
               </div>
               {props.alt && (
