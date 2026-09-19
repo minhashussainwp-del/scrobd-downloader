@@ -736,6 +736,8 @@ export default function App() {
               <SitemapPage
                 onNavigate={handleNavigate}
                 onSelectPost={handleSelectPost}
+                allCustomPages={customPages}
+                currentLang={currentLang}
               />
             )}
 

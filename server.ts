@@ -639,104 +639,99 @@ function getYoastXsl(): string {
 				<style type="text/css">
 					body {
 						font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
-						color: #444;
+						color: #222222;
 						margin: 0;
-						padding: 2em 1.5em;
-						background-color: #f8fafc;
+						padding: 20px 24px;
+						background-color: #ffffff;
 					}
 					a {
-						color: #05809e;
+						color: #111111;
 						text-decoration: none;
 					}
 					a:hover {
 						text-decoration: underline;
 					}
+					.header {
+						margin-bottom: 16px;
+						padding-bottom: 12px;
+						border-bottom: 1px solid #e5e7eb;
+					}
+					h1 {
+						font-size: 24px;
+						color: #111111;
+						margin: 0 0 6px;
+						font-weight: 700;
+					}
 					.expl {
-						margin: 14px 0;
-						line-height: 1.6;
+						margin: 8px 0;
+						line-height: 1.5;
 						font-size: 13px;
-						color: #64748b;
+						color: #555555;
 					}
 					.expl a {
-						color: #da3114;
+						color: #111111;
 						font-weight: 600;
-					}
-					.expl a:visited {
-						color: #da3114;
+						text-decoration: underline;
 					}
 					.btn-back {
-						display: inline-flex;
-						align-items: center;
-						gap: 6px;
+						display: inline-block;
 						font-weight: 600;
 						font-size: 13px;
-						color: #0284c7 !important;
-						margin-bottom: 12px;
+						color: #111111;
+						margin-bottom: 10px;
+					}
+					.btn-back:hover {
+						text-decoration: underline;
+					}
+					#content {
+						margin: 0 auto;
+						width: 100%;
 					}
 					table {
 						border: none;
 						border-collapse: collapse;
-						font-size: 12px;
-						margin: 20px 0 30px;
+						font-size: 13px;
+						margin: 10px 0 30px;
 						width: 100%;
-						background: #fff;
-						border-radius: 8px;
-						overflow: hidden;
-						box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+						background: #ffffff;
+						border-top: 1px solid #cccccc;
 					}
 					th {
-						background-color: #43b4d1;
-						color: #fff;
 						text-align: left;
-						padding: 12px 14px;
+						padding: 6px 10px;
+						font-size: 12px;
 						font-weight: 600;
+						color: #444444;
+						border-bottom: 1px solid #cccccc;
+						background: #fafafa;
+					}
+					th.num, td.num {
+						text-align: center;
+						width: 70px;
+					}
+					th.date, td.date {
+						text-align: left;
+						width: 220px;
+						white-space: nowrap;
 					}
 					td {
-						padding: 11px 14px;
-						border-bottom: 1px solid #f1f5f9;
-						vertical-align: top;
+						padding: 5px 10px;
+						vertical-align: middle;
+						color: #222222;
+						border: none;
 					}
 					tbody tr:nth-child(even) {
-						background-color: #fbfcfd;
+						background-color: #ededed;
+					}
+					tbody tr:nth-child(odd) {
+						background-color: #ffffff;
 					}
 					tbody tr:hover {
-						background-color: #f0f9ff;
-					}
-					.header {
-						margin-bottom: 24px;
-						padding-bottom: 16px;
-						border-bottom: 1px solid #e2e8f0;
-					}
-					h1 {
-						font-size: 26px;
-						color: #0f172a;
-						margin: 0 0 8px;
-						font-weight: 800;
-					}
-					#content {
-						margin: 0 auto;
-						padding: 0 10px;
-						max-width: 1140px;
-					}
-					.lang-tag {
-						display: inline-block;
-						background: #f1f5f9;
-						color: #475569;
-						padding: 2px 6px;
-						font-size: 11px;
-						border-radius: 4px;
-						margin: 2px 3px 2px 0;
-						font-family: monospace;
-						border: 1px solid #e2e8f0;
+						background-color: #e2e2e2;
 					}
 					.badge-counter {
-						display: inline-block;
-						background: #e0f2fe;
-						color: #0369a1;
-						font-weight: bold;
-						padding: 2px 8px;
-						border-radius: 9999px;
-						font-size: 11px;
+						font-weight: 700;
+						color: #111111;
 					}
 				</style>
 			</head>
@@ -754,11 +749,11 @@ function getYoastXsl(): string {
 						<p class="expl">
 							This XML Sitemap Index file contains <span class="badge-counter"><xsl:value-of select="count(sitemap:sitemapindex/sitemap:sitemap)"/></span> sitemaps.
 						</p>
-						<table id="sitemap" cellpadding="3">
+						<table id="sitemap" cellpadding="0" cellspacing="0">
 							<thead>
 								<tr>
 									<th width="75%">Sitemap</th>
-									<th width="25%">Last Modified</th>
+									<th class="date" width="25%">Last Modified</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -770,8 +765,15 @@ function getYoastXsl(): string {
 										<td>
 											<a href="{$sitemapUrl}"><xsl:value-of select="sitemap:loc"/></a>
 										</td>
-										<td>
-											<xsl:value-of select="sitemap:lastmod"/>
+										<td class="date">
+											<xsl:choose>
+												<xsl:when test="contains(sitemap:lastmod, 'T')">
+													<xsl:value-of select="concat(substring(sitemap:lastmod, 1, 10), ' ', substring(sitemap:lastmod, 12, 5), ' +00:00')"/>
+												</xsl:when>
+												<xsl:otherwise>
+													<xsl:value-of select="concat(sitemap:lastmod, ' 00:00 +00:00')"/>
+												</xsl:otherwise>
+											</xsl:choose>
 										</td>
 									</tr>
 								</xsl:for-each>
@@ -786,12 +788,12 @@ function getYoastXsl(): string {
 						<p class="expl">
 							This XML Sitemap contains <span class="badge-counter"><xsl:value-of select="count(sitemap:urlset/sitemap:url)"/></span> URLs.
 						</p>
-						<table id="sitemap" cellpadding="3">
+						<table id="sitemap" cellpadding="0" cellspacing="0">
 							<thead>
 								<tr>
-									<th width="65%">URL</th>
-									<th width="10%">Images</th>
-									<th width="25%">Last Modified</th>
+									<th width="75%">URL</th>
+									<th class="num" width="10%">Images</th>
+									<th class="date" width="15%">Last Modified</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -801,13 +803,20 @@ function getYoastXsl(): string {
 									</xsl:variable>
 									<tr>
 										<td>
-											<a href="{$itemURL}" target="_blank" rel="noopener noreferrer"><xsl:value-of select="sitemap:loc"/></a>
+											<a href="{$itemURL}"><xsl:value-of select="sitemap:loc"/></a>
 										</td>
-										<td>
+										<td class="num">
 											<xsl:value-of select="count(image:image)"/>
 										</td>
-										<td>
-											<xsl:value-of select="sitemap:lastmod"/>
+										<td class="date">
+											<xsl:choose>
+												<xsl:when test="contains(sitemap:lastmod, 'T')">
+													<xsl:value-of select="concat(substring(sitemap:lastmod, 1, 10), ' ', substring(sitemap:lastmod, 12, 5), ' +00:00')"/>
+												</xsl:when>
+												<xsl:otherwise>
+													<xsl:value-of select="concat(sitemap:lastmod, ' 00:00 +00:00')"/>
+												</xsl:otherwise>
+											</xsl:choose>
 										</td>
 									</tr>
 								</xsl:for-each>
@@ -1718,7 +1727,7 @@ async function startServer() {
     res.json({ success: true, message: "robots.txt updated and live on server." });
   });
 
-  // API: Get current sitemap configuration & content (supports type=index|posts|pages)
+  // API: Get current sitemap configuration & content (supports type=index|posts|pages|all)
   app.get("/api/seo/sitemap", (req, res) => {
     const origin = getRequestOrigin(req);
     const type = String(req.query.type || "index").toLowerCase();
@@ -1728,6 +1737,8 @@ async function startServer() {
       content = getPostSitemapXml(origin);
     } else if (type === "pages" || type === "page") {
       content = getPageSitemapXml(origin);
+    } else if (type === "all" || type === "unified" || type === "sitemap") {
+      content = getSitemapXml(origin);
     } else {
       content = getSitemapIndexXml(origin);
     }
@@ -1751,6 +1762,12 @@ async function startServer() {
         name: "Pages Sitemap",
         url: `${origin}/page-sitemap.xml`,
         description: "Core website pages and active custom landing pages",
+      },
+      {
+        id: "all",
+        name: "All URLs (Unified)",
+        url: `${origin}/sitemap.xml`,
+        description: "Complete unified list of all published URLs",
       },
     ];
 
