@@ -58,16 +58,32 @@ export function CountryFlag({
     );
   }
 
-  if (norm === "es") {
+  if (norm === "es" || norm === "mx") {
     return (
       <svg
         className={`${className} rounded-xs shrink-0 shadow-2xs border border-slate-200/60 object-cover inline-block`}
         viewBox="0 0 640 480"
         aria-hidden="true"
       >
-        <path fill="#c60b1e" d="M0 0h640v480H0z" />
-        <path fill="#ffc400" d="M0 120h640v240H0z" />
-        <circle cx="180" cy="240" r="36" fill="#c60b1e" opacity="0.85" />
+        <path fill="#006847" d="M0 0h213.3v480H0z" />
+        <path fill="#fff" d="M213.3 0h213.4v480H213.3z" />
+        <path fill="#ce1126" d="M426.7 0H640v480H426.7z" />
+        <circle cx="320" cy="240" r="28" fill="#a0522d" opacity="0.85" />
+      </svg>
+    );
+  }
+
+  if (norm === "hi" || norm === "in") {
+    return (
+      <svg
+        className={`${className} rounded-xs shrink-0 shadow-2xs border border-slate-200/60 object-cover inline-block`}
+        viewBox="0 0 640 480"
+        aria-hidden="true"
+      >
+        <path fill="#f93" d="M0 0h640v160H0z" />
+        <path fill="#fff" d="M0 160h640v160H0z" />
+        <path fill="#128807" d="M0 320h640v160H0z" />
+        <circle cx="320" cy="240" r="45" fill="none" stroke="#000080" strokeWidth="8" />
       </svg>
     );
   }

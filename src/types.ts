@@ -9,13 +9,15 @@ export type PageRoute =
   | "contact"
   | "privacy"
   | "terms"
+  | "legal"
   | "admin"
   | "sitemap"
+  | "robots"
   | "custom-page";
 
 export type ViewportMode = "responsive" | "desktop" | "tablet" | "mobile" | "presentation";
 
-export type SupportedLanguage = "en" | "br" | "es" | "fr" | "de" | "id" | "pt" | "hi";
+export type SupportedLanguage = "en" | "id" | "es" | "br" | "fr" | "de" | "hi";
 
 export interface LanguageOption {
   code: SupportedLanguage;
@@ -137,6 +139,7 @@ export interface CustomPage {
   language?: SupportedLanguage | "all";
   author?: string;
   authorName?: string;
+  translationGroupId?: string;
 }
 
 export interface SeoRobotsConfig {

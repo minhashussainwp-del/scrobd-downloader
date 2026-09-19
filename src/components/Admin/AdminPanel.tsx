@@ -10,7 +10,7 @@ import {
   PageRoute,
   SupportedLanguage
 } from "../../types";
-import { BLOG_POSTS } from "../../data/blogData";
+import { BLOG_POSTS, loadAllBlogPosts } from "../../data/blogData";
 import { SUPPORTED_LANGUAGES } from "../../data/translations";
 import {
   loadAdSettings,
@@ -31,9 +31,9 @@ import { AdminSettings } from "./AdminSettings";
 import { AdminTranslations } from "./AdminTranslations";
 import { AdminMedia } from "./AdminMedia";
 import { DEFAULT_POST_TRANSLATION_GROUPS } from "./AdminPosts";
-import { AdminPagesContent } from "./AdminPagesContent";
 import { AdminMessages } from "./AdminMessages";
 import { AdminMcp } from "./AdminMcp";
+import { AdminAiAgent } from "./AdminAiAgent";
 import {
   LayoutDashboard,
   FileEdit,
@@ -53,7 +53,8 @@ import {
   CheckCircle2,
   ChevronRight,
   ChevronDown,
-  Cpu
+  Cpu,
+  Bot
 } from "lucide-react";
 
 interface AdminPanelProps {
@@ -142,20 +143,8 @@ export function AdminPanel({
 
   // Internal persistent states
   const [internalPosts, setInternalPosts] = useState<BlogPost[]>(() => {
-    if (propPosts) return propPosts;
-    try {
-      const stored = localStorage.getItem("scribd_blog_posts");
-      if (stored) {
-        const parsed: BlogPost[] = JSON.parse(stored);
-        return parsed.map((p) => ({
-          ...p,
-          translationGroupId: p.translationGroupId || DEFAULT_POST_TRANSLATION_GROUPS[p.id] || `tg-${p.id}`,
-        }));
-      }
-    } catch (e) {
-      console.error(e);
-    }
-    return BLOG_POSTS;
+    if (propPosts && propPosts.length > 0) return propPosts;
+    return loadAllBlogPosts();
   });
 
   const [internalAdSettings, setInternalAdSettings] = useState<AdSettings>(() => {
@@ -192,6 +181,18 @@ export function AdminPanel({
       syncPostsAndRebuildSitemap(updated);
       return updated;
     });
+  };
+
+  const fetchPostsFromServer = async () => {
+    try {
+      const res = await fetch("/api/blog/posts");
+      const data = await res.json();
+      if (data && Array.isArray(data.posts)) {
+        setInternalPosts(data.posts);
+      }
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   const handleDeletePost = (id: string, permanent?: boolean) => {
@@ -264,11 +265,11 @@ export function AdminPanel({
   const [loginInProgress, setLoginInProgress] = useState(false);
   const [activeTab, setActiveTab] = useState<
     | "dashboard"
+    | "ai_studio"
     | "mcp"
     | "posts"
     | "pages"
     | "seo"
-    | "page_content"
     | "messages"
     | "ads"
     | "settings"
@@ -495,11 +496,11 @@ export function AdminPanel({
           <nav className="px-3 space-y-1">
             {[
               { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
+              { id: "ai_studio", label: "AI Agent & SEO Studio", icon: Bot },
               { id: "mcp", label: "MCP & AI Agents", icon: Cpu },
               { id: "posts", label: "Blog & Articles", icon: FileText },
-              { id: "pages", label: "Website Pages", icon: Files },
+              { id: "pages", label: "Website & Pages Content", icon: Files },
               { id: "seo", label: "Robots & Sitemap", icon: Globe },
-              { id: "page_content", label: "Pages Content", icon: FileEdit },
               { id: "messages", label: "Messages", icon: MessageSquare },
               { id: "ads", label: "Advertisements", icon: Sparkles },
               { id: "settings", label: "Site & Engine", icon: Settings },
@@ -553,6 +554,13 @@ export function AdminPanel({
       {/* Main Content Viewport */}
       <main className="flex-1 p-6 sm:p-8 lg:p-10 overflow-y-auto max-w-7xl">
         {activeTab === "dashboard" && <AdminDashboard />}
+        {activeTab === "ai_studio" && (
+          <AdminAiAgent
+            currentLang={adminLang}
+            onPostPublished={handleSavePost}
+            onRefreshPosts={fetchPostsFromServer}
+          />
+        )}
         {activeTab === "mcp" && <AdminMcp />}
         {activeTab === "posts" && (
           <AdminPosts
@@ -564,10 +572,11 @@ export function AdminPanel({
           />
         )}
         {activeTab === "pages" && (
-          <AdminPages />
+          <AdminPages
+            onRefreshPages={fetchPostsFromServer}
+          />
         )}
         {activeTab === "seo" && <AdminSeoCrawler posts={currentPosts} />}
-        {activeTab === "page_content" && <AdminPagesContent />}
         {activeTab === "messages" && <AdminMessages />}
         {activeTab === "ads" && (
           <AdminAds settings={currentAdSettings} onSaveSettings={handleSaveAdSettings} />

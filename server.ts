@@ -9,6 +9,7 @@ import axios from "axios";
 import * as cheerio from "cheerio";
 import PDFDocument from "pdfkit";
 import { setupMcpEndpoints } from "./server/mcpServer";
+import { setupGeminiAiEndpoints } from "./server/geminiAi";
 
 // Universal require compatible with tsx (ESM) and bundled dist/server.cjs
 const nodeRequire =
@@ -414,191 +415,35 @@ ${xmlEntries.join("\n")}
 }
 
 function buildExactUrlsetSitemap(origin: string, postsParam?: any[], customPagesParam?: any[]): string {
-  const base = origin.replace(/\/$/, "");
-  const now = formatYoastDate();
-  const languages = ["en", "br", "es", "fr", "de", "id"];
+  const base = (origin || "").replace(/\/$/, "");
+  const pageXml = buildPageSitemap(base, customPagesParam);
+  const postXml = buildPostSitemap(base, postsParam);
 
   const seen = new Set<string>();
   const entries: string[] = [];
 
-  const addUrl = (loc: string, lastmod: string, priority: string) => {
-    const clean = loc.trim();
-    if (!clean || seen.has(clean)) return;
-    seen.add(clean);
-    const safeDate = formatYoastDate(lastmod);
-    entries.push(`<url>
-<loc>${escapeXml(clean)}</loc>
-<lastmod>${safeDate}</lastmod>
-<priority>${priority}</priority>
-</url>`);
+  const extractUrls = (xml: string) => {
+    const urlMatches = xml.match(/<url>[\s\S]*?<\/url>/g) || [];
+    for (const u of urlMatches) {
+      const locMatch = u.match(/<loc>(.*?)<\/loc>/);
+      if (locMatch && locMatch[1]) {
+        const loc = locMatch[1].trim();
+        if (!seen.has(loc)) {
+          seen.add(loc);
+          entries.push(u);
+        }
+      }
+    }
   };
 
-  // 1. Root and language roots (priority 1.00)
-  addUrl(`${base}`, now, "1.00");
-  for (const lang of languages) {
-    addUrl(`${base}/${lang}`, now, "1.00");
-  }
+  extractUrls(pageXml);
+  extractUrls(postXml);
 
-  // 2. High priority core downloaders (priority 1.00)
-  const coreTools = [
-    "downloader",
-    "bulk-downloader",
-    "scribd-pdf-downloader",
-    "scribd-document-downloader",
-    "pinterest-image-downloader",
-    "pinterest-gif-downloader",
-  ];
-
-  for (const tool of coreTools) {
-    addUrl(`${base}/${tool}`, now, "1.00");
-    for (const lang of languages) {
-      addUrl(`${base}/${lang}/${tool}`, now, "1.00");
-    }
-  }
-
-  // 3. Specialized downloaders from sample & application (priority 0.90)
-  const specializedTools = [
-    "scribd-presentation-downloader",
-    "scribd-audiobook-downloader",
-    "scribd-viewer",
-    "document-downloader",
-    "presentation-downloader",
-    "batch-downloader",
-    "pin-story-downloader",
-    "pin-carousel-downloader",
-    "pin-profile-downloader",
-    "pin-board-downloader",
-    "pin-answers-downloader",
-    "pin-ideas-downloader",
-    "pin-multiple-share-downloader",
-  ];
-
-  for (const tool of specializedTools) {
-    addUrl(`${base}/${tool}`, now, "0.90");
-    for (const lang of languages) {
-      addUrl(`${base}/${lang}/${tool}`, now, "0.90");
-    }
-  }
-
-  // 4. Guides, Tutorials, Extensions & Informational from sample (priority 0.80)
-  const infoAndGuides = [
-    "how-to",
-    "how-it-works",
-    "video-tutorial",
-    "chrome-extension",
-    "terms-privacy-policy",
-    "contact-us",
-    "about-us",
-    "supported-urls",
-    "thumbnail-grabber",
-    "thumbnail-grabber/",
-    "about",
-    "contact",
-    "privacy",
-    "terms",
-    "terms-of-service",
-    "privacy-policy",
-    "faq",
-    "blog",
-  ];
-
-  for (const route of infoAndGuides) {
-    addUrl(`${base}/${route}`, now, "0.80");
-    for (const lang of languages) {
-      addUrl(`${base}/${lang}/${route}`, now, "0.80");
-    }
-  }
-
-  // 5. Published Blog Posts across all languages (priority 0.80)
-  let posts: any[] = postsParam || [];
-  if (!posts || posts.length === 0) {
-    posts = getBlogPostsOnServer();
-  }
-
-  if (Array.isArray(posts) && posts.length > 0) {
-    const translationGroups = new Map<string, any[]>();
-    for (const post of posts) {
-      if (post.status === "draft") continue;
-      const tgId = post.translationGroupId || `tg-${post.id}`;
-      if (!translationGroups.has(tgId)) translationGroups.set(tgId, []);
-      translationGroups.get(tgId)!.push(post);
-    }
-
-    translationGroups.forEach((groupPosts) => {
-      const postDate = groupPosts[0]?.date ? formatYoastDate(groupPosts[0].date) : now;
-      const langMap = new Map<string, string>();
-      for (const p of groupPosts) {
-        const pLang = p.language || "en";
-        const pSlug = cleanSlugForUrl(p.slug, p.id);
-        if (pSlug) {
-          langMap.set(pLang, `${base}/${pLang}/blog/${pSlug}`);
-        }
-      }
-
-      const refPost = groupPosts.find((p) => (p.language || "en") === "en") || groupPosts[0];
-      const refSlug = cleanSlugForUrl(refPost?.slug, refPost?.id);
-      for (const lang of languages) {
-        if (!langMap.has(lang) && refSlug) {
-          langMap.set(lang, `${base}/${lang}/blog/${refSlug}`);
-        }
-      }
-
-      for (const p of groupPosts) {
-        const pLang = p.language || "en";
-        const pSlug = cleanSlugForUrl(p.slug, p.id);
-        const exactUrl = langMap.get(pLang) || (pSlug ? `${base}/${pLang}/blog/${pSlug}` : "");
-        if (exactUrl) {
-          addUrl(exactUrl, p.date || postDate, "0.80");
-        }
-      }
-
-      for (const lang of languages) {
-        const loc = langMap.get(lang);
-        if (loc) {
-          addUrl(loc, postDate, "0.80");
-        }
-      }
-    });
-
-    for (const post of posts) {
-      if (post.status === "draft") continue;
-      const postLang = post.language || "en";
-      const postSlug = cleanSlugForUrl(post.slug, post.id);
-      if (postSlug) {
-        addUrl(`${base}/${postLang}/blog/${postSlug}`, post.date || now, "0.80");
-        for (const lang of languages) {
-          addUrl(`${base}/${lang}/blog/${postSlug}`, post.date || now, "0.80");
-        }
-      }
-    }
-  }
-
-  // 6. Custom pages across all languages (priority 0.80)
-  let customPages: any[] = customPagesParam || [];
-  if (!customPages || customPages.length === 0) {
-    customPages = getCustomPagesOnServer();
-  }
-
-  if (Array.isArray(customPages) && customPages.length > 0) {
-    for (const page of customPages) {
-      if (page.status === "draft") continue;
-      const cleanSlug = cleanSlugForUrl(page.slug, page.id);
-      if (!cleanSlug) continue;
-      const pageLastMod = formatYoastDate(page.lastModified || page.createdAt || now);
-      addUrl(`${base}/${cleanSlug}`, pageLastMod, "0.80");
-      if (page.language && page.language !== "all") {
-        addUrl(`${base}/${page.language}/${cleanSlug}`, pageLastMod, "0.80");
-      }
-      for (const lang of languages) {
-        addUrl(`${base}/${lang}/${cleanSlug}`, pageLastMod, "0.80");
-      }
-    }
-  }
-
-  return `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  return `<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type="text/xsl" href="/main-sitemap.xsl"?>
+<urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd http://www.google.com/schemas/sitemap-image/1.1 http://www.google.com/schemas/sitemap-image/1.1/sitemap-image.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${entries.join("\n")}
-</urlset>`;
+</urlset>
+<!-- XML Sitemap generated by Yoast SEO -->`;
 }
 
 function buildYoastSitemapIndex(origin: string): string {
@@ -870,6 +715,10 @@ function saveRobotsTxtOnServer(content: string) {
   } catch (err) {
     console.error("Error saving robots.txt to disk:", err);
   }
+  try {
+    const publicRobots = path.join(process.cwd(), "public", "robots.txt");
+    fs.writeFileSync(publicRobots, content, "utf-8");
+  } catch {}
 }
 
 function rebuildAllSitemapsOnServer(origin: string, postsParam?: any[], customPagesParam?: any[]) {
@@ -882,6 +731,20 @@ function rebuildAllSitemapsOnServer(origin: string, postsParam?: any[], customPa
 
   sitemapsByOrigin.set(base, { indexXml, postXml, pageXml, allUrlsetXml, updatedAt });
   sitemapUpdatedAt = updatedAt;
+
+  // Persist files to public directory
+  try {
+    const publicDir = path.join(process.cwd(), "public");
+    if (fs.existsSync(publicDir)) {
+      fs.writeFileSync(path.join(publicDir, "sitemap.xml"), allUrlsetXml, "utf-8");
+      fs.writeFileSync(path.join(publicDir, "sitemap_index.xml"), indexXml, "utf-8");
+      fs.writeFileSync(path.join(publicDir, "post-sitemap.xml"), postXml, "utf-8");
+      fs.writeFileSync(path.join(publicDir, "page-sitemap.xml"), pageXml, "utf-8");
+      fs.writeFileSync(path.join(publicDir, "main-sitemap.xsl"), getYoastXsl(), "utf-8");
+    }
+  } catch (err) {
+    console.warn("Notice: unable to write static sitemaps to public folder:", err);
+  }
 
   return { indexXml, postXml, pageXml, allUrlsetXml };
 }
@@ -1651,7 +1514,12 @@ async function startServer() {
   // SEO, ROBOTS.TXT & YOAST SITEMAP CONTROLLERS
   // ==========================================
   // GET /robots.txt - Public Crawler File
-  app.get("/robots.txt", (req, res) => {
+  app.get([
+    "/robots.txt",
+    "/:lang/robots.txt",
+    "/robots",
+    "/:lang/robots"
+  ], (req, res) => {
     const origin = getRequestOrigin(req);
     res.setHeader("Content-Type", "text/plain; charset=utf-8");
     res.setHeader("Cache-Control", "public, max-age=3600");
@@ -1659,7 +1527,10 @@ async function startServer() {
   });
 
   // GET /sitemap_index.xml - Standard Yoast Sitemap Index
-  app.get("/sitemap_index.xml", (req, res) => {
+  app.get([
+    "/sitemap_index.xml",
+    "/:lang/sitemap_index.xml"
+  ], (req, res) => {
     const origin = getRequestOrigin(req);
     res.setHeader("Content-Type", "application/xml; charset=utf-8");
     res.setHeader("Cache-Control", "public, max-age=3600");
@@ -1667,7 +1538,10 @@ async function startServer() {
   });
 
   // GET /sitemap.xml - Complete unified URL set
-  app.get("/sitemap.xml", (req, res) => {
+  app.get([
+    "/sitemap.xml",
+    "/:lang/sitemap.xml"
+  ], (req, res) => {
     const origin = getRequestOrigin(req);
     res.setHeader("Content-Type", "application/xml; charset=utf-8");
     res.setHeader("Cache-Control", "public, max-age=3600");
@@ -1675,7 +1549,10 @@ async function startServer() {
   });
 
   // GET /post-sitemap.xml - Yoast Post Sitemap
-  app.get("/post-sitemap.xml", (req, res) => {
+  app.get([
+    "/post-sitemap.xml",
+    "/:lang/post-sitemap.xml"
+  ], (req, res) => {
     const origin = getRequestOrigin(req);
     res.setHeader("Content-Type", "application/xml; charset=utf-8");
     res.setHeader("Cache-Control", "public, max-age=3600");
@@ -1683,7 +1560,10 @@ async function startServer() {
   });
 
   // GET /page-sitemap.xml - Yoast Page Sitemap
-  app.get("/page-sitemap.xml", (req, res) => {
+  app.get([
+    "/page-sitemap.xml",
+    "/:lang/page-sitemap.xml"
+  ], (req, res) => {
     const origin = getRequestOrigin(req);
     res.setHeader("Content-Type", "application/xml; charset=utf-8");
     res.setHeader("Cache-Control", "public, max-age=3600");
@@ -1691,7 +1571,12 @@ async function startServer() {
   });
 
   // GET /main-sitemap.xsl & /sitemap.xsl - Visual Yoast SEO Stylesheet
-  app.get(["/main-sitemap.xsl", "/sitemap.xsl"], (_req, res) => {
+  app.get([
+    "/main-sitemap.xsl",
+    "/:lang/main-sitemap.xsl",
+    "/sitemap.xsl",
+    "/:lang/sitemap.xsl"
+  ], (_req, res) => {
     res.setHeader("Content-Type", "text/xsl; charset=utf-8");
     res.setHeader("Cache-Control", "public, max-age=86400");
     return res.send(getYoastXsl());
@@ -1892,6 +1777,13 @@ async function startServer() {
 
   // Mount Model Context Protocol (MCP) full-control server & management endpoints
   setupMcpEndpoints(app);
+
+  // Mount Gemini AI Assistant, SEO & Content Management endpoints
+  setupGeminiAiEndpoints(app, {
+    rebuildSitemapsCallback: () => {
+      invalidateSitemapCache();
+    },
+  });
 
   // Fallback 404 for any unmatched /api/* requests to ensure they never return HTML
   app.all("/api/*", (req, res) => {

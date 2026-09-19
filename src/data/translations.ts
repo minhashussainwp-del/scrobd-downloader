@@ -2,11 +2,12 @@ import { SupportedLanguage, LanguageOption } from "../types";
 
 export const SUPPORTED_LANGUAGES: LanguageOption[] = [
   { code: "en", name: "English (US)", nativeName: "English", flag: "🇺🇸", country: "United States", urlPrefix: "en" },
+  { code: "id", name: "Bahasa Indonesia", nativeName: "Bahasa Indonesia", flag: "🇮🇩", country: "Indonesia", urlPrefix: "id" },
+  { code: "es", name: "Español (México / Latam)", nativeName: "Español", flag: "🇲🇽", country: "México / Latam", urlPrefix: "es" },
   { code: "br", name: "Português (Brasil)", nativeName: "Português (BR)", flag: "🇧🇷", country: "Brasil", urlPrefix: "br" },
-  { code: "es", name: "Español", nativeName: "Español", flag: "🇪🇸", country: "España / Latam", urlPrefix: "es" },
   { code: "fr", name: "Français", nativeName: "Français", flag: "🇫🇷", country: "France", urlPrefix: "fr" },
   { code: "de", name: "Deutsch", nativeName: "Deutsch", flag: "🇩🇪", country: "Deutschland", urlPrefix: "de" },
-  { code: "id", name: "Bahasa Indonesia", nativeName: "Bahasa Indonesia", flag: "🇮🇩", country: "Indonesia", urlPrefix: "id" },
+  { code: "hi", name: "हिन्दी (Hindi)", nativeName: "हिन्दी", flag: "🇮🇳", country: "India", urlPrefix: "hi" },
 ];
 
 export type TranslationKey = string;
@@ -1081,13 +1082,184 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     "legal.t4d": "Layanan disediakan apa adanya. Kami tidak menjamin selalu online setiap menit atau bahwa setiap format dokumen bisa diproses.",
   },
 
-  pt: {
-    // pt maps directly to br translations
-  } as unknown as Record<string, string>
-};
+  hi: {
+    "nav.home": "मुख्य पृष्ठ",
+    "nav.howItWorks": "यह कैसे काम करता है",
+    "nav.blog": "ब्लॉग",
+    "nav.about": "हमारे बारे में",
+    "nav.contact": "संपर्क करें",
+    "nav.admin": "एडमिन पैनल",
+    "nav.downloadPdf": "PDF डाउनलोड करें",
+    "nav.freeBadge": "मुफ़्त",
+    "nav.tagline": "तेज़ और साफ़ दस्तावेज़ कनवर्टर",
 
-// Fill pt with br as fallback
-TRANSLATIONS.pt = TRANSLATIONS.br;
+    "hero.badge": "मुफ़्त • बिना लॉगिन • तेज़",
+    "hero.title": "Scribd दस्तावेज़ मुफ़्त में PDF डाउनलोड करें",
+    "hero.subtitle": "Scribd लिंक पेस्ट करें और तुरंत साफ़, पढ़ने योग्य PDF प्राप्त करें। कोई खाता नहीं, कोई ऐप इंस्टॉल करने की आवश्यकता नहीं।",
+    "hero.placeholder": "यहाँ Scribd दस्तावेज़ का URL पेस्ट करें...",
+    "hero.downloadBtn": "PDF डाउनलोड करें",
+    "hero.downloadingBtn": "आपका PDF तैयार हो रहा है...",
+    "hero.check1": "बिना लॉगिन",
+    "hero.check2": "उच्च गुणवत्ता वाली PDF",
+    "hero.check3": "सभी डिवाइसों पर कार्य करता है",
+
+    "how.title": "यह कैसे काम करता है",
+    "how.step1": "लिंक कॉपी करें",
+    "how.step1Desc": "Scribd पर मनपसंद दस्तावेज़ खोलें और उसका URL कॉपी करें।",
+    "how.step2": "यहाँ पेस्ट करें",
+    "how.step2Desc": "पेज के शीर्ष पर दिए गए बॉक्स में लिंक पेस्ट करें।",
+    "how.step3": "PDF डाउनलोड करें",
+    "how.step3Desc": "ऑफ़लाइन पढ़ने, प्रिंट करने या सेव करने के लिए साफ़ PDF प्राप्त करें।",
+
+    "benefits.title": "इस टूल का उपयोग क्यों करें",
+    "benefits.fastTitle": "तेज़",
+    "benefits.fastDesc": "लिंक पेस्ट करें और कुछ ही सेकंड में आपका PDF तैयार। कोई प्रतीक्षा समय नहीं।",
+    "benefits.safeTitle": "सुरक्षित एवं निजी",
+    "benefits.safeDesc": "बिना लॉगिन का अर्थ है कोई व्यक्तिगत जानकारी नहीं देना।",
+    "benefits.devicesTitle": "हर जगह काम करता है",
+    "benefits.devicesDesc": "मोबाइल, टैब या कंप्यूटर के ब्राउज़र में सीधे इस्तेमाल करें।",
+    "benefits.freeTitle": "100% मुफ़्त",
+    "benefits.freeDesc": "सार्वजनिक दस्तावेज़ डाउनलोड करने का कोई शुल्क नहीं है।",
+
+    "guide.badge": "ज्ञान केंद्र",
+    "guide.title": "Scribd दस्तावेज़ डाउनलोड करने की पूरी गाइड",
+    "guide.p1": "Scribd पर लाखों स्टडी नोट्स, किताबें और गाइड उपलब्ध हैं। ऑफ़लाइन कॉपी होने से पढ़ना आसान हो जाता है।",
+    "guide.subheading": "तीन आसान चरणों में डाउनलोड करें",
+    "guide.step1Title": "1. दस्तावेज़ का लिंक कॉपी करें",
+    "guide.step1Desc": "Scribd पर दस्तावेज़ खोलें और एड्रेस बार से URL कॉपी करें।",
+    "guide.step2Title": "2. डाउनलोडर में पेस्ट करें",
+    "guide.step2Desc": "पेज के ऊपर दिए गए डाउनलोड बॉक्स में लिंक डालें।",
+    "guide.step3Title": "3. अपनी PDF सेव करें",
+    "guide.step3Desc": "टूल दस्तावेज़ को प्रोसेस करके आपके लिए उच्च गुणवत्ता वाली PDF बनाता है।",
+
+    "faq.title": "अक्सर पूछे जाने वाले प्रश्न (FAQ)",
+    "faq.q1": "Scribd डाउनलोडर क्या है?",
+    "faq.a1": "यह एक मुफ़्त ऑनलाइन टूल है जो सार्वजनिक Scribd दस्तावेज़ों को आपके डिवाइस में PDF फ़ाइल के रूप में सेव करता है।",
+    "faq.q2": "क्या मुझे Scribd अकाउंट की आवश्यकता है?",
+    "faq.a2": "नहीं। यहाँ किसी लॉगिन या साइन-अप की आवश्यकता नहीं है।",
+    "faq.q3": "क्या यह वास्तव में मुफ़्त है?",
+    "faq.a3": "हाँ, यह 100% मुफ़्त है।",
+    "faq.q4": "मुझे कौन सा फ़ाइल फ़ॉर्मेट मिलेगा?",
+    "faq.a4": "एक मानक PDF फ़ाइल जो किसी भी डिवाइस पर खुलती है।",
+    "faq.q5": "क्या मैं मोबाइल पर डाउनलोड कर सकता हूँ?",
+    "faq.a5": "हाँ, यह टूल मोबाइल ब्राउज़र पर आसानी से चलता है।",
+    "faq.q6": "मेरा दस्तावेज़ डाउनलोड क्यों नहीं हो रहा?",
+    "faq.a6": "टूल केवल सार्वजनिक रूप से उपलब्ध दस्तावेज़ों को प्रोसेस कर सकता है। यदि दस्तावेज़ प्राइवेट या डिलीट किया गया है तो वह डाउनलोड नहीं होगा।",
+    "faq.q7": "क्या Scribd दस्तावेज़ डाउनलोड करना कानूनी है?",
+    "faq.a7": "केवल वे दस्तावेज़ डाउनलोड करें जिन्हें रखने का आपके पास अधिकार है। लेखक के कॉपीराइट का सम्मान करें।",
+    "faq.q8": "क्या आप मेरी फ़ाइलों की प्रतियां रखते हैं?",
+    "faq.a8": "नहीं। आपकी फ़ाइल प्रोसेस होने के बाद सर्वर से ऑटोमेटिक हटा दी जाती है।",
+
+    "blog.previewTitle": "नवीनतम गाइड और लेख",
+    "blog.previewSubtitle": "दस्तावेज़ फ़ॉर्मेट, डिजिटल रीडिंग और अध्ययन पद्धतियों पर ट्यूटोरियल देखें।",
+    "blog.readArticle": "गाइड पढ़ें",
+    "blog.viewAll": "सभी गाइड देखें",
+    "blog.backToGuides": "गाइड सूची पर वापस जाएं",
+    "blog.tableOfContents": "विषय-सूची",
+    "blog.authorInsight": "लेखक की राय",
+    "blog.quickCtaTitle": "क्या आपके पास Scribd लिंक है?",
+    "blog.quickCtaDesc": "हमारे ऑनलाइन टूल में URL पेस्ट करें और तुरंत PDF फ़ाइल डाउनलोड करें।",
+    "blog.quickCtaBtn": "PDF डाउनलोडर खोलें",
+
+    "footer.tagline": "Scribd दस्तावेज़ पढ़ने और डाउनलोड करने का एक सरल ऑनलाइन टूल।",
+    "footer.quickLinks": "त्वरित लिंक",
+    "footer.resources": "संसाधन",
+    "footer.legal": "कानूनी एवं गोपनीयता",
+    "footer.scribdGuide": "Scribd गाइड",
+    "footer.downloadTips": "डाउनलोड टिप्स",
+    "footer.studyResources": "अध्ययन सामग्री",
+    "footer.faqs": "अक्सर पूछे जाने वाले सवाल",
+    "footer.rights": "सर्वाधिकार सुरक्षित। Scribd Inc. से संबद्ध नहीं है।",
+    "footer.disclaimer": "यह टूल शैक्षणिक अनुसंधान और अध्ययन के लिए सार्वजनिक दस्तावेज़ों को प्रस्तुत करता है।",
+    "footer.terms": "सेवा की शर्तें",
+    "footer.privacy": "गोपनीयता नीति",
+
+    "lang.detectBanner": "ऐसा लगता है कि आप इस भाषा में पढ़ना पसंद करेंगे",
+    "lang.switchBtn": "बदलें",
+    "lang.dismiss": "अंग्रेजी में ही रखें",
+
+    "about.badge": "हमारा उद्देश्य",
+    "guide.editionNote": "मार्गदर्शिका",
+    "about.crumb": "हमारे बारे में",
+    "about.vTitle": "लोग इसका उपयोग क्यों करते हैं",
+    "about.vSub": "कोई छलावा नहीं। बस एक सरल टूल जो अपना काम बखूबी करता है।",
+    "about.v1t": "लॉगिन की आवश्यकता नहीं",
+    "about.v1d": "कोई खाता बनाने या पासवर्ड याद रखने का झंझट नहीं।",
+    "about.v2t": "उपयोग में पूरी तरह मुफ़्त",
+    "about.v2d": "सार्वजनिक दस्तावेज़ डाउनलोड करने का कोई शुल्क नहीं है।",
+    "about.v3t": "साफ़ सुथरी PDF",
+    "about.v3d": "फ़ाइलें मानक PDF के रूप में मिलती हैं जिन्हें पढ़ना और प्रिंट करना आसान है।",
+    "about.v4t": "हर डिवाइस पर उपलब्ध",
+    "about.v4d": "बिना कुछ इंस्टॉल किए मोबाइल, टैबलेट या कंप्यूटर पर चलता है।",
+    "about.doesTitle": "यह टूल क्या कर सकता है",
+    "about.does1": "सार्वजनिक Scribd दस्तावेज़ को डाउनलोड योग्य PDF में बदलता है",
+    "about.does2": "बिना किसी ऐप या ब्राउज़र एक्सटेंशन के काम करता है",
+    "about.does3": "प्रोसेसिंग के बाद अस्थायी फ़ाइलों को साफ़ कर देता है",
+    "about.dontTitle": "यह टूल क्या नहीं कर सकता",
+    "about.dont1": "निजी या पेवॉल के पीछे छिपे दस्तावेज़ों तक पहुँच प्रदान नहीं करता",
+    "about.dont2": "आपकी डाउनलोड की गई फ़ाइलों को स्टोर या ट्रैक नहीं करता",
+    "about.dont3": "किताबें खरीदने या लेखकों का समर्थन करने का विकल्प नहीं है",
+    "about.fairTitle": "उचित उपयोग करें",
+    "about.fairDesc": "केवल वे सामग्री डाउनलोड करें जिन्हें रखने की अनुमति है। यदि आप कॉपीराइट धारक हैं, तो हमसे संपर्क कर सकते हैं।",
+    "about.ctaTitle": "खुद आज़माएं",
+    "about.ctaDesc": "कोई भी सार्वजनिक Scribd लिंक पेस्ट करें और PDF प्राप्त करें।",
+    "about.ctaBtn": "डाउनलोडर खोलें",
+    "hiw.badge": "चरण-दर-चरण मार्गदर्शिका",
+    "hiw.title": "Scribd दस्तावेज़ कैसे डाउनलोड करें",
+    "hiw.sub": "तीन आसान चरण, कोई खाता नहीं, कोई सॉफ्टवेयर नहीं।",
+    "contact.badge": "सहायता एवं समर्थन",
+    "contact.crumb": "संपर्क करें",
+    "contact.formTitle": "संदेश भेजें",
+    "contact.nameLbl": "आपका नाम",
+    "contact.namePh": "राहुल शर्मा",
+    "contact.emailLbl": "ईमेल पता",
+    "contact.emailPh": "rahul@example.com",
+    "contact.subjLbl": "विषय",
+    "contact.subj1": "डाउनलोड काम नहीं कर रहा है",
+    "contact.subj2": "PDF फ़ाइल में समस्या",
+    "contact.subj3": "कॉपीराइट / हटाने का अनुरोध",
+    "contact.subj4": "सामान्य प्रश्न या सुझाव",
+    "contact.msgLbl": "संदेश",
+    "contact.msgPh": "Scribd लिंक शामिल करें और समस्या का विवरण लिखें...",
+    "contact.sendBtn": "संदेश भेजें",
+    "contact.sendingBtn": "भेजा जा रहा है...",
+    "contact.doneTitle": "संदेश प्राप्त हुआ",
+    "contact.doneDesc": "लिखने के लिए धन्यवाद। हम सभी संदेशों को ध्यान से पढ़ते हैं।",
+    "contact.doneBtn": "एक और संदेश भेजें",
+    "contact.card1t": "संदेश प्रतिक्रिया",
+    "contact.card1d": "हम डाउनलोड समस्याओं और कॉपीराइट अनुरोधों को प्राथमिकता देते हैं।",
+    "contact.card2t": "क्या शामिल करें",
+    "contact.card2d": "पूरा Scribd URL और समस्या का संक्षिप्त विवरण दें।",
+    "contact.card3t": "कॉपीराइट धारक",
+    "contact.card3d": "यदि आप किसी दस्तावेज़ के अधिकार रखते हैं तो हटाने के लिए विषय में कॉपीराइट चुनें।",
+    "legal.crumbPrivacy": "गोपनीयता नीति",
+    "legal.crumbTerms": "सेवा की शर्तें",
+    "legal.title": "गोपनीयता और शर्तें",
+    "legal.updated": "अंतिम अद्यतन: सितंबर 2026",
+    "legal.privacyTab": "गोपनीयता नीति",
+    "legal.termsTab": "सेवा की शर्तें",
+    "legal.privacyH": "गोपनीयता नीति",
+    "legal.privacySub": "हम आपकी जानकारी कैसे सुरक्षित रखते हैं।",
+    "legal.p1t": "1. कोई खाता नहीं, कोई निजी डेटा नहीं",
+    "legal.p1d": "हम नाम या पासवर्ड जैसा कोई व्यक्तिगत डेटा एकत्र नहीं करते हैं।",
+    "legal.p2t": "2. फ़ाइलें अस्थायी होती हैं",
+    "legal.p2d": "आपकी फ़ाइलें केवल PDF बनाने के लिए सर्वर पर प्रोसेस होती हैं और फिर हटा दी जाती हैं।",
+    "legal.p3t": "3. कुकीज़",
+    "legal.p3d": "आपकी भाषा प्राथमिकताएं केवल आपके ब्राउज़र में सहेजी जाती हैं।",
+    "legal.p4t": "4. सुरक्षित कनेक्शन",
+    "legal.p4d": "हमारी वेबसाइट HTTPS के माध्यम से सुरक्षित रूप से चलती है।",
+    "legal.termsH": "सेवा की शर्तें",
+    "legal.termsSub": "इस टूल का उपयोग करने के नियम।",
+    "legal.t1t": "1. उचित एवं कानूनी उपयोग",
+    "legal.t1d": "केवल उन दस्तावेज़ों को डाउनलोड करें जिनके लिए आपके पास अनुमति है।",
+    "legal.t2t": "2. आपकी ज़िम्मेदारी",
+    "legal.t2d": "आप यह सुनिश्चित करने के लिए जिम्मेदार हैं कि आपके डाउनलोड कानूनों का पालन करते हैं।",
+    "legal.t3t": "3. कॉपीराइट अनुरोध",
+    "legal.t3d": "कॉपीराइट धारक दस्तावेज़ हटाने के लिए संपर्क पेज के माध्यम से अनुरोध कर सकते हैं।",
+    "legal.t4t": "4. वारंटी रहित",
+    "legal.t4d": "सेवा 'जैसी है' के आधार पर प्रदान की जाती है।",
+  }
+};
 
 export const CUSTOM_TRANSLATIONS_STORAGE_KEY = "scribd_custom_translations";
 
@@ -1113,17 +1285,14 @@ export function saveCustomTranslation(lang: SupportedLanguage, key: string, valu
 }
 
 export function t(key: string, lang: SupportedLanguage = "en"): string {
-  // Normalize pt -> br
-  const targetLang = lang === "pt" ? "br" : lang;
-
   // Check custom database overrides first
   const custom = getCustomTranslations();
-  if (custom[targetLang]?.[key]) {
-    return custom[targetLang][key];
+  if (custom[lang]?.[key]) {
+    return custom[lang][key];
   }
 
   // Check language dictionary
-  const dict = TRANSLATIONS[targetLang];
+  const dict = TRANSLATIONS[lang];
   if (dict && dict[key]) {
     return dict[key];
   }
@@ -1143,8 +1312,9 @@ export function detectBrowserLanguage(): SupportedLanguage {
   const languages = navigator.languages || [navigator.language || "en"];
   for (const l of languages) {
     const lower = l.toLowerCase();
+    if (lower.startsWith("hi")) return "hi";
     if (lower.startsWith("pt") || lower.includes("br")) return "br";
-    if (lower.startsWith("es") || lower.includes("mx") || lower.includes("es")) return "es";
+    if (lower.startsWith("es") || lower.includes("mx")) return "es";
     if (lower.startsWith("fr")) return "fr";
     if (lower.startsWith("de")) return "de";
     if (lower.startsWith("id")) return "id";

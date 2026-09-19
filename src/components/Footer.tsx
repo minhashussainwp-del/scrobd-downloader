@@ -51,6 +51,8 @@ export function Footer({ onNavigate, siteSettings }: FooterProps) {
                 { label: "Blog & Tutorials", route: "blog" as PageRoute, href: "/blog" },
                 { label: "About Our Mission", route: "about" as PageRoute, href: "/about" },
                 { label: "Contact Support", route: "contact" as PageRoute, href: "/contact" },
+                { label: "XML Sitemap", route: "sitemap" as PageRoute, href: "/sitemap.xml" },
+                { label: "Robots.txt", route: "robots" as PageRoute, href: "/robots.txt" },
               ].map((link) => (
                 <li key={link.route}>
                   <a

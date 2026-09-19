@@ -4,7 +4,7 @@ import { SUPPORTED_LANGUAGES, saveCustomTranslation, t } from "../../data/transl
 import { Globe, Save, Check, RefreshCw, Search } from "lucide-react";
 
 export function AdminTranslations() {
-  const [selectedLang, setSelectedLang] = useState<SupportedLanguage>("pt");
+  const [selectedLang, setSelectedLang] = useState<SupportedLanguage>("es");
   const [searchQuery, setSearchQuery] = useState("");
   const [savedKey, setSavedKey] = useState<string | null>(null);
 

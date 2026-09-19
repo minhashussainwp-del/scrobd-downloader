@@ -1,1 +1,9 @@
-/*    /index.html   200
+/robots.txt         /robots.txt         200
+/sitemap.xml        /sitemap.xml        200
+/sitemap_index.xml  /sitemap_index.xml  200
+/post-sitemap.xml   /post-sitemap.xml   200
+/page-sitemap.xml   /page-sitemap.xml   200
+/main-sitemap.xsl   /main-sitemap.xsl   200
+/api/*              /api/:splat         200
+/*                  /index.html         200
+

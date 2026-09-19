@@ -19,7 +19,11 @@ import {
   X,
   Sparkles,
   Globe,
-  Settings
+  Settings,
+  Zap,
+  HelpCircle,
+  RefreshCw,
+  CheckCircle2
 } from "lucide-react";
 
 export { DEFAULT_POST_TRANSLATION_GROUPS, getPostTranslationGroupId };
@@ -60,6 +64,178 @@ export function AdminPosts({
   const [formTranslationGroupId, setFormTranslationGroupId] = useState("");
   const [formStatus, setFormStatus] = useState<"published" | "draft">("published");
   const [formHtmlContent, setFormHtmlContent] = useState("");
+
+  // AI Assistant State
+  const [aiWorking, setAiWorking] = useState(false);
+  const [aiMessage, setAiMessage] = useState<string | null>(null);
+  const [aiTranslateLang, setAiTranslateLang] = useState<SupportedLanguage>("hi");
+  const [aiCustomPrompt, setAiCustomPrompt] = useState("");
+
+  const handleAiEnhancePost = async (actionType: "full_enhance" | "meta_seo" | "faqs" | "improve_tone" | "tags") => {
+    setAiWorking(true);
+    setAiMessage(null);
+    try {
+      const res = await fetch("/api/ai/enhance-post", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          title: formTitle,
+          content: formHtmlContent,
+          excerpt: formExcerpt,
+          category: formCategory,
+          language: formLanguage,
+          actionType,
+          customPrompt: aiCustomPrompt,
+        }),
+      });
+
+      const data = await res.json();
+      if (res.ok && data.enhancement) {
+        const enh = data.enhancement;
+        if (actionType === "meta_seo") {
+          if (enh.optimizedTitle) setFormTitle(enh.optimizedTitle);
+          if (enh.optimizedExcerpt) setFormExcerpt(enh.optimizedExcerpt);
+          if (enh.suggestedSlug) setFormSlug(enh.suggestedSlug);
+          setAiMessage("AI optimized Title, SEO Slug, and Meta Description!");
+        } else if (actionType === "faqs") {
+          if (enh.generatedFaqs && Array.isArray(enh.generatedFaqs)) {
+            const faqsHtml = `\n<div class="blog-faqs-box my-6 p-5 bg-slate-50 border border-slate-200 rounded-xl">\n<h3>Frequently Asked Questions</h3>\n${enh.generatedFaqs
+              .map(
+                (f: any) =>
+                  `<div class="faq-item mb-3"><strong>Q: ${f.question}</strong><p class="text-sm mt-1">${f.answer}</p></div>`
+              )
+              .join("\n")}</div>`;
+            setFormHtmlContent((prev) => prev + faqsHtml);
+            setAiMessage("AI appended verified FAQ section to article content!");
+          }
+        } else {
+          // full enhance / improve tone
+          if (enh.optimizedTitle && !formTitle) setFormTitle(enh.optimizedTitle);
+          if (enh.optimizedExcerpt) setFormExcerpt(enh.optimizedExcerpt);
+          if (enh.enhancedContent) setFormHtmlContent(enh.enhancedContent);
+          if (enh.readTime) setFormReadTime(enh.readTime);
+          if (enh.suggestedCategory) setFormCategory(enh.suggestedCategory);
+          setAiMessage("AI enhanced article formatting, structure, and readability!");
+        }
+      } else {
+        throw new Error(data.error || "Enhancement failed");
+      }
+    } catch (e: any) {
+      alert("AI Enhancement Error: " + e.message);
+    } finally {
+      setAiWorking(false);
+    }
+  };
+
+  const handleAiTranslatePost = async () => {
+    if (!formTitle && !formHtmlContent) {
+      alert("Please provide a title or content to translate.");
+      return;
+    }
+    setAiWorking(true);
+    setAiMessage(null);
+    try {
+      const res = await fetch("/api/ai/translate-content", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          title: formTitle,
+          content: formHtmlContent,
+          excerpt: formExcerpt,
+          sourceLanguage: formLanguage,
+          targetLanguage: aiTranslateLang,
+        }),
+      });
+
+      const data = await res.json();
+      if (res.ok && data.translation) {
+        const tr = data.translation;
+        setFormTitle(tr.translatedTitle || formTitle);
+        setFormHtmlContent(tr.translatedContent || formHtmlContent);
+        if (tr.translatedExcerpt) setFormExcerpt(tr.translatedExcerpt);
+        if (tr.translatedSlug) setFormSlug(tr.translatedSlug);
+        else setFormSlug((prev) => `${prev.replace(/-[a-z]{2}$/, "")}-${aiTranslateLang}`);
+        setFormLanguage(aiTranslateLang);
+        setAiMessage(`AI successfully translated article title & content to ${aiTranslateLang.toUpperCase()}!`);
+      } else {
+        throw new Error(data.error || "Translation failed");
+      }
+    } catch (e: any) {
+      alert("AI Translation Error: " + e.message);
+    } finally {
+      setAiWorking(false);
+    }
+  };
+
+  const handleBatchAiTranslateAll = async () => {
+    if (!formTitle && !formHtmlContent) {
+      alert("Please provide article title or content first.");
+      return;
+    }
+
+    const mainLangs: SupportedLanguage[] = ["en", "id", "es", "br", "fr", "de", "hi"];
+    const targetLangs = mainLangs.filter((l) => l !== formLanguage);
+
+    setAiWorking(true);
+    setAiMessage("Starting batch AI translation for all target languages...");
+
+    const groupId = formTranslationGroupId || (editingPost ? getPostTranslationGroupId(editingPost) : `tg-${Date.now()}`);
+    let successCount = 0;
+
+    for (const targetLang of targetLangs) {
+      try {
+        setAiMessage(`Translating article to ${targetLang.toUpperCase()} with AI...`);
+        const res = await fetch("/api/ai/translate-content", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            title: formTitle,
+            content: formHtmlContent,
+            excerpt: formExcerpt,
+            sourceLanguage: formLanguage,
+            targetLanguage: targetLang,
+          }),
+        });
+
+        const data = await res.json();
+        if (res.ok && data.translation) {
+          const tr = data.translation;
+          const cleanSlugBase = formSlug ? formSlug.replace(/-[a-z]{2}$/, "") : "article";
+          const newPost: BlogPost = {
+            id: `post-${Date.now()}-${targetLang}`,
+            slug: tr.translatedSlug || `${cleanSlugBase}-${targetLang}`,
+            title: tr.translatedTitle || formTitle,
+            excerpt: tr.translatedExcerpt || formExcerpt,
+            category: formCategory || "Guides",
+            readTime: formReadTime || "4 min read",
+            date: new Date().toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" }),
+            author: editingPost?.author || {
+              name: getAuthorProfile().name,
+              role: getAuthorProfile().role,
+              avatar: getAuthorProfile().avatar,
+              email: getAuthorProfile().email,
+              bio: getAuthorProfile().bio,
+            },
+            image: formImage || "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&q=80&w=1200",
+            featured: formFeatured,
+            language: targetLang,
+            translationGroupId: groupId,
+            status: "published",
+            htmlContent: tr.translatedContent || formHtmlContent,
+            content: { intro: "", tableOfContents: [], sections: [] },
+          };
+
+          onSavePost(newPost);
+          successCount++;
+        }
+      } catch (e) {
+        console.error(`Error batch translating to ${targetLang}:`, e);
+      }
+    }
+
+    setAiWorking(false);
+    setAiMessage(`AI Auto-Translate Complete! Successfully created ${successCount} translated article variations.`);
+  };
 
   const startCreate = () => {
     setIsCreating(true);
@@ -276,6 +452,29 @@ Klik tombol unduh dan simpan file PDF ke penyimpanan laptop atau ponsel Anda unt
 - **Gratis Tanpa Akun**: Tidak perlu mendaftar atau memasukkan informasi kartu kredit.
 - **Tampilan Bersih**: Format halaman tetap rapi dan siap untuk dicetak.`,
       },
+      hi: {
+        title: baseTitle ? `${baseTitle} (हिंदी गाइड)` : "Scribd दस्तावेज़ मुफ़्त में PDF के रूप में डाउनलोड करें",
+        excerpt: "Scribd से पब्लिक दस्तावेज़, किताबें और नोट्स PDF में आसानी से डाउनलोड करने के लिए चरण-दर-चरण गाइड।",
+        slug: `${cleanSlugBase}-hi`,
+        content: `## Scribd दस्तावेज़ आसानी से PDF में डाउनलोड करें
+
+Scribd से सार्वजनिक दस्तावेज़ डाउनलोड करना बेहद आसान और मुफ़्त है। अपने अध्ययन सामग्री या पुस्तकों को ऑफ़लाइन पढ़ने के लिए इस आसान तरीक़े का पालन करें।
+
+### चरण 1: दस्तावेज़ का लिंक कॉपी करें
+Scribd पर अपनी पसंद का दस्तावेज़ खोलें और ब्राउज़र के एड्रेस बार से उसका URL कॉपी करें।
+
+### चरण 2: डाउनलोडर में लिंक पेस्ट करें
+हमारे मुफ़्त Scribd डाउनलोडर पर आएं और कॉपी किए गए लिंक को ऊपर दिए गए बॉक्स में पेस्ट करें।
+
+### चरण 3: PDF फ़ाइल डाउनलोड करें
+डाउनलोड बटन पर क्लिक करें और कुछ ही सेकंड में अपनी साफ़ और उच्च गुणवत्ता वाली PDF फ़ाइल सेव करें।
+
+---
+
+### मुख्य विशेषताएं
+- **100% मुफ़्त और बिना लॉगिन**: कोई खाता बनाने या साइन-अप करने की आवश्यकता नहीं है।
+- **सभी डिवाइसों पर कार्य करता है**: अपने मोबाइल, टैबलेट या कंप्यूटर पर आसानी से उपयोग करें।`,
+      },
       en: {
         title: baseTitle || "How to Download Scribd Documents as PDF",
         excerpt: formExcerpt || "A complete step-by-step guide to saving public Scribd slides, books, and study sheets into pure vector PDF files.",
@@ -430,9 +629,15 @@ Click Download and save the compiled PDF to your study folder for offline readin
       {isCreating ? (
         <form onSubmit={saveForm} className="bg-white rounded-2xl border border-slate-200 shadow-2xs p-6 space-y-6 relative">
           <div className="flex items-center justify-between border-b border-slate-100 pb-4 mb-4">
-            <h3 className="text-lg font-bold text-slate-900">
-              {editingPost ? "Edit Post" : "Write New Post"}
-            </h3>
+            <div className="flex items-center gap-3">
+              <h3 className="text-lg font-bold text-slate-900">
+                {editingPost ? "Edit Post" : "Write New Post"}
+              </h3>
+              <span className="px-2.5 py-0.5 text-xs font-semibold bg-indigo-50 text-indigo-700 rounded-full border border-indigo-200 flex items-center gap-1">
+                <Sparkles className="w-3.5 h-3.5 text-indigo-600" />
+                AI Assistant Ready
+              </span>
+            </div>
             <button
               type="button"
               onClick={() => {
@@ -443,6 +648,95 @@ Click Download and save the compiled PDF to your study folder for offline readin
             >
               <X className="w-5 h-5" />
             </button>
+          </div>
+
+          {/* AI Copilot Action Strip */}
+          <div className="p-4 bg-gradient-to-r from-indigo-50 via-purple-50 to-slate-50 rounded-2xl border border-indigo-100 space-y-3">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <div className="flex items-center gap-2 text-indigo-900 font-bold text-xs">
+                <Sparkles className="w-4 h-4 text-indigo-600" />
+                <span>AI Blog Copilot: Auto-Enhance, FAQs, SEO Meta & Multilingual Translator</span>
+              </div>
+              {aiWorking && (
+                <span className="text-xs text-indigo-600 font-semibold flex items-center gap-1">
+                  <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+                  Generating with Gemini AI...
+                </span>
+              )}
+            </div>
+
+            {aiMessage && (
+              <div className="p-2 bg-emerald-100 text-emerald-800 rounded-lg text-xs font-medium flex items-center gap-1.5">
+                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                <span>{aiMessage}</span>
+              </div>
+            )}
+
+            <div className="flex flex-wrap items-center gap-2">
+              <button
+                type="button"
+                onClick={() => handleAiEnhancePost("full_enhance")}
+                disabled={aiWorking}
+                className="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 text-white font-semibold text-xs rounded-xl shadow-xs flex items-center gap-1.5 transition cursor-pointer"
+              >
+                <Zap className="w-3.5 h-3.5" />
+                AI Enhance Article
+              </button>
+
+              <button
+                type="button"
+                onClick={() => handleAiEnhancePost("meta_seo")}
+                disabled={aiWorking}
+                className="px-3 py-1.5 bg-purple-600 hover:bg-purple-500 disabled:opacity-50 text-white font-semibold text-xs rounded-xl shadow-xs flex items-center gap-1.5 transition cursor-pointer"
+              >
+                <Sparkles className="w-3.5 h-3.5" />
+                AI Fill Meta & Slug
+              </button>
+
+              <button
+                type="button"
+                onClick={() => handleAiEnhancePost("faqs")}
+                disabled={aiWorking}
+                className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 disabled:opacity-50 text-white font-semibold text-xs rounded-xl shadow-xs flex items-center gap-1.5 transition cursor-pointer"
+              >
+                <HelpCircle className="w-3.5 h-3.5" />
+                + AI Add FAQs Block
+              </button>
+
+              <div className="flex items-center gap-1.5 ml-auto">
+                <span className="text-xs font-bold text-slate-500">Translate to:</span>
+                <select
+                  value={aiTranslateLang}
+                  onChange={(e) => setAiTranslateLang(e.target.value as SupportedLanguage)}
+                  className="px-2.5 py-1.5 bg-white border border-slate-200 rounded-xl text-xs font-semibold text-slate-800"
+                >
+                  {SUPPORTED_LANGUAGES.map((l) => (
+                    <option key={l.code} value={l.code}>
+                      {l.flag} {l.name}
+                    </option>
+                  ))}
+                </select>
+                <button
+                  type="button"
+                  onClick={handleAiTranslatePost}
+                  disabled={aiWorking}
+                  className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-white font-semibold text-xs rounded-xl shadow-xs flex items-center gap-1 transition cursor-pointer"
+                >
+                  <Globe className="w-3.5 h-3.5" />
+                  Translate
+                </button>
+                <button
+                  type="button"
+                  onClick={handleBatchAiTranslateAll}
+                  disabled={aiWorking}
+                  className="px-3 py-1.5 bg-indigo-700 hover:bg-indigo-600 disabled:opacity-50 text-white font-semibold text-xs rounded-xl shadow-xs flex items-center gap-1 transition cursor-pointer"
+                  title="Automatically translate title & content into all 7 main languages using Gemini AI"
+                >
+                  <Sparkles className="w-3.5 h-3.5" />
+                  Auto-Translate All
+                </button>
+              </div>
+            </div>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">

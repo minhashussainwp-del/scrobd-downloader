@@ -16,6 +16,7 @@ const AboutPage = lazy(() => import("./pages/AboutPage").then((m) => ({ default:
 const ContactPage = lazy(() => import("./pages/ContactPage").then((m) => ({ default: m.ContactPage })));
 const LegalPage = lazy(() => import("./pages/LegalPage").then((m) => ({ default: m.LegalPage })));
 const SitemapPage = lazy(() => import("./pages/SitemapPage").then((m) => ({ default: m.SitemapPage })));
+const RobotsPage = lazy(() => import("./pages/RobotsPage").then((m) => ({ default: m.RobotsPage })));
 const CustomPageView = lazy(() => import("./pages/CustomPageView").then((m) => ({ default: m.CustomPageView })));
 const AdminPanel = lazy(() => import("./components/Admin/AdminPanel").then((m) => ({ default: m.AdminPanel })));
 import {
@@ -39,7 +40,7 @@ import {
 } from "./data/siteConfig";
 import { safeParseJson } from "./utils/apiSafe";
 
-const VALID_LANGS: SupportedLanguage[] = ["en", "br", "es", "fr", "de", "id"];
+const VALID_LANGS: SupportedLanguage[] = ["en", "id", "es", "br", "fr", "de", "hi"];
 
 function parseUrlRoute(
   pathname: string,
@@ -101,13 +102,29 @@ function parseUrlRoute(
   if (routeKey === "contact") return { page: "contact", lang, post: null, customPage: null };
   if (routeKey === "privacy" || routeKey === "legal") return { page: "privacy", lang, post: null, customPage: null };
   if (routeKey === "terms") return { page: "terms", lang, post: null, customPage: null };
-  if (routeKey === "sitemap") return { page: "sitemap", lang, post: null, customPage: null };
+  if (
+    routeKey === "sitemap" ||
+    routeKey === "sitemap.xml" ||
+    routeKey === "sitemap_index.xml" ||
+    routeKey === "post-sitemap.xml" ||
+    routeKey === "page-sitemap.xml"
+  ) {
+    return { page: "sitemap", lang, post: null, customPage: null };
+  }
+  if (routeKey === "robots" || routeKey === "robots.txt") {
+    return { page: "robots", lang, post: null, customPage: null };
+  }
   if (routeKey === "blog") {
     if (rest.length > 1) {
       const slug = rest[1];
       const match = allPosts.find((p) => p.slug === slug || p.id === slug);
       if (match) {
-        return { page: "blog-article", lang: (match.language as SupportedLanguage) || lang, post: match, customPage: null };
+        const groupId = getPostTranslationGroupId(match);
+        const translatedInLang = allPosts.find(
+          (p) => getPostTranslationGroupId(p) === groupId && (p.language || "en") === lang && p.status !== "draft"
+        );
+        const activePost = translatedInLang || match;
+        return { page: "blog-article", lang: (activePost.language as SupportedLanguage) || lang, post: activePost, customPage: null };
       }
       return { page: "blog", lang, post: null, customPage: null };
     }
@@ -144,6 +161,8 @@ function buildUrl(
 ): string {
   if (page === "admin") return "/admin";
   if (page === "home") return `/${lang}`;
+  if (page === "sitemap") return `/${lang}/sitemap.xml`;
+  if (page === "robots") return `/${lang}/robots.txt`;
   if (page === "blog-article" && post) return `/${lang}/blog/${post.slug}`;
   if (page === "custom-page" && customPage) return `/${customPage.slug}`;
   return `/${lang}/${page}`;
@@ -737,6 +756,14 @@ export default function App() {
                 onNavigate={handleNavigate}
                 onSelectPost={handleSelectPost}
                 allCustomPages={customPages}
+                currentLang={currentLang}
+              />
+            )}
+
+            {/* 9b. ROBOTS.TXT CRAWLER DIRECTIVES */}
+            {currentPage === "robots" && (
+              <RobotsPage
+                onNavigate={handleNavigate}
                 currentLang={currentLang}
               />
             )}

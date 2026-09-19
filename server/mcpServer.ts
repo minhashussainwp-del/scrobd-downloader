@@ -62,6 +62,7 @@ const MCP_CREDS_FILE = path.join(STORAGE_ROOT, "mcp_credentials.json");
 const MCP_LOGS_FILE = path.join(STORAGE_ROOT, "mcp_logs.json");
 const SEO_STORAGE_DIR = path.join(STORAGE_ROOT, "seo");
 const CUSTOM_PAGES_FILE = path.join(STORAGE_ROOT, "custom_pages.json");
+const BLOG_POSTS_FILE = path.join(STORAGE_ROOT, "blog_posts.json");
 const CUSTOM_BLOGS_FILE = path.join(STORAGE_ROOT, "blogs.json");
 const UI_UX_SETTINGS_FILE = path.join(STORAGE_ROOT, "ui_ux_settings.json");
 const MCP_TOOLS_FILE = path.join(STORAGE_ROOT, "mcp_tools.json");
@@ -84,6 +85,11 @@ function saveCustomPages(pages: any[]): void {
 }
 
 function loadCustomBlogs(): any[] {
+  if (fs.existsSync(BLOG_POSTS_FILE)) {
+    try {
+      return JSON.parse(fs.readFileSync(BLOG_POSTS_FILE, "utf8"));
+    } catch {}
+  }
   if (fs.existsSync(CUSTOM_BLOGS_FILE)) {
     try {
       return JSON.parse(fs.readFileSync(CUSTOM_BLOGS_FILE, "utf8"));
@@ -93,6 +99,7 @@ function loadCustomBlogs(): any[] {
 }
 
 function saveCustomBlogs(blogs: any[]): void {
+  fs.writeFileSync(BLOG_POSTS_FILE, JSON.stringify(blogs, null, 2), "utf8");
   fs.writeFileSync(CUSTOM_BLOGS_FILE, JSON.stringify(blogs, null, 2), "utf8");
 }
 

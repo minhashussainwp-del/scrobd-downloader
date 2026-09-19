@@ -64,6 +64,60 @@ export function AdminSeoCrawler({ posts = [], customPages = [] }: AdminSeoCrawle
   const [sitemapCopied, setSitemapCopied] = useState<boolean>(false);
   const [isSitemapSyncing, setIsSitemapSyncing] = useState<boolean>(false);
 
+  // AI SEO ASSISTANT STATE
+  const [aiPromptRobots, setAiPromptRobots] = useState<string>("");
+  const [aiSeoLoading, setAiSeoLoading] = useState<boolean>(false);
+  const [aiDiagnostic, setAiDiagnostic] = useState<any>(null);
+  const [aiMessage, setAiMessage] = useState<string | null>(null);
+
+  const handleAiGenerateRobots = async () => {
+    setAiSeoLoading(true);
+    setAiMessage(null);
+    try {
+      const res = await fetch("/api/ai/generate-robots", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          prompt: aiPromptRobots || "Allow all search engines (Google, Bing, Yahoo), block /admin and /api endpoints, and include the Yoast sitemap index.",
+        }),
+      });
+      const data = await res.json();
+      if (res.ok && data.content) {
+        setRobotsContent(data.content);
+        setAiMessage("AI generated standards-compliant robots.txt! Click 'Deploy to Live Server' to apply.");
+      } else {
+        throw new Error(data.error || "Failed to generate robots.txt");
+      }
+    } catch (e: any) {
+      alert("AI Generation Error: " + e.message);
+    } finally {
+      setAiSeoLoading(false);
+    }
+  };
+
+  const handleAiDiagnoseAssets = async () => {
+    setAiSeoLoading(true);
+    setAiMessage(null);
+    try {
+      const res = await fetch("/api/ai/diagnose-seo-assets", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ type: "all" }),
+      });
+      const data = await res.json();
+      if (res.ok && data.diagnostic) {
+        setAiDiagnostic(data.diagnostic);
+        setAiMessage("Technical SEO and Sitemap analysis completed!");
+      } else {
+        throw new Error(data.error || "Diagnostic failed");
+      }
+    } catch (e: any) {
+      alert("Diagnostic Error: " + e.message);
+    } finally {
+      setAiSeoLoading(false);
+    }
+  };
+
   // Load initial content from server & fallback to localStorage
   useEffect(() => {
     const origin = typeof window !== "undefined" ? window.location.origin : "https://scribddownloader.org";
@@ -397,6 +451,77 @@ ${xmlEntries.join("\n")}
       {/* ========================================================= */}
       {activeSubTab === "robots" && (
         <div className="space-y-6">
+          {/* AI Robots Prompt Assistant Strip */}
+          <div className="p-5 bg-gradient-to-r from-indigo-950 via-slate-900 to-indigo-950 rounded-2xl text-white border border-indigo-500/30 shadow-lg space-y-4">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-lg bg-indigo-500/20 border border-indigo-400/30 flex items-center justify-center text-indigo-400">
+                  <Sparkles className="w-4 h-4" />
+                </div>
+                <div>
+                  <h3 className="text-sm font-bold text-white flex items-center gap-2">
+                    AI Robots.txt &amp; Crawler Optimization Assistant
+                  </h3>
+                  <p className="text-xs text-slate-300">
+                    Prompt AI to generate customized crawler rules (e.g. allow Googlebot/Bingbot, block rogue AI scrapers, protect admin routes).
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={handleAiDiagnoseAssets}
+                  disabled={aiSeoLoading}
+                  className="px-3 py-1.5 bg-white/10 hover:bg-white/20 text-white rounded-xl text-xs font-semibold flex items-center gap-1.5 transition"
+                >
+                  <Search className="w-3.5 h-3.5 text-indigo-300" />
+                  AI Audit Directives
+                </button>
+              </div>
+            </div>
+
+            {aiMessage && (
+              <div className="p-2.5 bg-emerald-950/80 border border-emerald-500/40 rounded-xl text-emerald-300 text-xs font-medium flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                <span>{aiMessage}</span>
+              </div>
+            )}
+
+            {aiDiagnostic && (
+              <div className="p-3 bg-white/5 border border-white/10 rounded-xl text-xs space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="font-bold text-indigo-300">SEO Health Score: {aiDiagnostic.robotsScore}/100</span>
+                  <span className="text-emerald-400 font-semibold">Sitemap Compatibility: {aiDiagnostic.sitemapScore}/100</span>
+                </div>
+                {aiDiagnostic.recommendations && aiDiagnostic.recommendations.map((rec: string, i: number) => (
+                  <p key={i} className="text-slate-300 flex items-start gap-1.5">
+                    <span className="text-indigo-400">•</span> {rec}
+                  </p>
+                ))}
+              </div>
+            )}
+
+            <div className="flex flex-col sm:flex-row gap-2">
+              <input
+                type="text"
+                value={aiPromptRobots}
+                onChange={(e) => setAiPromptRobots(e.target.value)}
+                placeholder="e.g. Block ChatGPT/GPTBot & CommonCrawl, allow Google & Bing, and link sitemap index..."
+                className="flex-1 px-3.5 py-2 rounded-xl bg-white/10 border border-white/20 text-white text-xs placeholder:text-slate-400 focus:outline-none focus:border-indigo-400"
+              />
+              <button
+                type="button"
+                onClick={handleAiGenerateRobots}
+                disabled={aiSeoLoading}
+                className="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 text-white text-xs font-bold rounded-xl shadow flex items-center justify-center gap-1.5 transition"
+              >
+                {aiSeoLoading ? <RefreshCw className="w-3.5 h-3.5 animate-spin" /> : <Sparkles className="w-3.5 h-3.5" />}
+                AI Auto-Generate Directives
+              </button>
+            </div>
+          </div>
+
           {robotsSavedSuccess && (
             <div className="p-3 bg-emerald-50 border border-emerald-200 rounded-xl text-xs text-emerald-800 font-bold flex items-center gap-2 shadow-xs">
               <Check className="w-4 h-4 text-emerald-600" />

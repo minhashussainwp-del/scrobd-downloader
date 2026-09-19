@@ -22,13 +22,19 @@ export function BlogListingPage({
   const [subscribedEmail, setSubscribedEmail] = useState("");
   const [subscribedSuccess, setSubscribedSuccess] = useState(false);
 
-  const categories = ["All", "Guides", "Tutorials", "Tech", "Tips"];
-
   const langMatchingPosts = useMemo(() => {
     const published = posts.filter((p) => p.status !== "draft");
     const matching = published.filter((p) => (p.language || "en") === currentLang);
     return matching.length > 0 ? matching : published;
   }, [posts, currentLang]);
+
+  const categories = useMemo(() => {
+    const set = new Set<string>();
+    langMatchingPosts.forEach((p) => {
+      if (p.category) set.add(p.category);
+    });
+    return ["All", ...Array.from(set)];
+  }, [langMatchingPosts]);
 
   const filteredPosts = useMemo(() => {
     return langMatchingPosts.filter((post) => {
