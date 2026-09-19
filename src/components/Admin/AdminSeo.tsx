@@ -53,6 +53,7 @@ export function AdminSeo({ customPages: propCustomPages, posts: propPosts }: Adm
   const [robotsLastModified, setRobotsLastModified] = useState<string>("Cached");
 
   // Sitemap state
+  const [sitemapType, setSitemapType] = useState<"index" | "posts" | "pages">("index");
   const [sitemapContent, setSitemapContent] = useState<string>("");
   const [sitemapSaved, setSitemapSaved] = useState(false);
   const [sitemapLoading, setSitemapLoading] = useState(false);
@@ -68,6 +69,26 @@ export function AdminSeo({ customPages: propCustomPages, posts: propPosts }: Adm
   const [copiedSitemap, setCopiedSitemap] = useState(false);
 
   // Load initial configurations from server / localStorage
+  const loadSitemapForType = (type: "index" | "posts" | "pages") => {
+    setSitemapLoading(true);
+    fetch(`/api/seo/sitemap?type=${type}`)
+      .then((res) => safeParseJson<{ content?: string; lastModified?: string }>(res))
+      .then((data) => {
+        if (data && data.content) {
+          setSitemapContent(data.content);
+          if (data.lastModified) setSitemapLastModified(new Date(data.lastModified).toLocaleString());
+        } else {
+          setSitemapContent(buildDynamicSitemapXml(siteOrigin, effectivePosts, effectiveCustomPages, ["en", "br", "es", "fr", "de", "id"], type));
+        }
+      })
+      .catch(() => {
+        setSitemapContent(buildDynamicSitemapXml(siteOrigin, effectivePosts, effectiveCustomPages, ["en", "br", "es", "fr", "de", "id"], type));
+      })
+      .finally(() => {
+        setSitemapLoading(false);
+      });
+  };
+
   useEffect(() => {
     // 1. Fetch robots.txt
     fetch("/api/seo/robots")
@@ -84,21 +105,9 @@ export function AdminSeo({ customPages: propCustomPages, posts: propPosts }: Adm
         setRobotsContent(loadRobotsTxt(siteOrigin));
       });
 
-    // 2. Fetch sitemap.xml
-    fetch("/api/seo/sitemap")
-      .then((res) => safeParseJson<{ content?: string; lastModified?: string }>(res))
-      .then((data) => {
-        if (data && data.content) {
-          setSitemapContent(data.content);
-          if (data.lastModified) setSitemapLastModified(new Date(data.lastModified).toLocaleString());
-        } else {
-          setSitemapContent(loadSitemapXml(siteOrigin, effectivePosts, effectiveCustomPages));
-        }
-      })
-      .catch(() => {
-        setSitemapContent(loadSitemapXml(siteOrigin, effectivePosts, effectiveCustomPages));
-      });
-  }, [siteOrigin]);
+    // 2. Fetch sitemap
+    loadSitemapForType(sitemapType);
+  }, [siteOrigin, sitemapType]);
 
   // ---------------------------------------------------------------------------
   // ROBOTS.TXT ACTIONS
@@ -194,27 +203,52 @@ Sitemap: ${siteOrigin}/sitemap.xml
   };
 
   // ---------------------------------------------------------------------------
-  // SITEMAP.XML ACTIONS
+  // SITEMAP ACTIONS (Yoast SEO Compatible)
   // ---------------------------------------------------------------------------
-  const handleAutoBuildSitemap = () => {
-    const xml = buildDynamicSitemapXml(
-      siteOrigin,
-      effectivePosts,
-      effectiveCustomPages,
-      ["en", "br", "es", "fr", "de", "id"]
-    );
-    setSitemapContent(xml);
+  const handleAutoBuildSitemap = async () => {
+    setSitemapLoading(true);
+    try {
+      const res = await fetch("/api/seo/sitemap", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "rebuild" }),
+      });
+      const data = await safeParseJson<{ success?: boolean; content?: string }>(res);
+      if (data?.success) {
+        loadSitemapForType(sitemapType);
+        setSitemapSaved(true);
+        setTimeout(() => setSitemapSaved(false), 3000);
+      } else {
+        const xml = buildDynamicSitemapXml(
+          siteOrigin,
+          effectivePosts,
+          effectiveCustomPages,
+          ["en", "br", "es", "fr", "de", "id"],
+          sitemapType
+        );
+        setSitemapContent(xml);
+      }
+    } catch {
+      const xml = buildDynamicSitemapXml(
+        siteOrigin,
+        effectivePosts,
+        effectiveCustomPages,
+        ["en", "br", "es", "fr", "de", "id"],
+        sitemapType
+      );
+      setSitemapContent(xml);
+    } finally {
+      setSitemapLoading(false);
+    }
   };
 
   const handleSaveSitemap = async () => {
     setSitemapLoading(true);
-    saveSitemapXml(sitemapContent);
-
     try {
       await fetch("/api/seo/sitemap", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ content: sitemapContent }),
+        body: JSON.stringify({ content: sitemapContent, type: sitemapType }),
       });
       setSitemapLastModified("Just now");
     } catch (e) {
@@ -227,11 +261,17 @@ Sitemap: ${siteOrigin}/sitemap.xml
   };
 
   const handleDownloadSitemap = () => {
+    const filename =
+      sitemapType === "index"
+        ? "sitemap_index.xml"
+        : sitemapType === "posts"
+        ? "post-sitemap.xml"
+        : "page-sitemap.xml";
     const blob = new Blob([sitemapContent], { type: "application/xml" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = "sitemap.xml";
+    a.download = filename;
     a.click();
     URL.revokeObjectURL(url);
   };
@@ -285,11 +325,26 @@ Sitemap: ${siteOrigin}/sitemap.xml
     });
   };
 
-  // Extract URLs list from sitemapContent for inspection
+  // Extract URLs or Sitemaps list from sitemapContent for inspection
   const parsedSitemapUrls = React.useMemo(() => {
-    const urls: Array<{ loc: string; lastmod?: string; priority?: string; changefreq?: string }> = [];
-    const urlBlocks = sitemapContent.match(/<url>([\s\S]*?)<\/url>/g) || [];
+    const urls: Array<{ loc: string; lastmod?: string; priority?: string; changefreq?: string; type?: string }> = [];
 
+    // 1. Check for sitemap index elements
+    const sitemapBlocks = sitemapContent.match(/<sitemap>([\s\S]*?)<\/sitemap>/g) || [];
+    for (const block of sitemapBlocks) {
+      const locMatch = block.match(/<loc>(.*?)<\/loc>/);
+      const lastmodMatch = block.match(/<lastmod>(.*?)<\/lastmod>/);
+      if (locMatch) {
+        urls.push({
+          loc: locMatch[1].trim(),
+          lastmod: lastmodMatch ? lastmodMatch[1].trim() : undefined,
+          type: "Sub-Sitemap",
+        });
+      }
+    }
+
+    // 2. Check for standard url elements
+    const urlBlocks = sitemapContent.match(/<url>([\s\S]*?)<\/url>/g) || [];
     for (const block of urlBlocks) {
       const locMatch = block.match(/<loc>(.*?)<\/loc>/);
       const lastmodMatch = block.match(/<lastmod>(.*?)<\/lastmod>/);
@@ -298,10 +353,11 @@ Sitemap: ${siteOrigin}/sitemap.xml
 
       if (locMatch) {
         urls.push({
-          loc: locMatch[1],
-          lastmod: lastmodMatch ? lastmodMatch[1] : undefined,
-          priority: priorityMatch ? priorityMatch[1] : undefined,
-          changefreq: changefreqMatch ? changefreqMatch[1] : undefined,
+          loc: locMatch[1].trim(),
+          lastmod: lastmodMatch ? lastmodMatch[1].trim() : undefined,
+          priority: priorityMatch ? priorityMatch[1].trim() : undefined,
+          changefreq: changefreqMatch ? changefreqMatch[1].trim() : undefined,
+          type: "Page URL",
         });
       }
     }
@@ -338,18 +394,37 @@ Sitemap: ${siteOrigin}/sitemap.xml
             href="/robots.txt"
             target="_blank"
             rel="noreferrer"
-            className="px-3 py-1.5 rounded-xl bg-slate-50 border border-slate-200 hover:bg-indigo-50 hover:text-indigo-600 hover:border-indigo-200 text-slate-700 text-xs font-bold inline-flex items-center gap-1.5 transition"
+            className="px-2.5 py-1.5 rounded-xl bg-slate-50 border border-slate-200 hover:bg-indigo-50 hover:text-indigo-600 hover:border-indigo-200 text-slate-700 text-xs font-bold inline-flex items-center gap-1.5 transition"
           >
-            <span>Live /robots.txt</span>
+            <span>/robots.txt</span>
             <ExternalLink className="w-3.5 h-3.5" />
           </a>
           <a
-            href="/sitemap.xml"
+            href="/sitemap_index.xml"
             target="_blank"
             rel="noreferrer"
-            className="px-3 py-1.5 rounded-xl bg-slate-50 border border-slate-200 hover:bg-indigo-50 hover:text-indigo-600 hover:border-indigo-200 text-slate-700 text-xs font-bold inline-flex items-center gap-1.5 transition"
+            className="px-2.5 py-1.5 rounded-xl bg-indigo-50 border border-indigo-200 text-indigo-700 hover:bg-indigo-100 text-xs font-bold inline-flex items-center gap-1.5 transition"
           >
-            <span>Live /sitemap.xml</span>
+            <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+            <span>Yoast /sitemap_index.xml</span>
+            <ExternalLink className="w-3.5 h-3.5" />
+          </a>
+          <a
+            href="/post-sitemap.xml"
+            target="_blank"
+            rel="noreferrer"
+            className="px-2.5 py-1.5 rounded-xl bg-slate-50 border border-slate-200 hover:bg-indigo-50 hover:text-indigo-600 hover:border-indigo-200 text-slate-700 text-xs font-bold inline-flex items-center gap-1.5 transition"
+          >
+            <span>/post-sitemap.xml</span>
+            <ExternalLink className="w-3.5 h-3.5" />
+          </a>
+          <a
+            href="/page-sitemap.xml"
+            target="_blank"
+            rel="noreferrer"
+            className="px-2.5 py-1.5 rounded-xl bg-slate-50 border border-slate-200 hover:bg-indigo-50 hover:text-indigo-600 hover:border-indigo-200 text-slate-700 text-xs font-bold inline-flex items-center gap-1.5 transition"
+          >
+            <span>/page-sitemap.xml</span>
             <ExternalLink className="w-3.5 h-3.5" />
           </a>
         </div>
@@ -528,25 +603,96 @@ Sitemap: ${siteOrigin}/sitemap.xml
       )}
 
       {/* =================================================================== */}
-      {/* 2. SITEMAP.XML GENERATOR TAB                                        */}
+      {/* 2. SITEMAP.XML GENERATOR TAB (Yoast SEO Compatible)                  */}
       {/* =================================================================== */}
       {activeSubTab === "sitemap" && (
         <div className="space-y-6">
           {sitemapSaved && (
             <div className="p-3.5 bg-emerald-50 border border-emerald-200 rounded-xl text-xs text-emerald-900 font-bold flex items-center gap-2 shadow-xs">
               <Check className="w-4 h-4 text-emerald-600" />
-              <span>sitemap.xml has been successfully saved, updated, and deployed live to /sitemap.xml!</span>
+              <span>Yoast SEO Sitemaps successfully updated and published to the live server!</span>
             </div>
           )}
+
+          {/* Yoast SEO Structure Notice & Sub-Sitemap Selector */}
+          <div className="bg-slate-900 text-white p-5 rounded-2xl border border-slate-800 shadow-md">
+            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+              <div>
+                <div className="flex items-center gap-2">
+                  <span className="px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 font-mono text-[11px] font-bold border border-emerald-500/30">
+                    Yoast SEO Architecture Active
+                  </span>
+                  <span className="text-xs text-slate-400">Multi-File XML Specification</span>
+                </div>
+                <h3 className="text-base font-extrabold text-white mt-1">
+                  Select XML Sitemap to Inspect / Edit
+                </h3>
+                <p className="text-xs text-slate-400 mt-0.5">
+                  The root <code className="text-emerald-400 font-mono font-bold">/sitemap_index.xml</code> indexes your posts and pages with visual XSL formatting.
+                </p>
+              </div>
+
+              {/* Sub-Sitemap Switcher Pills */}
+              <div className="flex flex-wrap items-center gap-2 bg-slate-800/80 p-1.5 rounded-xl border border-slate-700">
+                <button
+                  type="button"
+                  onClick={() => setSitemapType("index")}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 cursor-pointer ${
+                    sitemapType === "index"
+                      ? "bg-indigo-600 text-white shadow-xs"
+                      : "text-slate-300 hover:text-white hover:bg-slate-700"
+                  }`}
+                >
+                  <Layers className="w-3.5 h-3.5" />
+                  <span>sitemap.xml (Standard &lt;urlset&gt;)</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setSitemapType("posts")}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 cursor-pointer ${
+                    sitemapType === "posts"
+                      ? "bg-indigo-600 text-white shadow-xs"
+                      : "text-slate-300 hover:text-white hover:bg-slate-700"
+                  }`}
+                >
+                  <FileCode className="w-3.5 h-3.5" />
+                  <span>post-sitemap.xml</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setSitemapType("pages")}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 cursor-pointer ${
+                    sitemapType === "pages"
+                      ? "bg-indigo-600 text-white shadow-xs"
+                      : "text-slate-300 hover:text-white hover:bg-slate-700"
+                  }`}
+                >
+                  <Globe className="w-3.5 h-3.5" />
+                  <span>page-sitemap.xml</span>
+                </button>
+              </div>
+            </div>
+          </div>
 
           {/* Action Header */}
           <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-2xs flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
-              <h3 className="text-sm font-extrabold text-slate-900">
-                Dynamic sitemap.xml Builder ({parsedSitemapUrls.length} Indexed Pages)
+              <h3 className="text-sm font-extrabold text-slate-900 flex items-center gap-2">
+                <span>
+                  {sitemapType === "index"
+                    ? "Main Sitemap (sitemap.xml)"
+                    : sitemapType === "posts"
+                    ? "Post Sitemap (post-sitemap.xml)"
+                    : "Page Sitemap (page-sitemap.xml)"}
+                </span>
+                <span className="text-xs font-mono font-normal text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+                  {parsedSitemapUrls.length} URLs
+                </span>
               </h3>
               <p className="text-xs text-slate-500 mt-0.5">
-                Includes all 6 language versions, published blog posts, and active custom pages. Last updated:{" "}
+                Format: <code className="font-mono text-slate-700 font-semibold">&lt;urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"&gt;</code> with <code className="font-mono text-slate-700 font-semibold">&lt;priority&gt;</code> and <code className="font-mono text-slate-700 font-semibold">&lt;lastmod&gt;</code>. Last updated:{" "}
                 <span className="font-semibold text-slate-700">{sitemapLastModified}</span>
               </p>
             </div>
@@ -555,11 +701,12 @@ Sitemap: ${siteOrigin}/sitemap.xml
               <button
                 type="button"
                 onClick={handleAutoBuildSitemap}
-                className="px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold inline-flex items-center gap-1.5 cursor-pointer shadow-xs"
-                title="Automatically scan routes, languages, blog posts, and custom pages to build sitemap"
+                disabled={sitemapLoading}
+                className="px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold inline-flex items-center gap-1.5 cursor-pointer shadow-xs disabled:opacity-50"
+                title="Automatically scan routes, languages, blog posts, and custom pages to rebuild all Yoast sitemaps"
               >
-                <RefreshCw className="w-3.5 h-3.5" />
-                <span>Auto-Build from Site Data</span>
+                <RefreshCw className={`w-3.5 h-3.5 ${sitemapLoading ? "animate-spin" : ""}`} />
+                <span>Rebuild All Yoast Sitemaps</span>
               </button>
 
               <button
@@ -591,7 +738,7 @@ Sitemap: ${siteOrigin}/sitemap.xml
                 ) : (
                   <Save className="w-3.5 h-3.5" />
                 )}
-                <span>Save & Update sitemap.xml</span>
+                <span>Save Current XML</span>
               </button>
             </div>
           </div>
@@ -600,10 +747,16 @@ Sitemap: ${siteOrigin}/sitemap.xml
           <div className="bg-slate-900 rounded-2xl border border-slate-800 overflow-hidden shadow-sm">
             <div className="px-4 py-2.5 bg-slate-800/80 border-b border-slate-700 flex items-center justify-between text-xs text-slate-400">
               <div className="flex items-center gap-2 font-mono">
-                <span className="w-2.5 h-2.5 rounded-full bg-blue-500"></span>
-                <span>sitemap.xml - Standard XML URLSet Schema 0.9</span>
+                <span className="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+                <span>
+                  {sitemapType === "index"
+                    ? "sitemap_index.xml (Yoast Sitemap Index)"
+                    : sitemapType === "posts"
+                    ? "post-sitemap.xml (Yoast Post URLSet)"
+                    : "page-sitemap.xml (Yoast Page URLSet)"}
+                </span>
               </div>
-              <span className="text-[11px] font-sans text-slate-400">Editable XML code</span>
+              <span className="text-[11px] font-sans text-slate-400">Editable XML source</span>
             </div>
 
             <textarea
@@ -619,15 +772,21 @@ Sitemap: ${siteOrigin}/sitemap.xml
           <div className="bg-white rounded-2xl border border-slate-200 shadow-2xs overflow-hidden">
             <div className="p-4 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <div>
-                <h4 className="text-sm font-extrabold text-slate-900">Parsed URL Entries ({filteredUrls.length})</h4>
-                <p className="text-xs text-slate-500">Overview of all paths currently represented in the XML sitemap.</p>
+                <h4 className="text-sm font-extrabold text-slate-900">
+                  {sitemapType === "index" ? "Indexed Sub-Sitemaps" : "Parsed URL Entries"} ({filteredUrls.length})
+                </h4>
+                <p className="text-xs text-slate-500">
+                  {sitemapType === "index"
+                    ? "Sub-sitemaps included in the Yoast sitemap index."
+                    : "URLs and metadata contained in this sitemap partition."}
+                </p>
               </div>
 
               <div className="relative w-full sm:w-64">
                 <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
                 <input
                   type="text"
-                  placeholder="Filter URLs..."
+                  placeholder="Filter entries..."
                   value={sitemapFilter}
                   onChange={(e) => setSitemapFilter(e.target.value)}
                   className="w-full pl-9 pr-3 py-1.5 rounded-xl border border-slate-200 text-xs focus:outline-none focus:border-indigo-500"
@@ -641,7 +800,6 @@ Sitemap: ${siteOrigin}/sitemap.xml
                   <tr>
                     <th className="px-4 py-2.5">Location URL</th>
                     <th className="px-4 py-2.5">Priority</th>
-                    <th className="px-4 py-2.5">Change Frequency</th>
                     <th className="px-4 py-2.5">Last Modified</th>
                     <th className="px-4 py-2.5 text-right">View</th>
                   </tr>
@@ -650,16 +808,19 @@ Sitemap: ${siteOrigin}/sitemap.xml
                   {filteredUrls.map((item, idx) => (
                     <tr key={idx} className="hover:bg-slate-50 transition font-mono">
                       <td className="px-4 py-2 text-slate-800 font-semibold truncate max-w-sm">{item.loc}</td>
-                      <td className="px-4 py-2 text-indigo-600 font-bold">{item.priority || "0.5"}</td>
-                      <td className="px-4 py-2 text-slate-500 font-sans">{item.changefreq || "weekly"}</td>
-                      <td className="px-4 py-2 text-slate-400 text-[11px]">{item.lastmod || "-"}</td>
+                      <td className="px-4 py-2 text-indigo-600 font-bold">
+                        <span className="px-2 py-0.5 rounded bg-indigo-50 text-indigo-700 border border-indigo-200 text-[11px]">
+                          {item.priority || (item.type === "Sub-Sitemap" ? "-" : "0.80")}
+                        </span>
+                      </td>
+                      <td className="px-4 py-2 text-slate-500 text-[11px]">{item.lastmod || "-"}</td>
                       <td className="px-4 py-2 text-right">
                         <a
                           href={item.loc}
                           target="_blank"
                           rel="noreferrer"
                           className="text-slate-400 hover:text-indigo-600 inline-block p-1"
-                          title="Open URL"
+                          title="Open URL in new tab"
                         >
                           <ExternalLink className="w-3.5 h-3.5" />
                         </a>
@@ -668,8 +829,8 @@ Sitemap: ${siteOrigin}/sitemap.xml
                   ))}
                   {filteredUrls.length === 0 && (
                     <tr>
-                      <td colSpan={5} className="px-4 py-6 text-center text-slate-400 font-sans text-xs">
-                        No URLs matching the filter.
+                      <td colSpan={4} className="px-4 py-6 text-center text-slate-400 font-sans text-xs">
+                        No entries matching the filter.
                       </td>
                     </tr>
                   )}

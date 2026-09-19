@@ -7,7 +7,10 @@
     "language": "br",
     "translationGroupId": "group-how-to-download",
     "status": "published",
-    "date": "September 17, 2026"
+    "date": "September 17, 2026",
+    "published": true,
+    "isPublished": true,
+    "updatedAt": "2026-09-19T10:22:51.845Z"
   },
   {
     "id": "blog-1",
@@ -17,7 +20,10 @@
     "language": "br",
     "translationGroupId": "group-read-on-kindle",
     "status": "published",
-    "date": "September 17, 2026"
+    "date": "September 17, 2026",
+    "published": true,
+    "isPublished": true,
+    "updatedAt": "2026-09-19T10:22:51.846Z"
   },
   {
     "id": "blog-2",
@@ -27,7 +33,10 @@
     "language": "br",
     "translationGroupId": "group-preview-pdf",
     "status": "published",
-    "date": "September 17, 2026"
+    "date": "September 17, 2026",
+    "published": true,
+    "isPublished": true,
+    "updatedAt": "2026-09-19T10:22:51.846Z"
   },
   {
     "id": "blog-3",
@@ -37,7 +46,10 @@
     "language": "de",
     "translationGroupId": "group-preview-pdf",
     "status": "published",
-    "date": "September 17, 2026"
+    "date": "September 17, 2026",
+    "published": true,
+    "isPublished": true,
+    "updatedAt": "2026-09-19T10:22:51.846Z"
   },
   {
     "id": "blog-4",
@@ -47,7 +59,10 @@
     "language": "de",
     "translationGroupId": "group-how-to-download",
     "status": "published",
-    "date": "September 17, 2026"
+    "date": "September 17, 2026",
+    "published": true,
+    "isPublished": true,
+    "updatedAt": "2026-09-19T10:22:51.846Z"
   },
   {
     "id": "blog-5",
@@ -57,7 +72,10 @@
     "language": "de",
     "translationGroupId": "group-read-on-kindle",
     "status": "published",
-    "date": "September 17, 2026"
+    "date": "September 17, 2026",
+    "published": true,
+    "isPublished": true,
+    "updatedAt": "2026-09-19T10:22:51.846Z"
   },
   {
     "id": "blog-6",
@@ -67,7 +85,10 @@
     "language": "en",
     "translationGroupId": "group-how-to-download",
     "status": "published",
-    "date": "September 17, 2026"
+    "date": "September 17, 2026",
+    "published": true,
+    "isPublished": true,
+    "updatedAt": "2026-09-19T10:22:51.846Z"
   },
   {
     "id": "blog-7",
@@ -77,7 +98,10 @@
     "language": "en",
     "translationGroupId": "group-preview-pdf",
     "status": "published",
-    "date": "September 17, 2026"
+    "date": "September 17, 2026",
+    "published": true,
+    "isPublished": true,
+    "updatedAt": "2026-09-19T10:22:51.846Z"
   },
   {
     "id": "blog-8",
@@ -87,7 +111,10 @@
     "language": "en",
     "translationGroupId": "group-academic",
     "status": "published",
-    "date": "September 17, 2026"
+    "date": "September 17, 2026",
+    "published": true,
+    "isPublished": true,
+    "updatedAt": "2026-09-19T10:22:51.846Z"
   },
   {
     "id": "blog-9",
@@ -97,7 +124,10 @@
     "language": "en",
     "translationGroupId": "group-read-on-kindle",
     "status": "published",
-    "date": "September 17, 2026"
+    "date": "September 17, 2026",
+    "published": true,
+    "isPublished": true,
+    "updatedAt": "2026-09-19T10:22:51.846Z"
   },
   {
     "id": "blog-10",
@@ -107,7 +137,10 @@
     "language": "en",
     "translationGroupId": "group-formatting-issues",
     "status": "published",
-    "date": "September 17, 2026"
+    "date": "September 17, 2026",
+    "published": true,
+    "isPublished": true,
+    "updatedAt": "2026-09-19T10:22:51.846Z"
   },
   {
     "id": "blog-11",
@@ -117,7 +150,10 @@
     "language": "es",
     "translationGroupId": "group-how-to-download",
     "status": "published",
-    "date": "September 17, 2026"
+    "date": "September 17, 2026",
+    "published": true,
+    "isPublished": true,
+    "updatedAt": "2026-09-19T10:22:51.846Z"
   },
   {
     "id": "blog-12",
@@ -127,7 +163,10 @@
     "language": "es",
     "translationGroupId": "group-read-on-kindle",
     "status": "published",
-    "date": "September 17, 2026"
+    "date": "September 17, 2026",
+    "published": true,
+    "isPublished": true,
+    "updatedAt": "2026-09-19T10:22:51.846Z"
   },
   {
     "id": "blog-13",
@@ -137,7 +176,10 @@
     "language": "es",
     "translationGroupId": "group-preview-pdf",
     "status": "published",
-    "date": "September 17, 2026"
+    "date": "September 17, 2026",
+    "published": true,
+    "isPublished": true,
+    "updatedAt": "2026-09-19T10:22:51.846Z"
   },
   {
     "id": "blog-14",
@@ -147,7 +189,10 @@
     "language": "fr",
     "translationGroupId": "group-read-on-kindle",
     "status": "published",
-    "date": "September 17, 2026"
+    "date": "September 17, 2026",
+    "published": true,
+    "isPublished": true,
+    "updatedAt": "2026-09-19T10:22:51.846Z"
   },
   {
     "id": "blog-15",
@@ -157,7 +202,10 @@
     "language": "fr",
     "translationGroupId": "group-preview-pdf",
     "status": "published",
-    "date": "September 17, 2026"
+    "date": "September 17, 2026",
+    "published": true,
+    "isPublished": true,
+    "updatedAt": "2026-09-19T10:22:51.846Z"
   },
   {
     "id": "blog-16",
@@ -167,7 +215,10 @@
     "language": "fr",
     "translationGroupId": "group-how-to-download",
     "status": "published",
-    "date": "September 17, 2026"
+    "date": "September 17, 2026",
+    "published": true,
+    "isPublished": true,
+    "updatedAt": "2026-09-19T10:22:51.846Z"
   },
   {
     "id": "blog-17",
@@ -177,7 +228,10 @@
     "language": "id",
     "translationGroupId": "group-preview-pdf",
     "status": "published",
-    "date": "September 17, 2026"
+    "date": "September 17, 2026",
+    "published": true,
+    "isPublished": true,
+    "updatedAt": "2026-09-19T10:22:51.846Z"
   },
   {
     "id": "blog-18",
@@ -187,7 +241,10 @@
     "language": "id",
     "translationGroupId": "group-read-on-kindle",
     "status": "published",
-    "date": "September 17, 2026"
+    "date": "September 17, 2026",
+    "published": true,
+    "isPublished": true,
+    "updatedAt": "2026-09-19T10:22:51.846Z"
   },
   {
     "id": "blog-19",
@@ -197,7 +254,10 @@
     "language": "id",
     "translationGroupId": "group-how-to-download",
     "status": "published",
-    "date": "September 17, 2026"
+    "date": "September 17, 2026",
+    "published": true,
+    "isPublished": true,
+    "updatedAt": "2026-09-19T10:22:51.846Z"
   },
   {
     "id": "blog-20",
@@ -207,7 +267,10 @@
     "language": "en",
     "translationGroupId": "group-unblur",
     "status": "published",
-    "date": "September 17, 2026"
+    "date": "September 17, 2026",
+    "published": true,
+    "isPublished": true,
+    "updatedAt": "2026-09-19T10:22:51.846Z"
   },
   {
     "id": "blog-21",
@@ -217,7 +280,10 @@
     "language": "en",
     "translationGroupId": "group-mobile",
     "status": "published",
-    "date": "September 17, 2026"
+    "date": "September 17, 2026",
+    "published": true,
+    "isPublished": true,
+    "updatedAt": "2026-09-19T10:22:51.846Z"
   },
   {
     "id": "blog-22",
@@ -227,7 +293,10 @@
     "language": "en",
     "translationGroupId": "group-slides",
     "status": "published",
-    "date": "September 17, 2026"
+    "date": "September 17, 2026",
+    "published": true,
+    "isPublished": true,
+    "updatedAt": "2026-09-19T10:22:51.846Z"
   },
   {
     "id": "blog-23",
@@ -237,7 +306,10 @@
     "language": "en",
     "translationGroupId": "group-docdownloader-alt",
     "status": "published",
-    "date": "September 17, 2026"
+    "date": "September 17, 2026",
+    "published": true,
+    "isPublished": true,
+    "updatedAt": "2026-09-19T10:22:51.846Z"
   },
   {
     "id": "blog-24",
@@ -247,7 +319,10 @@
     "language": "es",
     "translationGroupId": "group-unblur",
     "status": "published",
-    "date": "September 17, 2026"
+    "date": "September 17, 2026",
+    "published": true,
+    "isPublished": true,
+    "updatedAt": "2026-09-19T10:22:51.846Z"
   },
   {
     "id": "blog-25",
@@ -257,7 +332,10 @@
     "language": "br",
     "translationGroupId": "group-unblur",
     "status": "published",
-    "date": "September 17, 2026"
+    "date": "September 17, 2026",
+    "published": true,
+    "isPublished": true,
+    "updatedAt": "2026-09-19T10:22:51.846Z"
   },
   {
     "id": "blog-26",
@@ -267,7 +345,10 @@
     "language": "id",
     "translationGroupId": "group-unblur",
     "status": "published",
-    "date": "September 17, 2026"
+    "date": "September 17, 2026",
+    "published": true,
+    "isPublished": true,
+    "updatedAt": "2026-09-19T10:22:51.846Z"
   },
   {
     "id": "blog-27",
@@ -277,7 +358,10 @@
     "language": "es",
     "translationGroupId": "group-mobile",
     "status": "published",
-    "date": "September 17, 2026"
+    "date": "September 17, 2026",
+    "published": true,
+    "isPublished": true,
+    "updatedAt": "2026-09-19T10:22:51.846Z"
   },
   {
     "id": "blog-28",
@@ -287,7 +371,10 @@
     "language": "br",
     "translationGroupId": "group-mobile",
     "status": "published",
-    "date": "September 17, 2026"
+    "date": "September 17, 2026",
+    "published": true,
+    "isPublished": true,
+    "updatedAt": "2026-09-19T10:22:51.846Z"
   },
   {
     "id": "blog-29",
@@ -297,7 +384,10 @@
     "language": "es",
     "translationGroupId": "group-formatting-issues",
     "status": "published",
-    "date": "September 17, 2026"
+    "date": "September 17, 2026",
+    "published": true,
+    "isPublished": true,
+    "updatedAt": "2026-09-19T10:22:51.846Z"
   },
   {
     "id": "blog-30",
@@ -307,7 +397,10 @@
     "language": "br",
     "translationGroupId": "group-formatting-issues",
     "status": "published",
-    "date": "September 17, 2026"
+    "date": "September 17, 2026",
+    "published": true,
+    "isPublished": true,
+    "updatedAt": "2026-09-19T10:22:51.846Z"
   },
   {
     "id": "blog-31",
@@ -317,7 +410,10 @@
     "language": "en",
     "translationGroupId": "group-convert-epub",
     "status": "published",
-    "date": "September 17, 2026"
+    "date": "September 17, 2026",
+    "published": true,
+    "isPublished": true,
+    "updatedAt": "2026-09-19T10:22:51.846Z"
   },
   {
     "id": "blog-32",
@@ -327,7 +423,10 @@
     "language": "en",
     "translationGroupId": "group-viewer-architecture",
     "status": "published",
-    "date": "September 17, 2026"
+    "date": "September 17, 2026",
+    "published": true,
+    "isPublished": true,
+    "updatedAt": "2026-09-19T10:22:51.846Z"
   },
   {
     "id": "blog-33",
@@ -337,6 +436,9 @@
     "language": "en",
     "translationGroupId": "group-7-tips",
     "status": "published",
-    "date": "September 17, 2026"
+    "date": "September 17, 2026",
+    "published": true,
+    "isPublished": true,
+    "updatedAt": "2026-09-19T10:22:51.846Z"
   }
 ]

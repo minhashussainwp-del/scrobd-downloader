@@ -79,6 +79,9 @@ const BLOG_POSTS_FILE = path.join(SERVER_STORAGE_DIR, "blog_posts.json");
 const CUSTOM_PAGES_FILE = path.join(SERVER_STORAGE_DIR, "custom_pages.json");
 const ROBOTS_FILE = path.join(SEO_DIR, "robots.txt");
 const SITEMAP_FILE = path.join(SEO_DIR, "sitemap.xml");
+const SITEMAP_INDEX_FILE = path.join(SEO_DIR, "sitemap_index.xml");
+const POST_SITEMAP_FILE = path.join(SEO_DIR, "post-sitemap.xml");
+const PAGE_SITEMAP_FILE = path.join(SEO_DIR, "page-sitemap.xml");
 
 // Ensure temp, storage, and SEO directories exist
 [DOWNLOADS_ROOT, CACHE_ROOT, SERVER_STORAGE_DIR, SEO_DIR, PUBLIC_DIR].forEach((dir) => {
@@ -87,24 +90,53 @@ const SITEMAP_FILE = path.join(SEO_DIR, "sitemap.xml");
   }
 });
 
-let robotsTxtCache = "";
 let robotsUpdatedAt = new Date().toISOString();
-let sitemapXmlCache = "";
 let sitemapUpdatedAt = new Date().toISOString();
 
+interface CachedSitemapSet {
+  indexXml: string;
+  postXml: string;
+  pageXml: string;
+  allUrlsetXml: string;
+  updatedAt: string;
+}
+
+const sitemapsByOrigin = new Map<string, CachedSitemapSet>();
+
+function invalidateSitemapCache() {
+  sitemapsByOrigin.clear();
+}
+
 function getRequestOrigin(req?: any): string {
-  if (!req) return "https://example.com";
-  const forwardedProto = req.headers?.["x-forwarded-proto"];
-  const proto = typeof forwardedProto === "string"
-    ? forwardedProto.split(",")[0].trim()
-    : req.socket?.encrypted
-    ? "https"
-    : req.protocol || "https";
-  const forwardedHost = req.headers?.["x-forwarded-host"];
-  const host = typeof forwardedHost === "string"
-    ? forwardedHost.split(",")[0].trim()
-    : req.get?.("host") || "localhost:3000";
-  return `${proto}://${host}`;
+  if (req) {
+    const forwardedProto = req.headers?.["x-forwarded-proto"];
+    let proto = "https";
+    if (typeof forwardedProto === "string" && forwardedProto.trim()) {
+      proto = forwardedProto.split(",")[0].trim().toLowerCase();
+    } else if (req.protocol) {
+      proto = req.protocol.toLowerCase();
+    } else if (req.socket?.encrypted) {
+      proto = "https";
+    } else {
+      proto = "http";
+    }
+
+    const forwardedHost = req.headers?.["x-forwarded-host"];
+    let host = "";
+    if (typeof forwardedHost === "string" && forwardedHost.trim()) {
+      host = forwardedHost.split(",")[0].trim();
+    } else {
+      host = req.get?.("host") || req.headers?.host || "";
+    }
+
+    if (host) {
+      return `${proto}://${host}`.replace(/\/$/, "");
+    }
+  }
+
+  if (process.env.APP_URL) return process.env.APP_URL.replace(/\/$/, "");
+  if (process.env.PUBLIC_URL) return process.env.PUBLIC_URL.replace(/\/$/, "");
+  return "";
 }
 
 function getBlogPostsOnServer(): any[] {
@@ -143,15 +175,23 @@ function saveCustomPagesOnServer(pages: any[]) {
   }
 }
 
-function formatW3CDate(val?: any): string {
-  if (!val) return new Date().toISOString().split("T")[0];
+function formatYoastDate(val?: any): string {
+  if (!val) {
+    const now = new Date();
+    return now.toISOString().replace(/\.\d{3}Z$/, "+00:00");
+  }
   const s = String(val).trim();
-  if (/^\d{4}-\d{2}-\d{2}$/.test(s)) return s;
+  if (/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/.test(s)) {
+    return s.slice(0, 19) + "+00:00";
+  }
+  if (/^\d{4}-\d{2}-\d{2}$/.test(s)) {
+    return `${s}T00:00:00+00:00`;
+  }
   const parsed = Date.parse(s);
   if (!isNaN(parsed)) {
-    return new Date(parsed).toISOString().split("T")[0];
+    return new Date(parsed).toISOString().replace(/\.\d{3}Z$/, "+00:00");
   }
-  return new Date().toISOString().split("T")[0];
+  return new Date().toISOString().replace(/\.\d{3}Z$/, "+00:00");
 }
 
 function cleanSlugForUrl(rawSlug?: string, idFallback?: string): string {
@@ -173,20 +213,14 @@ function escapeXml(str: string): string {
     .replace(/'/g, "&apos;");
 }
 
-function buildServerSitemap(origin: string, postsParam?: any[], customPagesParam?: any[]): string {
+function buildPostSitemap(origin: string, postsParam?: any[]): string {
   const base = origin.replace(/\/$/, "");
-  const today = new Date().toISOString().split("T")[0];
+  const today = formatYoastDate();
   const languages = ["en", "br", "es", "fr", "de", "id"];
-  const coreRoutes = [
-    { path: "", priority: "1.0", changefreq: "daily" },
-    { path: "how-it-works", priority: "0.8", changefreq: "weekly" },
-    { path: "blog", priority: "0.9", changefreq: "daily" },
-    { path: "about", priority: "0.7", changefreq: "monthly" },
-    { path: "contact", priority: "0.6", changefreq: "monthly" },
-    { path: "privacy", priority: "0.5", changefreq: "monthly" },
-    { path: "terms", priority: "0.5", changefreq: "monthly" },
-    { path: "sitemap", priority: "0.4", changefreq: "weekly" },
-  ];
+  let posts: any[] = postsParam || [];
+  if (!posts || posts.length === 0) {
+    posts = getBlogPostsOnServer();
+  }
 
   const seenUrls = new Set<string>();
   const xmlEntries: string[] = [];
@@ -194,60 +228,26 @@ function buildServerSitemap(origin: string, postsParam?: any[], customPagesParam
   const addUrlEntry = (
     loc: string,
     lastmod: string,
-    changefreq: string,
-    priority: string,
-    alternates: Array<{ lang: string; href: string }> = []
+    imageUrl?: string,
+    priority: string = "0.80"
   ) => {
     const cleanUrl = loc.trim();
     if (!cleanUrl || seenUrls.has(cleanUrl)) return;
     seenUrls.add(cleanUrl);
 
-    let altXml = "";
-    if (alternates.length > 0) {
-      altXml = alternates
-        .filter((a) => a.href && a.href.trim())
-        .map((a) => `    <xhtml:link rel="alternate" hreflang="${escapeXml(a.lang)}" href="${escapeXml(a.href.trim())}" />`)
-        .join("\n");
-      if (altXml) altXml = "\n" + altXml;
+    let imgXml = "";
+    if (imageUrl && imageUrl.trim()) {
+      imgXml = `\n\t\t<image:image>\n\t\t\t<image:loc>${escapeXml(imageUrl.trim())}</image:loc>\n\t\t</image:image>`;
     }
 
-    const safeLastmod = formatW3CDate(lastmod);
+    const safeLastmod = formatYoastDate(lastmod);
 
-    xmlEntries.push(`  <url>
-    <loc>${escapeXml(cleanUrl)}</loc>${altXml}
-    <lastmod>${safeLastmod}</lastmod>
-    <changefreq>${changefreq}</changefreq>
-    <priority>${priority}</priority>
-  </url>`);
+    xmlEntries.push(`\t<url>
+\t\t<loc>${escapeXml(cleanUrl)}</loc>
+\t\t<lastmod>${safeLastmod}</lastmod>
+\t\t<priority>${priority}</priority>${imgXml}
+\t</url>`);
   };
-
-  // 1. Root canonical entry
-  addUrlEntry(
-    `${base}/`,
-    today,
-    "daily",
-    "1.0",
-    languages.map((l) => ({ lang: l, href: `${base}/${l}` }))
-  );
-
-  // 2. Core localized routes with language alternates
-  for (const r of coreRoutes) {
-    const alternates = languages.map((lang) => ({
-      lang,
-      href: r.path ? `${base}/${lang}/${r.path}` : `${base}/${lang}`,
-    }));
-
-    for (const lang of languages) {
-      const fullPath = r.path ? `/${lang}/${r.path}` : `/${lang}`;
-      addUrlEntry(`${base}${fullPath}`, today, r.changefreq, r.priority, alternates);
-    }
-  }
-
-  // 3. Blog posts - exact URLs for all language variations
-  let posts: any[] = postsParam || [];
-  if ((!posts || posts.length === 0)) {
-    posts = getBlogPostsOnServer();
-  }
 
   if (Array.isArray(posts) && posts.length > 0) {
     const translationGroups = new Map<string, any[]>();
@@ -261,7 +261,271 @@ function buildServerSitemap(origin: string, postsParam?: any[], customPagesParam
     }
 
     translationGroups.forEach((groupPosts) => {
-      const postToday = groupPosts[0]?.date ? formatW3CDate(groupPosts[0].date) : today;
+      const postToday = groupPosts[0]?.date ? formatYoastDate(groupPosts[0].date) : today;
+      const langMap = new Map<string, { url: string; date: string; image?: string }>();
+      for (const p of groupPosts) {
+        const pLang = p.language || "en";
+        const pSlug = cleanSlugForUrl(p.slug, p.id);
+        if (pSlug) {
+          langMap.set(pLang, {
+            url: `${base}/${pLang}/blog/${pSlug}`,
+            date: p.date || postToday,
+            image: p.coverImage || p.image,
+          });
+        }
+      }
+
+      const refPost = groupPosts.find((p) => (p.language || "en") === "en") || groupPosts[0];
+      const refSlug = cleanSlugForUrl(refPost?.slug, refPost?.id);
+
+      for (const lang of languages) {
+        if (!langMap.has(lang) && refSlug) {
+          langMap.set(lang, {
+            url: `${base}/${lang}/blog/${refSlug}`,
+            date: postToday,
+            image: refPost?.coverImage || refPost?.image,
+          });
+        }
+      }
+
+      for (const lang of languages) {
+        const item = langMap.get(lang);
+        if (item) {
+          addUrlEntry(item.url, formatYoastDate(item.date), item.image, "0.80");
+        }
+      }
+    });
+
+    for (const post of posts) {
+      if (post.status === "draft") continue;
+      const postLang = post.language || "en";
+      const postSlug = cleanSlugForUrl(post.slug, post.id);
+      if (postSlug) {
+        const postImg = post.coverImage || post.image;
+        const postDate = formatYoastDate(post.date || today);
+        addUrlEntry(`${base}/${postLang}/blog/${postSlug}`, postDate, postImg, "0.80");
+        for (const lang of languages) {
+          addUrlEntry(`${base}/${lang}/blog/${postSlug}`, postDate, postImg, "0.80");
+        }
+      }
+    }
+  }
+
+  return `<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type="text/xsl" href="/main-sitemap.xsl"?>
+<urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd http://www.google.com/schemas/sitemap-image/1.1 http://www.google.com/schemas/sitemap-image/1.1/sitemap-image.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${xmlEntries.join("\n")}
+</urlset>
+<!-- XML Sitemap generated by Yoast SEO -->`;
+}
+
+function buildPageSitemap(origin: string, customPagesParam?: any[]): string {
+  const base = origin.replace(/\/$/, "");
+  const today = formatYoastDate();
+  const languages = ["en", "br", "es", "fr", "de", "id"];
+  const coreRoutes = [
+    { path: "" },
+    { path: "how-it-works" },
+    { path: "blog" },
+    { path: "about" },
+    { path: "contact" },
+    { path: "privacy" },
+    { path: "terms" },
+    { path: "sitemap" },
+  ];
+
+  const seenUrls = new Set<string>();
+  const xmlEntries: string[] = [];
+
+  const addUrlEntry = (
+    loc: string,
+    lastmod: string,
+    imageUrl?: string,
+    priority: string = "0.80"
+  ) => {
+    const cleanUrl = loc.trim();
+    if (!cleanUrl || seenUrls.has(cleanUrl)) return;
+    seenUrls.add(cleanUrl);
+
+    let imgXml = "";
+    if (imageUrl && imageUrl.trim()) {
+      imgXml = `\n\t\t<image:image>\n\t\t\t<image:loc>${escapeXml(imageUrl.trim())}</image:loc>\n\t\t</image:image>`;
+    }
+
+    const safeLastmod = formatYoastDate(lastmod);
+
+    xmlEntries.push(`\t<url>
+\t\t<loc>${escapeXml(cleanUrl)}</loc>
+\t\t<lastmod>${safeLastmod}</lastmod>
+\t\t<priority>${priority}</priority>${imgXml}
+\t</url>`);
+  };
+
+  // 1. Root canonical entry
+  addUrlEntry(
+    `${base}/`,
+    today,
+    undefined,
+    "1.00"
+  );
+
+  // 2. Core localized routes for all languages
+  for (const r of coreRoutes) {
+    for (const lang of languages) {
+      const fullPath = r.path ? `/${lang}/${r.path}` : `/${lang}`;
+      addUrlEntry(`${base}${fullPath}`, today, undefined, r.path === "" ? "1.00" : "0.80");
+    }
+  }
+
+  // 3. Custom Pages - exact URLs for all language variations
+  let customPages: any[] = customPagesParam || [];
+  if (!customPages || customPages.length === 0) {
+    customPages = getCustomPagesOnServer();
+  }
+
+  if (Array.isArray(customPages) && customPages.length > 0) {
+    for (const page of customPages) {
+      if (page.status === "draft") continue;
+      const cleanSlug = cleanSlugForUrl(page.slug, page.id);
+      if (!cleanSlug) continue;
+
+      const pageLastMod = formatYoastDate(page.lastModified || page.createdAt || today);
+      const pageImg = page.metaImage || page.heroImage;
+
+      // Base root slug
+      addUrlEntry(`${base}/${cleanSlug}`, pageLastMod, pageImg, "0.80");
+
+      // Specific page language if specified
+      if (page.language && page.language !== "all") {
+        addUrlEntry(`${base}/${page.language}/${cleanSlug}`, pageLastMod, pageImg, "0.80");
+      }
+
+      // Add for all supported languages
+      for (const lang of languages) {
+        addUrlEntry(`${base}/${lang}/${cleanSlug}`, pageLastMod, pageImg, "0.80");
+      }
+    }
+  }
+
+  return `<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type="text/xsl" href="/main-sitemap.xsl"?>
+<urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd http://www.google.com/schemas/sitemap-image/1.1 http://www.google.com/schemas/sitemap-image/1.1/sitemap-image.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${xmlEntries.join("\n")}
+</urlset>
+<!-- XML Sitemap generated by Yoast SEO -->`;
+}
+
+function buildExactUrlsetSitemap(origin: string, postsParam?: any[], customPagesParam?: any[]): string {
+  const base = origin.replace(/\/$/, "");
+  const now = formatYoastDate();
+  const languages = ["en", "br", "es", "fr", "de", "id"];
+
+  const seen = new Set<string>();
+  const entries: string[] = [];
+
+  const addUrl = (loc: string, lastmod: string, priority: string) => {
+    const clean = loc.trim();
+    if (!clean || seen.has(clean)) return;
+    seen.add(clean);
+    const safeDate = formatYoastDate(lastmod);
+    entries.push(`<url>
+<loc>${escapeXml(clean)}</loc>
+<lastmod>${safeDate}</lastmod>
+<priority>${priority}</priority>
+</url>`);
+  };
+
+  // 1. Root and language roots (priority 1.00)
+  addUrl(`${base}`, now, "1.00");
+  for (const lang of languages) {
+    addUrl(`${base}/${lang}`, now, "1.00");
+  }
+
+  // 2. High priority core downloaders (priority 1.00)
+  const coreTools = [
+    "downloader",
+    "bulk-downloader",
+    "scribd-pdf-downloader",
+    "scribd-document-downloader",
+    "pinterest-image-downloader",
+    "pinterest-gif-downloader",
+  ];
+
+  for (const tool of coreTools) {
+    addUrl(`${base}/${tool}`, now, "1.00");
+    for (const lang of languages) {
+      addUrl(`${base}/${lang}/${tool}`, now, "1.00");
+    }
+  }
+
+  // 3. Specialized downloaders from sample & application (priority 0.90)
+  const specializedTools = [
+    "scribd-presentation-downloader",
+    "scribd-audiobook-downloader",
+    "scribd-viewer",
+    "document-downloader",
+    "presentation-downloader",
+    "batch-downloader",
+    "pin-story-downloader",
+    "pin-carousel-downloader",
+    "pin-profile-downloader",
+    "pin-board-downloader",
+    "pin-answers-downloader",
+    "pin-ideas-downloader",
+    "pin-multiple-share-downloader",
+  ];
+
+  for (const tool of specializedTools) {
+    addUrl(`${base}/${tool}`, now, "0.90");
+    for (const lang of languages) {
+      addUrl(`${base}/${lang}/${tool}`, now, "0.90");
+    }
+  }
+
+  // 4. Guides, Tutorials, Extensions & Informational from sample (priority 0.80)
+  const infoAndGuides = [
+    "how-to",
+    "how-it-works",
+    "video-tutorial",
+    "chrome-extension",
+    "terms-privacy-policy",
+    "contact-us",
+    "about-us",
+    "supported-urls",
+    "thumbnail-grabber",
+    "thumbnail-grabber/",
+    "about",
+    "contact",
+    "privacy",
+    "terms",
+    "terms-of-service",
+    "privacy-policy",
+    "faq",
+    "blog",
+  ];
+
+  for (const route of infoAndGuides) {
+    addUrl(`${base}/${route}`, now, "0.80");
+    for (const lang of languages) {
+      addUrl(`${base}/${lang}/${route}`, now, "0.80");
+    }
+  }
+
+  // 5. Published Blog Posts across all languages (priority 0.80)
+  let posts: any[] = postsParam || [];
+  if (!posts || posts.length === 0) {
+    posts = getBlogPostsOnServer();
+  }
+
+  if (Array.isArray(posts) && posts.length > 0) {
+    const translationGroups = new Map<string, any[]>();
+    for (const post of posts) {
+      if (post.status === "draft") continue;
+      const tgId = post.translationGroupId || `tg-${post.id}`;
+      if (!translationGroups.has(tgId)) translationGroups.set(tgId, []);
+      translationGroups.get(tgId)!.push(post);
+    }
+
+    translationGroups.forEach((groupPosts) => {
+      const postDate = groupPosts[0]?.date ? formatYoastDate(groupPosts[0].date) : now;
       const langMap = new Map<string, string>();
       for (const p of groupPosts) {
         const pLang = p.language || "en";
@@ -273,31 +537,25 @@ function buildServerSitemap(origin: string, postsParam?: any[], customPagesParam
 
       const refPost = groupPosts.find((p) => (p.language || "en") === "en") || groupPosts[0];
       const refSlug = cleanSlugForUrl(refPost?.slug, refPost?.id);
-
       for (const lang of languages) {
         if (!langMap.has(lang) && refSlug) {
           langMap.set(lang, `${base}/${lang}/blog/${refSlug}`);
         }
       }
 
-      const groupAlternates = Array.from(langMap.entries()).map(([l, href]) => ({
-        lang: l,
-        href,
-      }));
-
       for (const p of groupPosts) {
         const pLang = p.language || "en";
         const pSlug = cleanSlugForUrl(p.slug, p.id);
         const exactUrl = langMap.get(pLang) || (pSlug ? `${base}/${pLang}/blog/${pSlug}` : "");
         if (exactUrl) {
-          addUrlEntry(exactUrl, formatW3CDate(p.date || postToday), "weekly", "0.8", groupAlternates);
+          addUrl(exactUrl, p.date || postDate, "0.80");
         }
       }
 
       for (const lang of languages) {
         const loc = langMap.get(lang);
-        if (loc && !seenUrls.has(loc)) {
-          addUrlEntry(loc, postToday, "weekly", "0.8", groupAlternates);
+        if (loc) {
+          addUrl(loc, postDate, "0.80");
         }
       }
     });
@@ -307,14 +565,17 @@ function buildServerSitemap(origin: string, postsParam?: any[], customPagesParam
       const postLang = post.language || "en";
       const postSlug = cleanSlugForUrl(post.slug, post.id);
       if (postSlug) {
-        addUrlEntry(`${base}/${postLang}/blog/${postSlug}`, formatW3CDate(post.date || today), "weekly", "0.8");
+        addUrl(`${base}/${postLang}/blog/${postSlug}`, post.date || now, "0.80");
+        for (const lang of languages) {
+          addUrl(`${base}/${lang}/blog/${postSlug}`, post.date || now, "0.80");
+        }
       }
     }
   }
 
-  // 4. Custom Pages - exact URLs for all language variations
+  // 6. Custom pages across all languages (priority 0.80)
   let customPages: any[] = customPagesParam || [];
-  if ((!customPages || customPages.length === 0)) {
+  if (!customPages || customPages.length === 0) {
     customPages = getCustomPagesOnServer();
   }
 
@@ -323,50 +584,258 @@ function buildServerSitemap(origin: string, postsParam?: any[], customPagesParam
       if (page.status === "draft") continue;
       const cleanSlug = cleanSlugForUrl(page.slug, page.id);
       if (!cleanSlug) continue;
-
-      const pageLastMod = formatW3CDate(page.lastModified || page.createdAt || today);
-
-      if (!page.language || page.language === "all" || page.language === "en") {
-        const pageAlternates = languages.map((lang) => ({
-          lang,
-          href: `${base}/${lang}/${cleanSlug}`,
-        }));
-
-        for (const lang of languages) {
-          addUrlEntry(`${base}/${lang}/${cleanSlug}`, pageLastMod, "monthly", "0.7", pageAlternates);
-        }
-        addUrlEntry(`${base}/${cleanSlug}`, pageLastMod, "monthly", "0.7", pageAlternates);
-      } else {
-        addUrlEntry(`${base}/${page.language}/${cleanSlug}`, pageLastMod, "monthly", "0.7");
-        addUrlEntry(`${base}/${cleanSlug}`, pageLastMod, "monthly", "0.7");
+      const pageLastMod = formatYoastDate(page.lastModified || page.createdAt || now);
+      addUrl(`${base}/${cleanSlug}`, pageLastMod, "0.80");
+      if (page.language && page.language !== "all") {
+        addUrl(`${base}/${page.language}/${cleanSlug}`, pageLastMod, "0.80");
+      }
+      for (const lang of languages) {
+        addUrl(`${base}/${lang}/${cleanSlug}`, pageLastMod, "0.80");
       }
     }
   }
 
   return `<?xml version="1.0" encoding="UTF-8"?>
-<?xml-stylesheet type="text/xsl" href="/sitemap.xsl"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-        xmlns:xhtml="http://www.w3.org/1999/xhtml">
-${xmlEntries.join("\n")}
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${entries.join("\n")}
 </urlset>`;
 }
 
+function buildYoastSitemapIndex(origin: string): string {
+  const base = (origin || "").replace(/\/$/, "");
+  const today = formatYoastDate();
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="/main-sitemap.xsl"?>
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+	<sitemap>
+		<loc>${base}/page-sitemap.xml</loc>
+		<lastmod>${today}</lastmod>
+	</sitemap>
+	<sitemap>
+		<loc>${base}/post-sitemap.xml</loc>
+		<lastmod>${today}</lastmod>
+	</sitemap>
+</sitemapindex>`;
+}
+
+// Unified sitemap builder matching requested format
+function buildServerSitemap(origin: string, postsParam?: any[], customPagesParam?: any[]): string {
+  return buildExactUrlsetSitemap(origin, postsParam, customPagesParam);
+}
+
+function getYoastXsl(): string {
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<xsl:stylesheet version="2.0"
+	xmlns:html="http://www.w3.org/TR/REC-html40"
+	xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
+	xmlns:sitemap="http://www.sitemaps.org/schemas/sitemap/0.9"
+	xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+	<xsl:output method="html" version="1.0" encoding="UTF-8" indent="yes"/>
+	<xsl:template match="/">
+		<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+			<head>
+				<title>XML Sitemap</title>
+				<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+				<style type="text/css">
+					body {
+						font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+						color: #444;
+						margin: 0;
+						padding: 2em 1.5em;
+						background-color: #f8fafc;
+					}
+					a {
+						color: #05809e;
+						text-decoration: none;
+					}
+					a:hover {
+						text-decoration: underline;
+					}
+					.expl {
+						margin: 14px 0;
+						line-height: 1.6;
+						font-size: 13px;
+						color: #64748b;
+					}
+					.expl a {
+						color: #da3114;
+						font-weight: 600;
+					}
+					.expl a:visited {
+						color: #da3114;
+					}
+					.btn-back {
+						display: inline-flex;
+						align-items: center;
+						gap: 6px;
+						font-weight: 600;
+						font-size: 13px;
+						color: #0284c7 !important;
+						margin-bottom: 12px;
+					}
+					table {
+						border: none;
+						border-collapse: collapse;
+						font-size: 12px;
+						margin: 20px 0 30px;
+						width: 100%;
+						background: #fff;
+						border-radius: 8px;
+						overflow: hidden;
+						box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+					}
+					th {
+						background-color: #43b4d1;
+						color: #fff;
+						text-align: left;
+						padding: 12px 14px;
+						font-weight: 600;
+					}
+					td {
+						padding: 11px 14px;
+						border-bottom: 1px solid #f1f5f9;
+						vertical-align: top;
+					}
+					tbody tr:nth-child(even) {
+						background-color: #fbfcfd;
+					}
+					tbody tr:hover {
+						background-color: #f0f9ff;
+					}
+					.header {
+						margin-bottom: 24px;
+						padding-bottom: 16px;
+						border-bottom: 1px solid #e2e8f0;
+					}
+					h1 {
+						font-size: 26px;
+						color: #0f172a;
+						margin: 0 0 8px;
+						font-weight: 800;
+					}
+					#content {
+						margin: 0 auto;
+						padding: 0 10px;
+						max-width: 1140px;
+					}
+					.lang-tag {
+						display: inline-block;
+						background: #f1f5f9;
+						color: #475569;
+						padding: 2px 6px;
+						font-size: 11px;
+						border-radius: 4px;
+						margin: 2px 3px 2px 0;
+						font-family: monospace;
+						border: 1px solid #e2e8f0;
+					}
+					.badge-counter {
+						display: inline-block;
+						background: #e0f2fe;
+						color: #0369a1;
+						font-weight: bold;
+						padding: 2px 8px;
+						border-radius: 9999px;
+						font-size: 11px;
+					}
+				</style>
+			</head>
+			<body>
+				<div id="content">
+					<div class="header">
+						<h1>XML Sitemap</h1>
+						<p class="expl">
+							Generated by <strong>Yoast SEO</strong>, this is an XML Sitemap, meant for consumption by search engines.<br/>
+							You can find more information about XML sitemaps on <a href="https://sitemaps.org" target="_blank" rel="noopener noreferrer">sitemaps.org</a>.
+						</p>
+					</div>
+
+					<xsl:if test="sitemap:sitemapindex">
+						<p class="expl">
+							This XML Sitemap Index file contains <span class="badge-counter"><xsl:value-of select="count(sitemap:sitemapindex/sitemap:sitemap)"/></span> sitemaps.
+						</p>
+						<table id="sitemap" cellpadding="3">
+							<thead>
+								<tr>
+									<th width="75%">Sitemap</th>
+									<th width="25%">Last Modified</th>
+								</tr>
+							</thead>
+							<tbody>
+								<xsl:for-each select="sitemap:sitemapindex/sitemap:sitemap">
+									<xsl:variable name="sitemapUrl">
+										<xsl:value-of select="sitemap:loc"/>
+									</xsl:variable>
+									<tr>
+										<td>
+											<a href="{$sitemapUrl}"><xsl:value-of select="sitemap:loc"/></a>
+										</td>
+										<td>
+											<xsl:value-of select="sitemap:lastmod"/>
+										</td>
+									</tr>
+								</xsl:for-each>
+							</tbody>
+						</table>
+					</xsl:if>
+
+					<xsl:if test="sitemap:urlset">
+						<p class="expl">
+							<a href="/sitemap_index.xml" class="btn-back">&#8592; Sitemap Index</a>
+						</p>
+						<p class="expl">
+							This XML Sitemap contains <span class="badge-counter"><xsl:value-of select="count(sitemap:urlset/sitemap:url)"/></span> URLs.
+						</p>
+						<table id="sitemap" cellpadding="3">
+							<thead>
+								<tr>
+									<th width="65%">URL</th>
+									<th width="10%">Images</th>
+									<th width="25%">Last Modified</th>
+								</tr>
+							</thead>
+							<tbody>
+								<xsl:for-each select="sitemap:urlset/sitemap:url">
+									<xsl:variable name="itemURL">
+										<xsl:value-of select="sitemap:loc"/>
+									</xsl:variable>
+									<tr>
+										<td>
+											<a href="{$itemURL}" target="_blank" rel="noopener noreferrer"><xsl:value-of select="sitemap:loc"/></a>
+										</td>
+										<td>
+											<xsl:value-of select="count(image:image)"/>
+										</td>
+										<td>
+											<xsl:value-of select="sitemap:lastmod"/>
+										</td>
+									</tr>
+								</xsl:for-each>
+							</tbody>
+						</table>
+					</xsl:if>
+				</div>
+			</body>
+		</html>
+	</xsl:template>
+</xsl:stylesheet>`;
+}
+
 function getRobotsTxt(origin: string): string {
-  if (robotsTxtCache) return robotsTxtCache;
+  const base = (origin || "").replace(/\/$/, "");
   if (fs.existsSync(ROBOTS_FILE)) {
     try {
       let content = fs.readFileSync(ROBOTS_FILE, "utf-8");
-      content = content.replace(/Sitemap:\s*https?:\/\/[^\s\/]+/gi, `Sitemap: ${origin}`);
-      if (!content.includes("Sitemap:")) {
-        content += `\n\nSitemap: ${origin}/sitemap.xml\n`;
+      // Replace any hardcoded or foreign domain in sitemap directives with dynamic base
+      content = content.replace(/Sitemap:\s*https?:\/\/[^\s\/]+(\/[^\s]+)/gi, `Sitemap: ${base}$1`);
+      content = content.replace(/Sitemap:\s*(\/[^\s]+)/gi, `Sitemap: ${base}$1`);
+      if (!content.includes("sitemap_index.xml")) {
+        content += `\nSitemap: ${base}/sitemap_index.xml\n`;
       }
-      robotsTxtCache = content;
-      return robotsTxtCache;
+      return content;
     } catch {}
   }
-  robotsTxtCache = `# robots.txt for Scribd PDF Downloader
-# Auto-configured for optimal web crawler indexing
-
+  return `# robots.txt for Scribd Downloader (Yoast SEO format)
 User-agent: *
 Allow: /
 
@@ -377,75 +846,78 @@ Disallow: /admin/*
 Disallow: /api/
 Disallow: /temp_downloads/
 
-# XML Sitemap directive
-Sitemap: ${origin}/sitemap.xml
+# XML Sitemap directives (Yoast SEO index and compatibility)
+Sitemap: ${base}/sitemap_index.xml
+Sitemap: ${base}/sitemap.xml
+Sitemap: ${base}/post-sitemap.xml
+Sitemap: ${base}/page-sitemap.xml
 `;
-  return robotsTxtCache;
 }
 
 function saveRobotsTxtOnServer(content: string) {
-  robotsTxtCache = content;
   robotsUpdatedAt = new Date().toISOString();
   try {
     fs.writeFileSync(ROBOTS_FILE, content, "utf-8");
-    fs.writeFileSync(path.join(PUBLIC_DIR, "robots.txt"), content, "utf-8");
   } catch (err) {
     console.error("Error saving robots.txt to disk:", err);
   }
 }
 
-function getSitemapXml(origin: string): string {
-  const base = origin.replace(/\/$/, "");
+function rebuildAllSitemapsOnServer(origin: string, postsParam?: any[], customPagesParam?: any[]) {
+  const base = (origin || "").replace(/\/$/, "");
+  const indexXml = buildYoastSitemapIndex(base);
+  const postXml = buildPostSitemap(base, postsParam);
+  const pageXml = buildPageSitemap(base, customPagesParam);
+  const allUrlsetXml = buildExactUrlsetSitemap(base, postsParam, customPagesParam);
+  const updatedAt = new Date().toISOString();
 
-  if (sitemapXmlCache) {
-    if (
-      !sitemapXmlCache.includes("`") &&
-      !sitemapXmlCache.includes("(no change)") &&
-      !sitemapXmlCache.includes("September ") &&
-      !sitemapXmlCache.includes("example.com")
-    ) {
-      // Check if domain needs to be adjusted
-      const locMatch = sitemapXmlCache.match(/<loc>(https?:\/\/[^\/]+)/);
-      if (locMatch && locMatch[1] && locMatch[1] !== base) {
-        sitemapXmlCache = sitemapXmlCache.replaceAll(locMatch[1], base);
-      }
-      return sitemapXmlCache;
-    }
-  }
+  sitemapsByOrigin.set(base, { indexXml, postXml, pageXml, allUrlsetXml, updatedAt });
+  sitemapUpdatedAt = updatedAt;
 
-  if (fs.existsSync(SITEMAP_FILE)) {
-    try {
-      let content = fs.readFileSync(SITEMAP_FILE, "utf-8");
-      if (
-        !content.includes("`") &&
-        !content.includes("(no change)") &&
-        !content.includes("September ") &&
-        !content.includes("example.com")
-      ) {
-        const locMatch = content.match(/<loc>(https?:\/\/[^\/]+)/);
-        if (locMatch && locMatch[1] && locMatch[1] !== base) {
-          content = content.replaceAll(locMatch[1], base);
-          saveSitemapXmlOnServer(content);
-        }
-        sitemapXmlCache = content;
-        return content;
-      }
-    } catch {}
-  }
-
-  sitemapXmlCache = buildServerSitemap(base);
-  saveSitemapXmlOnServer(sitemapXmlCache);
-  return sitemapXmlCache;
+  return { indexXml, postXml, pageXml, allUrlsetXml };
 }
 
-function saveSitemapXmlOnServer(content: string) {
-  sitemapXmlCache = content;
+function getSitemapIndexXml(origin: string): string {
+  const base = (origin || "").replace(/\/$/, "");
+  const cached = sitemapsByOrigin.get(base);
+  if (cached) return cached.indexXml;
+  const rebuilt = rebuildAllSitemapsOnServer(base);
+  return rebuilt.indexXml;
+}
+
+function getPostSitemapXml(origin: string): string {
+  const base = (origin || "").replace(/\/$/, "");
+  const cached = sitemapsByOrigin.get(base);
+  if (cached) return cached.postXml;
+  const rebuilt = rebuildAllSitemapsOnServer(base);
+  return rebuilt.postXml;
+}
+
+function getPageSitemapXml(origin: string): string {
+  const base = (origin || "").replace(/\/$/, "");
+  const cached = sitemapsByOrigin.get(base);
+  if (cached) return cached.pageXml;
+  const rebuilt = rebuildAllSitemapsOnServer(base);
+  return rebuilt.pageXml;
+}
+
+function getSitemapXml(origin: string): string {
+  const base = (origin || "").replace(/\/$/, "");
+  const cached = sitemapsByOrigin.get(base);
+  if (cached) return cached.allUrlsetXml;
+  const rebuilt = rebuildAllSitemapsOnServer(base);
+  return rebuilt.allUrlsetXml;
+}
+
+function saveSitemapXmlOnServer(content: string, origin?: string) {
   sitemapUpdatedAt = new Date().toISOString();
-  try {
-    fs.writeFileSync(SITEMAP_FILE, content, "utf-8");
-    fs.writeFileSync(path.join(PUBLIC_DIR, "sitemap.xml"), content, "utf-8");
-  } catch (err) {
-    console.error("Error saving sitemap.xml to disk:", err);
+  if (origin) {
+    const base = origin.replace(/\/$/, "");
+    const existing = sitemapsByOrigin.get(base);
+    if (existing) {
+      existing.indexXml = content;
+      existing.updatedAt = sitemapUpdatedAt;
+    }
   }
 }
 
@@ -529,8 +1001,371 @@ const SAMPLES = [
   }
 ];
 
+function generatePageHtml(rawTemplate: string, reqPath: string, origin: string): string {
+  const base = (origin || "").replace(/\/$/, "");
+  const cleanPath = (reqPath || "/").split("?")[0].replace(/\/+$/, "") || "/";
+  const fullUrl = `${base}${cleanPath}`;
+
+  const supportedLangs = ["en", "br", "es", "fr", "de", "id"];
+  const segments = cleanPath.split("/").filter(Boolean);
+
+  let lang = "en";
+  let pathWithoutLang = cleanPath;
+  let remainingSegments = segments;
+
+  if (segments.length > 0 && supportedLangs.includes(segments[0].toLowerCase())) {
+    lang = segments[0].toLowerCase();
+    remainingSegments = segments.slice(1);
+    pathWithoutLang = "/" + remainingSegments.join("/");
+    if (pathWithoutLang === "/") pathWithoutLang = "";
+  }
+
+  const allPosts = getBlogPostsOnServer();
+  const allCustomPages = getCustomPagesOnServer();
+
+  let isBlog = false;
+  let blogSlug = "";
+  let pageSlug = "";
+
+  if (remainingSegments.length > 0) {
+    if (remainingSegments[0] === "blog") {
+      isBlog = true;
+      blogSlug = remainingSegments[1] || "";
+    } else {
+      pageSlug = remainingSegments.join("/");
+    }
+  } else {
+    pageSlug = "home";
+  }
+
+  let matchedPost: any = null;
+  if (isBlog && blogSlug) {
+    matchedPost = allPosts.find((p) => {
+      const pSlug = cleanSlugForUrl(p.slug, p.id);
+      return pSlug === blogSlug || p.id === blogSlug;
+    });
+  }
+
+  let matchedPage: any = null;
+  if (!isBlog && pageSlug && pageSlug !== "home") {
+    matchedPage = allCustomPages.find((p) => {
+      const pSlug = cleanSlugForUrl(p.slug, p.id);
+      return pSlug === pageSlug || p.id === pageSlug;
+    });
+  }
+
+  let title = "Scribd Downloader - Free High-Speed Document & Presentation PDF Converter";
+  let description = "Download Scribd documents, textbooks, academic papers, and presentation slide decks as high-resolution PDF files with zero waiting time. 100% free, fast, and mobile-friendly.";
+  let heading = "Free High-Speed Scribd Document & Presentation PDF Downloader";
+  let bodyHtml = "";
+
+  if (matchedPost) {
+    title = `${matchedPost.title} | Scribd Downloader Official Blog`;
+    description = matchedPost.excerpt || `Complete tutorial and step-by-step guide for ${matchedPost.title}. Learn how to download and convert Scribd documents to PDF.`;
+    heading = matchedPost.title;
+
+    bodyHtml = `
+      <article class="max-w-4xl mx-auto px-4 py-8">
+        <nav aria-label="Breadcrumb" class="mb-4 text-sm text-slate-500">
+          <a href="${base}/${lang}" class="hover:underline text-indigo-600">Home</a> &gt; 
+          <a href="${base}/${lang}/blog" class="hover:underline text-indigo-600">Blog</a> &gt; 
+          <span class="text-slate-800 font-medium">${escapeXml(matchedPost.title)}</span>
+        </nav>
+        <header class="mb-6">
+          <h1 class="text-3xl sm:text-4xl font-extrabold text-slate-900 mb-3 tracking-tight">${escapeXml(matchedPost.title)}</h1>
+          <div class="flex flex-wrap items-center gap-3 text-sm text-slate-600 pb-4 border-b border-slate-200">
+            <span class="font-semibold text-slate-800">Author: Minhas Hussain</span>
+            <span>•</span>
+            <time datetime="${matchedPost.date || '2026-09-19'}">${matchedPost.date || 'September 2026'}</time>
+            <span>•</span>
+            <span class="px-2 py-0.5 rounded bg-indigo-50 text-indigo-700 font-semibold uppercase text-xs">${lang} Edition</span>
+          </div>
+          <p class="mt-4 text-lg text-slate-700 leading-relaxed bg-slate-50 p-5 rounded-2xl border border-slate-200 font-normal">${escapeXml(matchedPost.excerpt || '')}</p>
+        </header>
+        <div class="space-y-6 text-slate-800 text-base leading-relaxed">
+          <p>Educational materials on Scribd encompass millions of university whitepapers, scientific research monographs, corporate slide presentations, and technical documentation. Our high-performance extraction system enables researchers and students to compile high-resolution PDF documents for offline academic study without restrictive paywalls.</p>
+          <h2 class="text-2xl font-bold text-slate-900 mt-8 mb-4">Step-by-Step Document Downloading Guide</h2>
+          <ol class="list-decimal pl-6 space-y-3">
+            <li><strong>Copy Document URL:</strong> Navigate to Scribd in your web browser and copy the exact URL of the presentation or document you want to read.</li>
+            <li><strong>Paste into Converter:</strong> Return to our home screen and paste the URL into the search field.</li>
+            <li><strong>High-Speed Extraction:</strong> Our Node.js scraper downloads the high-resolution vector and image layers in parallel.</li>
+            <li><strong>Save as PDF:</strong> Download your unified, unwatermarked PDF file directly to your desktop or mobile device.</li>
+          </ol>
+          <div class="mt-8 p-6 bg-indigo-50 rounded-2xl border border-indigo-100">
+            <h3 class="text-lg font-bold text-indigo-900 mb-2">Need to convert more documents?</h3>
+            <p class="text-sm text-indigo-700 mb-4">Use our instant converter to process presentations, technical papers, and sheet music right now.</p>
+            <a href="${base}/${lang}" class="inline-block px-5 py-2.5 bg-indigo-600 text-white font-semibold rounded-xl hover:bg-indigo-700 transition">Go to Instant Downloader</a>
+          </div>
+        </div>
+      </article>
+    `;
+  } else if (matchedPage) {
+    title = `${matchedPage.title} - Free Document Converter & Downloader`;
+    description = matchedPage.metaDescription || `Download and convert Scribd documents using ${matchedPage.title}. 100% free high-resolution PDF converter.`;
+    heading = matchedPage.title;
+
+    bodyHtml = `
+      <section class="max-w-4xl mx-auto px-4 py-8">
+        <nav aria-label="Breadcrumb" class="mb-4 text-sm text-slate-500">
+          <a href="${base}/${lang}" class="hover:underline text-indigo-600">Home</a> &gt; 
+          <span class="text-slate-800 font-medium">${escapeXml(matchedPage.title)}</span>
+        </nav>
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-slate-900 mb-4 tracking-tight">${escapeXml(matchedPage.title)}</h1>
+        <p class="text-lg text-slate-700 mb-8 leading-relaxed">${escapeXml(matchedPage.metaDescription || '')}</p>
+        <div class="p-6 bg-white rounded-2xl border border-slate-200 shadow-sm space-y-4">
+          <h2 class="text-xl font-bold text-slate-900">High-Resolution PDF Extraction Features</h2>
+          <ul class="list-disc pl-5 space-y-2 text-slate-600">
+            <li>Direct extraction of high-resolution vector and raster page images</li>
+            <li>Ultra-fast parallel page download worker threads</li>
+            <li>100% free with zero registration or payment required</li>
+            <li>Compatible with all modern browsers and smartphones</li>
+          </ul>
+          <div class="pt-4">
+            <a href="${base}/${lang}" class="inline-block px-5 py-2.5 bg-indigo-600 text-white font-semibold rounded-xl hover:bg-indigo-700 transition">Start Free Download</a>
+          </div>
+        </div>
+      </section>
+    `;
+  } else if (isBlog) {
+    title = "Scribd Document Tips, Tutorials & Guides - Official Blog";
+    description = "Read comprehensive tutorials, guides, and tips for downloading, converting, and reading Scribd documents offline in high-resolution PDF format.";
+    heading = "Scribd Downloader Blog & Educational Guides";
+
+    bodyHtml = `
+      <section class="max-w-5xl mx-auto px-4 py-8">
+        <nav aria-label="Breadcrumb" class="mb-4 text-sm text-slate-500">
+          <a href="${base}/${lang}" class="hover:underline text-indigo-600">Home</a> &gt; 
+          <span class="text-slate-800 font-medium">Blog</span>
+        </nav>
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-slate-900 mb-3 tracking-tight">${heading}</h1>
+        <p class="text-lg text-slate-600 mb-8 leading-relaxed">${description}</p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          ${allPosts.map((p) => {
+            const pSlug = cleanSlugForUrl(p.slug, p.id);
+            const pLang = p.language || lang;
+            return `
+              <article class="p-5 bg-white rounded-2xl border border-slate-200 hover:border-indigo-300 transition">
+                <span class="text-xs font-semibold uppercase tracking-wider text-indigo-600">${pLang}</span>
+                <h2 class="text-xl font-bold text-slate-900 mt-1 mb-2">
+                  <a href="${base}/${pLang}/blog/${pSlug}" class="hover:text-indigo-600">${escapeXml(p.title)}</a>
+                </h2>
+                <p class="text-sm text-slate-600 leading-relaxed mb-3">${escapeXml(p.excerpt || '')}</p>
+                <div class="text-xs text-slate-500">${p.date || 'September 2026'} • By Minhas Hussain</div>
+              </article>
+            `;
+          }).join("")}
+        </div>
+      </section>
+    `;
+  } else if (pageSlug === "how-it-works") {
+    title = "How It Works - Scribd Document Extraction Architecture & Guide";
+    description = "Learn how our multi-threaded Node.js scraper fetches document tiles, renders vector typography, and compiles unified PDF files.";
+    heading = "How Our Document Extraction Engine Works";
+
+    bodyHtml = `
+      <section class="max-w-4xl mx-auto px-4 py-8">
+        <nav aria-label="Breadcrumb" class="mb-4 text-sm text-slate-500">
+          <a href="${base}/${lang}" class="hover:underline text-indigo-600">Home</a> &gt; 
+          <span class="text-slate-800 font-medium">How It Works</span>
+        </nav>
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-slate-900 mb-4 tracking-tight">${heading}</h1>
+        <p class="text-lg text-slate-700 mb-6 leading-relaxed">${description}</p>
+        <div class="space-y-6 text-slate-800 leading-relaxed">
+          <div class="p-6 bg-white rounded-2xl border border-slate-200">
+            <h2 class="text-xl font-bold text-slate-900 mb-2">1. Intelligent URL Inspection</h2>
+            <p class="text-slate-600">When you submit a Scribd URL, our server identifies the unique document asset identifier and resolves the public metadata manifest.</p>
+          </div>
+          <div class="p-6 bg-white rounded-2xl border border-slate-200">
+            <h2 class="text-xl font-bold text-slate-900 mb-2">2. Parallel Page Processing</h2>
+            <p class="text-slate-600">Using multi-threaded worker pools, the scraper requests image tiles and vector layers concurrently, achieving speeds under 1.5 seconds per document.</p>
+          </div>
+          <div class="p-6 bg-white rounded-2xl border border-slate-200">
+            <h2 class="text-xl font-bold text-slate-900 mb-2">3. Standard PDF Assembly</h2>
+            <p class="text-slate-600">Each page is embedded into a standard uncompressed PDF container formatted for Adobe Acrobat, Kindle, Apple Books, and modern web browsers.</p>
+          </div>
+        </div>
+      </section>
+    `;
+  } else {
+    // Default Homepage
+    bodyHtml = `
+      <section class="max-w-4xl mx-auto px-4 py-12 text-center">
+        <h1 class="text-4xl sm:text-5xl font-black text-slate-900 tracking-tight mb-4">
+          Download <span class="text-indigo-600">Scribd Documents</span> in High-Res PDF
+        </h1>
+        <p class="text-lg sm:text-xl text-slate-600 max-w-2xl mx-auto mb-8 leading-relaxed">
+          Paste any public Scribd document, research paper, presentation, or book URL below to convert and download your high-speed PDF.
+        </p>
+        <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm max-w-2xl mx-auto mb-12 text-left">
+          <h2 class="font-bold text-slate-900 mb-2">Supported Document Formats:</h2>
+          <p class="text-sm text-slate-600 mb-4">Research papers, presentations, PDF manuals, textbooks, and public slide decks.</p>
+          <div class="flex flex-wrap gap-2 text-xs font-semibold text-indigo-700">
+            <span class="px-3 py-1 bg-indigo-50 rounded-full">PDF Direct</span>
+            <span class="px-3 py-1 bg-indigo-50 rounded-full">Slide Decks</span>
+            <span class="px-3 py-1 bg-indigo-50 rounded-full">Vector Text</span>
+            <span class="px-3 py-1 bg-indigo-50 rounded-full">Zero Wait Time</span>
+          </div>
+        </div>
+      </section>
+    `;
+  }
+
+  // Generate Crawlable Directory of All Pages and Articles for Bots & Google
+  const crawlableDirectoryHtml = `
+    <section class="max-w-6xl mx-auto px-4 py-10 border-t border-slate-200 text-sm">
+      <h2 class="text-lg font-bold text-slate-900 mb-4">International Language Editions & Regional Guides</h2>
+      <div class="flex flex-wrap gap-3 mb-8">
+        <a href="${base}/en" class="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-indigo-50 text-slate-800 hover:text-indigo-600 font-medium">English</a>
+        <a href="${base}/br" class="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-indigo-50 text-slate-800 hover:text-indigo-600 font-medium">Português (Brasil)</a>
+        <a href="${base}/es" class="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-indigo-50 text-slate-800 hover:text-indigo-600 font-medium">Español</a>
+        <a href="${base}/fr" class="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-indigo-50 text-slate-800 hover:text-indigo-600 font-medium">Français</a>
+        <a href="${base}/de" class="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-indigo-50 text-slate-800 hover:text-indigo-600 font-medium">Deutsch</a>
+        <a href="${base}/id" class="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-indigo-50 text-slate-800 hover:text-indigo-600 font-medium">Bahasa Indonesia</a>
+      </div>
+
+      <h2 class="text-lg font-bold text-slate-900 mb-4">All Published Articles & Guides</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 mb-8">
+        ${allPosts.map((p) => {
+          const pSlug = cleanSlugForUrl(p.slug, p.id);
+          const pLang = p.language || lang;
+          return `
+            <a href="${base}/${pLang}/blog/${pSlug}" class="text-slate-700 hover:text-indigo-600 truncate py-1">
+              • [${pLang.toUpperCase()}] ${escapeXml(p.title)}
+            </a>
+          `;
+        }).join("")}
+      </div>
+
+      <h2 class="text-lg font-bold text-slate-900 mb-4">Popular Document Converter Tools</h2>
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
+        ${allCustomPages.slice(0, 32).map((cp) => {
+          const cpSlug = cleanSlugForUrl(cp.slug, cp.id);
+          const cpLang = cp.language || lang;
+          return `
+            <a href="${base}/${cpLang}/${cpSlug}" class="text-slate-600 hover:text-indigo-600 truncate py-1 text-xs">
+              ${escapeXml(cp.title)}
+            </a>
+          `;
+        }).join("")}
+      </div>
+    </section>
+  `;
+
+  // Server-rendered content inside <div id="root">
+  const rootSsrHtml = `
+    <div id="ssr-root-content" class="min-h-screen flex flex-col bg-slate-50 font-sans">
+      <header class="bg-white border-b border-slate-200 py-4 shadow-sm">
+        <div class="max-w-6xl mx-auto px-4 flex flex-wrap items-center justify-between gap-4">
+          <a href="${base}/${lang}" class="text-2xl font-black text-slate-900 tracking-tight">
+            Scribd<span class="text-indigo-600">Downloader</span>
+          </a>
+          <nav class="flex items-center gap-4 sm:gap-6 text-sm font-semibold text-slate-700">
+            <a href="${base}/${lang}" class="hover:text-indigo-600">Home</a>
+            <a href="${base}/${lang}/how-it-works" class="hover:text-indigo-600">How It Works</a>
+            <a href="${base}/${lang}/blog" class="hover:text-indigo-600">Blog</a>
+            <a href="${base}/${lang}/about" class="hover:text-indigo-600">About</a>
+            <a href="${base}/${lang}/contact" class="hover:text-indigo-600">Contact</a>
+          </nav>
+        </div>
+      </header>
+
+      <main class="flex-grow">
+        ${bodyHtml}
+        ${crawlableDirectoryHtml}
+      </main>
+
+      <footer class="bg-slate-900 text-slate-400 py-10 text-xs border-t border-slate-800">
+        <div class="max-w-6xl mx-auto px-4 flex flex-wrap justify-between items-center gap-6">
+          <p>© 2026 Scribd Downloader. Created by Minhas Hussain. Educational Fair-Use Document Utility.</p>
+          <div class="flex flex-wrap gap-4 text-slate-400 font-medium">
+            <a href="${base}/privacy" class="hover:text-white">Privacy Policy</a>
+            <a href="${base}/terms" class="hover:text-white">Terms of Service</a>
+            <a href="${base}/sitemap_index.xml" class="hover:text-white">Sitemap Index (XML)</a>
+            <a href="${base}/sitemap.xml" class="hover:text-white">Full Sitemap (XML)</a>
+            <a href="${base}/post-sitemap.xml" class="hover:text-white">Posts Sitemap</a>
+            <a href="${base}/page-sitemap.xml" class="hover:text-white">Pages Sitemap</a>
+            <a href="${base}/robots.txt" class="hover:text-white">Robots.txt</a>
+          </div>
+        </div>
+      </footer>
+    </div>
+  `;
+
+  let html = rawTemplate;
+
+  // Replace Title & Description
+  html = html.replace(/<title>[\s\S]*?<\/title>/i, `<title>${escapeXml(title)}</title>`);
+  html = html.replace(/<meta\s+name="description"\s+content="[^"]*"\s*\/?>/i, `<meta name="description" content="${escapeXml(description)}" />`);
+
+  // Canonical Tag
+  if (html.includes('<link rel="canonical"')) {
+    html = html.replace(/<link rel="canonical" href="[^"]*"\s*\/?>/i, `<link rel="canonical" href="${fullUrl}" />`);
+  } else {
+    html = html.replace("</head>", `  <link rel="canonical" href="${fullUrl}" />\n</head>`);
+  }
+
+  // Alternate Language Hreflang Tags
+  const hreflangTags = [
+    `  <link rel="alternate" hreflang="en" href="${base}/en${pathWithoutLang}" />`,
+    `  <link rel="alternate" hreflang="pt-BR" href="${base}/br${pathWithoutLang}" />`,
+    `  <link rel="alternate" hreflang="es" href="${base}/es${pathWithoutLang}" />`,
+    `  <link rel="alternate" hreflang="fr" href="${base}/fr${pathWithoutLang}" />`,
+    `  <link rel="alternate" hreflang="de" href="${base}/de${pathWithoutLang}" />`,
+    `  <link rel="alternate" hreflang="id" href="${base}/id${pathWithoutLang}" />`,
+    `  <link rel="alternate" hreflang="x-default" href="${base}/en${pathWithoutLang}" />`
+  ].join("\n");
+
+  html = html.replace("</head>", `${hreflangTags}\n</head>`);
+
+  // Open Graph and Twitter Cards
+  if (html.includes('<meta property="og:title"')) {
+    html = html.replace(/<meta property="og:title" content="[^"]*"\s*\/?>/i, `<meta property="og:title" content="${escapeXml(title)}" />`);
+  } else {
+    html = html.replace("</head>", `  <meta property="og:title" content="${escapeXml(title)}" />\n</head>`);
+  }
+
+  if (html.includes('<meta property="og:description"')) {
+    html = html.replace(/<meta property="og:description" content="[^"]*"\s*\/?>/i, `<meta property="og:description" content="${escapeXml(description)}" />`);
+  } else {
+    html = html.replace("</head>", `  <meta property="og:description" content="${escapeXml(description)}" />\n</head>`);
+  }
+
+  if (html.includes('<meta property="og:url"')) {
+    html = html.replace(/<meta property="og:url" content="[^"]*"\s*\/?>/i, `<meta property="og:url" content="${fullUrl}" />`);
+  } else {
+    html = html.replace("</head>", `  <meta property="og:url" content="${fullUrl}" />\n</head>`);
+  }
+
+  // Schema.org Structured Data
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": matchedPost ? "Article" : "WebPage",
+    "name": title,
+    "headline": title,
+    "description": description,
+    "url": fullUrl,
+    "inLanguage": lang,
+    "author": {
+      "@type": "Person",
+      "name": "Minhas Hussain"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Scribd Downloader",
+      "url": base
+    }
+  };
+  html = html.replace("</head>", `  <script type="application/ld+json">${JSON.stringify(jsonLd)}</script>\n</head>`);
+
+  // Inject Pre-rendered HTML into <div id="root">
+  html = html.replace('<div id="root"></div>', `<div id="root">${rootSsrHtml}</div>`);
+
+  return html;
+}
+
 async function startServer() {
   const app = express();
+  app.set("trust proxy", true);
   const PORT = 3000;
 
   app.use(express.json());
@@ -804,7 +1639,7 @@ async function startServer() {
   });
 
   // ==========================================
-  // SEO, ROBOTS.TXT & SITEMAP.XML CONTROLLERS
+  // SEO, ROBOTS.TXT & YOAST SITEMAP CONTROLLERS
   // ==========================================
   // GET /robots.txt - Public Crawler File
   app.get("/robots.txt", (req, res) => {
@@ -814,7 +1649,15 @@ async function startServer() {
     return res.send(getRobotsTxt(origin));
   });
 
-  // GET /sitemap.xml - Public Search Engine Sitemap
+  // GET /sitemap_index.xml - Standard Yoast Sitemap Index
+  app.get("/sitemap_index.xml", (req, res) => {
+    const origin = getRequestOrigin(req);
+    res.setHeader("Content-Type", "application/xml; charset=utf-8");
+    res.setHeader("Cache-Control", "public, max-age=3600");
+    return res.send(getSitemapIndexXml(origin));
+  });
+
+  // GET /sitemap.xml - Complete unified URL set
   app.get("/sitemap.xml", (req, res) => {
     const origin = getRequestOrigin(req);
     res.setHeader("Content-Type", "application/xml; charset=utf-8");
@@ -822,84 +1665,27 @@ async function startServer() {
     return res.send(getSitemapXml(origin));
   });
 
-  // GET /sitemap.xsl - Visual Browser Stylesheet for sitemap.xml
-  app.get("/sitemap.xsl", (_req, res) => {
+  // GET /post-sitemap.xml - Yoast Post Sitemap
+  app.get("/post-sitemap.xml", (req, res) => {
+    const origin = getRequestOrigin(req);
+    res.setHeader("Content-Type", "application/xml; charset=utf-8");
+    res.setHeader("Cache-Control", "public, max-age=3600");
+    return res.send(getPostSitemapXml(origin));
+  });
+
+  // GET /page-sitemap.xml - Yoast Page Sitemap
+  app.get("/page-sitemap.xml", (req, res) => {
+    const origin = getRequestOrigin(req);
+    res.setHeader("Content-Type", "application/xml; charset=utf-8");
+    res.setHeader("Cache-Control", "public, max-age=3600");
+    return res.send(getPageSitemapXml(origin));
+  });
+
+  // GET /main-sitemap.xsl & /sitemap.xsl - Visual Yoast SEO Stylesheet
+  app.get(["/main-sitemap.xsl", "/sitemap.xsl"], (_req, res) => {
     res.setHeader("Content-Type", "text/xsl; charset=utf-8");
     res.setHeader("Cache-Control", "public, max-age=86400");
-    const xsl = `<?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="2.0"
-  xmlns:html="http://www.w3.org/TR/REC-html40"
-  xmlns:sitemap="http://www.sitemaps.org/schemas/sitemap/0.9"
-  xmlns:xhtml="http://www.w3.org/1999/xhtml"
-  xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-  <xsl:output method="html" version="1.0" encoding="UTF-8" indent="yes"/>
-  <xsl:template match="/">
-    <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
-      <head>
-        <title>XML Sitemap | Scribd PDF Downloader</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-        <style>
-          body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: #0f172a; color: #f8fafc; margin: 0; padding: 32px 24px; }
-          .container { max-width: 1200px; margin: 0 auto; }
-          header { margin-bottom: 24px; padding-bottom: 20px; border-bottom: 1px solid #334155; }
-          h1 { font-size: 24px; font-weight: 800; color: #38bdf8; margin: 0 0 8px 0; }
-          p { color: #94a3b8; font-size: 14px; margin: 0; line-height: 1.6; }
-          .badge { display: inline-block; background: #1e293b; border: 1px solid #38bdf8; color: #38bdf8; font-size: 12px; font-weight: bold; padding: 4px 10px; border-radius: 9999px; margin-top: 12px; }
-          table { width: 100%; border-collapse: collapse; margin-top: 24px; background: #1e293b; border-radius: 8px; overflow: hidden; font-size: 13px; }
-          th { background: #0f172a; color: #94a3b8; text-align: left; padding: 12px 16px; font-weight: 600; border-bottom: 1px solid #334155; }
-          td { padding: 12px 16px; border-bottom: 1px solid #334155; vertical-align: top; }
-          tr:hover { background: #243248; }
-          a { color: #38bdf8; text-decoration: none; word-break: break-all; }
-          a:hover { text-decoration: underline; color: #7dd3fc; }
-          .lang-pill { display: inline-block; background: #334155; color: #cbd5e1; font-size: 11px; padding: 2px 6px; border-radius: 4px; margin-right: 4px; margin-bottom: 4px; font-family: monospace; }
-        </style>
-      </head>
-      <body>
-        <div class="container">
-          <header>
-            <h1>XML Sitemap Index</h1>
-            <p>Generated in accordance with standard Sitemap 0.9 and multilingial xhtml:link specifications. All URLs listed are canonical and indexed.</p>
-            <div class="badge">Total URLs: <xsl:value-of select="count(sitemap:urlset/sitemap:url)"/></div>
-          </header>
-          <table>
-            <thead>
-              <tr>
-                <th style="width: 50%;">URL (Location)</th>
-                <th style="width: 20%;">Alternate Languages</th>
-                <th style="width: 12%;">Last Modified</th>
-                <th style="width: 10%;">Frequency</th>
-                <th style="width: 8%;">Priority</th>
-              </tr>
-            </thead>
-            <tbody>
-              <xsl:for-each select="sitemap:urlset/sitemap:url">
-                <tr>
-                  <td>
-                    <xsl:variable name="itemUrl">
-                      <xsl:value-of select="sitemap:loc"/>
-                    </xsl:variable>
-                    <a href="{$itemUrl}" target="_blank" rel="noopener noreferrer">
-                      <xsl:value-of select="sitemap:loc"/>
-                    </a>
-                  </td>
-                  <td>
-                    <xsl:for-each select="xhtml:link">
-                      <span class="lang-pill"><xsl:value-of select="@hreflang"/></span>
-                    </xsl:for-each>
-                  </td>
-                  <td style="color: #94a3b8;"><xsl:value-of select="sitemap:lastmod"/></td>
-                  <td style="color: #94a3b8;"><xsl:value-of select="sitemap:changefreq"/></td>
-                  <td style="font-weight: bold; color: #38bdf8;"><xsl:value-of select="sitemap:priority"/></td>
-                </tr>
-              </xsl:for-each>
-            </tbody>
-          </table>
-        </div>
-      </body>
-    </html>
-  </xsl:template>
-</xsl:stylesheet>`;
-    return res.send(xsl);
+    return res.send(getYoastXsl());
   });
 
   // API: Get current robots.txt configuration & content
@@ -932,34 +1718,90 @@ async function startServer() {
     res.json({ success: true, message: "robots.txt updated and live on server." });
   });
 
-  // API: Get current sitemap.xml configuration & content
+  // API: Get current sitemap configuration & content (supports type=index|posts|pages)
   app.get("/api/seo/sitemap", (req, res) => {
     const origin = getRequestOrigin(req);
-    let content = "";
-    let isCustom = false;
-    let lastModified = sitemapUpdatedAt;
+    const type = String(req.query.type || "index").toLowerCase();
 
-    if (fs.existsSync(SITEMAP_FILE)) {
-      content = getSitemapXml(origin);
-      isCustom = true;
-      try {
-        lastModified = fs.statSync(SITEMAP_FILE).mtime.toISOString();
-      } catch {}
+    let content = "";
+    if (type === "posts" || type === "post") {
+      content = getPostSitemapXml(origin);
+    } else if (type === "pages" || type === "page") {
+      content = getPageSitemapXml(origin);
     } else {
-      content = getSitemapXml(origin);
+      content = getSitemapIndexXml(origin);
     }
 
-    res.json({ content, isCustom, lastModified });
+    const sitemaps = [
+      {
+        id: "index",
+        name: "Sitemap Index",
+        url: `${origin}/sitemap_index.xml`,
+        altUrl: `${origin}/sitemap.xml`,
+        description: "Primary Yoast SEO index linking to sub-sitemaps",
+      },
+      {
+        id: "posts",
+        name: "Posts Sitemap",
+        url: `${origin}/post-sitemap.xml`,
+        description: "All published articles and localized blog variations",
+      },
+      {
+        id: "pages",
+        name: "Pages Sitemap",
+        url: `${origin}/page-sitemap.xml`,
+        description: "Core website pages and active custom landing pages",
+      },
+    ];
+
+    res.json({
+      content,
+      type,
+      isCustom: true,
+      lastModified: sitemapUpdatedAt,
+      sitemaps,
+      yoastCompliant: true,
+    });
   });
 
-  // API: Save and update sitemap.xml
+  // API: Save or Rebuild Yoast sitemaps
   app.post("/api/seo/sitemap", (req, res) => {
-    const { content } = req.body;
+    const origin = getRequestOrigin(req);
+    const { content, type, action } = req.body;
+
+    if (action === "rebuild" || content === "REBUILD") {
+      invalidateSitemapCache();
+      const rebuilt = rebuildAllSitemapsOnServer(origin);
+      return res.json({
+        success: true,
+        message: "All Yoast SEO sitemaps rebuilt successfully.",
+        content: rebuilt.indexXml,
+      });
+    }
+
     if (typeof content !== "string") {
       return res.status(400).json({ error: "Sitemap content must be a string." });
     }
-    saveSitemapXmlOnServer(content);
-    res.json({ success: true, message: "sitemap.xml updated and live on server." });
+
+    const base = origin.replace(/\/$/, "");
+    let entry = sitemapsByOrigin.get(base);
+    if (!entry) {
+      entry = { indexXml: "", postXml: "", pageXml: "", allUrlsetXml: "", updatedAt: new Date().toISOString() };
+      sitemapsByOrigin.set(base, entry);
+    }
+
+    if (type === "posts" || type === "post") {
+      entry.postXml = content;
+      entry.updatedAt = new Date().toISOString();
+    } else if (type === "pages" || type === "page") {
+      entry.pageXml = content;
+      entry.updatedAt = new Date().toISOString();
+    } else {
+      entry.indexXml = content;
+      entry.updatedAt = new Date().toISOString();
+    }
+
+    res.json({ success: true, message: "Yoast SEO sitemap updated and live on server." });
   });
 
   // API: Custom Pages Server Storage
@@ -976,9 +1818,9 @@ async function startServer() {
     saveCustomPagesOnServer(pages);
 
     // Auto-rebuild sitemap immediately with exact URLs for all languages
+    invalidateSitemapCache();
     const origin = getRequestOrigin(req);
-    const updatedSitemap = buildServerSitemap(origin, undefined, pages);
-    saveSitemapXmlOnServer(updatedSitemap);
+    rebuildAllSitemapsOnServer(origin, undefined, pages);
 
     res.json({ success: true, message: "Custom pages saved and sitemap.xml immediately rebuilt." });
   });
@@ -997,9 +1839,9 @@ async function startServer() {
     saveBlogPostsOnServer(posts);
 
     // Auto-rebuild sitemap immediately with exact URLs for all languages
+    invalidateSitemapCache();
     const origin = getRequestOrigin(req);
-    const updatedSitemap = buildServerSitemap(origin, posts, undefined);
-    saveSitemapXmlOnServer(updatedSitemap);
+    rebuildAllSitemapsOnServer(origin, posts, undefined);
 
     res.json({ success: true, message: "Blog posts saved and sitemap.xml immediately rebuilt." });
   });
@@ -1046,26 +1888,66 @@ async function startServer() {
   app.use("/assets", express.static(path.join(PUBLIC_DIR, "assets"), { maxAge: "1d" }));
   app.use(express.static(PUBLIC_DIR, { maxAge: "1d" }));
 
-  // Vite middleware setup
+  // Vite & HTML Pre-rendering for Crawlers, Sitemap Bots, and Browsers
   if (process.env.NODE_ENV !== "production") {
     const vite = await createViteServer({
       server: {
         middlewareMode: true,
         hmr: false,
       },
-      appType: "spa",
+      appType: "custom",
     });
+
+    // Handle HTML page requests for crawlers, sitemap bots, Googlebot, and browsers
+    app.use(async (req, res, next) => {
+      if (
+        req.method !== "GET" ||
+        req.path.startsWith("/api") ||
+        req.path.startsWith("/images") ||
+        req.path.startsWith("/assets") ||
+        req.path.startsWith("/temp_downloads") ||
+        req.path.startsWith("/@") ||
+        req.path.startsWith("/src") ||
+        req.path.startsWith("/node_modules") ||
+        req.path.includes(".")
+      ) {
+        return next();
+      }
+
+      const origin = getRequestOrigin(req);
+      try {
+        const rawTemplate = fs.readFileSync(path.join(process.cwd(), "index.html"), "utf-8");
+        const rendered = generatePageHtml(rawTemplate, req.path, origin);
+        const transformed = await vite.transformIndexHtml(req.originalUrl || req.url, rendered);
+        res.setHeader("Content-Type", "text/html; charset=utf-8");
+        return res.send(transformed);
+      } catch (e) {
+        console.error("Vite HTML rendering error:", e);
+        return next();
+      }
+    });
+
     app.use(vite.middlewares);
   } else {
     const distPath = path.join(process.cwd(), "dist");
     app.use(express.static(distPath));
-    app.get("*", (_req, res) => {
-      res.sendFile(path.join(distPath, "index.html"));
+    app.get("*", (req, res) => {
+      const origin = getRequestOrigin(req);
+      try {
+        const rawTemplate = fs.readFileSync(path.join(distPath, "index.html"), "utf-8");
+        const rendered = generatePageHtml(rawTemplate, req.path, origin);
+        res.setHeader("Content-Type", "text/html; charset=utf-8");
+        return res.send(rendered);
+      } catch {
+        res.sendFile(path.join(distPath, "index.html"));
+      }
     });
   }
 
   app.listen(PORT, "0.0.0.0", () => {
     console.log(`Ultra-Speed Scraper Server running on http://0.0.0.0:${PORT}`);
+    // Dynamic origin-based sitemap system initialized (auto-detects domain on any host)
+    sitemapsByOrigin.clear();
     // Pre-warm sample documents asynchronously in the background
     prewarmSamples().catch((err) => console.error("Prewarm error:", err));
   });
