@@ -53,13 +53,21 @@ function parseUrlRoute(
   const lowerHash = hash.toLowerCase();
   const lowerPath = pathname.toLowerCase();
 
-  // Admin routing check
+  // Admin routing check: accept both /admin and /admin123 (paths, hashes, queries)
   if (
+    lowerHash === "#admin" ||
+    lowerHash === "#/admin" ||
     lowerHash === "#admin123" ||
     lowerHash === "#/admin123" ||
+    lowerHash === "#admin-panel" ||
+    lowerPath === "/admin" ||
+    lowerPath === "/admin/" ||
+    lowerPath.startsWith("/admin/") ||
     lowerPath === "/admin123" ||
+    lowerPath === "/admin123/" ||
     lowerPath.startsWith("/admin123/") ||
-    window.location.search.includes("admin123")
+    window.location.search.includes("admin123") ||
+    window.location.search.includes("admin")
   ) {
     const savedLang = (localStorage.getItem("scribd_lang") as SupportedLanguage) || "en";
     return { page: "admin", lang: savedLang, post: null, customPage: null };
@@ -85,6 +93,7 @@ function parseUrlRoute(
   }
 
   const routeKey = rest[0].toLowerCase();
+  if (routeKey === "admin" || routeKey === "admin123") return { page: "admin", lang, post: null, customPage: null };
   if (routeKey === "about") return { page: "about", lang, post: null, customPage: null };
   if (routeKey === "how-it-works") return { page: "how-it-works", lang, post: null, customPage: null };
   if (routeKey === "contact") return { page: "contact", lang, post: null, customPage: null };
@@ -131,7 +140,7 @@ function buildUrl(
   post?: BlogPost | null,
   customPage?: CustomPage | null
 ): string {
-  if (page === "admin") return "/admin123";
+  if (page === "admin") return "/admin";
   if (page === "home") return `/${lang}`;
   if (page === "blog-article" && post) return `/${lang}/blog/${post.slug}`;
   if (page === "custom-page" && customPage) return `/${customPage.slug}`;

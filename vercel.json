@@ -1,8 +1,8 @@
 {
-  "cleanUrls": true,
+  "outputDirectory": "dist",
   "rewrites": [
     {
-      "source": "/((?!.*\\.[\\w]+$).*)",
+      "source": "/(.*)",
       "destination": "/index.html"
     }
   ]

@@ -117,6 +117,17 @@ export function Footer({ onNavigate, siteSettings }: FooterProps) {
             >
               Terms of Service
             </a>
+            <span>•</span>
+            <a
+              href="/admin"
+              onClick={(e) => {
+                e.preventDefault();
+                onNavigate("admin");
+              }}
+              className="text-slate-400 hover:text-white transition-colors cursor-pointer"
+            >
+              Admin Panel
+            </a>
           </div>
         </div>
       </div>
