@@ -14,6 +14,7 @@ import {
   Clock
 } from "lucide-react";
 import { AnalyticsStats } from "../../types";
+import { safeParseJson } from "../../utils/apiSafe";
 
 export function AdminDashboard() {
   const [stats, setStats] = useState<AnalyticsStats>({
@@ -69,8 +70,8 @@ export function AdminDashboard() {
     setRefreshing(true);
     try {
       const res = await fetch("/api/analytics/stats");
-      if (res.ok) {
-        const data = await res.json();
+      const data = await safeParseJson(res);
+      if (data) {
         setStats((prev) => ({ ...prev, ...data }));
       }
     } catch (e) {

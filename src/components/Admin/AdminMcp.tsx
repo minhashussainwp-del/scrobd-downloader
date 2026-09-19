@@ -40,6 +40,7 @@ import {
   Power,
   X,
 } from "lucide-react";
+import { safeParseJson } from "../../utils/apiSafe";
 
 export function AdminMcp() {
   const [credentials, setCredentials] = useState<McpCredential[]>([]);
@@ -117,8 +118,8 @@ export function AdminMcp() {
   const fetchCredentials = async () => {
     try {
       const res = await fetch("/api/mcp/credentials");
-      if (res.ok) {
-        const data = await res.json();
+      const data = await safeParseJson<{ credentials?: McpCredential[] }>(res);
+      if (data) {
         setCredentials(data.credentials || []);
       }
     } catch (e) {
@@ -129,8 +130,8 @@ export function AdminMcp() {
   const fetchLogs = async () => {
     try {
       const res = await fetch("/api/mcp/logs");
-      if (res.ok) {
-        const data = await res.json();
+      const data = await safeParseJson<{ logs?: any[] }>(res);
+      if (data) {
         setLogs(data.logs || []);
       }
     } catch (e) {
@@ -141,8 +142,8 @@ export function AdminMcp() {
   const fetchTools = async () => {
     try {
       const res = await fetch("/api/mcp/tools");
-      if (res.ok) {
-        const data = await res.json();
+      const data = await safeParseJson<{ tools?: McpToolDefinition[] }>(res);
+      if (data) {
         setTools(data.tools || []);
       }
     } catch (e) {
@@ -154,8 +155,8 @@ export function AdminMcp() {
     setIsLoadingDiagnostics(true);
     try {
       const res = await fetch("/api/mcp/diagnostics");
-      if (res.ok) {
-        const data = await res.json();
+      const data = await safeParseJson<any>(res);
+      if (data) {
         setDiagnosticsData(data);
       }
     } catch (e) {
@@ -226,8 +227,8 @@ export function AdminMcp() {
         setShowAddModal(false);
         await fetchCredentials();
       } else {
-        const err = await res.json();
-        setFormError(err.error || "Failed to save credential.");
+        const err = await safeParseJson<{ error?: string }>(res);
+        setFormError(err?.error || "Failed to save credential.");
       }
     } catch (e: any) {
       setFormError(e.message || "Network error.");
@@ -273,8 +274,8 @@ export function AdminMcp() {
       const res = await fetch(`/api/mcp/tools/${encodeURIComponent(toolName)}/toggle`, {
         method: "POST",
       });
-      if (res.ok) {
-        const data = await res.json();
+      const data = await safeParseJson<{ tool: { enabled: boolean }; message?: string }>(res);
+      if (data && data.tool) {
         setTools((prev) =>
           prev.map((t) => (t.name === toolName ? { ...t, enabled: data.tool.enabled } : t))
         );
@@ -330,16 +331,18 @@ export function AdminMcp() {
       });
 
       if (res.ok) {
-        const data = await res.json();
-        setTools((prev) =>
-          prev.map((t) => (t.name === selectedToolForEdit.name ? data.tool : t))
-        );
-        setSelectedToolForEdit(null);
-        setToolActionFeedback(`Tool '${selectedToolForEdit.name}' settings saved successfully.`);
-        setTimeout(() => setToolActionFeedback(null), 3500);
+        const data = await safeParseJson<{ tool: McpToolDefinition }>(res);
+        if (data && data.tool) {
+          setTools((prev) =>
+            prev.map((t) => (t.name === selectedToolForEdit.name ? data.tool : t))
+          );
+          setSelectedToolForEdit(null);
+          setToolActionFeedback(`Tool '${selectedToolForEdit.name}' settings saved successfully.`);
+          setTimeout(() => setToolActionFeedback(null), 3500);
+        }
       } else {
-        const data = await res.json();
-        setEditError(data.error || "Failed to update tool.");
+        const data = await safeParseJson<{ error?: string }>(res);
+        setEditError(data?.error || "Failed to update tool.");
       }
     } catch (err: any) {
       setEditError(err.message || "Failed to save tool.");
@@ -379,17 +382,19 @@ export function AdminMcp() {
       });
 
       if (res.ok) {
-        const data = await res.json();
-        setTools((prev) => [...prev, data.tool]);
-        setShowAddToolModal(false);
-        setNewToolName("");
-        setNewToolDescription("");
-        setNewToolInstruction("");
-        setToolActionFeedback(`Custom tool '${data.tool.name}' created successfully.`);
-        setTimeout(() => setToolActionFeedback(null), 3500);
+        const data = await safeParseJson<{ tool: McpToolDefinition }>(res);
+        if (data && data.tool) {
+          setTools((prev) => [...prev, data.tool]);
+          setShowAddToolModal(false);
+          setNewToolName("");
+          setNewToolDescription("");
+          setNewToolInstruction("");
+          setToolActionFeedback(`Custom tool '${data.tool.name}' created successfully.`);
+          setTimeout(() => setToolActionFeedback(null), 3500);
+        }
       } else {
-        const data = await res.json();
-        setNewToolError(data.error || "Failed to create tool.");
+        const data = await safeParseJson<{ error?: string }>(res);
+        setNewToolError(data?.error || "Failed to create tool.");
       }
     } catch (err: any) {
       setNewToolError(err.message || "Failed to create tool.");
@@ -409,10 +414,12 @@ export function AdminMcp() {
     try {
       const res = await fetch("/api/mcp/tools/reset", { method: "POST" });
       if (res.ok) {
-        const data = await res.json();
-        setTools(data.tools || []);
-        setToolActionFeedback("All MCP tools restored to default configuration.");
-        setTimeout(() => setToolActionFeedback(null), 3500);
+        const data = await safeParseJson<{ tools?: McpToolDefinition[] }>(res);
+        if (data) {
+          setTools(data.tools || []);
+          setToolActionFeedback("All MCP tools restored to default configuration.");
+          setTimeout(() => setToolActionFeedback(null), 3500);
+        }
       }
     } catch (e) {
       console.error("Reset error:", e);
@@ -619,8 +626,8 @@ export function AdminMcp() {
         }),
       });
 
-      const data = await res.json();
-      setPlaygroundResult(data);
+      const data = await safeParseJson(res);
+      setPlaygroundResult(data || { success: false, error: "Received non-JSON response from server." });
       fetchLogs(); // refresh audit logs
     } catch (e: any) {
       setPlaygroundResult({ success: false, error: e.message });

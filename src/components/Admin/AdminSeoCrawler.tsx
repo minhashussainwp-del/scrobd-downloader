@@ -9,6 +9,7 @@ import {
   saveSitemapXml,
 } from "../../data/siteConfig";
 import { loadCustomPages } from "../../data/customPagesData";
+import { safeParseJson } from "../../utils/apiSafe";
 import {
   Globe,
   FileCode,
@@ -71,9 +72,9 @@ export function AdminSeoCrawler({ posts = [], customPages = [] }: AdminSeoCrawle
 
     // Fetch live robots.txt from server
     fetch("/api/seo/robots")
-      .then((res) => res.json())
+      .then((res) => safeParseJson<{ content?: string }>(res))
       .then((data) => {
-        if (data.content) {
+        if (data && data.content) {
           setRobotsContent(data.content);
         } else {
           setRobotsContent(loadRobotsTxt(origin));
@@ -85,9 +86,9 @@ export function AdminSeoCrawler({ posts = [], customPages = [] }: AdminSeoCrawle
 
     // Fetch live sitemap.xml from server
     fetch("/api/seo/sitemap")
-      .then((res) => res.json())
+      .then((res) => safeParseJson<{ content?: string }>(res))
       .then((data) => {
-        if (data.content) {
+        if (data && data.content) {
           setSitemapContent(data.content);
         } else {
           const effectivePages = customPages.length > 0 ? customPages : loadCustomPages();

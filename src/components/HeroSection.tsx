@@ -17,6 +17,7 @@ import { JobProgress } from "./JobProgress";
 import { JobResult } from "./JobResult";
 import { t } from "../data/translations";
 import { triggerNewTabAdIfConfigured } from "../utils/adTrigger";
+import { safeParseJson } from "../utils/apiSafe";
 
 interface HeroSectionProps {
   url: string;
@@ -89,9 +90,9 @@ export function HeroSection({
         body: JSON.stringify({ url: cleanUrl, format: "pdf", demoMode: isDemo || demoMode, quality }),
       });
 
-      const data = await res.json();
+      const data = await safeParseJson<{ jobId?: string; message?: string; error?: string }>(res);
 
-      if (res.ok && data.jobId) {
+      if (res.ok && data?.jobId) {
         setCurrentJob({
           id: data.jobId,
           url: cleanUrl,
@@ -112,13 +113,13 @@ export function HeroSection({
           status: "failed",
           progress: 100,
           stepMessage: "Failed to initialize extraction",
-          error: data.error || "The server could not process this document URL.",
+          error: data?.error || "The server could not process this document URL.",
           troubleshooting: [
             "Ensure the URL belongs to a public Scribd document or presentation.",
             "Verify the link starts with https://www.scribd.com/...",
             "Click on one of our pre-cached sample documents below to test the pipeline.",
           ],
-          logs: [data.error || "Request failed"],
+          logs: [data?.error || "Request failed"],
           createdAt: Date.now(),
           dir: "",
         });

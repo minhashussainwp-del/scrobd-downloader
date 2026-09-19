@@ -25,6 +25,8 @@ import {
   saveCustomPages,
   DEFAULT_CUSTOM_PAGES,
 } from "../../data/customPagesData";
+import { ClassicEditor } from "./ClassicEditor";
+import { safeParseJson } from "../../utils/apiSafe";
 
 interface PageConfig {
   id: string;
@@ -200,7 +202,7 @@ export function AdminPages() {
 
     // Sync from server if available
     fetch("/api/custom-pages")
-      .then((res) => (res.ok ? res.json() : null))
+      .then((res) => safeParseJson<{ pages: any[] }>(res))
       .then((data) => {
         if (data && Array.isArray(data.pages) && data.pages.length > 0) {
           setCustomPages(data.pages);
@@ -888,14 +890,13 @@ export function AdminPages() {
                   </div>
 
                   {previewMode === "edit" ? (
-                    <textarea
-                      rows={12}
-                      required
-                      value={editingPage.content || ""}
-                      onChange={(e) => setEditingPage({ ...editingPage, content: e.target.value })}
-                      placeholder="# Write your page title and content in Markdown format..."
-                      className="w-full p-4 rounded-2xl border border-slate-300 font-mono text-xs text-slate-800 focus:outline-none focus:border-indigo-500 resize-y leading-relaxed bg-slate-50/50"
-                    />
+                    <div className="space-y-1.5">
+                      <ClassicEditor
+                        value={editingPage.content || ""}
+                        onChange={(val) => setEditingPage({ ...editingPage, content: val })}
+                        minHeight="380px"
+                      />
+                    </div>
                   ) : (
                     <div className="p-6 rounded-2xl border border-slate-200 bg-white min-h-[280px] max-h-[400px] overflow-y-auto">
                       <h1 className="text-2xl font-extrabold text-slate-900 border-b border-slate-100 pb-3">
@@ -904,9 +905,10 @@ export function AdminPages() {
                       {editingPage.subtitle && (
                         <p className="text-sm text-slate-500 mt-1 mb-4 italic">{editingPage.subtitle}</p>
                       )}
-                      <div className="text-xs sm:text-sm text-slate-700 whitespace-pre-line leading-relaxed">
-                        {editingPage.content}
-                      </div>
+                      <div
+                        className="prose-custom max-w-none text-slate-700 leading-relaxed text-sm"
+                        dangerouslySetInnerHTML={{ __html: editingPage.content || "" }}
+                      />
                     </div>
                   )}
                 </div>

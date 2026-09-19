@@ -36,6 +36,7 @@ import {
   saveAdSettings,
   loadPageContent,
 } from "./data/siteConfig";
+import { safeParseJson } from "./utils/apiSafe";
 
 const VALID_LANGS: SupportedLanguage[] = ["en", "br", "es", "fr", "de", "id"];
 
@@ -381,9 +382,9 @@ export default function App() {
     pollingRef.current = setTimeout(async () => {
       try {
         const res = await fetch(`/api/jobs/${encodeURIComponent(currentJob.id)}`);
-        if (res.ok) {
+        const updatedJob = await safeParseJson<DownloadJob>(res);
+        if (updatedJob) {
           errorCountRef.current = 0;
-          const updatedJob: DownloadJob = await res.json();
           setCurrentJob(updatedJob);
           if (updatedJob.status === "completed" || updatedJob.status === "failed") {
             setIsLoading(false);

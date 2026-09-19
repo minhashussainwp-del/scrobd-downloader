@@ -22,6 +22,22 @@ function hasNestedBlockOrImage(node: any): boolean {
 }
 
 export function ModernArticleRenderer({ content }: ModernArticleRendererProps) {
+  // Check if content is formatted as HTML (produced by ClassicEditor)
+  const isHtml = Boolean(
+    content &&
+    (/<([a-z][a-z0-9]*)\b[^>]*>(.*?)<\/\1>/is.test(content) ||
+     /<(p|h[1-6]|table|div|img|ul|ol|blockquote|figure)\b/i.test(content))
+  );
+
+  if (isHtml) {
+    return (
+      <div
+        className="modern-article prose-custom max-w-none text-slate-700 leading-relaxed"
+        dangerouslySetInnerHTML={{ __html: content }}
+      />
+    );
+  }
+
   return (
     <div className="modern-article prose-custom max-w-none text-slate-700">
       <ReactMarkdown

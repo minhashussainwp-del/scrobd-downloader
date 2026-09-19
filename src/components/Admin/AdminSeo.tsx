@@ -28,6 +28,7 @@ import {
   buildDynamicSitemapXml,
 } from "../../data/siteConfig";
 import { loadCustomPages } from "../../data/customPagesData";
+import { safeParseJson } from "../../utils/apiSafe";
 import { BLOG_POSTS } from "../../data/blogData";
 
 interface AdminSeoProps {
@@ -70,7 +71,7 @@ export function AdminSeo({ customPages: propCustomPages, posts: propPosts }: Adm
   useEffect(() => {
     // 1. Fetch robots.txt
     fetch("/api/seo/robots")
-      .then((res) => (res.ok ? res.json() : null))
+      .then((res) => safeParseJson<{ content?: string; lastModified?: string }>(res))
       .then((data) => {
         if (data && data.content) {
           setRobotsContent(data.content);
@@ -85,7 +86,7 @@ export function AdminSeo({ customPages: propCustomPages, posts: propPosts }: Adm
 
     // 2. Fetch sitemap.xml
     fetch("/api/seo/sitemap")
-      .then((res) => (res.ok ? res.json() : null))
+      .then((res) => safeParseJson<{ content?: string; lastModified?: string }>(res))
       .then((data) => {
         if (data && data.content) {
           setSitemapContent(data.content);
