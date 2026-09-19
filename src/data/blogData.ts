@@ -3,6 +3,7 @@ import { BlogPost } from "../types";
 export const BLOG_POSTS: BlogPost[] = [
   {
     id: "blog-0",
+    translationGroupId: "group-how-to-download",
     slug: "como-baixar-documentos-do-scribd-em-pdf",
     language: "br",
     title: `Como Baixar Documentos do Scribd em PDF (Passo a Passo)`,
@@ -148,6 +149,7 @@ Baixar um documento do Scribd em PDF é copiar o link certo, colar na ferramenta
   },
   {
     id: "blog-1",
+    translationGroupId: "group-read-on-kindle",
     slug: "como-ler-documentos-do-scribd-no-kindle",
     language: "br",
     title: `Como Ler Documentos do Scribd no Kindle`,
@@ -274,6 +276,7 @@ Kindle e Scribd não conversam direto, mas o caminho PDF resolve em dois minutos
   },
   {
     id: "blog-2",
+    translationGroupId: "group-preview-pdf",
     slug: "como-visualizar-um-pdf-antes-de-baixar",
     language: "br",
     title: `Como Visualizar um PDF Antes de Baixar com Segurança`,
@@ -403,6 +406,7 @@ Um minuto olhando a pré-visualização poupa dados, espaço e dor de cabeça. C
   },
   {
     id: "blog-3",
+    translationGroupId: "group-preview-pdf",
     slug: "pdf-vorschau-vor-dem-herunterladen",
     language: "de",
     title: `So Prüfen Sie ein PDF Vor dem Herunterladen`,
@@ -532,6 +536,7 @@ Eine Minute in der Vorschau spart Daten, Platz und Ärger. Prüfen Sie Titel, Se
   },
   {
     id: "blog-4",
+    translationGroupId: "group-how-to-download",
     slug: "scribd-dokumente-als-pdf-herunterladen",
     language: "de",
     title: `Scribd-Dokumente als PDF herunterladen (Schritt für Schritt)`,
@@ -677,6 +682,7 @@ Ein Scribd-Dokument als PDF herunterzuladen heißt: den richtigen Link kopieren,
   },
   {
     id: "blog-5",
+    translationGroupId: "group-read-on-kindle",
     slug: "scribd-dokumente-auf-kindle-lesen",
     language: "de",
     title: `Scribd-Dokumente auf dem Kindle lesen`,
@@ -803,6 +809,7 @@ Kindle und Scribd sprechen nicht direkt miteinander, aber der Weg über PDF lös
   },
   {
     id: "blog-6",
+    translationGroupId: "group-how-to-download",
     slug: "how-to-download-scribd-documents",
     language: "en",
     title: `How to Download Scribd Documents as PDF`,
@@ -949,6 +956,7 @@ Copy the document link, paste it in, save the PDF — and now you know what happ
   },
   {
     id: "blog-7",
+    translationGroupId: "group-preview-pdf",
     slug: "preview-pdf-before-downloading",
     language: "en",
     title: `How to Preview a PDF Before Downloading: Safe Reading Practices`,
@@ -1062,6 +1070,7 @@ A one-minute preview — title, pages, language, readability — filters out nea
   },
   {
     id: "blog-8",
+    translationGroupId: "group-academic",
     slug: "read-academic-papers-offline",
     language: "en",
     title: `Best Ways to Read Academic Papers & Presentations Offline`,
@@ -1197,6 +1206,7 @@ Offline reading isn't about the perfect device — it's about PDFs with good nam
   },
   {
     id: "blog-9",
+    translationGroupId: "group-read-on-kindle",
     slug: "read-scribd-on-kindle",
     language: "en",
     title: `How to Read Scribd Documents on a Kindle`,
@@ -1323,6 +1333,7 @@ Save the PDF, pick your transfer method — Send to Kindle for convenience, USB 
   },
   {
     id: "blog-10",
+    translationGroupId: "group-formatting-issues",
     slug: "scribd-pdf-formatting-issues",
     language: "en",
     title: `Scribd PDF Download Guide: Resolving Formatting & Quality Issues`,
@@ -1449,6 +1460,7 @@ Diagnose before you fix: check the source page, match your symptom to the table,
   },
   {
     id: "blog-11",
+    translationGroupId: "group-how-to-download",
     slug: "como-descargar-documentos-de-scribd-en-pdf",
     language: "es",
     title: `Cómo Descargar Documentos de Scribd en PDF (Paso a Paso)`,
@@ -1594,6 +1606,7 @@ Descargar un documento de Scribd en PDF es copiar el enlace correcto, pegarlo en
   },
   {
     id: "blog-12",
+    translationGroupId: "group-read-on-kindle",
     slug: "como-leer-documentos-de-scribd-en-kindle",
     language: "es",
     title: `Cómo Leer Documentos de Scribd en tu Kindle`,
@@ -1720,6 +1733,7 @@ El Kindle y Scribd no se hablan directo, pero la ruta del PDF lo resuelve en dos
   },
   {
     id: "blog-13",
+    translationGroupId: "group-preview-pdf",
     slug: "como-previsualizar-un-pdf-antes-de-descargar",
     language: "es",
     title: `Cómo Previsualizar un PDF Antes de Descargarlo`,
@@ -1849,6 +1863,7 @@ Un minuto mirando la vista previa ahorra datos, espacio y dolores de cabeza. Rev
   },
   {
     id: "blog-14",
+    translationGroupId: "group-read-on-kindle",
     slug: "comment-lire-documents-scribd-sur-kindle",
     language: "fr",
     title: `Comment Lire des Documents Scribd sur Kindle`,
@@ -1975,6 +1990,7 @@ Le Kindle et Scribd ne se parlent pas directement, mais la voie du PDF règle ç
   },
   {
     id: "blog-15",
+    translationGroupId: "group-preview-pdf",
     slug: "comment-previsualiser-un-pdf-avant-de-telecharger",
     language: "fr",
     title: `Comment Prévisualiser un PDF Avant de le Télécharger`,
@@ -2104,6 +2120,7 @@ Une minute passée sur l'aperçu économise des données, de l'espace et des tra
   },
   {
     id: "blog-16",
+    translationGroupId: "group-how-to-download",
     slug: "comment-telecharger-des-documents-scribd-en-pdf",
     language: "fr",
     title: `Comment Télécharger un Document Scribd en PDF (Pas à Pas)`,
@@ -2249,6 +2266,7 @@ Télécharger un document Scribd en PDF, c'est copier le bon lien, le coller dan
   },
   {
     id: "blog-17",
+    translationGroupId: "group-preview-pdf",
     slug: "cara-melihat-pratinjau-pdf-sebelum-mengunduh",
     language: "id",
     title: `Cara Melihat Pratinjau PDF Sebelum Mengunduh`,
@@ -2378,6 +2396,7 @@ Satu menit melihat pratinjau menghemat kuota, ruang, dan sakit kepala. Periksa j
   },
   {
     id: "blog-18",
+    translationGroupId: "group-read-on-kindle",
     slug: "cara-membaca-dokumen-scribd-di-kindle",
     language: "id",
     title: `Cara Membaca Dokumen Scribd di Kindle`,
@@ -2504,6 +2523,7 @@ Kindle dan Scribd tidak terhubung langsung, tapi jalur PDF menyelesaikannya dala
   },
   {
     id: "blog-19",
+    translationGroupId: "group-how-to-download",
     slug: "cara-mengunduh-dokumen-scribd-menjadi-pdf",
     language: "id",
     title: `Cara Mengunduh Dokumen Scribd Menjadi PDF (Langkah demi Langkah)`,
@@ -2649,6 +2669,7 @@ Mengunduh dokumen Scribd menjadi PDF caranya: salin tautan yang benar, tempel ke
   },
   {
     id: "blog-20",
+    translationGroupId: "group-unblur",
     slug: "how-to-unblur-scribd-documents-free",
     language: "en",
     title: `How to Unblur Scribd Documents for Free (Methods That Actually Work)`,
@@ -2817,6 +2838,7 @@ Ready to turn a locked Scribd link into an accessible document?
   },
   {
     id: "blog-21",
+    translationGroupId: "group-mobile",
     slug: "how-to-download-scribd-documents-on-mobile",
     language: "en",
     title: `How to Download Scribd Documents on Mobile (Android & iPhone Guide)`,
@@ -2993,6 +3015,7 @@ Yes. On Android, you can use the official Amazon Kindle app or email the file to
   },
   {
     id: "blog-22",
+    translationGroupId: "group-slides",
     slug: "how-to-download-scribd-slides-presentation-pdf",
     language: "en",
     title: `How to Download Scribd Slide Presentations (PPT to PDF Guide)`,
@@ -3152,6 +3175,7 @@ Yes. Follow our [Mobile Download Guide for Android and iPhone](/blog/how-to-down
   },
   {
     id: "blog-23",
+    translationGroupId: "group-docdownloader-alt",
     slug: "best-docdownloader-alternatives",
     language: "en",
     title: `Top 5 DocDownloader Alternatives for Scribd in 2026 (Tested & Compared)`,
@@ -3333,6 +3357,7 @@ Ready for a clean, reliable download experience?
   },
   {
     id: "blog-24",
+    translationGroupId: "group-unblur",
     slug: "como-ver-documentos-borrosos-en-scribd-gratis",
     language: "es",
     title: `Cómo Ver y Desbloquear Documentos Borrosos en Scribd Gratis`,
@@ -3429,6 +3454,7 @@ Los navegadores móviles no incluyen herramientas de desarrollador fácilmente a
   },
   {
     id: "blog-25",
+    translationGroupId: "group-unblur",
     slug: "como-ver-texto-borrado-do-scribd-gratis",
     language: "br",
     title: `Como Ver e Desbloquear Texto Borrado no Scribd Grátis`,
@@ -3520,6 +3546,7 @@ Nossa ferramenta roda 100% no navegador por conexão segura HTTPS, sem solicitar
   },
   {
     id: "blog-26",
+    translationGroupId: "group-unblur",
     slug: "cara-melihat-dokumen-scribd-yang-diburamkan",
     language: "id",
     title: `Cara Melihat & Membuka Dokumen Scribd yang Diburamkan Gratis`,
@@ -3607,6 +3634,7 @@ Sangat aman. Alat web kami tidak meminta izin berbahaya, tidak memerlukan instal
   },
   {
     id: "blog-27",
+    translationGroupId: "group-mobile",
     slug: "como-descargar-de-scribd-en-el-celular",
     language: "es",
     title: `Cómo Descargar de Scribd en el Celular (Android y iPhone)`,
@@ -3671,6 +3699,7 @@ Sí. El archivo resultante mantiene la resolución vectorial original, lo que pe
   },
   {
     id: "blog-28",
+    translationGroupId: "group-mobile",
     slug: "como-baixar-do-scribd-pelo-celular",
     language: "br",
     title: `Como Baixar do Scribd pelo Celular (Android e iPhone)`,
@@ -3733,6 +3762,7 @@ Sim. O arquivo fica salvo no armazenamento interno do seu aparelho e pode ser ab
   },
   {
     id: "blog-29",
+    translationGroupId: "group-formatting-issues",
     slug: "como-solucionar-problemas-de-formato-y-paginas-borrosas-en-scribd-pdf",
     language: "es",
     title: `Cómo Solucionar Problemas de Formato y Páginas Borrosas en PDFs de Scribd`,
@@ -3811,6 +3841,7 @@ Ocurre cuando la descarga se interrumpió antes de completar el 100%. Elimina el
   },
   {
     id: "blog-30",
+    translationGroupId: "group-formatting-issues",
     slug: "como-corrigir-problemas-de-formatacao-e-paginas-borradas-no-pdf-do-scribd",
     language: "br",
     title: `Como Corrigir Problemas de Formatação e Páginas Borradas no PDF do Scribd`,
@@ -3885,6 +3916,7 @@ Sim. Use visualizadores confiáveis como o Google Drive PDF Viewer ou o leitor p
   },
   {
     id: "blog-31",
+    translationGroupId: "group-convert-epub",
     slug: "how-to-convert-scribd-documents-to-epub-audiobook",
     language: "en",
     title: `How to Convert Scribd Documents to EPUB & Audiobooks (Step-by-Step Tutorial)`,
@@ -4002,6 +4034,7 @@ Calibre is a desktop application. However, once you convert the file on your com
   },
   {
     id: "blog-32",
+    translationGroupId: "group-viewer-architecture",
     slug: "inside-scribd-document-viewer-architecture-svg-canvas",
     language: "en",
     title: `Inside Scribd's Architecture: How Vector SVG, Canvases, and Paywalls Work`,
@@ -4122,6 +4155,7 @@ Scribd's migration to dual-layer HTML5 rendering demonstrates how web platforms 
   },
   {
     id: "blog-33",
+    translationGroupId: "group-7-tips",
     slug: "7-pro-tips-to-find-locked-documents-on-scribd",
     language: "en",
     title: `7 Pro Tips to Find and Research Locked Documents on Scribd (Google Dorks Guide)`,
@@ -4257,4 +4291,83 @@ Instead:
 | **Find legal/contract templates** | \`site:scribd.com/document "Agreement Template" "docx"\` |`
   }
 ];
+
+export const DEFAULT_POST_TRANSLATION_GROUPS: Record<string, string> = {
+  "blog-0": "group-how-to-download",
+  "blog-4": "group-how-to-download",
+  "blog-6": "group-how-to-download",
+  "blog-11": "group-how-to-download",
+  "blog-16": "group-how-to-download",
+  "blog-19": "group-how-to-download",
+
+  "blog-1": "group-read-on-kindle",
+  "blog-5": "group-read-on-kindle",
+  "blog-9": "group-read-on-kindle",
+  "blog-12": "group-read-on-kindle",
+  "blog-14": "group-read-on-kindle",
+  "blog-18": "group-read-on-kindle",
+
+  "blog-2": "group-preview-pdf",
+  "blog-3": "group-preview-pdf",
+  "blog-7": "group-preview-pdf",
+  "blog-13": "group-preview-pdf",
+  "blog-15": "group-preview-pdf",
+  "blog-17": "group-preview-pdf",
+
+  "blog-20": "group-unblur",
+  "blog-24": "group-unblur",
+  "blog-25": "group-unblur",
+  "blog-26": "group-unblur",
+
+  "blog-21": "group-mobile",
+  "blog-27": "group-mobile",
+  "blog-28": "group-mobile",
+
+  "blog-10": "group-formatting-issues",
+  "blog-29": "group-formatting-issues",
+  "blog-30": "group-formatting-issues",
+
+  "blog-8": "group-academic",
+  "blog-22": "group-slides",
+  "blog-23": "group-docdownloader-alt",
+  "blog-31": "group-convert-epub",
+  "blog-32": "group-viewer-architecture",
+  "blog-33": "group-7-tips",
+};
+
+export function getPostTranslationGroupId(post: BlogPost): string {
+  if (post.translationGroupId) return post.translationGroupId;
+  if (DEFAULT_POST_TRANSLATION_GROUPS[post.id]) return DEFAULT_POST_TRANSLATION_GROUPS[post.id];
+  return `tg-${post.id}`;
+}
+
+export function loadAllBlogPosts(): BlogPost[] {
+  try {
+    const raw = localStorage.getItem("scribd_blog_posts");
+    if (raw) {
+      const parsed: BlogPost[] = JSON.parse(raw);
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        const mapped: BlogPost[] = parsed.map((p) => {
+          const defaultMatch = BLOG_POSTS.find((bp) => bp.id === p.id);
+          return {
+            ...p,
+            translationGroupId: p.translationGroupId || (defaultMatch ? defaultMatch.translationGroupId : DEFAULT_POST_TRANSLATION_GROUPS[p.id]) || getPostTranslationGroupId(p),
+            language: p.language || defaultMatch?.language || "en",
+            status: p.status || "published",
+          };
+        });
+
+        for (const defaultPost of BLOG_POSTS) {
+          if (!mapped.some((p) => p.id === defaultPost.id)) {
+            mapped.push(defaultPost);
+          }
+        }
+        return mapped;
+      }
+    }
+  } catch (e) {
+    console.error("Error reading stored blog posts:", e);
+  }
+  return BLOG_POSTS;
+}
 

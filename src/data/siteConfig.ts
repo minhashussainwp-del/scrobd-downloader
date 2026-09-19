@@ -1074,57 +1074,179 @@ export function buildDynamicSitemapXml(
     { path: "contact", priority: "0.6", changefreq: "monthly" },
     { path: "privacy", priority: "0.5", changefreq: "monthly" },
     { path: "terms", priority: "0.5", changefreq: "monthly" },
+    { path: "sitemap", priority: "0.4", changefreq: "weekly" },
   ];
 
+  const seenUrls = new Set<string>();
   const xmlEntries: string[] = [];
 
-  // 1. Core localized routes
-  for (const lang of languages) {
-    for (const r of coreRoutes) {
-      const fullPath = r.path ? `/${lang}/${r.path}` : `/${lang}`;
-      xmlEntries.push(`  <url>
-    <loc>${base}${fullPath}</loc>
-    <lastmod>${today}</lastmod>
-    <changefreq>${r.changefreq}</changefreq>
-    <priority>${r.priority}</priority>
+  const addUrlEntry = (
+    loc: string,
+    lastmod: string,
+    changefreq: string,
+    priority: string,
+    alternates: Array<{ lang: string; href: string }> = []
+  ) => {
+    if (seenUrls.has(loc)) return;
+    seenUrls.add(loc);
+
+    let alternateTags = "";
+    if (alternates.length > 0) {
+      alternateTags = alternates
+        .filter((alt) => alt.href)
+        .map((alt) => `    <xhtml:link rel="alternate" hreflang="${alt.lang}" href="${alt.href}" />`)
+        .join("\n");
+      if (alternateTags) alternateTags = "\n" + alternateTags;
+    }
+
+    xmlEntries.push(`  <url>
+    <loc>${loc}</loc>${alternateTags}
+    <lastmod>${lastmod}</lastmod>
+    <changefreq>${changefreq}</changefreq>
+    <priority>${priority}</priority>
   </url>`);
+  };
+
+  // 1. Root canonical entry
+  addUrlEntry(
+    `${base}/`,
+    today,
+    "daily",
+    "1.0",
+    languages.map((l) => ({ lang: l, href: `${base}/${l}` }))
+  );
+
+  // 2. Core localized routes with all language variations
+  for (const r of coreRoutes) {
+    const alternates = languages.map((lang) => ({
+      lang,
+      href: r.path ? `${base}/${lang}/${r.path}` : `${base}/${lang}`,
+    }));
+
+    for (const lang of languages) {
+      const fullPath = r.path ? `/${lang}/${r.path}` : `/${lang}`;
+      addUrlEntry(`${base}${fullPath}`, today, r.changefreq, r.priority, alternates);
     }
   }
 
-  // Root fallback
-  xmlEntries.push(`  <url>
-    <loc>${base}/</loc>
-    <lastmod>${today}</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>1.0</priority>
-  </url>`);
-
-  // 2. Published Blog Articles
+  // 3. Published Blog Articles - ALL Variations for ALL Supported Languages
+  const translationGroups = new Map<string, BlogPost[]>();
   for (const post of posts) {
     if (post.status === "draft") continue;
-    const postLang = (post.language as string) || "en";
-    xmlEntries.push(`  <url>
-    <loc>${base}/${postLang}/blog/${post.slug}</loc>
-    <lastmod>${post.date || today}</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>`);
+    const tgId = post.translationGroupId || `tg-${post.id}`;
+    if (!translationGroups.has(tgId)) {
+      translationGroups.set(tgId, []);
+    }
+    translationGroups.get(tgId)!.push(post);
   }
 
-  // 3. Published Custom Pages
+  // For every translation group, generate exact URLs for all language variations
+  translationGroups.forEach((groupPosts) => {
+    const postToday = groupPosts[0]?.date || today;
+
+    // Build the language map for this group
+    const langMap = new Map<SupportedLanguage, string>();
+    for (const p of groupPosts) {
+      const pLang = (p.language as SupportedLanguage) || "en";
+      const pSlug = (p.slug || p.id).replace(/^\/+/, "");
+      langMap.set(pLang, `${base}/${pLang}/blog/${pSlug}`);
+    }
+
+    // Default reference post for fallback slugs
+    const refPost = groupPosts.find((p) => (p.language || "en") === "en") || groupPosts[0];
+    const refSlug = (refPost.slug || refPost.id).replace(/^\/+/, "");
+
+    // Fill missing languages so every language has an exact URL
+    for (const lang of languages) {
+      if (!langMap.has(lang)) {
+        langMap.set(lang, `${base}/${lang}/blog/${refSlug}`);
+      }
+    }
+
+    const groupAlternates = Array.from(langMap.entries()).map(([l, href]) => ({
+      lang: l,
+      href,
+    }));
+
+    // Output exact URL entry for each published post in this group
+    for (const p of groupPosts) {
+      const pLang = (p.language as SupportedLanguage) || "en";
+      const exactUrl = langMap.get(pLang) || `${base}/${pLang}/blog/${(p.slug || p.id).replace(/^\/+/, "")}`;
+      addUrlEntry(exactUrl, p.date || postToday, "weekly", "0.8", groupAlternates);
+    }
+
+    // Ensure all language variations have explicit <url> blocks
+    for (const lang of languages) {
+      const loc = langMap.get(lang);
+      if (loc && !seenUrls.has(loc)) {
+        addUrlEntry(loc, postToday, "weekly", "0.8", groupAlternates);
+      }
+    }
+  });
+
+  // Also include any standalone published post not yet in a translation group
+  for (const post of posts) {
+    if (post.status === "draft") continue;
+    const postLang = (post.language as SupportedLanguage) || "en";
+    const postSlug = (post.slug || post.id).replace(/^\/+/, "");
+    const directUrl = `${base}/${postLang}/blog/${postSlug}`;
+    addUrlEntry(directUrl, post.date || today, "weekly", "0.8");
+  }
+
+  // 4. Published Custom Pages - Exact URLs for all language variations
   for (const page of customPages) {
     if (page.status === "draft") continue;
-    const pageLang = page.language && page.language !== "all" ? page.language : "en";
-    xmlEntries.push(`  <url>
-    <loc>${base}/${pageLang}/${page.slug}</loc>
-    <lastmod>${page.lastModified || today}</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>`);
+    const cleanSlug = (page.slug || "").replace(/^\/+/, "");
+    if (!cleanSlug) continue;
+
+    const pageLastMod = page.lastModified || today;
+
+    // Check if page applies to all languages or is specific
+    if (!page.language || page.language === "all" || page.language === "en") {
+      const pageAlternates = languages.map((lang) => ({
+        lang,
+        href: `${base}/${lang}/${cleanSlug}`,
+      }));
+
+      // Output exact URL for each language
+      for (const lang of languages) {
+        addUrlEntry(
+          `${base}/${lang}/${cleanSlug}`,
+          pageLastMod,
+          "monthly",
+          "0.7",
+          pageAlternates
+        );
+      }
+      // Also root URL variant
+      addUrlEntry(
+        `${base}/${cleanSlug}`,
+        pageLastMod,
+        "monthly",
+        "0.7",
+        pageAlternates
+      );
+    } else {
+      // Specific localized page (e.g. "es", "br", "fr", "de", "id", "hi")
+      const specificLang = page.language as SupportedLanguage;
+      addUrlEntry(
+        `${base}/${specificLang}/${cleanSlug}`,
+        pageLastMod,
+        "monthly",
+        "0.7"
+      );
+      addUrlEntry(
+        `${base}/${cleanSlug}`,
+        pageLastMod,
+        "monthly",
+        "0.7"
+      );
+    }
   }
 
   return `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
 ${xmlEntries.join("\n")}
 </urlset>`;
 }
@@ -1155,5 +1277,53 @@ export function saveSitemapXml(content: string) {
   } catch (e) {
     console.error(e);
   }
+}
+
+export async function syncPostsAndRebuildSitemap(
+  posts?: BlogPost[],
+  customPages?: CustomPage[],
+  origin?: string
+): Promise<string> {
+  let effectivePosts = posts;
+  if (!effectivePosts || effectivePosts.length === 0) {
+    try {
+      const raw = localStorage.getItem("scribd_blog_posts");
+      if (raw) effectivePosts = JSON.parse(raw);
+    } catch {}
+  }
+  let effectivePages = customPages;
+  if (!effectivePages || effectivePages.length === 0) {
+    try {
+      const raw = localStorage.getItem(CUSTOM_PAGES_KEY);
+      if (raw) effectivePages = JSON.parse(raw);
+    } catch {}
+  }
+
+  const base = origin || (typeof window !== "undefined" ? window.location.origin : "https://example.com");
+  const sitemapXml = buildDynamicSitemapXml(base, effectivePosts || [], effectivePages || []);
+  saveSitemapXml(sitemapXml);
+
+  if (typeof window !== "undefined") {
+    if (effectivePosts && effectivePosts.length > 0) {
+      try {
+        fetch("/api/blog/posts", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ posts: effectivePosts }),
+        }).catch(() => {});
+      } catch {}
+    }
+    if (effectivePages && effectivePages.length > 0) {
+      try {
+        fetch("/api/custom-pages", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ pages: effectivePages }),
+        }).catch(() => {});
+      } catch {}
+    }
+  }
+
+  return sitemapXml;
 }
 

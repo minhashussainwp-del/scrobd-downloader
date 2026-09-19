@@ -7,9 +7,11 @@ import {
   DownloadSettings,
   SiteSettings,
   MediaItem,
-  PageRoute
+  PageRoute,
+  SupportedLanguage
 } from "../../types";
 import { BLOG_POSTS } from "../../data/blogData";
+import { SUPPORTED_LANGUAGES } from "../../data/translations";
 import {
   loadAdSettings,
   saveAdSettings,
@@ -17,6 +19,7 @@ import {
   saveSiteSettings,
   loadDownloadSettings,
   saveDownloadSettings,
+  syncPostsAndRebuildSitemap,
   INITIAL_MEDIA_ITEMS,
 } from "../../data/siteConfig";
 import { AdminDashboard } from "./AdminDashboard";
@@ -27,6 +30,7 @@ import { AdminAds } from "./AdminAds";
 import { AdminSettings } from "./AdminSettings";
 import { AdminTranslations } from "./AdminTranslations";
 import { AdminMedia } from "./AdminMedia";
+import { DEFAULT_POST_TRANSLATION_GROUPS } from "./AdminPosts";
 import { AdminPagesContent } from "./AdminPagesContent";
 import { AdminMessages } from "./AdminMessages";
 import { AdminMcp } from "./AdminMcp";
@@ -48,6 +52,7 @@ import {
   User,
   CheckCircle2,
   ChevronRight,
+  ChevronDown,
   Cpu
 } from "lucide-react";
 
@@ -67,6 +72,8 @@ interface AdminPanelProps {
   onDeleteMedia?: (id: string) => void;
   categories?: string[];
   tags?: string[];
+  currentLang?: SupportedLanguage;
+  onLanguageChange?: (lang: SupportedLanguage) => void;
 }
 
 export function AdminPanel({
@@ -85,7 +92,21 @@ export function AdminPanel({
   onDeleteMedia: propOnDeleteMedia,
   categories: propCategories = ["Guides", "Tutorials", "Tech", "Tips"],
   tags: propTags = ["Scribd", "PDF", "Downloader", "Conversion", "Free", "Offline", "Mobile", "system"],
+  currentLang: propCurrentLang = "en",
+  onLanguageChange: propOnLanguageChange,
 }: AdminPanelProps) {
+  // Active Admin Language State
+  const [adminLang, setAdminLang] = useState<SupportedLanguage>(() => {
+    return propCurrentLang || "en";
+  });
+
+  const handleAdminLanguageChange = (newLang: SupportedLanguage) => {
+    setAdminLang(newLang);
+    if (propOnLanguageChange) {
+      propOnLanguageChange(newLang);
+    }
+  };
+
   // Authentication & session state
   const [currentUser, setCurrentUser] = useState<any>(null);
   const [authLoading, setAuthLoading] = useState(true);
@@ -124,7 +145,13 @@ export function AdminPanel({
     if (propPosts) return propPosts;
     try {
       const stored = localStorage.getItem("scribd_blog_posts");
-      if (stored) return JSON.parse(stored);
+      if (stored) {
+        const parsed: BlogPost[] = JSON.parse(stored);
+        return parsed.map((p) => ({
+          ...p,
+          translationGroupId: p.translationGroupId || DEFAULT_POST_TRANSLATION_GROUPS[p.id] || `tg-${p.id}`,
+        }));
+      }
     } catch (e) {
       console.error(e);
     }
@@ -162,6 +189,7 @@ export function AdminPanel({
       const exists = prev.some((p) => p.id === post.id);
       const updated = exists ? prev.map((p) => (p.id === post.id ? post : p)) : [post, ...prev];
       localStorage.setItem("scribd_blog_posts", JSON.stringify(updated));
+      syncPostsAndRebuildSitemap(updated);
       return updated;
     });
   };
@@ -173,6 +201,7 @@ export function AdminPanel({
     setInternalPosts((prev) => {
       const updated = prev.filter((p) => p.id !== id);
       localStorage.setItem("scribd_blog_posts", JSON.stringify(updated));
+      syncPostsAndRebuildSitemap(updated);
       return updated;
     });
   };
@@ -428,6 +457,37 @@ export function AdminPanel({
                 <option value="editor">Editor</option>
                 <option value="viewer">Viewer</option>
               </select>
+            </div>
+          </div>
+
+          {/* Global Language Switcher in Sidebar */}
+          <div className="mx-3 mb-4 p-3 bg-slate-800/70 rounded-xl border border-slate-700/60 space-y-2">
+            <div className="flex items-center justify-between">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
+                <Globe className="w-3.5 h-3.5 text-indigo-400" />
+                Language Switcher
+              </span>
+              <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">
+                {adminLang.toUpperCase()}
+              </span>
+            </div>
+
+            <div className="relative">
+              <select
+                id="admin-sidebar-language-select"
+                value={adminLang}
+                onChange={(e) => handleAdminLanguageChange(e.target.value as SupportedLanguage)}
+                className="w-full bg-slate-900 hover:bg-slate-950 text-white font-semibold text-xs rounded-lg px-2.5 py-2 border border-slate-700 focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 cursor-pointer appearance-none pr-8 transition"
+              >
+                {SUPPORTED_LANGUAGES.map((l) => (
+                  <option key={l.code} value={l.code}>
+                    {l.flag} {l.name} ({l.nativeName})
+                  </option>
+                ))}
+              </select>
+              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2.5 text-slate-400">
+                <ChevronDown className="w-3.5 h-3.5" />
+              </div>
             </div>
           </div>
 

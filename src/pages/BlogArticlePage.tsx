@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Calendar,
   Clock,
@@ -24,6 +24,7 @@ import { ModernArticleSidebar } from "../components/ModernArticleSidebar";
 import { AboutAuthorCard } from "../components/Blog/AboutAuthorCard";
 import { useAuthorProfile } from "../data/authorData";
 import { handleImageError, DEFAULT_AUTHOR_AVATAR } from "../utils/imageFallback";
+import { getPostTranslationGroupId } from "../data/blogData";
 
 interface BlogArticlePageProps {
   post: BlogPost;
@@ -52,11 +53,26 @@ export function BlogArticlePage({
   const [copiedLink, setCopiedLink] = useState(false);
 
   // Group translations for this article
-  const translations = post.translationGroupId
-    ? allPosts.filter(
-        (p) => p.translationGroupId === post.translationGroupId && p.status !== "draft"
-      )
-    : [];
+  const groupId = getPostTranslationGroupId(post);
+  const translations = allPosts.filter(
+    (p) => getPostTranslationGroupId(p) === groupId && p.status !== "draft"
+  );
+
+  // Synchronize post when currentLang changes (e.g. from header or footer language switcher)
+  useEffect(() => {
+    if (currentLang && (post.language || "en") !== currentLang) {
+      const targetGroupId = getPostTranslationGroupId(post);
+      const match = allPosts.find(
+        (p) =>
+          getPostTranslationGroupId(p) === targetGroupId &&
+          (p.language || "en") === currentLang &&
+          p.status !== "draft"
+      );
+      if (match && match.id !== post.id) {
+        onSelectPost(match);
+      }
+    }
+  }, [currentLang, post, allPosts, onSelectPost]);
 
   const relatedPosts = allPosts
     .filter((p) => p.id !== post.id)
@@ -127,6 +143,12 @@ export function BlogArticlePage({
           <h1 className="text-2xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight leading-[1.2]">
             {post.title}
           </h1>
+
+          {post.excerpt && (
+            <p className="text-base sm:text-lg text-slate-600 leading-relaxed font-normal">
+              {post.excerpt}
+            </p>
+          )}
 
           <div className="flex items-center justify-center sm:justify-between flex-wrap gap-4 pt-2 border-t border-slate-100">
             {/* Author */}
@@ -255,7 +277,7 @@ export function BlogArticlePage({
           {/* Left / Article Body */}
           <div className="lg:col-span-8 space-y-8">
             {/* Intro Lead Paragraph */}
-            {post.content?.intro && (
+            {!post.htmlContent && post.content?.intro && (
               <p className="text-base sm:text-lg text-slate-700 leading-relaxed font-normal bg-slate-50 p-6 rounded-2xl border border-slate-200/80">
                 {post.content.intro}
               </p>

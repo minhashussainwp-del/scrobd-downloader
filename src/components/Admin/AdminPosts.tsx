@@ -3,6 +3,7 @@ import { BlogPost, GutenbergBlock, SupportedLanguage } from "../../types";
 import { ClassicEditor } from "./ClassicEditor";
 import { SUPPORTED_LANGUAGES } from "../../data/translations";
 import { getAuthorProfile } from "../../data/authorData";
+import { BLOG_POSTS, DEFAULT_POST_TRANSLATION_GROUPS, getPostTranslationGroupId } from "../../data/blogData";
 import {
   Plus,
   Search,
@@ -20,6 +21,8 @@ import {
   Globe,
   Settings
 } from "lucide-react";
+
+export { DEFAULT_POST_TRANSLATION_GROUPS, getPostTranslationGroupId };
 
 interface AdminPostsProps {
   posts: BlogPost[];
@@ -85,7 +88,7 @@ export function AdminPosts({
     setFormFeatured(!!post.featured);
     setFormImage(post.image || "");
     setFormLanguage(post.language || "en");
-    setFormTranslationGroupId(post.translationGroupId || `tg-${post.id}`);
+    setFormTranslationGroupId(getPostTranslationGroupId(post));
     setFormStatus(post.status || "published");
     
     // Migrate old blocks to HTML if htmlContent doesn't exist
@@ -102,16 +105,19 @@ export function AdminPosts({
     setFormHtmlContent(html);
   };
 
-  const handleCreateTranslation = (langCode: SupportedLanguage) => {
-    if (!formTranslationGroupId) return;
-    const newPost: BlogPost = {
-      id: `post-${Date.now()}`,
-      slug: `${formSlug}-${langCode}`,
-      title: `[${langCode.toUpperCase()}] ${formTitle}`,
+  const saveCurrentPostState = (): BlogPost | null => {
+    if (!formTitle && !formHtmlContent) return null;
+    const currentId = editingPost ? editingPost.id : `post-${Date.now()}`;
+    const groupId = formTranslationGroupId || (editingPost ? getPostTranslationGroupId(editingPost) : `tg-${currentId}`);
+    
+    const post: BlogPost = {
+      id: currentId,
+      slug: formSlug || formTitle.toLowerCase().replace(/[^a-z0-9]+/g, "-"),
+      title: formTitle,
       excerpt: formExcerpt,
       category: formCategory,
       readTime: formReadTime,
-      date: new Date().toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" }),
+      date: editingPost ? editingPost.date : new Date().toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" }),
       author: editingPost?.author || {
         name: getAuthorProfile().name,
         role: getAuthorProfile().role,
@@ -121,19 +127,227 @@ export function AdminPosts({
       },
       image: formImage,
       featured: formFeatured,
-      language: langCode,
-      translationGroupId: formTranslationGroupId,
-      status: "draft",
+      language: formLanguage,
+      translationGroupId: groupId,
+      status: formStatus,
       htmlContent: formHtmlContent,
-      content: { intro: "", tableOfContents: [], sections: [] }
+      content: editingPost ? editingPost.content : { intro: "", tableOfContents: [], sections: [] }
     };
+
+    onSavePost(post);
+    return post;
+  };
+
+  const generateLocalizedPostVariation = (
+    baseTitle: string,
+    baseSlug: string,
+    targetLang: SupportedLanguage,
+    groupId: string
+  ): BlogPost => {
+    const cleanSlugBase = baseSlug ? baseSlug.replace(/-[a-z]{2}$/, "") : "article";
+    const id = `post-${Date.now()}-${targetLang}`;
+    const author = editingPost?.author || {
+      name: getAuthorProfile().name,
+      role: getAuthorProfile().role,
+      avatar: getAuthorProfile().avatar,
+      email: getAuthorProfile().email,
+      bio: getAuthorProfile().bio,
+    };
+
+    const templates: Partial<
+      Record<
+        SupportedLanguage,
+        { title: string; excerpt: string; slug: string; content: string }
+      >
+    > = {
+      es: {
+        title: baseTitle ? `${baseTitle} (Guía en Español)` : "Cómo descargar documentos de Scribd en PDF gratis",
+        excerpt: "Guía completa paso a paso para descargar documentos, libros y presentaciones de Scribd en PDF de forma rápida y segura.",
+        slug: `${cleanSlugBase}-es`,
+        content: `## Cómo descargar documentos de Scribd en PDF
+
+Descargar documentos públicos de Scribd es un proceso ágil y totalmente gratuito. En esta guía completa aprenderá paso a paso cómo guardar cualquier presentación, informe o libro digital directamente en su dispositivo.
+
+### Paso 1: Obtener el enlace del documento
+Acceda a la página del documento en Scribd y copie la URL completa directamente desde la barra de navegación de su navegador.
+
+### Paso 2: Pegar la URL en el convertidor
+Ingrese a nuestro descargador gratuito de Scribd y pegue el enlace en la caja de descarga superior.
+
+### Paso 3: Guardar el archivo PDF
+Haga clic en descargar y guarde el documento PDF generado. El archivo resultante es 100% compatible con cualquier lector como Adobe Acrobat o visores móviles.
+
+---
+
+### Beneficios clave
+- **Sin necesidad de registro**: No requiere crear cuentas ni ingresar datos bancarios.
+- **Calidad de impresión nítida**: Los vectores de fuentes e imágenes se conservan en alta resolución.
+- **Acceso sin conexión**: Estudie y revise sus documentos en cualquier lugar sin depender de internet.`,
+      },
+      br: {
+        title: baseTitle ? `${baseTitle} (Guia em Português)` : "Como baixar documentos do Scribd em PDF grátis",
+        excerpt: "Passo a passo completo para salvar documentos, apresentações e artigos acadêmicos do Scribd em formato PDF limpo.",
+        slug: `${cleanSlugBase}-br`,
+        content: `## Como baixar documentos do Scribd em PDF
+
+Salvar documentos públicos do Scribd no seu dispositivo agora é simples e gratuito. Com este passo a passo, você aprende a compilar arquivos limpos prontos para leitura offline.
+
+### Passo 1: Copie o link do Scribd
+Abra o documento desejado no navegador e copie o endereço completo (URL) na barra de navegação.
+
+### Passo 2: Cole o link no conversor
+Acesse o nosso baixador e insira a URL copiada no campo de download na parte superior da página.
+
+### Passo 3: Baixe seu PDF
+Clique no botão de download e aguarde alguns segundos para salvar o PDF no seu computador ou celular.
+
+---
+
+### Vantagens do download direto
+- **100% Grátis e sem cadastro**: Não é preciso criar conta ou assinar serviços.
+- **Compatibilidade total**: Abra no Kindle, tablet, smartphone ou imprima em papel com fontes nítidas.`,
+      },
+      fr: {
+        title: baseTitle ? `${baseTitle} (Guide en Français)` : "Comment télécharger des documents Scribd en PDF gratuitement",
+        excerpt: "Guide étape par étape pour télécharger et convertir des présentations et documents Scribd en fichiers PDF de haute qualité.",
+        slug: `${cleanSlugBase}-fr`,
+        content: `## Comment télécharger des documents Scribd en PDF
+
+Le téléchargement de documents publics depuis Scribd est désormais rapide, confidentiel et sans frais. Suivez ces étapes simples pour sauvegarder vos cours et rapports.
+
+### Étape 1 : Copier l'URL du document
+Rendez-vous sur la page du document Scribd et copiez le lien complet dans la barre d'adresse.
+
+### Étape 2 : Coller dans notre convertisseur
+Insérez le lien copié dans le champ de téléchargement en haut de notre plateforme.
+
+### Étape 3 : Télécharger votre document PDF
+Validez pour lancer la génération de votre fichier PDF optimisé et enregistrez-le sur votre appareil.
+
+---
+
+### Pourquoi utiliser notre convertisseur ?
+- **Aucune inscription nécessaire** : Téléchargez directement sans compte ni carte bancaire.
+- **Qualité optimale** : Respect des polices vectorielles et mise en page d'origine.`,
+      },
+      de: {
+        title: baseTitle ? `${baseTitle} (Deutsche Anleitung)` : "Scribd-Dokumente kostenlos als PDF herunterladen",
+        excerpt: "Vollständige Schritt-für-Schritt-Anleitung zum Speichern von Scribd-Präsentationen, Skripten und Büchern im PDF-Format.",
+        slug: `${cleanSlugBase}-de`,
+        content: `## Scribd-Dokumente einfach als PDF herunterladen
+
+Mit unserem kostenlosen Tool können Sie öffentlich zugängliche Scribd-Dokumente sicher und unkompliziert auf Ihrem PC, Tablet oder Smartphone speichern.
+
+### Schritt 1: Link kopieren
+Öffnen Sie das gewünschte Dokument auf Scribd und kopieren Sie die Webadresse (URL) aus dem Browser.
+
+### Schritt 2: Link einfügen
+Fügen Sie die kopierte URL in das Eingabefeld am Anfang dieser Seite ein.
+
+### Schritt 3: PDF herunterladen
+Klicken Sie auf Herunterladen. Nach der Verarbeitung steht Ihr sauberes PDF sofort zum Download bereit.
+
+---
+
+### Ihre Vorteile
+- **Keine Registrierung erforderlich**: Sie müssen kein Benutzerkonto anlegen.
+- **Optimale Lesequalität**: Klare Schriftarten und scharfe Grafiken für den Ausdruck oder E-Reader.`,
+      },
+      id: {
+        title: baseTitle ? `${baseTitle} (Panduan Bahasa Indonesia)` : "Cara download dokumen Scribd menjadi PDF gratis",
+        excerpt: "Panduan praktis dan lengkap untuk mengunduh dokumen, modul kuliah, dan buku dari Scribd ke format PDF tanpa login.",
+        slug: `${cleanSlugBase}-id`,
+        content: `## Cara Mudah Mengunduh Dokumen Scribd ke Format PDF
+
+Mengunduh dokumen publik dari Scribd kini semakin cepat dan mudah. Ikuti langkah sederhana berikut untuk menyimpan materi belajar ke perangkat Anda.
+
+### Langkah 1: Salin Tautan Dokumen
+Buka dokumen di Scribd dan salin alamat URL lengkap dari bilah browser Anda.
+
+### Langkah 2: Tempelkan Tautan
+Buka pengunduh online kami lalu tempelkan tautan yang telah disalin ke kolom unduhan di bagian atas.
+
+### Langkah 3: Unduh File PDF Anda
+Klik tombol unduh dan simpan file PDF ke penyimpanan laptop atau ponsel Anda untuk dibaca secara luring kapan saja.
+
+---
+
+### Keunggulan Layanan Kami
+- **Gratis Tanpa Akun**: Tidak perlu mendaftar atau memasukkan informasi kartu kredit.
+- **Tampilan Bersih**: Format halaman tetap rapi dan siap untuk dicetak.`,
+      },
+      en: {
+        title: baseTitle || "How to Download Scribd Documents as PDF",
+        excerpt: formExcerpt || "A complete step-by-step guide to saving public Scribd slides, books, and study sheets into pure vector PDF files.",
+        slug: `${cleanSlugBase}-en`,
+        content: formHtmlContent || `## How to Download Scribd Documents as PDF
+
+Downloading public documents from Scribd is fast, simple, and completely free. Follow this tutorial to save books, slides, and study notes directly to your laptop or phone.
+
+### Step 1: Copy the Document URL
+Open the document in Scribd and copy the address from your web browser's URL bar.
+
+### Step 2: Paste into the Downloader Box
+Drop the URL into the input field at the top of this tool.
+
+### Step 3: Download Clean PDF
+Click Download and save the compiled PDF to your study folder for offline reading and highlighting.`,
+      },
+    };
+
+    const loc = templates[targetLang] || templates.en;
+
+    return {
+      id,
+      slug: loc.slug,
+      title: loc.title,
+      excerpt: loc.excerpt,
+      category: formCategory || "Guides",
+      readTime: formReadTime || "4 min read",
+      date: new Date().toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" }),
+      author,
+      image: formImage || "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&q=80&w=1200",
+      featured: formFeatured,
+      language: targetLang,
+      translationGroupId: groupId,
+      status: "published",
+      htmlContent: loc.content,
+      content: { intro: "", tableOfContents: [], sections: [] },
+    };
+  };
+
+  const handleCreateTranslation = (langCode: SupportedLanguage, passedGroupId?: string) => {
+    const groupId = passedGroupId || formTranslationGroupId || (editingPost ? getPostTranslationGroupId(editingPost) : `tg-${Date.now()}`);
+    const newPost = generateLocalizedPostVariation(formTitle, formSlug, langCode, groupId);
     onSavePost(newPost);
     startEdit(newPost);
   };
 
-  const handleSwitchTranslation = (post: BlogPost) => {
-    // If there are unsaved changes on current, save them (optional), but we just switch
-    startEdit(post);
+  const handleSwitchToLanguage = (targetLang: SupportedLanguage) => {
+    if (targetLang === formLanguage && editingPost) return;
+
+    // Persist current edits so user changes are never lost
+    saveCurrentPostState();
+
+    const effectiveGroupId = formTranslationGroupId || (editingPost ? getPostTranslationGroupId(editingPost) : `tg-${Date.now()}`);
+
+    // Search for existing post in the same group with this language in state or default library
+    const existing =
+      posts.find(
+        (p) => getPostTranslationGroupId(p) === effectiveGroupId && (p.language || "en") === targetLang
+      ) ||
+      BLOG_POSTS.find(
+        (p) => getPostTranslationGroupId(p) === effectiveGroupId && (p.language || "en") === targetLang
+      );
+
+    if (existing) {
+      if (!posts.some((p) => p.id === existing.id)) {
+        onSavePost(existing);
+      }
+      startEdit(existing);
+    } else {
+      handleCreateTranslation(targetLang, effectiveGroupId);
+    }
   };
 
   const saveForm = (e: React.FormEvent) => {
@@ -286,8 +500,8 @@ export function AdminPosts({
                   <label className="text-xs font-bold text-slate-700 mb-1 block">Current Language</label>
                   <select 
                     value={formLanguage}
-                    onChange={(e) => setFormLanguage(e.target.value as SupportedLanguage)}
-                    className="w-full px-3 py-2 rounded-lg border border-slate-300 text-sm font-semibold bg-white"
+                    onChange={(e) => handleSwitchToLanguage(e.target.value as SupportedLanguage)}
+                    className="w-full px-3 py-2 rounded-lg border border-slate-300 text-sm font-semibold bg-white cursor-pointer hover:border-indigo-400 focus:ring-2 focus:ring-indigo-500/20"
                   >
                     {SUPPORTED_LANGUAGES.map(lang => (
                       <option key={lang.code} value={lang.code}>{lang.flag} {lang.name}</option>
@@ -302,43 +516,58 @@ export function AdminPosts({
                       // Skip current if not grouped (though they should all list)
                       if (lang.code === formLanguage) {
                         return (
-                          <li key={lang.code} className="flex items-center justify-between p-1.5 bg-indigo-50 border border-indigo-100 rounded-lg">
+                          <li key={lang.code} className="flex items-center justify-between p-2 bg-indigo-50 border border-indigo-200 rounded-lg">
                             <span className="flex items-center gap-1.5 font-bold text-indigo-900">
-                              {lang.flag} {lang.code.toUpperCase()}
+                              {lang.flag} {lang.name}
                             </span>
-                            <span className="text-xs text-indigo-600 font-semibold bg-indigo-100 px-1.5 py-0.5 rounded">Current</span>
+                            <span className="text-xs text-indigo-700 font-bold bg-indigo-100 px-2 py-0.5 rounded border border-indigo-200">Current</span>
                           </li>
                         );
                       }
                       
                       // Check if a translation exists in the group
-                      const existingTranslation = posts.find(p => p.translationGroupId === formTranslationGroupId && p.language === lang.code && p.id !== editingPost?.id);
+                      const effectiveGroupId = formTranslationGroupId || (editingPost ? getPostTranslationGroupId(editingPost) : "");
+                      const existingTranslation = posts.find(p => getPostTranslationGroupId(p) === effectiveGroupId && (p.language || "en") === lang.code);
                       
                       if (existingTranslation) {
                         return (
-                          <li key={lang.code} className="flex items-center justify-between p-1.5 hover:bg-slate-100 rounded-lg group transition">
-                            <span className="flex items-center gap-1.5 font-medium text-slate-700">
-                              {lang.flag} {lang.code.toUpperCase()}
+                          <li 
+                            key={lang.code} 
+                            onClick={() => handleSwitchToLanguage(lang.code)}
+                            className="flex items-center justify-between p-2 hover:bg-slate-100 rounded-lg group transition cursor-pointer border border-transparent hover:border-slate-200"
+                          >
+                            <span className="flex items-center gap-1.5 font-medium text-slate-800 group-hover:text-indigo-600">
+                              {lang.flag} {lang.name}
                             </span>
                             <button 
                               type="button" 
-                              onClick={() => handleSwitchTranslation(existingTranslation)}
-                              className="text-xs font-semibold text-slate-500 hover:text-indigo-600 group-hover:underline"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleSwitchToLanguage(lang.code);
+                              }}
+                              className="text-xs font-bold text-indigo-600 hover:text-indigo-800 bg-indigo-50 px-2.5 py-1 rounded hover:bg-indigo-100 transition flex items-center gap-1 cursor-pointer"
                             >
-                              <Edit2 className="w-3 h-3 inline mr-1" /> Edit
+                              <Edit2 className="w-3 h-3 inline" /> Edit
                             </button>
                           </li>
                         );
                       } else {
                         return (
-                          <li key={lang.code} className="flex items-center justify-between p-1.5 hover:bg-slate-100 rounded-lg group transition">
-                            <span className="flex items-center gap-1.5 font-medium text-slate-400">
-                              {lang.flag} {lang.code.toUpperCase()}
+                          <li 
+                            key={lang.code} 
+                            onClick={() => handleSwitchToLanguage(lang.code)}
+                            className="flex items-center justify-between p-2 hover:bg-slate-100 rounded-lg group transition cursor-pointer border border-transparent hover:border-slate-200"
+                          >
+                            <span className="flex items-center gap-1.5 font-medium text-slate-500">
+                              {lang.flag} {lang.name}
                             </span>
                             <button 
-                              type="button"
-                              onClick={() => handleCreateTranslation(lang.code)}
-                              className="text-xs font-semibold text-indigo-500 hover:text-indigo-700 group-hover:underline"
+                              type="button" 
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleSwitchToLanguage(lang.code);
+                              }}
+                              className="text-xs font-bold text-slate-500 hover:text-indigo-600 bg-slate-100 px-2.5 py-1 rounded hover:bg-indigo-50 transition cursor-pointer"
                             >
                               + Create
                             </button>

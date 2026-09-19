@@ -1,5 +1,5 @@
 import { CustomPage } from "../types";
-import { CUSTOM_PAGES_KEY } from "./siteConfig";
+import { CUSTOM_PAGES_KEY, syncPostsAndRebuildSitemap } from "./siteConfig";
 
 export const DEFAULT_CUSTOM_PAGES: CustomPage[] = [
   {
@@ -35435,6 +35435,7 @@ export function saveCustomPages(pages: CustomPage[]) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ pages }),
     }).catch(() => {});
+    syncPostsAndRebuildSitemap(undefined, pages);
   } catch (e) {
     console.error(e);
   }

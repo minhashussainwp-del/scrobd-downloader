@@ -5,7 +5,8 @@ import { Footer } from "./components/Footer";
 import { HomeContent } from "./components/HomeContent";
 import { SeoHead } from "./components/SeoHead";
 import { HeaderAdBanner, BelowHeroAdBanner, FooterAdBanner, AdBlockDetector } from "./components/AdBanners";
-import { BLOG_POSTS } from "./data/blogData";
+import { BLOG_POSTS, loadAllBlogPosts, getPostTranslationGroupId } from "./data/blogData";
+import { ModernArticleRenderer } from "./components/ModernArticleRenderer";
 
 // Lazy-loaded pages and administrative components to reduce initial JavaScript bundle
 const PresentationBoard = lazy(() => import("./components/PresentationBoard").then((m) => ({ default: m.PresentationBoard })));
@@ -164,15 +165,7 @@ export default function App() {
 
   const [viewportMode, setViewportMode] = useState<ViewportMode>("responsive");
 
-  const [posts, setPosts] = useState<BlogPost[]>(() => {
-    try {
-      const stored = localStorage.getItem("scribd_blog_posts");
-      if (stored) return JSON.parse(stored);
-    } catch (e) {
-      console.error(e);
-    }
-    return BLOG_POSTS;
-  });
+  const [posts, setPosts] = useState<BlogPost[]>(loadAllBlogPosts);
 
   const [pageContents, setPageContents] = useState<PageContent[]>(loadPageContent);
   const [customPages, setCustomPages] = useState<CustomPage[]>(() => {
@@ -279,20 +272,29 @@ export default function App() {
     localStorage.setItem("scribd_lang", lang);
 
     if (currentPage === "blog-article" && selectedPost) {
-      if (selectedPost.language !== lang && selectedPost.translationGroupId) {
-        const translatedPost = posts.find(
-          (p) =>
-            p.translationGroupId === selectedPost.translationGroupId &&
-            p.language === lang &&
-            p.status !== "draft"
-        );
-        if (translatedPost) {
-          setSelectedPost(translatedPost);
-          navigateWithUrl("blog-article", lang, translatedPost);
+      const groupId = getPostTranslationGroupId(selectedPost);
+      // Search for translated post in same group
+      const translatedPost = posts.find(
+        (p) =>
+          getPostTranslationGroupId(p) === groupId &&
+          (p.language || "en") === lang &&
+          p.status !== "draft"
+      );
+
+      if (translatedPost) {
+        setSelectedPost(translatedPost);
+        navigateWithUrl("blog-article", lang, translatedPost);
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        return;
+      } else {
+        // Find any post in that language so the user isn't stuck on untranslated content
+        const anyInLang = posts.find((p) => (p.language || "en") === lang && p.status !== "draft");
+        if (anyInLang) {
+          setSelectedPost(anyInLang);
+          navigateWithUrl("blog-article", lang, anyInLang);
           window.scrollTo({ top: 0, behavior: "smooth" });
           return;
         } else {
-          // If translation doesn't exist, fallback to blog listing for that language
           setCurrentPage("blog");
           setSelectedPost(null);
           navigateWithUrl("blog", lang);
@@ -751,6 +753,8 @@ export default function App() {
             {currentPage === "admin" && (
               <AdminPanel
                 onNavigate={handleNavigate}
+                currentLang={currentLang}
+                onLanguageChange={handleLanguageChange}
                 adSettings={adSettings}
                 onSaveAdSettings={(newSettings) => {
                   setAdSettings(newSettings);
