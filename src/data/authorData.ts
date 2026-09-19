@@ -4,8 +4,8 @@ import { AuthorProfile } from "../types";
 export const DEFAULT_AUTHOR_PROFILE: AuthorProfile = {
   name: "Minhas Hussain",
   role: "Full SEO Expert & Full Stack Engineer",
-  title: "WordPress Website Designer & Full-Stack Vibe Coder | Technical & On-Page SEO",
-  bio: "Minhas Hussain is a Full SEO Expert, WordPress Website Designer, and Full-Stack Web Engineer specializing in end-to-end search engine optimization (Technical SEO, On-Page architecture, Structured Data, and Core Web Vitals), modern web design, and fast vibe-coding workflows. He builds high-speed, accessible web applications optimized for maximum search visibility and top Google rankings.",
+  title: "WordPress Website Designer & Full-Stack Web Engineer | Technical & On-Page SEO",
+  bio: "Minhas Hussain is a Full SEO Expert, WordPress Website Designer, and Full-Stack Web Engineer specializing in Technical SEO, On-Page SEO, structured data, Core Web Vitals, website performance, and modern web development.\n\nHe combines SEO expertise with WordPress, full-stack engineering, and AI-assisted development to build fast, accessible, user-friendly, and search-optimized websites.",
   email: "minhashussain.wp@gmail.com",
   avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&auto=format&fit=crop&q=80",
   skills: [
@@ -36,9 +36,20 @@ export function getAuthorProfile(): AuthorProfile {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return DEFAULT_AUTHOR_PROFILE;
     const parsed = JSON.parse(raw);
+
+    // If the stored bio is the previous default or empty, automatically upgrade to the new author bio
+    let bio = parsed.bio || DEFAULT_AUTHOR_PROFILE.bio;
+    if (
+      typeof bio === "string" &&
+      (bio.includes("vibe-coding workflows") || bio.includes("SEO Expert, WordPress Designer & Full Stack Developer") || bio.trim() === "")
+    ) {
+      bio = DEFAULT_AUTHOR_PROFILE.bio;
+    }
+
     return {
       ...DEFAULT_AUTHOR_PROFILE,
       ...parsed,
+      bio,
       skills: Array.isArray(parsed.skills) && parsed.skills.length > 0 ? parsed.skills : DEFAULT_AUTHOR_PROFILE.skills
     };
   } catch {

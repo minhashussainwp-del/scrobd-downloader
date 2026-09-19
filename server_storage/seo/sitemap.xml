@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="/sitemap.xsl"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
@@ -597,7 +598,7 @@
     <xhtml:link rel="alternate" hreflang="es" href="http://localhost:3000/es/blog/como-descargar-documentos-de-scribd-en-pdf" />
     <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/blog/comment-telecharger-des-documents-scribd-en-pdf" />
     <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/blog/cara-mengunduh-dokumen-scribd-menjadi-pdf" />
-    <lastmod>September 17, 2026</lastmod>
+    <lastmod>2026-09-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -609,7 +610,7 @@
     <xhtml:link rel="alternate" hreflang="es" href="http://localhost:3000/es/blog/como-descargar-documentos-de-scribd-en-pdf" />
     <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/blog/comment-telecharger-des-documents-scribd-en-pdf" />
     <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/blog/cara-mengunduh-dokumen-scribd-menjadi-pdf" />
-    <lastmod>September 17, 2026</lastmod>
+    <lastmod>2026-09-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -621,7 +622,7 @@
     <xhtml:link rel="alternate" hreflang="es" href="http://localhost:3000/es/blog/como-descargar-documentos-de-scribd-en-pdf" />
     <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/blog/comment-telecharger-des-documents-scribd-en-pdf" />
     <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/blog/cara-mengunduh-dokumen-scribd-menjadi-pdf" />
-    <lastmod>September 17, 2026</lastmod>
+    <lastmod>2026-09-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -633,7 +634,7 @@
     <xhtml:link rel="alternate" hreflang="es" href="http://localhost:3000/es/blog/como-descargar-documentos-de-scribd-en-pdf" />
     <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/blog/comment-telecharger-des-documents-scribd-en-pdf" />
     <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/blog/cara-mengunduh-dokumen-scribd-menjadi-pdf" />
-    <lastmod>September 17, 2026</lastmod>
+    <lastmod>2026-09-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -645,7 +646,7 @@
     <xhtml:link rel="alternate" hreflang="es" href="http://localhost:3000/es/blog/como-descargar-documentos-de-scribd-en-pdf" />
     <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/blog/comment-telecharger-des-documents-scribd-en-pdf" />
     <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/blog/cara-mengunduh-dokumen-scribd-menjadi-pdf" />
-    <lastmod>September 17, 2026</lastmod>
+    <lastmod>2026-09-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -657,7 +658,7 @@
     <xhtml:link rel="alternate" hreflang="es" href="http://localhost:3000/es/blog/como-descargar-documentos-de-scribd-en-pdf" />
     <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/blog/comment-telecharger-des-documents-scribd-en-pdf" />
     <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/blog/cara-mengunduh-dokumen-scribd-menjadi-pdf" />
-    <lastmod>September 17, 2026</lastmod>
+    <lastmod>2026-09-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -669,7 +670,7 @@
     <xhtml:link rel="alternate" hreflang="es" href="http://localhost:3000/es/blog/como-leer-documentos-de-scribd-en-kindle" />
     <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/blog/comment-lire-documents-scribd-sur-kindle" />
     <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/blog/cara-membaca-dokumen-scribd-di-kindle" />
-    <lastmod>September 17, 2026</lastmod>
+    <lastmod>2026-09-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -681,7 +682,7 @@
     <xhtml:link rel="alternate" hreflang="es" href="http://localhost:3000/es/blog/como-leer-documentos-de-scribd-en-kindle" />
     <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/blog/comment-lire-documents-scribd-sur-kindle" />
     <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/blog/cara-membaca-dokumen-scribd-di-kindle" />
-    <lastmod>September 17, 2026</lastmod>
+    <lastmod>2026-09-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -693,7 +694,7 @@
     <xhtml:link rel="alternate" hreflang="es" href="http://localhost:3000/es/blog/como-leer-documentos-de-scribd-en-kindle" />
     <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/blog/comment-lire-documents-scribd-sur-kindle" />
     <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/blog/cara-membaca-dokumen-scribd-di-kindle" />
-    <lastmod>September 17, 2026</lastmod>
+    <lastmod>2026-09-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -705,7 +706,7 @@
     <xhtml:link rel="alternate" hreflang="es" href="http://localhost:3000/es/blog/como-leer-documentos-de-scribd-en-kindle" />
     <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/blog/comment-lire-documents-scribd-sur-kindle" />
     <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/blog/cara-membaca-dokumen-scribd-di-kindle" />
-    <lastmod>September 17, 2026</lastmod>
+    <lastmod>2026-09-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -717,7 +718,7 @@
     <xhtml:link rel="alternate" hreflang="es" href="http://localhost:3000/es/blog/como-leer-documentos-de-scribd-en-kindle" />
     <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/blog/comment-lire-documents-scribd-sur-kindle" />
     <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/blog/cara-membaca-dokumen-scribd-di-kindle" />
-    <lastmod>September 17, 2026</lastmod>
+    <lastmod>2026-09-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -729,7 +730,7 @@
     <xhtml:link rel="alternate" hreflang="es" href="http://localhost:3000/es/blog/como-leer-documentos-de-scribd-en-kindle" />
     <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/blog/comment-lire-documents-scribd-sur-kindle" />
     <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/blog/cara-membaca-dokumen-scribd-di-kindle" />
-    <lastmod>September 17, 2026</lastmod>
+    <lastmod>2026-09-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -741,7 +742,7 @@
     <xhtml:link rel="alternate" hreflang="es" href="http://localhost:3000/es/blog/como-previsualizar-un-pdf-antes-de-descargar" />
     <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/blog/comment-previsualiser-un-pdf-avant-de-telecharger" />
     <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/blog/cara-melihat-pratinjau-pdf-sebelum-mengunduh" />
-    <lastmod>September 17, 2026</lastmod>
+    <lastmod>2026-09-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -753,7 +754,7 @@
     <xhtml:link rel="alternate" hreflang="es" href="http://localhost:3000/es/blog/como-previsualizar-un-pdf-antes-de-descargar" />
     <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/blog/comment-previsualiser-un-pdf-avant-de-telecharger" />
     <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/blog/cara-melihat-pratinjau-pdf-sebelum-mengunduh" />
-    <lastmod>September 17, 2026</lastmod>
+    <lastmod>2026-09-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -765,7 +766,7 @@
     <xhtml:link rel="alternate" hreflang="es" href="http://localhost:3000/es/blog/como-previsualizar-un-pdf-antes-de-descargar" />
     <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/blog/comment-previsualiser-un-pdf-avant-de-telecharger" />
     <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/blog/cara-melihat-pratinjau-pdf-sebelum-mengunduh" />
-    <lastmod>September 17, 2026</lastmod>
+    <lastmod>2026-09-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -777,7 +778,7 @@
     <xhtml:link rel="alternate" hreflang="es" href="http://localhost:3000/es/blog/como-previsualizar-un-pdf-antes-de-descargar" />
     <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/blog/comment-previsualiser-un-pdf-avant-de-telecharger" />
     <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/blog/cara-melihat-pratinjau-pdf-sebelum-mengunduh" />
-    <lastmod>September 17, 2026</lastmod>
+    <lastmod>2026-09-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -789,7 +790,7 @@
     <xhtml:link rel="alternate" hreflang="es" href="http://localhost:3000/es/blog/como-previsualizar-un-pdf-antes-de-descargar" />
     <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/blog/comment-previsualiser-un-pdf-avant-de-telecharger" />
     <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/blog/cara-melihat-pratinjau-pdf-sebelum-mengunduh" />
-    <lastmod>September 17, 2026</lastmod>
+    <lastmod>2026-09-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -801,7 +802,7 @@
     <xhtml:link rel="alternate" hreflang="es" href="http://localhost:3000/es/blog/como-previsualizar-un-pdf-antes-de-descargar" />
     <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/blog/comment-previsualiser-un-pdf-avant-de-telecharger" />
     <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/blog/cara-melihat-pratinjau-pdf-sebelum-mengunduh" />
-    <lastmod>September 17, 2026</lastmod>
+    <lastmod>2026-09-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -813,7 +814,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/blog/read-academic-papers-offline" />
     <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/blog/read-academic-papers-offline" />
     <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/blog/read-academic-papers-offline" />
-    <lastmod>September 17, 2026</lastmod>
+    <lastmod>2026-09-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -825,7 +826,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/blog/read-academic-papers-offline" />
     <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/blog/read-academic-papers-offline" />
     <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/blog/read-academic-papers-offline" />
-    <lastmod>September 17, 2026</lastmod>
+    <lastmod>2026-09-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -837,7 +838,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/blog/read-academic-papers-offline" />
     <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/blog/read-academic-papers-offline" />
     <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/blog/read-academic-papers-offline" />
-    <lastmod>September 17, 2026</lastmod>
+    <lastmod>2026-09-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -849,7 +850,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/blog/read-academic-papers-offline" />
     <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/blog/read-academic-papers-offline" />
     <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/blog/read-academic-papers-offline" />
-    <lastmod>September 17, 2026</lastmod>
+    <lastmod>2026-09-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -861,7 +862,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/blog/read-academic-papers-offline" />
     <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/blog/read-academic-papers-offline" />
     <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/blog/read-academic-papers-offline" />
-    <lastmod>September 17, 2026</lastmod>
+    <lastmod>2026-09-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -873,7 +874,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/blog/read-academic-papers-offline" />
     <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/blog/read-academic-papers-offline" />
     <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/blog/read-academic-papers-offline" />
-    <lastmod>September 17, 2026</lastmod>
+    <lastmod>2026-09-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -885,7 +886,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/blog/scribd-pdf-formatting-issues" />
     <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/blog/scribd-pdf-formatting-issues" />
     <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/blog/scribd-pdf-formatting-issues" />
-    <lastmod>September 17, 2026</lastmod>
+    <lastmod>2026-09-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -897,7 +898,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/blog/scribd-pdf-formatting-issues" />
     <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/blog/scribd-pdf-formatting-issues" />
     <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/blog/scribd-pdf-formatting-issues" />
-    <lastmod>September 17, 2026</lastmod>
+    <lastmod>2026-09-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -909,7 +910,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/blog/scribd-pdf-formatting-issues" />
     <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/blog/scribd-pdf-formatting-issues" />
     <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/blog/scribd-pdf-formatting-issues" />
-    <lastmod>September 17, 2026</lastmod>
+    <lastmod>2026-09-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -921,7 +922,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/blog/scribd-pdf-formatting-issues" />
     <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/blog/scribd-pdf-formatting-issues" />
     <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/blog/scribd-pdf-formatting-issues" />
-    <lastmod>September 17, 2026</lastmod>
+    <lastmod>2026-09-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -933,7 +934,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/blog/scribd-pdf-formatting-issues" />
     <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/blog/scribd-pdf-formatting-issues" />
     <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/blog/scribd-pdf-formatting-issues" />
-    <lastmod>September 17, 2026</lastmod>
+    <lastmod>2026-09-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -945,7 +946,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/blog/scribd-pdf-formatting-issues" />
     <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/blog/scribd-pdf-formatting-issues" />
     <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/blog/scribd-pdf-formatting-issues" />
-    <lastmod>September 17, 2026</lastmod>
+    <lastmod>2026-09-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -957,7 +958,7 @@
     <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/blog/cara-melihat-dokumen-scribd-yang-diburamkan" />
     <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/blog/how-to-unblur-scribd-documents-free" />
     <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/blog/how-to-unblur-scribd-documents-free" />
-    <lastmod>September 17, 2026</lastmod>
+    <lastmod>2026-09-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -969,7 +970,7 @@
     <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/blog/cara-melihat-dokumen-scribd-yang-diburamkan" />
     <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/blog/how-to-unblur-scribd-documents-free" />
     <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/blog/how-to-unblur-scribd-documents-free" />
-    <lastmod>September 17, 2026</lastmod>
+    <lastmod>2026-09-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -981,7 +982,7 @@
     <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/blog/cara-melihat-dokumen-scribd-yang-diburamkan" />
     <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/blog/how-to-unblur-scribd-documents-free" />
     <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/blog/how-to-unblur-scribd-documents-free" />
-    <lastmod>September 17, 2026</lastmod>
+    <lastmod>2026-09-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -993,7 +994,7 @@
     <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/blog/cara-melihat-dokumen-scribd-yang-diburamkan" />
     <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/blog/how-to-unblur-scribd-documents-free" />
     <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/blog/how-to-unblur-scribd-documents-free" />
-    <lastmod>September 17, 2026</lastmod>
+    <lastmod>2026-09-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -1005,7 +1006,7 @@
     <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/blog/cara-melihat-dokumen-scribd-yang-diburamkan" />
     <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/blog/how-to-unblur-scribd-documents-free" />
     <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/blog/how-to-unblur-scribd-documents-free" />
-    <lastmod>September 17, 2026</lastmod>
+    <lastmod>2026-09-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -1017,7 +1018,7 @@
     <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/blog/cara-melihat-dokumen-scribd-yang-diburamkan" />
     <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/blog/how-to-unblur-scribd-documents-free" />
     <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/blog/how-to-unblur-scribd-documents-free" />
-    <lastmod>September 17, 2026</lastmod>
+    <lastmod>2026-09-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -1029,7 +1030,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/blog/how-to-download-scribd-documents-on-mobile" />
     <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/blog/how-to-download-scribd-documents-on-mobile" />
     <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/blog/how-to-download-scribd-documents-on-mobile" />
-    <lastmod>September 17, 2026</lastmod>
+    <lastmod>2026-09-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -1041,7 +1042,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/blog/how-to-download-scribd-documents-on-mobile" />
     <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/blog/how-to-download-scribd-documents-on-mobile" />
     <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/blog/how-to-download-scribd-documents-on-mobile" />
-    <lastmod>September 17, 2026</lastmod>
+    <lastmod>2026-09-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -1053,7 +1054,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/blog/how-to-download-scribd-documents-on-mobile" />
     <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/blog/how-to-download-scribd-documents-on-mobile" />
     <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/blog/how-to-download-scribd-documents-on-mobile" />
-    <lastmod>September 17, 2026</lastmod>
+    <lastmod>2026-09-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -1065,7 +1066,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/blog/how-to-download-scribd-documents-on-mobile" />
     <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/blog/how-to-download-scribd-documents-on-mobile" />
     <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/blog/how-to-download-scribd-documents-on-mobile" />
-    <lastmod>September 17, 2026</lastmod>
+    <lastmod>2026-09-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -1077,7 +1078,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/blog/how-to-download-scribd-documents-on-mobile" />
     <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/blog/how-to-download-scribd-documents-on-mobile" />
     <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/blog/how-to-download-scribd-documents-on-mobile" />
-    <lastmod>September 17, 2026</lastmod>
+    <lastmod>2026-09-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -1089,7 +1090,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/blog/how-to-download-scribd-documents-on-mobile" />
     <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/blog/how-to-download-scribd-documents-on-mobile" />
     <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/blog/how-to-download-scribd-documents-on-mobile" />
-    <lastmod>September 17, 2026</lastmod>
+    <lastmod>2026-09-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -1101,7 +1102,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/blog/how-to-download-scribd-slides-presentation-pdf" />
     <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/blog/how-to-download-scribd-slides-presentation-pdf" />
     <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/blog/how-to-download-scribd-slides-presentation-pdf" />
-    <lastmod>September 17, 2026</lastmod>
+    <lastmod>2026-09-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -1113,7 +1114,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/blog/how-to-download-scribd-slides-presentation-pdf" />
     <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/blog/how-to-download-scribd-slides-presentation-pdf" />
     <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/blog/how-to-download-scribd-slides-presentation-pdf" />
-    <lastmod>September 17, 2026</lastmod>
+    <lastmod>2026-09-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -1125,7 +1126,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/blog/how-to-download-scribd-slides-presentation-pdf" />
     <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/blog/how-to-download-scribd-slides-presentation-pdf" />
     <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/blog/how-to-download-scribd-slides-presentation-pdf" />
-    <lastmod>September 17, 2026</lastmod>
+    <lastmod>2026-09-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -1137,7 +1138,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/blog/how-to-download-scribd-slides-presentation-pdf" />
     <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/blog/how-to-download-scribd-slides-presentation-pdf" />
     <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/blog/how-to-download-scribd-slides-presentation-pdf" />
-    <lastmod>September 17, 2026</lastmod>
+    <lastmod>2026-09-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -1149,7 +1150,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/blog/how-to-download-scribd-slides-presentation-pdf" />
     <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/blog/how-to-download-scribd-slides-presentation-pdf" />
     <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/blog/how-to-download-scribd-slides-presentation-pdf" />
-    <lastmod>September 17, 2026</lastmod>
+    <lastmod>2026-09-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -1161,7 +1162,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/blog/how-to-download-scribd-slides-presentation-pdf" />
     <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/blog/how-to-download-scribd-slides-presentation-pdf" />
     <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/blog/how-to-download-scribd-slides-presentation-pdf" />
-    <lastmod>September 17, 2026</lastmod>
+    <lastmod>2026-09-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -1173,7 +1174,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/blog/best-docdownloader-alternatives" />
     <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/blog/best-docdownloader-alternatives" />
     <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/blog/best-docdownloader-alternatives" />
-    <lastmod>September 17, 2026</lastmod>
+    <lastmod>2026-09-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -1185,7 +1186,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/blog/best-docdownloader-alternatives" />
     <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/blog/best-docdownloader-alternatives" />
     <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/blog/best-docdownloader-alternatives" />
-    <lastmod>September 17, 2026</lastmod>
+    <lastmod>2026-09-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -1197,7 +1198,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/blog/best-docdownloader-alternatives" />
     <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/blog/best-docdownloader-alternatives" />
     <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/blog/best-docdownloader-alternatives" />
-    <lastmod>September 17, 2026</lastmod>
+    <lastmod>2026-09-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -1209,7 +1210,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/blog/best-docdownloader-alternatives" />
     <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/blog/best-docdownloader-alternatives" />
     <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/blog/best-docdownloader-alternatives" />
-    <lastmod>September 17, 2026</lastmod>
+    <lastmod>2026-09-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -1221,7 +1222,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/blog/best-docdownloader-alternatives" />
     <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/blog/best-docdownloader-alternatives" />
     <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/blog/best-docdownloader-alternatives" />
-    <lastmod>September 17, 2026</lastmod>
+    <lastmod>2026-09-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -1233,7 +1234,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/blog/best-docdownloader-alternatives" />
     <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/blog/best-docdownloader-alternatives" />
     <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/blog/best-docdownloader-alternatives" />
-    <lastmod>September 17, 2026</lastmod>
+    <lastmod>2026-09-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -1245,7 +1246,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/blog/how-to-convert-scribd-documents-to-epub-audiobook" />
     <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/blog/how-to-convert-scribd-documents-to-epub-audiobook" />
     <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/blog/how-to-convert-scribd-documents-to-epub-audiobook" />
-    <lastmod>September 17, 2026</lastmod>
+    <lastmod>2026-09-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -1257,7 +1258,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/blog/how-to-convert-scribd-documents-to-epub-audiobook" />
     <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/blog/how-to-convert-scribd-documents-to-epub-audiobook" />
     <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/blog/how-to-convert-scribd-documents-to-epub-audiobook" />
-    <lastmod>September 17, 2026</lastmod>
+    <lastmod>2026-09-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -1269,7 +1270,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/blog/how-to-convert-scribd-documents-to-epub-audiobook" />
     <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/blog/how-to-convert-scribd-documents-to-epub-audiobook" />
     <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/blog/how-to-convert-scribd-documents-to-epub-audiobook" />
-    <lastmod>September 17, 2026</lastmod>
+    <lastmod>2026-09-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -1281,7 +1282,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/blog/how-to-convert-scribd-documents-to-epub-audiobook" />
     <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/blog/how-to-convert-scribd-documents-to-epub-audiobook" />
     <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/blog/how-to-convert-scribd-documents-to-epub-audiobook" />
-    <lastmod>September 17, 2026</lastmod>
+    <lastmod>2026-09-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -1293,7 +1294,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/blog/how-to-convert-scribd-documents-to-epub-audiobook" />
     <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/blog/how-to-convert-scribd-documents-to-epub-audiobook" />
     <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/blog/how-to-convert-scribd-documents-to-epub-audiobook" />
-    <lastmod>September 17, 2026</lastmod>
+    <lastmod>2026-09-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -1305,7 +1306,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/blog/how-to-convert-scribd-documents-to-epub-audiobook" />
     <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/blog/how-to-convert-scribd-documents-to-epub-audiobook" />
     <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/blog/how-to-convert-scribd-documents-to-epub-audiobook" />
-    <lastmod>September 17, 2026</lastmod>
+    <lastmod>2026-09-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -1317,7 +1318,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/blog/inside-scribd-document-viewer-architecture-svg-canvas" />
     <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/blog/inside-scribd-document-viewer-architecture-svg-canvas" />
     <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/blog/inside-scribd-document-viewer-architecture-svg-canvas" />
-    <lastmod>September 17, 2026</lastmod>
+    <lastmod>2026-09-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -1329,7 +1330,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/blog/inside-scribd-document-viewer-architecture-svg-canvas" />
     <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/blog/inside-scribd-document-viewer-architecture-svg-canvas" />
     <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/blog/inside-scribd-document-viewer-architecture-svg-canvas" />
-    <lastmod>September 17, 2026</lastmod>
+    <lastmod>2026-09-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -1341,7 +1342,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/blog/inside-scribd-document-viewer-architecture-svg-canvas" />
     <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/blog/inside-scribd-document-viewer-architecture-svg-canvas" />
     <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/blog/inside-scribd-document-viewer-architecture-svg-canvas" />
-    <lastmod>September 17, 2026</lastmod>
+    <lastmod>2026-09-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -1353,7 +1354,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/blog/inside-scribd-document-viewer-architecture-svg-canvas" />
     <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/blog/inside-scribd-document-viewer-architecture-svg-canvas" />
     <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/blog/inside-scribd-document-viewer-architecture-svg-canvas" />
-    <lastmod>September 17, 2026</lastmod>
+    <lastmod>2026-09-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -1365,7 +1366,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/blog/inside-scribd-document-viewer-architecture-svg-canvas" />
     <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/blog/inside-scribd-document-viewer-architecture-svg-canvas" />
     <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/blog/inside-scribd-document-viewer-architecture-svg-canvas" />
-    <lastmod>September 17, 2026</lastmod>
+    <lastmod>2026-09-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -1377,7 +1378,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/blog/inside-scribd-document-viewer-architecture-svg-canvas" />
     <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/blog/inside-scribd-document-viewer-architecture-svg-canvas" />
     <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/blog/inside-scribd-document-viewer-architecture-svg-canvas" />
-    <lastmod>September 17, 2026</lastmod>
+    <lastmod>2026-09-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -1389,7 +1390,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/blog/7-pro-tips-to-find-locked-documents-on-scribd" />
     <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/blog/7-pro-tips-to-find-locked-documents-on-scribd" />
     <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/blog/7-pro-tips-to-find-locked-documents-on-scribd" />
-    <lastmod>September 17, 2026</lastmod>
+    <lastmod>2026-09-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -1401,7 +1402,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/blog/7-pro-tips-to-find-locked-documents-on-scribd" />
     <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/blog/7-pro-tips-to-find-locked-documents-on-scribd" />
     <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/blog/7-pro-tips-to-find-locked-documents-on-scribd" />
-    <lastmod>September 17, 2026</lastmod>
+    <lastmod>2026-09-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -1413,7 +1414,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/blog/7-pro-tips-to-find-locked-documents-on-scribd" />
     <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/blog/7-pro-tips-to-find-locked-documents-on-scribd" />
     <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/blog/7-pro-tips-to-find-locked-documents-on-scribd" />
-    <lastmod>September 17, 2026</lastmod>
+    <lastmod>2026-09-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -1425,7 +1426,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/blog/7-pro-tips-to-find-locked-documents-on-scribd" />
     <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/blog/7-pro-tips-to-find-locked-documents-on-scribd" />
     <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/blog/7-pro-tips-to-find-locked-documents-on-scribd" />
-    <lastmod>September 17, 2026</lastmod>
+    <lastmod>2026-09-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -1437,7 +1438,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/blog/7-pro-tips-to-find-locked-documents-on-scribd" />
     <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/blog/7-pro-tips-to-find-locked-documents-on-scribd" />
     <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/blog/7-pro-tips-to-find-locked-documents-on-scribd" />
-    <lastmod>September 17, 2026</lastmod>
+    <lastmod>2026-09-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -1449,7 +1450,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/blog/7-pro-tips-to-find-locked-documents-on-scribd" />
     <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/blog/7-pro-tips-to-find-locked-documents-on-scribd" />
     <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/blog/7-pro-tips-to-find-locked-documents-on-scribd" />
-    <lastmod>September 17, 2026</lastmod>
+    <lastmod>2026-09-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -1534,6 +1535,90 @@
     <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/mcp-docs" />
     <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/mcp-docs" />
     <lastmod>2026-09-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>http://localhost:3000/en/page-20</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="http://localhost:3000/en/page-20" />
+    <xhtml:link rel="alternate" hreflang="br" href="http://localhost:3000/br/page-20" />
+    <xhtml:link rel="alternate" hreflang="es" href="http://localhost:3000/es/page-20" />
+    <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/page-20" />
+    <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/page-20" />
+    <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/page-20" />
+    <lastmod>2026-09-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>http://localhost:3000/br/page-20</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="http://localhost:3000/en/page-20" />
+    <xhtml:link rel="alternate" hreflang="br" href="http://localhost:3000/br/page-20" />
+    <xhtml:link rel="alternate" hreflang="es" href="http://localhost:3000/es/page-20" />
+    <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/page-20" />
+    <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/page-20" />
+    <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/page-20" />
+    <lastmod>2026-09-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>http://localhost:3000/es/page-20</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="http://localhost:3000/en/page-20" />
+    <xhtml:link rel="alternate" hreflang="br" href="http://localhost:3000/br/page-20" />
+    <xhtml:link rel="alternate" hreflang="es" href="http://localhost:3000/es/page-20" />
+    <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/page-20" />
+    <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/page-20" />
+    <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/page-20" />
+    <lastmod>2026-09-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>http://localhost:3000/fr/page-20</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="http://localhost:3000/en/page-20" />
+    <xhtml:link rel="alternate" hreflang="br" href="http://localhost:3000/br/page-20" />
+    <xhtml:link rel="alternate" hreflang="es" href="http://localhost:3000/es/page-20" />
+    <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/page-20" />
+    <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/page-20" />
+    <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/page-20" />
+    <lastmod>2026-09-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>http://localhost:3000/de/page-20</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="http://localhost:3000/en/page-20" />
+    <xhtml:link rel="alternate" hreflang="br" href="http://localhost:3000/br/page-20" />
+    <xhtml:link rel="alternate" hreflang="es" href="http://localhost:3000/es/page-20" />
+    <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/page-20" />
+    <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/page-20" />
+    <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/page-20" />
+    <lastmod>2026-09-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>http://localhost:3000/id/page-20</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="http://localhost:3000/en/page-20" />
+    <xhtml:link rel="alternate" hreflang="br" href="http://localhost:3000/br/page-20" />
+    <xhtml:link rel="alternate" hreflang="es" href="http://localhost:3000/es/page-20" />
+    <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/page-20" />
+    <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/page-20" />
+    <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/page-20" />
+    <lastmod>2026-09-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>http://localhost:3000/page-20</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="http://localhost:3000/en/page-20" />
+    <xhtml:link rel="alternate" hreflang="br" href="http://localhost:3000/br/page-20" />
+    <xhtml:link rel="alternate" hreflang="es" href="http://localhost:3000/es/page-20" />
+    <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/page-20" />
+    <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/page-20" />
+    <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/page-20" />
+    <lastmod>2026-09-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -3890,85 +3975,85 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>http://localhost:3000/en/cara-mengatasi-scribd-downloader-error` (no change)</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="http://localhost:3000/en/cara-mengatasi-scribd-downloader-error` (no change)" />
-    <xhtml:link rel="alternate" hreflang="br" href="http://localhost:3000/br/cara-mengatasi-scribd-downloader-error` (no change)" />
-    <xhtml:link rel="alternate" hreflang="es" href="http://localhost:3000/es/cara-mengatasi-scribd-downloader-error` (no change)" />
-    <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/cara-mengatasi-scribd-downloader-error` (no change)" />
-    <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/cara-mengatasi-scribd-downloader-error` (no change)" />
-    <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/cara-mengatasi-scribd-downloader-error` (no change)" />
+    <loc>http://localhost:3000/en/cara-mengatasi-scribd-downloader-error</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="http://localhost:3000/en/cara-mengatasi-scribd-downloader-error" />
+    <xhtml:link rel="alternate" hreflang="br" href="http://localhost:3000/br/cara-mengatasi-scribd-downloader-error" />
+    <xhtml:link rel="alternate" hreflang="es" href="http://localhost:3000/es/cara-mengatasi-scribd-downloader-error" />
+    <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/cara-mengatasi-scribd-downloader-error" />
+    <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/cara-mengatasi-scribd-downloader-error" />
+    <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/cara-mengatasi-scribd-downloader-error" />
     <lastmod>2026-09-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>http://localhost:3000/br/cara-mengatasi-scribd-downloader-error` (no change)</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="http://localhost:3000/en/cara-mengatasi-scribd-downloader-error` (no change)" />
-    <xhtml:link rel="alternate" hreflang="br" href="http://localhost:3000/br/cara-mengatasi-scribd-downloader-error` (no change)" />
-    <xhtml:link rel="alternate" hreflang="es" href="http://localhost:3000/es/cara-mengatasi-scribd-downloader-error` (no change)" />
-    <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/cara-mengatasi-scribd-downloader-error` (no change)" />
-    <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/cara-mengatasi-scribd-downloader-error` (no change)" />
-    <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/cara-mengatasi-scribd-downloader-error` (no change)" />
+    <loc>http://localhost:3000/br/cara-mengatasi-scribd-downloader-error</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="http://localhost:3000/en/cara-mengatasi-scribd-downloader-error" />
+    <xhtml:link rel="alternate" hreflang="br" href="http://localhost:3000/br/cara-mengatasi-scribd-downloader-error" />
+    <xhtml:link rel="alternate" hreflang="es" href="http://localhost:3000/es/cara-mengatasi-scribd-downloader-error" />
+    <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/cara-mengatasi-scribd-downloader-error" />
+    <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/cara-mengatasi-scribd-downloader-error" />
+    <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/cara-mengatasi-scribd-downloader-error" />
     <lastmod>2026-09-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>http://localhost:3000/es/cara-mengatasi-scribd-downloader-error` (no change)</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="http://localhost:3000/en/cara-mengatasi-scribd-downloader-error` (no change)" />
-    <xhtml:link rel="alternate" hreflang="br" href="http://localhost:3000/br/cara-mengatasi-scribd-downloader-error` (no change)" />
-    <xhtml:link rel="alternate" hreflang="es" href="http://localhost:3000/es/cara-mengatasi-scribd-downloader-error` (no change)" />
-    <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/cara-mengatasi-scribd-downloader-error` (no change)" />
-    <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/cara-mengatasi-scribd-downloader-error` (no change)" />
-    <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/cara-mengatasi-scribd-downloader-error` (no change)" />
+    <loc>http://localhost:3000/es/cara-mengatasi-scribd-downloader-error</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="http://localhost:3000/en/cara-mengatasi-scribd-downloader-error" />
+    <xhtml:link rel="alternate" hreflang="br" href="http://localhost:3000/br/cara-mengatasi-scribd-downloader-error" />
+    <xhtml:link rel="alternate" hreflang="es" href="http://localhost:3000/es/cara-mengatasi-scribd-downloader-error" />
+    <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/cara-mengatasi-scribd-downloader-error" />
+    <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/cara-mengatasi-scribd-downloader-error" />
+    <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/cara-mengatasi-scribd-downloader-error" />
     <lastmod>2026-09-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>http://localhost:3000/fr/cara-mengatasi-scribd-downloader-error` (no change)</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="http://localhost:3000/en/cara-mengatasi-scribd-downloader-error` (no change)" />
-    <xhtml:link rel="alternate" hreflang="br" href="http://localhost:3000/br/cara-mengatasi-scribd-downloader-error` (no change)" />
-    <xhtml:link rel="alternate" hreflang="es" href="http://localhost:3000/es/cara-mengatasi-scribd-downloader-error` (no change)" />
-    <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/cara-mengatasi-scribd-downloader-error` (no change)" />
-    <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/cara-mengatasi-scribd-downloader-error` (no change)" />
-    <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/cara-mengatasi-scribd-downloader-error` (no change)" />
+    <loc>http://localhost:3000/fr/cara-mengatasi-scribd-downloader-error</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="http://localhost:3000/en/cara-mengatasi-scribd-downloader-error" />
+    <xhtml:link rel="alternate" hreflang="br" href="http://localhost:3000/br/cara-mengatasi-scribd-downloader-error" />
+    <xhtml:link rel="alternate" hreflang="es" href="http://localhost:3000/es/cara-mengatasi-scribd-downloader-error" />
+    <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/cara-mengatasi-scribd-downloader-error" />
+    <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/cara-mengatasi-scribd-downloader-error" />
+    <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/cara-mengatasi-scribd-downloader-error" />
     <lastmod>2026-09-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>http://localhost:3000/de/cara-mengatasi-scribd-downloader-error` (no change)</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="http://localhost:3000/en/cara-mengatasi-scribd-downloader-error` (no change)" />
-    <xhtml:link rel="alternate" hreflang="br" href="http://localhost:3000/br/cara-mengatasi-scribd-downloader-error` (no change)" />
-    <xhtml:link rel="alternate" hreflang="es" href="http://localhost:3000/es/cara-mengatasi-scribd-downloader-error` (no change)" />
-    <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/cara-mengatasi-scribd-downloader-error` (no change)" />
-    <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/cara-mengatasi-scribd-downloader-error` (no change)" />
-    <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/cara-mengatasi-scribd-downloader-error` (no change)" />
+    <loc>http://localhost:3000/de/cara-mengatasi-scribd-downloader-error</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="http://localhost:3000/en/cara-mengatasi-scribd-downloader-error" />
+    <xhtml:link rel="alternate" hreflang="br" href="http://localhost:3000/br/cara-mengatasi-scribd-downloader-error" />
+    <xhtml:link rel="alternate" hreflang="es" href="http://localhost:3000/es/cara-mengatasi-scribd-downloader-error" />
+    <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/cara-mengatasi-scribd-downloader-error" />
+    <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/cara-mengatasi-scribd-downloader-error" />
+    <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/cara-mengatasi-scribd-downloader-error" />
     <lastmod>2026-09-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>http://localhost:3000/id/cara-mengatasi-scribd-downloader-error` (no change)</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="http://localhost:3000/en/cara-mengatasi-scribd-downloader-error` (no change)" />
-    <xhtml:link rel="alternate" hreflang="br" href="http://localhost:3000/br/cara-mengatasi-scribd-downloader-error` (no change)" />
-    <xhtml:link rel="alternate" hreflang="es" href="http://localhost:3000/es/cara-mengatasi-scribd-downloader-error` (no change)" />
-    <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/cara-mengatasi-scribd-downloader-error` (no change)" />
-    <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/cara-mengatasi-scribd-downloader-error` (no change)" />
-    <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/cara-mengatasi-scribd-downloader-error` (no change)" />
+    <loc>http://localhost:3000/id/cara-mengatasi-scribd-downloader-error</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="http://localhost:3000/en/cara-mengatasi-scribd-downloader-error" />
+    <xhtml:link rel="alternate" hreflang="br" href="http://localhost:3000/br/cara-mengatasi-scribd-downloader-error" />
+    <xhtml:link rel="alternate" hreflang="es" href="http://localhost:3000/es/cara-mengatasi-scribd-downloader-error" />
+    <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/cara-mengatasi-scribd-downloader-error" />
+    <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/cara-mengatasi-scribd-downloader-error" />
+    <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/cara-mengatasi-scribd-downloader-error" />
     <lastmod>2026-09-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>http://localhost:3000/cara-mengatasi-scribd-downloader-error` (no change)</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="http://localhost:3000/en/cara-mengatasi-scribd-downloader-error` (no change)" />
-    <xhtml:link rel="alternate" hreflang="br" href="http://localhost:3000/br/cara-mengatasi-scribd-downloader-error` (no change)" />
-    <xhtml:link rel="alternate" hreflang="es" href="http://localhost:3000/es/cara-mengatasi-scribd-downloader-error` (no change)" />
-    <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/cara-mengatasi-scribd-downloader-error` (no change)" />
-    <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/cara-mengatasi-scribd-downloader-error` (no change)" />
-    <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/cara-mengatasi-scribd-downloader-error` (no change)" />
+    <loc>http://localhost:3000/cara-mengatasi-scribd-downloader-error</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="http://localhost:3000/en/cara-mengatasi-scribd-downloader-error" />
+    <xhtml:link rel="alternate" hreflang="br" href="http://localhost:3000/br/cara-mengatasi-scribd-downloader-error" />
+    <xhtml:link rel="alternate" hreflang="es" href="http://localhost:3000/es/cara-mengatasi-scribd-downloader-error" />
+    <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/cara-mengatasi-scribd-downloader-error" />
+    <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/cara-mengatasi-scribd-downloader-error" />
+    <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/cara-mengatasi-scribd-downloader-error" />
     <lastmod>2026-09-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -4058,85 +4143,85 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>http://localhost:3000/en/descargador-de-scribd-no-funciona` (no change)</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="http://localhost:3000/en/descargador-de-scribd-no-funciona` (no change)" />
-    <xhtml:link rel="alternate" hreflang="br" href="http://localhost:3000/br/descargador-de-scribd-no-funciona` (no change)" />
-    <xhtml:link rel="alternate" hreflang="es" href="http://localhost:3000/es/descargador-de-scribd-no-funciona` (no change)" />
-    <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/descargador-de-scribd-no-funciona` (no change)" />
-    <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/descargador-de-scribd-no-funciona` (no change)" />
-    <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/descargador-de-scribd-no-funciona` (no change)" />
+    <loc>http://localhost:3000/en/descargador-de-scribd-no-funciona</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="http://localhost:3000/en/descargador-de-scribd-no-funciona" />
+    <xhtml:link rel="alternate" hreflang="br" href="http://localhost:3000/br/descargador-de-scribd-no-funciona" />
+    <xhtml:link rel="alternate" hreflang="es" href="http://localhost:3000/es/descargador-de-scribd-no-funciona" />
+    <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/descargador-de-scribd-no-funciona" />
+    <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/descargador-de-scribd-no-funciona" />
+    <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/descargador-de-scribd-no-funciona" />
     <lastmod>2026-09-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>http://localhost:3000/br/descargador-de-scribd-no-funciona` (no change)</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="http://localhost:3000/en/descargador-de-scribd-no-funciona` (no change)" />
-    <xhtml:link rel="alternate" hreflang="br" href="http://localhost:3000/br/descargador-de-scribd-no-funciona` (no change)" />
-    <xhtml:link rel="alternate" hreflang="es" href="http://localhost:3000/es/descargador-de-scribd-no-funciona` (no change)" />
-    <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/descargador-de-scribd-no-funciona` (no change)" />
-    <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/descargador-de-scribd-no-funciona` (no change)" />
-    <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/descargador-de-scribd-no-funciona` (no change)" />
+    <loc>http://localhost:3000/br/descargador-de-scribd-no-funciona</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="http://localhost:3000/en/descargador-de-scribd-no-funciona" />
+    <xhtml:link rel="alternate" hreflang="br" href="http://localhost:3000/br/descargador-de-scribd-no-funciona" />
+    <xhtml:link rel="alternate" hreflang="es" href="http://localhost:3000/es/descargador-de-scribd-no-funciona" />
+    <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/descargador-de-scribd-no-funciona" />
+    <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/descargador-de-scribd-no-funciona" />
+    <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/descargador-de-scribd-no-funciona" />
     <lastmod>2026-09-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>http://localhost:3000/es/descargador-de-scribd-no-funciona` (no change)</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="http://localhost:3000/en/descargador-de-scribd-no-funciona` (no change)" />
-    <xhtml:link rel="alternate" hreflang="br" href="http://localhost:3000/br/descargador-de-scribd-no-funciona` (no change)" />
-    <xhtml:link rel="alternate" hreflang="es" href="http://localhost:3000/es/descargador-de-scribd-no-funciona` (no change)" />
-    <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/descargador-de-scribd-no-funciona` (no change)" />
-    <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/descargador-de-scribd-no-funciona` (no change)" />
-    <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/descargador-de-scribd-no-funciona` (no change)" />
+    <loc>http://localhost:3000/es/descargador-de-scribd-no-funciona</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="http://localhost:3000/en/descargador-de-scribd-no-funciona" />
+    <xhtml:link rel="alternate" hreflang="br" href="http://localhost:3000/br/descargador-de-scribd-no-funciona" />
+    <xhtml:link rel="alternate" hreflang="es" href="http://localhost:3000/es/descargador-de-scribd-no-funciona" />
+    <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/descargador-de-scribd-no-funciona" />
+    <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/descargador-de-scribd-no-funciona" />
+    <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/descargador-de-scribd-no-funciona" />
     <lastmod>2026-09-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>http://localhost:3000/fr/descargador-de-scribd-no-funciona` (no change)</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="http://localhost:3000/en/descargador-de-scribd-no-funciona` (no change)" />
-    <xhtml:link rel="alternate" hreflang="br" href="http://localhost:3000/br/descargador-de-scribd-no-funciona` (no change)" />
-    <xhtml:link rel="alternate" hreflang="es" href="http://localhost:3000/es/descargador-de-scribd-no-funciona` (no change)" />
-    <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/descargador-de-scribd-no-funciona` (no change)" />
-    <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/descargador-de-scribd-no-funciona` (no change)" />
-    <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/descargador-de-scribd-no-funciona` (no change)" />
+    <loc>http://localhost:3000/fr/descargador-de-scribd-no-funciona</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="http://localhost:3000/en/descargador-de-scribd-no-funciona" />
+    <xhtml:link rel="alternate" hreflang="br" href="http://localhost:3000/br/descargador-de-scribd-no-funciona" />
+    <xhtml:link rel="alternate" hreflang="es" href="http://localhost:3000/es/descargador-de-scribd-no-funciona" />
+    <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/descargador-de-scribd-no-funciona" />
+    <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/descargador-de-scribd-no-funciona" />
+    <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/descargador-de-scribd-no-funciona" />
     <lastmod>2026-09-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>http://localhost:3000/de/descargador-de-scribd-no-funciona` (no change)</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="http://localhost:3000/en/descargador-de-scribd-no-funciona` (no change)" />
-    <xhtml:link rel="alternate" hreflang="br" href="http://localhost:3000/br/descargador-de-scribd-no-funciona` (no change)" />
-    <xhtml:link rel="alternate" hreflang="es" href="http://localhost:3000/es/descargador-de-scribd-no-funciona` (no change)" />
-    <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/descargador-de-scribd-no-funciona` (no change)" />
-    <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/descargador-de-scribd-no-funciona` (no change)" />
-    <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/descargador-de-scribd-no-funciona` (no change)" />
+    <loc>http://localhost:3000/de/descargador-de-scribd-no-funciona</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="http://localhost:3000/en/descargador-de-scribd-no-funciona" />
+    <xhtml:link rel="alternate" hreflang="br" href="http://localhost:3000/br/descargador-de-scribd-no-funciona" />
+    <xhtml:link rel="alternate" hreflang="es" href="http://localhost:3000/es/descargador-de-scribd-no-funciona" />
+    <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/descargador-de-scribd-no-funciona" />
+    <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/descargador-de-scribd-no-funciona" />
+    <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/descargador-de-scribd-no-funciona" />
     <lastmod>2026-09-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>http://localhost:3000/id/descargador-de-scribd-no-funciona` (no change)</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="http://localhost:3000/en/descargador-de-scribd-no-funciona` (no change)" />
-    <xhtml:link rel="alternate" hreflang="br" href="http://localhost:3000/br/descargador-de-scribd-no-funciona` (no change)" />
-    <xhtml:link rel="alternate" hreflang="es" href="http://localhost:3000/es/descargador-de-scribd-no-funciona` (no change)" />
-    <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/descargador-de-scribd-no-funciona` (no change)" />
-    <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/descargador-de-scribd-no-funciona` (no change)" />
-    <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/descargador-de-scribd-no-funciona` (no change)" />
+    <loc>http://localhost:3000/id/descargador-de-scribd-no-funciona</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="http://localhost:3000/en/descargador-de-scribd-no-funciona" />
+    <xhtml:link rel="alternate" hreflang="br" href="http://localhost:3000/br/descargador-de-scribd-no-funciona" />
+    <xhtml:link rel="alternate" hreflang="es" href="http://localhost:3000/es/descargador-de-scribd-no-funciona" />
+    <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/descargador-de-scribd-no-funciona" />
+    <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/descargador-de-scribd-no-funciona" />
+    <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/descargador-de-scribd-no-funciona" />
     <lastmod>2026-09-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>http://localhost:3000/descargador-de-scribd-no-funciona` (no change)</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="http://localhost:3000/en/descargador-de-scribd-no-funciona` (no change)" />
-    <xhtml:link rel="alternate" hreflang="br" href="http://localhost:3000/br/descargador-de-scribd-no-funciona` (no change)" />
-    <xhtml:link rel="alternate" hreflang="es" href="http://localhost:3000/es/descargador-de-scribd-no-funciona` (no change)" />
-    <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/descargador-de-scribd-no-funciona` (no change)" />
-    <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/descargador-de-scribd-no-funciona` (no change)" />
-    <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/descargador-de-scribd-no-funciona` (no change)" />
+    <loc>http://localhost:3000/descargador-de-scribd-no-funciona</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="http://localhost:3000/en/descargador-de-scribd-no-funciona" />
+    <xhtml:link rel="alternate" hreflang="br" href="http://localhost:3000/br/descargador-de-scribd-no-funciona" />
+    <xhtml:link rel="alternate" hreflang="es" href="http://localhost:3000/es/descargador-de-scribd-no-funciona" />
+    <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/descargador-de-scribd-no-funciona" />
+    <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/descargador-de-scribd-no-funciona" />
+    <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/descargador-de-scribd-no-funciona" />
     <lastmod>2026-09-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -5402,253 +5487,253 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>http://localhost:3000/en/scribd-downloader-kaam-nahi-kar-raha` (no change)</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="http://localhost:3000/en/scribd-downloader-kaam-nahi-kar-raha` (no change)" />
-    <xhtml:link rel="alternate" hreflang="br" href="http://localhost:3000/br/scribd-downloader-kaam-nahi-kar-raha` (no change)" />
-    <xhtml:link rel="alternate" hreflang="es" href="http://localhost:3000/es/scribd-downloader-kaam-nahi-kar-raha` (no change)" />
-    <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/scribd-downloader-kaam-nahi-kar-raha` (no change)" />
-    <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/scribd-downloader-kaam-nahi-kar-raha` (no change)" />
-    <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/scribd-downloader-kaam-nahi-kar-raha` (no change)" />
+    <loc>http://localhost:3000/en/scribd-downloader-kaam-nahi-kar-raha</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="http://localhost:3000/en/scribd-downloader-kaam-nahi-kar-raha" />
+    <xhtml:link rel="alternate" hreflang="br" href="http://localhost:3000/br/scribd-downloader-kaam-nahi-kar-raha" />
+    <xhtml:link rel="alternate" hreflang="es" href="http://localhost:3000/es/scribd-downloader-kaam-nahi-kar-raha" />
+    <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/scribd-downloader-kaam-nahi-kar-raha" />
+    <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/scribd-downloader-kaam-nahi-kar-raha" />
+    <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/scribd-downloader-kaam-nahi-kar-raha" />
     <lastmod>2026-09-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>http://localhost:3000/br/scribd-downloader-kaam-nahi-kar-raha` (no change)</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="http://localhost:3000/en/scribd-downloader-kaam-nahi-kar-raha` (no change)" />
-    <xhtml:link rel="alternate" hreflang="br" href="http://localhost:3000/br/scribd-downloader-kaam-nahi-kar-raha` (no change)" />
-    <xhtml:link rel="alternate" hreflang="es" href="http://localhost:3000/es/scribd-downloader-kaam-nahi-kar-raha` (no change)" />
-    <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/scribd-downloader-kaam-nahi-kar-raha` (no change)" />
-    <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/scribd-downloader-kaam-nahi-kar-raha` (no change)" />
-    <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/scribd-downloader-kaam-nahi-kar-raha` (no change)" />
+    <loc>http://localhost:3000/br/scribd-downloader-kaam-nahi-kar-raha</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="http://localhost:3000/en/scribd-downloader-kaam-nahi-kar-raha" />
+    <xhtml:link rel="alternate" hreflang="br" href="http://localhost:3000/br/scribd-downloader-kaam-nahi-kar-raha" />
+    <xhtml:link rel="alternate" hreflang="es" href="http://localhost:3000/es/scribd-downloader-kaam-nahi-kar-raha" />
+    <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/scribd-downloader-kaam-nahi-kar-raha" />
+    <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/scribd-downloader-kaam-nahi-kar-raha" />
+    <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/scribd-downloader-kaam-nahi-kar-raha" />
     <lastmod>2026-09-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>http://localhost:3000/es/scribd-downloader-kaam-nahi-kar-raha` (no change)</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="http://localhost:3000/en/scribd-downloader-kaam-nahi-kar-raha` (no change)" />
-    <xhtml:link rel="alternate" hreflang="br" href="http://localhost:3000/br/scribd-downloader-kaam-nahi-kar-raha` (no change)" />
-    <xhtml:link rel="alternate" hreflang="es" href="http://localhost:3000/es/scribd-downloader-kaam-nahi-kar-raha` (no change)" />
-    <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/scribd-downloader-kaam-nahi-kar-raha` (no change)" />
-    <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/scribd-downloader-kaam-nahi-kar-raha` (no change)" />
-    <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/scribd-downloader-kaam-nahi-kar-raha` (no change)" />
+    <loc>http://localhost:3000/es/scribd-downloader-kaam-nahi-kar-raha</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="http://localhost:3000/en/scribd-downloader-kaam-nahi-kar-raha" />
+    <xhtml:link rel="alternate" hreflang="br" href="http://localhost:3000/br/scribd-downloader-kaam-nahi-kar-raha" />
+    <xhtml:link rel="alternate" hreflang="es" href="http://localhost:3000/es/scribd-downloader-kaam-nahi-kar-raha" />
+    <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/scribd-downloader-kaam-nahi-kar-raha" />
+    <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/scribd-downloader-kaam-nahi-kar-raha" />
+    <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/scribd-downloader-kaam-nahi-kar-raha" />
     <lastmod>2026-09-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>http://localhost:3000/fr/scribd-downloader-kaam-nahi-kar-raha` (no change)</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="http://localhost:3000/en/scribd-downloader-kaam-nahi-kar-raha` (no change)" />
-    <xhtml:link rel="alternate" hreflang="br" href="http://localhost:3000/br/scribd-downloader-kaam-nahi-kar-raha` (no change)" />
-    <xhtml:link rel="alternate" hreflang="es" href="http://localhost:3000/es/scribd-downloader-kaam-nahi-kar-raha` (no change)" />
-    <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/scribd-downloader-kaam-nahi-kar-raha` (no change)" />
-    <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/scribd-downloader-kaam-nahi-kar-raha` (no change)" />
-    <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/scribd-downloader-kaam-nahi-kar-raha` (no change)" />
+    <loc>http://localhost:3000/fr/scribd-downloader-kaam-nahi-kar-raha</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="http://localhost:3000/en/scribd-downloader-kaam-nahi-kar-raha" />
+    <xhtml:link rel="alternate" hreflang="br" href="http://localhost:3000/br/scribd-downloader-kaam-nahi-kar-raha" />
+    <xhtml:link rel="alternate" hreflang="es" href="http://localhost:3000/es/scribd-downloader-kaam-nahi-kar-raha" />
+    <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/scribd-downloader-kaam-nahi-kar-raha" />
+    <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/scribd-downloader-kaam-nahi-kar-raha" />
+    <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/scribd-downloader-kaam-nahi-kar-raha" />
     <lastmod>2026-09-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>http://localhost:3000/de/scribd-downloader-kaam-nahi-kar-raha` (no change)</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="http://localhost:3000/en/scribd-downloader-kaam-nahi-kar-raha` (no change)" />
-    <xhtml:link rel="alternate" hreflang="br" href="http://localhost:3000/br/scribd-downloader-kaam-nahi-kar-raha` (no change)" />
-    <xhtml:link rel="alternate" hreflang="es" href="http://localhost:3000/es/scribd-downloader-kaam-nahi-kar-raha` (no change)" />
-    <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/scribd-downloader-kaam-nahi-kar-raha` (no change)" />
-    <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/scribd-downloader-kaam-nahi-kar-raha` (no change)" />
-    <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/scribd-downloader-kaam-nahi-kar-raha` (no change)" />
+    <loc>http://localhost:3000/de/scribd-downloader-kaam-nahi-kar-raha</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="http://localhost:3000/en/scribd-downloader-kaam-nahi-kar-raha" />
+    <xhtml:link rel="alternate" hreflang="br" href="http://localhost:3000/br/scribd-downloader-kaam-nahi-kar-raha" />
+    <xhtml:link rel="alternate" hreflang="es" href="http://localhost:3000/es/scribd-downloader-kaam-nahi-kar-raha" />
+    <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/scribd-downloader-kaam-nahi-kar-raha" />
+    <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/scribd-downloader-kaam-nahi-kar-raha" />
+    <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/scribd-downloader-kaam-nahi-kar-raha" />
     <lastmod>2026-09-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>http://localhost:3000/id/scribd-downloader-kaam-nahi-kar-raha` (no change)</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="http://localhost:3000/en/scribd-downloader-kaam-nahi-kar-raha` (no change)" />
-    <xhtml:link rel="alternate" hreflang="br" href="http://localhost:3000/br/scribd-downloader-kaam-nahi-kar-raha` (no change)" />
-    <xhtml:link rel="alternate" hreflang="es" href="http://localhost:3000/es/scribd-downloader-kaam-nahi-kar-raha` (no change)" />
-    <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/scribd-downloader-kaam-nahi-kar-raha` (no change)" />
-    <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/scribd-downloader-kaam-nahi-kar-raha` (no change)" />
-    <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/scribd-downloader-kaam-nahi-kar-raha` (no change)" />
+    <loc>http://localhost:3000/id/scribd-downloader-kaam-nahi-kar-raha</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="http://localhost:3000/en/scribd-downloader-kaam-nahi-kar-raha" />
+    <xhtml:link rel="alternate" hreflang="br" href="http://localhost:3000/br/scribd-downloader-kaam-nahi-kar-raha" />
+    <xhtml:link rel="alternate" hreflang="es" href="http://localhost:3000/es/scribd-downloader-kaam-nahi-kar-raha" />
+    <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/scribd-downloader-kaam-nahi-kar-raha" />
+    <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/scribd-downloader-kaam-nahi-kar-raha" />
+    <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/scribd-downloader-kaam-nahi-kar-raha" />
     <lastmod>2026-09-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>http://localhost:3000/scribd-downloader-kaam-nahi-kar-raha` (no change)</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="http://localhost:3000/en/scribd-downloader-kaam-nahi-kar-raha` (no change)" />
-    <xhtml:link rel="alternate" hreflang="br" href="http://localhost:3000/br/scribd-downloader-kaam-nahi-kar-raha` (no change)" />
-    <xhtml:link rel="alternate" hreflang="es" href="http://localhost:3000/es/scribd-downloader-kaam-nahi-kar-raha` (no change)" />
-    <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/scribd-downloader-kaam-nahi-kar-raha` (no change)" />
-    <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/scribd-downloader-kaam-nahi-kar-raha` (no change)" />
-    <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/scribd-downloader-kaam-nahi-kar-raha` (no change)" />
+    <loc>http://localhost:3000/scribd-downloader-kaam-nahi-kar-raha</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="http://localhost:3000/en/scribd-downloader-kaam-nahi-kar-raha" />
+    <xhtml:link rel="alternate" hreflang="br" href="http://localhost:3000/br/scribd-downloader-kaam-nahi-kar-raha" />
+    <xhtml:link rel="alternate" hreflang="es" href="http://localhost:3000/es/scribd-downloader-kaam-nahi-kar-raha" />
+    <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/scribd-downloader-kaam-nahi-kar-raha" />
+    <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/scribd-downloader-kaam-nahi-kar-raha" />
+    <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/scribd-downloader-kaam-nahi-kar-raha" />
     <lastmod>2026-09-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>http://localhost:3000/en/scribd-downloader-ne-fonctionne-plus` (no change)</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="http://localhost:3000/en/scribd-downloader-ne-fonctionne-plus` (no change)" />
-    <xhtml:link rel="alternate" hreflang="br" href="http://localhost:3000/br/scribd-downloader-ne-fonctionne-plus` (no change)" />
-    <xhtml:link rel="alternate" hreflang="es" href="http://localhost:3000/es/scribd-downloader-ne-fonctionne-plus` (no change)" />
-    <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/scribd-downloader-ne-fonctionne-plus` (no change)" />
-    <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/scribd-downloader-ne-fonctionne-plus` (no change)" />
-    <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/scribd-downloader-ne-fonctionne-plus` (no change)" />
+    <loc>http://localhost:3000/en/scribd-downloader-ne-fonctionne-plus</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="http://localhost:3000/en/scribd-downloader-ne-fonctionne-plus" />
+    <xhtml:link rel="alternate" hreflang="br" href="http://localhost:3000/br/scribd-downloader-ne-fonctionne-plus" />
+    <xhtml:link rel="alternate" hreflang="es" href="http://localhost:3000/es/scribd-downloader-ne-fonctionne-plus" />
+    <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/scribd-downloader-ne-fonctionne-plus" />
+    <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/scribd-downloader-ne-fonctionne-plus" />
+    <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/scribd-downloader-ne-fonctionne-plus" />
     <lastmod>2026-09-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>http://localhost:3000/br/scribd-downloader-ne-fonctionne-plus` (no change)</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="http://localhost:3000/en/scribd-downloader-ne-fonctionne-plus` (no change)" />
-    <xhtml:link rel="alternate" hreflang="br" href="http://localhost:3000/br/scribd-downloader-ne-fonctionne-plus` (no change)" />
-    <xhtml:link rel="alternate" hreflang="es" href="http://localhost:3000/es/scribd-downloader-ne-fonctionne-plus` (no change)" />
-    <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/scribd-downloader-ne-fonctionne-plus` (no change)" />
-    <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/scribd-downloader-ne-fonctionne-plus` (no change)" />
-    <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/scribd-downloader-ne-fonctionne-plus` (no change)" />
+    <loc>http://localhost:3000/br/scribd-downloader-ne-fonctionne-plus</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="http://localhost:3000/en/scribd-downloader-ne-fonctionne-plus" />
+    <xhtml:link rel="alternate" hreflang="br" href="http://localhost:3000/br/scribd-downloader-ne-fonctionne-plus" />
+    <xhtml:link rel="alternate" hreflang="es" href="http://localhost:3000/es/scribd-downloader-ne-fonctionne-plus" />
+    <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/scribd-downloader-ne-fonctionne-plus" />
+    <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/scribd-downloader-ne-fonctionne-plus" />
+    <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/scribd-downloader-ne-fonctionne-plus" />
     <lastmod>2026-09-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>http://localhost:3000/es/scribd-downloader-ne-fonctionne-plus` (no change)</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="http://localhost:3000/en/scribd-downloader-ne-fonctionne-plus` (no change)" />
-    <xhtml:link rel="alternate" hreflang="br" href="http://localhost:3000/br/scribd-downloader-ne-fonctionne-plus` (no change)" />
-    <xhtml:link rel="alternate" hreflang="es" href="http://localhost:3000/es/scribd-downloader-ne-fonctionne-plus` (no change)" />
-    <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/scribd-downloader-ne-fonctionne-plus` (no change)" />
-    <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/scribd-downloader-ne-fonctionne-plus` (no change)" />
-    <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/scribd-downloader-ne-fonctionne-plus` (no change)" />
+    <loc>http://localhost:3000/es/scribd-downloader-ne-fonctionne-plus</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="http://localhost:3000/en/scribd-downloader-ne-fonctionne-plus" />
+    <xhtml:link rel="alternate" hreflang="br" href="http://localhost:3000/br/scribd-downloader-ne-fonctionne-plus" />
+    <xhtml:link rel="alternate" hreflang="es" href="http://localhost:3000/es/scribd-downloader-ne-fonctionne-plus" />
+    <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/scribd-downloader-ne-fonctionne-plus" />
+    <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/scribd-downloader-ne-fonctionne-plus" />
+    <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/scribd-downloader-ne-fonctionne-plus" />
     <lastmod>2026-09-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>http://localhost:3000/fr/scribd-downloader-ne-fonctionne-plus` (no change)</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="http://localhost:3000/en/scribd-downloader-ne-fonctionne-plus` (no change)" />
-    <xhtml:link rel="alternate" hreflang="br" href="http://localhost:3000/br/scribd-downloader-ne-fonctionne-plus` (no change)" />
-    <xhtml:link rel="alternate" hreflang="es" href="http://localhost:3000/es/scribd-downloader-ne-fonctionne-plus` (no change)" />
-    <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/scribd-downloader-ne-fonctionne-plus` (no change)" />
-    <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/scribd-downloader-ne-fonctionne-plus` (no change)" />
-    <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/scribd-downloader-ne-fonctionne-plus` (no change)" />
+    <loc>http://localhost:3000/fr/scribd-downloader-ne-fonctionne-plus</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="http://localhost:3000/en/scribd-downloader-ne-fonctionne-plus" />
+    <xhtml:link rel="alternate" hreflang="br" href="http://localhost:3000/br/scribd-downloader-ne-fonctionne-plus" />
+    <xhtml:link rel="alternate" hreflang="es" href="http://localhost:3000/es/scribd-downloader-ne-fonctionne-plus" />
+    <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/scribd-downloader-ne-fonctionne-plus" />
+    <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/scribd-downloader-ne-fonctionne-plus" />
+    <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/scribd-downloader-ne-fonctionne-plus" />
     <lastmod>2026-09-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>http://localhost:3000/de/scribd-downloader-ne-fonctionne-plus` (no change)</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="http://localhost:3000/en/scribd-downloader-ne-fonctionne-plus` (no change)" />
-    <xhtml:link rel="alternate" hreflang="br" href="http://localhost:3000/br/scribd-downloader-ne-fonctionne-plus` (no change)" />
-    <xhtml:link rel="alternate" hreflang="es" href="http://localhost:3000/es/scribd-downloader-ne-fonctionne-plus` (no change)" />
-    <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/scribd-downloader-ne-fonctionne-plus` (no change)" />
-    <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/scribd-downloader-ne-fonctionne-plus` (no change)" />
-    <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/scribd-downloader-ne-fonctionne-plus` (no change)" />
+    <loc>http://localhost:3000/de/scribd-downloader-ne-fonctionne-plus</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="http://localhost:3000/en/scribd-downloader-ne-fonctionne-plus" />
+    <xhtml:link rel="alternate" hreflang="br" href="http://localhost:3000/br/scribd-downloader-ne-fonctionne-plus" />
+    <xhtml:link rel="alternate" hreflang="es" href="http://localhost:3000/es/scribd-downloader-ne-fonctionne-plus" />
+    <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/scribd-downloader-ne-fonctionne-plus" />
+    <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/scribd-downloader-ne-fonctionne-plus" />
+    <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/scribd-downloader-ne-fonctionne-plus" />
     <lastmod>2026-09-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>http://localhost:3000/id/scribd-downloader-ne-fonctionne-plus` (no change)</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="http://localhost:3000/en/scribd-downloader-ne-fonctionne-plus` (no change)" />
-    <xhtml:link rel="alternate" hreflang="br" href="http://localhost:3000/br/scribd-downloader-ne-fonctionne-plus` (no change)" />
-    <xhtml:link rel="alternate" hreflang="es" href="http://localhost:3000/es/scribd-downloader-ne-fonctionne-plus` (no change)" />
-    <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/scribd-downloader-ne-fonctionne-plus` (no change)" />
-    <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/scribd-downloader-ne-fonctionne-plus` (no change)" />
-    <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/scribd-downloader-ne-fonctionne-plus` (no change)" />
+    <loc>http://localhost:3000/id/scribd-downloader-ne-fonctionne-plus</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="http://localhost:3000/en/scribd-downloader-ne-fonctionne-plus" />
+    <xhtml:link rel="alternate" hreflang="br" href="http://localhost:3000/br/scribd-downloader-ne-fonctionne-plus" />
+    <xhtml:link rel="alternate" hreflang="es" href="http://localhost:3000/es/scribd-downloader-ne-fonctionne-plus" />
+    <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/scribd-downloader-ne-fonctionne-plus" />
+    <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/scribd-downloader-ne-fonctionne-plus" />
+    <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/scribd-downloader-ne-fonctionne-plus" />
     <lastmod>2026-09-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>http://localhost:3000/scribd-downloader-ne-fonctionne-plus` (no change)</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="http://localhost:3000/en/scribd-downloader-ne-fonctionne-plus` (no change)" />
-    <xhtml:link rel="alternate" hreflang="br" href="http://localhost:3000/br/scribd-downloader-ne-fonctionne-plus` (no change)" />
-    <xhtml:link rel="alternate" hreflang="es" href="http://localhost:3000/es/scribd-downloader-ne-fonctionne-plus` (no change)" />
-    <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/scribd-downloader-ne-fonctionne-plus` (no change)" />
-    <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/scribd-downloader-ne-fonctionne-plus` (no change)" />
-    <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/scribd-downloader-ne-fonctionne-plus` (no change)" />
+    <loc>http://localhost:3000/scribd-downloader-ne-fonctionne-plus</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="http://localhost:3000/en/scribd-downloader-ne-fonctionne-plus" />
+    <xhtml:link rel="alternate" hreflang="br" href="http://localhost:3000/br/scribd-downloader-ne-fonctionne-plus" />
+    <xhtml:link rel="alternate" hreflang="es" href="http://localhost:3000/es/scribd-downloader-ne-fonctionne-plus" />
+    <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/scribd-downloader-ne-fonctionne-plus" />
+    <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/scribd-downloader-ne-fonctionne-plus" />
+    <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/scribd-downloader-ne-fonctionne-plus" />
     <lastmod>2026-09-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>http://localhost:3000/en/scribd-downloader-not-working` (no change)</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="http://localhost:3000/en/scribd-downloader-not-working` (no change)" />
-    <xhtml:link rel="alternate" hreflang="br" href="http://localhost:3000/br/scribd-downloader-not-working` (no change)" />
-    <xhtml:link rel="alternate" hreflang="es" href="http://localhost:3000/es/scribd-downloader-not-working` (no change)" />
-    <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/scribd-downloader-not-working` (no change)" />
-    <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/scribd-downloader-not-working` (no change)" />
-    <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/scribd-downloader-not-working` (no change)" />
+    <loc>http://localhost:3000/en/scribd-downloader-not-working</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="http://localhost:3000/en/scribd-downloader-not-working" />
+    <xhtml:link rel="alternate" hreflang="br" href="http://localhost:3000/br/scribd-downloader-not-working" />
+    <xhtml:link rel="alternate" hreflang="es" href="http://localhost:3000/es/scribd-downloader-not-working" />
+    <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/scribd-downloader-not-working" />
+    <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/scribd-downloader-not-working" />
+    <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/scribd-downloader-not-working" />
     <lastmod>2026-09-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>http://localhost:3000/br/scribd-downloader-not-working` (no change)</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="http://localhost:3000/en/scribd-downloader-not-working` (no change)" />
-    <xhtml:link rel="alternate" hreflang="br" href="http://localhost:3000/br/scribd-downloader-not-working` (no change)" />
-    <xhtml:link rel="alternate" hreflang="es" href="http://localhost:3000/es/scribd-downloader-not-working` (no change)" />
-    <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/scribd-downloader-not-working` (no change)" />
-    <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/scribd-downloader-not-working` (no change)" />
-    <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/scribd-downloader-not-working` (no change)" />
+    <loc>http://localhost:3000/br/scribd-downloader-not-working</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="http://localhost:3000/en/scribd-downloader-not-working" />
+    <xhtml:link rel="alternate" hreflang="br" href="http://localhost:3000/br/scribd-downloader-not-working" />
+    <xhtml:link rel="alternate" hreflang="es" href="http://localhost:3000/es/scribd-downloader-not-working" />
+    <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/scribd-downloader-not-working" />
+    <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/scribd-downloader-not-working" />
+    <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/scribd-downloader-not-working" />
     <lastmod>2026-09-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>http://localhost:3000/es/scribd-downloader-not-working` (no change)</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="http://localhost:3000/en/scribd-downloader-not-working` (no change)" />
-    <xhtml:link rel="alternate" hreflang="br" href="http://localhost:3000/br/scribd-downloader-not-working` (no change)" />
-    <xhtml:link rel="alternate" hreflang="es" href="http://localhost:3000/es/scribd-downloader-not-working` (no change)" />
-    <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/scribd-downloader-not-working` (no change)" />
-    <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/scribd-downloader-not-working` (no change)" />
-    <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/scribd-downloader-not-working` (no change)" />
+    <loc>http://localhost:3000/es/scribd-downloader-not-working</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="http://localhost:3000/en/scribd-downloader-not-working" />
+    <xhtml:link rel="alternate" hreflang="br" href="http://localhost:3000/br/scribd-downloader-not-working" />
+    <xhtml:link rel="alternate" hreflang="es" href="http://localhost:3000/es/scribd-downloader-not-working" />
+    <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/scribd-downloader-not-working" />
+    <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/scribd-downloader-not-working" />
+    <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/scribd-downloader-not-working" />
     <lastmod>2026-09-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>http://localhost:3000/fr/scribd-downloader-not-working` (no change)</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="http://localhost:3000/en/scribd-downloader-not-working` (no change)" />
-    <xhtml:link rel="alternate" hreflang="br" href="http://localhost:3000/br/scribd-downloader-not-working` (no change)" />
-    <xhtml:link rel="alternate" hreflang="es" href="http://localhost:3000/es/scribd-downloader-not-working` (no change)" />
-    <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/scribd-downloader-not-working` (no change)" />
-    <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/scribd-downloader-not-working` (no change)" />
-    <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/scribd-downloader-not-working` (no change)" />
+    <loc>http://localhost:3000/fr/scribd-downloader-not-working</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="http://localhost:3000/en/scribd-downloader-not-working" />
+    <xhtml:link rel="alternate" hreflang="br" href="http://localhost:3000/br/scribd-downloader-not-working" />
+    <xhtml:link rel="alternate" hreflang="es" href="http://localhost:3000/es/scribd-downloader-not-working" />
+    <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/scribd-downloader-not-working" />
+    <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/scribd-downloader-not-working" />
+    <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/scribd-downloader-not-working" />
     <lastmod>2026-09-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>http://localhost:3000/de/scribd-downloader-not-working` (no change)</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="http://localhost:3000/en/scribd-downloader-not-working` (no change)" />
-    <xhtml:link rel="alternate" hreflang="br" href="http://localhost:3000/br/scribd-downloader-not-working` (no change)" />
-    <xhtml:link rel="alternate" hreflang="es" href="http://localhost:3000/es/scribd-downloader-not-working` (no change)" />
-    <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/scribd-downloader-not-working` (no change)" />
-    <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/scribd-downloader-not-working` (no change)" />
-    <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/scribd-downloader-not-working` (no change)" />
+    <loc>http://localhost:3000/de/scribd-downloader-not-working</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="http://localhost:3000/en/scribd-downloader-not-working" />
+    <xhtml:link rel="alternate" hreflang="br" href="http://localhost:3000/br/scribd-downloader-not-working" />
+    <xhtml:link rel="alternate" hreflang="es" href="http://localhost:3000/es/scribd-downloader-not-working" />
+    <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/scribd-downloader-not-working" />
+    <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/scribd-downloader-not-working" />
+    <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/scribd-downloader-not-working" />
     <lastmod>2026-09-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>http://localhost:3000/id/scribd-downloader-not-working` (no change)</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="http://localhost:3000/en/scribd-downloader-not-working` (no change)" />
-    <xhtml:link rel="alternate" hreflang="br" href="http://localhost:3000/br/scribd-downloader-not-working` (no change)" />
-    <xhtml:link rel="alternate" hreflang="es" href="http://localhost:3000/es/scribd-downloader-not-working` (no change)" />
-    <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/scribd-downloader-not-working` (no change)" />
-    <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/scribd-downloader-not-working` (no change)" />
-    <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/scribd-downloader-not-working` (no change)" />
+    <loc>http://localhost:3000/id/scribd-downloader-not-working</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="http://localhost:3000/en/scribd-downloader-not-working" />
+    <xhtml:link rel="alternate" hreflang="br" href="http://localhost:3000/br/scribd-downloader-not-working" />
+    <xhtml:link rel="alternate" hreflang="es" href="http://localhost:3000/es/scribd-downloader-not-working" />
+    <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/scribd-downloader-not-working" />
+    <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/scribd-downloader-not-working" />
+    <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/scribd-downloader-not-working" />
     <lastmod>2026-09-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>http://localhost:3000/scribd-downloader-not-working` (no change)</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="http://localhost:3000/en/scribd-downloader-not-working` (no change)" />
-    <xhtml:link rel="alternate" hreflang="br" href="http://localhost:3000/br/scribd-downloader-not-working` (no change)" />
-    <xhtml:link rel="alternate" hreflang="es" href="http://localhost:3000/es/scribd-downloader-not-working` (no change)" />
-    <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/scribd-downloader-not-working` (no change)" />
-    <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/scribd-downloader-not-working` (no change)" />
-    <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/scribd-downloader-not-working` (no change)" />
+    <loc>http://localhost:3000/scribd-downloader-not-working</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="http://localhost:3000/en/scribd-downloader-not-working" />
+    <xhtml:link rel="alternate" hreflang="br" href="http://localhost:3000/br/scribd-downloader-not-working" />
+    <xhtml:link rel="alternate" hreflang="es" href="http://localhost:3000/es/scribd-downloader-not-working" />
+    <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:3000/fr/scribd-downloader-not-working" />
+    <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/scribd-downloader-not-working" />
+    <xhtml:link rel="alternate" hreflang="id" href="http://localhost:3000/id/scribd-downloader-not-working" />
     <lastmod>2026-09-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -6110,13 +6195,13 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>http://localhost:3000/br/` (homepage — no change; locale variant homepage-br)</loc>
+    <loc>http://localhost:3000/br/homepage-br</loc>
     <lastmod>2026-09-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>http://localhost:3000/` (homepage — no change; locale variant homepage-br)</loc>
+    <loc>http://localhost:3000/homepage-br</loc>
     <lastmod>2026-09-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -6710,13 +6795,13 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>http://localhost:3000/de/` (homepage — no change; locale variant homepage-de)</loc>
+    <loc>http://localhost:3000/de/homepage-de</loc>
     <lastmod>2026-09-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>http://localhost:3000/` (homepage — no change; locale variant homepage-de)</loc>
+    <loc>http://localhost:3000/homepage-de</loc>
     <lastmod>2026-09-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -8822,13 +8907,13 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>http://localhost:3000/es/` (homepage — no change; locale variant homepage-es)</loc>
+    <loc>http://localhost:3000/es/page-208</loc>
     <lastmod>2026-09-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>http://localhost:3000/` (homepage — no change; locale variant homepage-es)</loc>
+    <loc>http://localhost:3000/page-208</loc>
     <lastmod>2026-09-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -9266,13 +9351,13 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>http://localhost:3000/fr/` (homepage — no change; locale variant homepage-fr)</loc>
+    <loc>http://localhost:3000/fr/page-245</loc>
     <lastmod>2026-09-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>http://localhost:3000/` (homepage — no change; locale variant homepage-fr)</loc>
+    <loc>http://localhost:3000/page-245</loc>
     <lastmod>2026-09-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -9722,13 +9807,13 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>http://localhost:3000/id/` (homepage — no change; locale variant homepage-id)</loc>
+    <loc>http://localhost:3000/id/page-283</loc>
     <lastmod>2026-09-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>http://localhost:3000/` (homepage — no change; locale variant homepage-id)</loc>
+    <loc>http://localhost:3000/page-283</loc>
     <lastmod>2026-09-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>

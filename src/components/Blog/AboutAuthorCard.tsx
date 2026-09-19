@@ -242,7 +242,7 @@ export function AboutAuthorCard({
 
           {/* Author Details & Bio Column */}
           <div className="md:col-span-8 lg:col-span-9 space-y-4">
-            <p className="text-sm sm:text-base text-slate-700 leading-relaxed">
+            <p className="text-sm sm:text-base text-slate-700 leading-relaxed whitespace-pre-line">
               {profile.bio}
             </p>
 

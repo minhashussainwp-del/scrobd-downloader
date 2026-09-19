@@ -1057,6 +1057,36 @@ export function saveRobotsTxt(content: string) {
   }
 }
 
+function formatW3CDate(val?: any): string {
+  if (!val) return new Date().toISOString().split("T")[0];
+  const s = String(val).trim();
+  if (/^\d{4}-\d{2}-\d{2}$/.test(s)) return s;
+  const parsed = Date.parse(s);
+  if (!isNaN(parsed)) {
+    return new Date(parsed).toISOString().split("T")[0];
+  }
+  return new Date().toISOString().split("T")[0];
+}
+
+function cleanSlugForUrl(rawSlug?: string, idFallback?: string): string {
+  if (!rawSlug) return idFallback ? cleanSlugForUrl(idFallback) : "";
+  let s = String(rawSlug).trim();
+  if (s.includes("`")) s = s.split("`")[0].trim();
+  if (s.includes("(")) s = s.split("(")[0].trim();
+  s = s.replace(/[^a-zA-Z0-9\-\/]/g, "-").replace(/-+/g, "-").replace(/^\/+|\/+$/g, "").replace(/^-+|-+$/g, "");
+  if (!s) return idFallback ? cleanSlugForUrl(idFallback) : "";
+  return s.toLowerCase();
+}
+
+function escapeXml(str: string): string {
+  return String(str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&apos;");
+}
+
 export function buildDynamicSitemapXml(
   origin: string,
   posts: BlogPost[] = [],
@@ -1087,21 +1117,24 @@ export function buildDynamicSitemapXml(
     priority: string,
     alternates: Array<{ lang: string; href: string }> = []
   ) => {
-    if (seenUrls.has(loc)) return;
-    seenUrls.add(loc);
+    const cleanUrl = loc.trim();
+    if (!cleanUrl || seenUrls.has(cleanUrl)) return;
+    seenUrls.add(cleanUrl);
 
     let alternateTags = "";
     if (alternates.length > 0) {
       alternateTags = alternates
-        .filter((alt) => alt.href)
-        .map((alt) => `    <xhtml:link rel="alternate" hreflang="${alt.lang}" href="${alt.href}" />`)
+        .filter((alt) => alt.href && alt.href.trim())
+        .map((alt) => `    <xhtml:link rel="alternate" hreflang="${escapeXml(alt.lang)}" href="${escapeXml(alt.href.trim())}" />`)
         .join("\n");
       if (alternateTags) alternateTags = "\n" + alternateTags;
     }
 
+    const safeLastmod = formatW3CDate(lastmod);
+
     xmlEntries.push(`  <url>
-    <loc>${loc}</loc>${alternateTags}
-    <lastmod>${lastmod}</lastmod>
+    <loc>${escapeXml(cleanUrl)}</loc>${alternateTags}
+    <lastmod>${safeLastmod}</lastmod>
     <changefreq>${changefreq}</changefreq>
     <priority>${priority}</priority>
   </url>`);
@@ -1142,23 +1175,25 @@ export function buildDynamicSitemapXml(
 
   // For every translation group, generate exact URLs for all language variations
   translationGroups.forEach((groupPosts) => {
-    const postToday = groupPosts[0]?.date || today;
+    const postToday = groupPosts[0]?.date ? formatW3CDate(groupPosts[0].date) : today;
 
     // Build the language map for this group
     const langMap = new Map<SupportedLanguage, string>();
     for (const p of groupPosts) {
       const pLang = (p.language as SupportedLanguage) || "en";
-      const pSlug = (p.slug || p.id).replace(/^\/+/, "");
-      langMap.set(pLang, `${base}/${pLang}/blog/${pSlug}`);
+      const pSlug = cleanSlugForUrl(p.slug, p.id);
+      if (pSlug) {
+        langMap.set(pLang, `${base}/${pLang}/blog/${pSlug}`);
+      }
     }
 
     // Default reference post for fallback slugs
     const refPost = groupPosts.find((p) => (p.language || "en") === "en") || groupPosts[0];
-    const refSlug = (refPost.slug || refPost.id).replace(/^\/+/, "");
+    const refSlug = cleanSlugForUrl(refPost?.slug, refPost?.id);
 
     // Fill missing languages so every language has an exact URL
     for (const lang of languages) {
-      if (!langMap.has(lang)) {
+      if (!langMap.has(lang) && refSlug) {
         langMap.set(lang, `${base}/${lang}/blog/${refSlug}`);
       }
     }
@@ -1171,8 +1206,11 @@ export function buildDynamicSitemapXml(
     // Output exact URL entry for each published post in this group
     for (const p of groupPosts) {
       const pLang = (p.language as SupportedLanguage) || "en";
-      const exactUrl = langMap.get(pLang) || `${base}/${pLang}/blog/${(p.slug || p.id).replace(/^\/+/, "")}`;
-      addUrlEntry(exactUrl, p.date || postToday, "weekly", "0.8", groupAlternates);
+      const pSlug = cleanSlugForUrl(p.slug, p.id);
+      const exactUrl = langMap.get(pLang) || (pSlug ? `${base}/${pLang}/blog/${pSlug}` : "");
+      if (exactUrl) {
+        addUrlEntry(exactUrl, formatW3CDate(p.date || postToday), "weekly", "0.8", groupAlternates);
+      }
     }
 
     // Ensure all language variations have explicit <url> blocks
@@ -1188,18 +1226,20 @@ export function buildDynamicSitemapXml(
   for (const post of posts) {
     if (post.status === "draft") continue;
     const postLang = (post.language as SupportedLanguage) || "en";
-    const postSlug = (post.slug || post.id).replace(/^\/+/, "");
-    const directUrl = `${base}/${postLang}/blog/${postSlug}`;
-    addUrlEntry(directUrl, post.date || today, "weekly", "0.8");
+    const postSlug = cleanSlugForUrl(post.slug, post.id);
+    if (postSlug) {
+      const directUrl = `${base}/${postLang}/blog/${postSlug}`;
+      addUrlEntry(directUrl, formatW3CDate(post.date || today), "weekly", "0.8");
+    }
   }
 
   // 4. Published Custom Pages - Exact URLs for all language variations
   for (const page of customPages) {
     if (page.status === "draft") continue;
-    const cleanSlug = (page.slug || "").replace(/^\/+/, "");
+    const cleanSlug = cleanSlugForUrl(page.slug, page.id);
     if (!cleanSlug) continue;
 
-    const pageLastMod = page.lastModified || today;
+    const pageLastMod = formatW3CDate(page.lastModified || today);
 
     // Check if page applies to all languages or is specific
     if (!page.language || page.language === "all" || page.language === "en") {
@@ -1245,6 +1285,7 @@ export function buildDynamicSitemapXml(
   }
 
   return `<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="/sitemap.xsl"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
 ${xmlEntries.join("\n")}

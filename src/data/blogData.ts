@@ -17,7 +17,7 @@ export const BLOG_POSTS: BlogPost[] = [
       name: "Minhas Hussain",
       role: "SEO Expert & Full Stack Engineer",
       avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&auto=format&fit=crop&q=80",
-      bio: "SEO Expert, WordPress Designer & Full Stack Developer",
+      bio: "Full SEO Expert, WordPress Website Designer, and Full-Stack Web Engineer",
       email: "minhashussain.wp@gmail.com"
     },
     image: "/images/articles/scribd-downloader-save-pdf-laptop.jpg",
@@ -162,7 +162,7 @@ Baixar um documento do Scribd em PDF é copiar o link certo, colar na ferramenta
       name: "Minhas Hussain",
       role: "SEO Expert & Full Stack Engineer",
       avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&auto=format&fit=crop&q=80",
-      bio: "SEO Expert, WordPress Designer & Full Stack Developer",
+      bio: "Full SEO Expert, WordPress Website Designer, and Full-Stack Web Engineer",
       email: "minhashussain.wp@gmail.com"
     },
     image: "/images/articles/kindle-ereader-desk.jpg",
@@ -289,7 +289,7 @@ Kindle e Scribd não conversam direto, mas o caminho PDF resolve em dois minutos
       name: "Minhas Hussain",
       role: "SEO Expert & Full Stack Engineer",
       avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&auto=format&fit=crop&q=80",
-      bio: "SEO Expert, WordPress Designer & Full Stack Developer",
+      bio: "Full SEO Expert, WordPress Website Designer, and Full-Stack Web Engineer",
       email: "minhashussain.wp@gmail.com"
     },
     image: "/images/articles/preview-pdf-magnifier-inspection.jpg",
@@ -419,7 +419,7 @@ Um minuto olhando a pré-visualização poupa dados, espaço e dor de cabeça. C
       name: "Minhas Hussain",
       role: "SEO Expert & Full Stack Engineer",
       avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&auto=format&fit=crop&q=80",
-      bio: "SEO Expert, WordPress Designer & Full Stack Developer",
+      bio: "Full SEO Expert, WordPress Website Designer, and Full-Stack Web Engineer",
       email: "minhashussain.wp@gmail.com"
     },
     image: "/images/articles/preview-pdf-safety-checklist.jpg",
@@ -550,7 +550,7 @@ Eine Minute in der Vorschau spart Daten, Platz und Ärger. Prüfen Sie Titel, Se
       name: "Minhas Hussain",
       role: "SEO Expert & Full Stack Engineer",
       avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&auto=format&fit=crop&q=80",
-      bio: "SEO Expert, WordPress Designer & Full Stack Developer",
+      bio: "Full SEO Expert, WordPress Website Designer, and Full-Stack Web Engineer",
       email: "minhashussain.wp@gmail.com"
     },
     image: "/images/articles/how-to-download-scribd-steps.jpg",
@@ -695,7 +695,7 @@ Ein Scribd-Dokument als PDF herunterzuladen heißt: den richtigen Link kopieren,
       name: "Minhas Hussain",
       role: "SEO Expert & Full Stack Engineer",
       avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&auto=format&fit=crop&q=80",
-      bio: "SEO Expert, WordPress Designer & Full Stack Developer",
+      bio: "Full SEO Expert, WordPress Website Designer, and Full-Stack Web Engineer",
       email: "minhashussain.wp@gmail.com"
     },
     image: "/images/articles/read-scribd-on-kindle-ereader.jpg",
@@ -822,7 +822,7 @@ Kindle und Scribd sprechen nicht direkt miteinander, aber der Weg über PDF lös
       name: "Minhas Hussain",
       role: "SEO Expert & Full Stack Engineer",
       avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&auto=format&fit=crop&q=80",
-      bio: "SEO Expert, WordPress Designer & Full Stack Developer",
+      bio: "Full SEO Expert, WordPress Website Designer, and Full-Stack Web Engineer",
       email: "minhashussain.wp@gmail.com"
     },
     image: "/images/articles/scribd-download-pdf-guide-hero.jpg",
@@ -969,7 +969,7 @@ Copy the document link, paste it in, save the PDF — and now you know what happ
       name: "Minhas Hussain",
       role: "SEO Expert & Full Stack Engineer",
       avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&auto=format&fit=crop&q=80",
-      bio: "SEO Expert, WordPress Designer & Full Stack Developer",
+      bio: "Full SEO Expert, WordPress Website Designer, and Full-Stack Web Engineer",
       email: "minhashussain.wp@gmail.com"
     },
     image: "/images/articles/preview-pdf-before-downloading-checklist.jpg",
@@ -1083,7 +1083,7 @@ A one-minute preview — title, pages, language, readability — filters out nea
       name: "Minhas Hussain",
       role: "SEO Expert & Full Stack Engineer",
       avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&auto=format&fit=crop&q=80",
-      bio: "SEO Expert, WordPress Designer & Full Stack Developer",
+      bio: "Full SEO Expert, WordPress Website Designer, and Full-Stack Web Engineer",
       email: "minhashussain.wp@gmail.com"
     },
     image: "/images/articles/read-academic-papers-offline-tablet.jpg",
@@ -1219,7 +1219,7 @@ Offline reading isn't about the perfect device — it's about PDFs with good nam
       name: "Minhas Hussain",
       role: "SEO Expert & Full Stack Engineer",
       avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&auto=format&fit=crop&q=80",
-      bio: "SEO Expert, WordPress Designer & Full Stack Developer",
+      bio: "Full SEO Expert, WordPress Website Designer, and Full-Stack Web Engineer",
       email: "minhashussain.wp@gmail.com"
     },
     image: "/images/articles/read-scribd-on-kindle-transfer.jpg",
@@ -1346,7 +1346,7 @@ Save the PDF, pick your transfer method — Send to Kindle for convenience, USB 
       name: "Minhas Hussain",
       role: "SEO Expert & Full Stack Engineer",
       avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&auto=format&fit=crop&q=80",
-      bio: "SEO Expert, WordPress Designer & Full Stack Developer",
+      bio: "Full SEO Expert, WordPress Website Designer, and Full-Stack Web Engineer",
       email: "minhashussain.wp@gmail.com"
     },
     image: "/images/articles/scribd-pdf-formatting-blurry-vs-crisp.jpg",
@@ -1474,7 +1474,7 @@ Diagnose before you fix: check the source page, match your symptom to the table,
       name: "Minhas Hussain",
       role: "SEO Expert & Full Stack Engineer",
       avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&auto=format&fit=crop&q=80",
-      bio: "SEO Expert, WordPress Designer & Full Stack Developer",
+      bio: "Full SEO Expert, WordPress Website Designer, and Full-Stack Web Engineer",
       email: "minhashussain.wp@gmail.com"
     },
     image: "/images/articles/desktop-browser-download-workflow.jpg",
@@ -1619,7 +1619,7 @@ Descargar un documento de Scribd en PDF es copiar el enlace correcto, pegarlo en
       name: "Minhas Hussain",
       role: "SEO Expert & Full Stack Engineer",
       avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&auto=format&fit=crop&q=80",
-      bio: "SEO Expert, WordPress Designer & Full Stack Developer",
+      bio: "Full SEO Expert, WordPress Website Designer, and Full-Stack Web Engineer",
       email: "minhashussain.wp@gmail.com"
     },
     image: "/images/articles/ebook-ereader-desk.jpg",
@@ -1746,7 +1746,7 @@ El Kindle y Scribd no se hablan directo, pero la ruta del PDF lo resuelve en dos
       name: "Minhas Hussain",
       role: "SEO Expert & Full Stack Engineer",
       avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&auto=format&fit=crop&q=80",
-      bio: "SEO Expert, WordPress Designer & Full Stack Developer",
+      bio: "Full SEO Expert, WordPress Website Designer, and Full-Stack Web Engineer",
       email: "minhashussain.wp@gmail.com"
     },
     image: "/images/articles/preview-pdf-before-downloading-safety.jpg",
@@ -1876,7 +1876,7 @@ Un minuto mirando la vista previa ahorra datos, espacio y dolores de cabeza. Rev
       name: "Minhas Hussain",
       role: "SEO Expert & Full Stack Engineer",
       avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&auto=format&fit=crop&q=80",
-      bio: "SEO Expert, WordPress Designer & Full Stack Developer",
+      bio: "Full SEO Expert, WordPress Website Designer, and Full-Stack Web Engineer",
       email: "minhashussain.wp@gmail.com"
     },
     image: "/images/articles/document-to-ereader-transfer.jpg",
@@ -2003,7 +2003,7 @@ Le Kindle et Scribd ne se parlent pas directement, mais la voie du PDF règle ç
       name: "Minhas Hussain",
       role: "SEO Expert & Full Stack Engineer",
       avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&auto=format&fit=crop&q=80",
-      bio: "SEO Expert, WordPress Designer & Full Stack Developer",
+      bio: "Full SEO Expert, WordPress Website Designer, and Full-Stack Web Engineer",
       email: "minhashussain.wp@gmail.com"
     },
     image: "/images/articles/shield-laptop-browser-security.jpg",
@@ -2134,7 +2134,7 @@ Une minute passée sur l'aperçu économise des données, de l'espace et des tra
       name: "Minhas Hussain",
       role: "SEO Expert & Full Stack Engineer",
       avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&auto=format&fit=crop&q=80",
-      bio: "SEO Expert, WordPress Designer & Full Stack Developer",
+      bio: "Full SEO Expert, WordPress Website Designer, and Full-Stack Web Engineer",
       email: "minhashussain.wp@gmail.com"
     },
     image: "/images/articles/scribd-pdf-download-process-steps.jpg",
@@ -2279,7 +2279,7 @@ Télécharger un document Scribd en PDF, c'est copier le bon lien, le coller dan
       name: "Minhas Hussain",
       role: "SEO Expert & Full Stack Engineer",
       avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&auto=format&fit=crop&q=80",
-      bio: "SEO Expert, WordPress Designer & Full Stack Developer",
+      bio: "Full SEO Expert, WordPress Website Designer, and Full-Stack Web Engineer",
       email: "minhashussain.wp@gmail.com"
     },
     image: "/images/articles/padlock-no-install-checklist.jpg",
@@ -2409,7 +2409,7 @@ Satu menit melihat pratinjau menghemat kuota, ruang, dan sakit kepala. Periksa j
       name: "Minhas Hussain",
       role: "SEO Expert & Full Stack Engineer",
       avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&auto=format&fit=crop&q=80",
-      bio: "SEO Expert, WordPress Designer & Full Stack Developer",
+      bio: "Full SEO Expert, WordPress Website Designer, and Full-Stack Web Engineer",
       email: "minhashussain.wp@gmail.com"
     },
     image: "/images/articles/ebook-phone-book.jpg",
@@ -2537,7 +2537,7 @@ Kindle dan Scribd tidak terhubung langsung, tapi jalur PDF menyelesaikannya dala
       name: "Minhas Hussain",
       role: "SEO Expert & Full Stack Engineer",
       avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&auto=format&fit=crop&q=80",
-      bio: "SEO Expert, WordPress Designer & Full Stack Developer",
+      bio: "Full SEO Expert, WordPress Website Designer, and Full-Stack Web Engineer",
       email: "minhashussain.wp@gmail.com"
     },
     image: "/images/articles/makalah-study-desk.jpg",
@@ -2682,7 +2682,7 @@ Mengunduh dokumen Scribd menjadi PDF caranya: salin tautan yang benar, tempel ke
       name: "Minhas Hussain",
       role: "SEO Expert & Full Stack Engineer",
       avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&auto=format&fit=crop&q=80",
-      bio: "SEO Expert, WordPress Designer & Full Stack Developer",
+      bio: "Full SEO Expert, WordPress Website Designer, and Full-Stack Web Engineer",
       email: "minhashussain.wp@gmail.com"
     },
     image: "/images/articles/scribd-download-userscript-concept.jpg",
@@ -2851,7 +2851,7 @@ Ready to turn a locked Scribd link into an accessible document?
       name: "Minhas Hussain",
       role: "SEO Expert & Full Stack Engineer",
       avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&auto=format&fit=crop&q=80",
-      bio: "SEO Expert, WordPress Designer & Full Stack Developer",
+      bio: "Full SEO Expert, WordPress Website Designer, and Full-Stack Web Engineer",
       email: "minhashussain.wp@gmail.com"
     },
     image: "/images/articles/how-to-download-scribd-phone-download.jpg",
@@ -3028,7 +3028,7 @@ Yes. On Android, you can use the official Amazon Kindle app or email the file to
       name: "Minhas Hussain",
       role: "SEO Expert & Full Stack Engineer",
       avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&auto=format&fit=crop&q=80",
-      bio: "SEO Expert, WordPress Designer & Full Stack Developer",
+      bio: "Full SEO Expert, WordPress Website Designer, and Full-Stack Web Engineer",
       email: "minhashussain.wp@gmail.com"
     },
     image: "/images/articles/ppt-slides-on-laptop.jpg",
@@ -3188,7 +3188,7 @@ Yes. Follow our [Mobile Download Guide for Android and iPhone](/blog/how-to-down
       name: "Minhas Hussain",
       role: "SEO Expert & Full Stack Engineer",
       avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&auto=format&fit=crop&q=80",
-      bio: "SEO Expert, WordPress Designer & Full Stack Developer",
+      bio: "Full SEO Expert, WordPress Website Designer, and Full-Stack Web Engineer",
       email: "minhashussain.wp@gmail.com"
     },
     image: "/images/articles/scribd-downloader-alternatives-compared.jpg",
@@ -3370,7 +3370,7 @@ Ready for a clean, reliable download experience?
       name: "Minhas Hussain",
       role: "SEO Expert & Full Stack Engineer",
       avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&auto=format&fit=crop&q=80",
-      bio: "SEO Expert, WordPress Designer & Full Stack Developer",
+      bio: "Full SEO Expert, WordPress Website Designer, and Full-Stack Web Engineer",
       email: "minhashussain.wp@gmail.com"
     },
     image: "/images/articles/scribd-downloader-troubleshooting-checklist.jpg",
@@ -3467,7 +3467,7 @@ Los navegadores móviles no incluyen herramientas de desarrollador fácilmente a
       name: "Minhas Hussain",
       role: "SEO Expert & Full Stack Engineer",
       avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&auto=format&fit=crop&q=80",
-      bio: "SEO Expert, WordPress Designer & Full Stack Developer",
+      bio: "Full SEO Expert, WordPress Website Designer, and Full-Stack Web Engineer",
       email: "minhashussain.wp@gmail.com"
     },
     image: "/images/articles/scribd-downloader-fix-wrench.jpg",
@@ -3559,7 +3559,7 @@ Nossa ferramenta roda 100% no navegador por conexão segura HTTPS, sem solicitar
       name: "Minhas Hussain",
       role: "SEO Expert & Full Stack Engineer",
       avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&auto=format&fit=crop&q=80",
-      bio: "SEO Expert, WordPress Designer & Full Stack Developer",
+      bio: "Full SEO Expert, WordPress Website Designer, and Full-Stack Web Engineer",
       email: "minhashussain.wp@gmail.com"
     },
     image: "/images/articles/jurnal-ilmiah-reading.jpg",
@@ -3647,7 +3647,7 @@ Sangat aman. Alat web kami tidak meminta izin berbahaya, tidak memerlukan instal
       name: "Minhas Hussain",
       role: "SEO Expert & Full Stack Engineer",
       avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&auto=format&fit=crop&q=80",
-      bio: "SEO Expert, WordPress Designer & Full Stack Developer",
+      bio: "Full SEO Expert, WordPress Website Designer, and Full-Stack Web Engineer",
       email: "minhashussain.wp@gmail.com"
     },
     image: "/images/articles/android-downloads-folder-pdf.jpg",
@@ -3712,7 +3712,7 @@ Sí. El archivo resultante mantiene la resolución vectorial original, lo que pe
       name: "Minhas Hussain",
       role: "SEO Expert & Full Stack Engineer",
       avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&auto=format&fit=crop&q=80",
-      bio: "SEO Expert, WordPress Designer & Full Stack Developer",
+      bio: "Full SEO Expert, WordPress Website Designer, and Full-Stack Web Engineer",
       email: "minhashussain.wp@gmail.com"
     },
     image: "/images/articles/iphone-files-app-pdf-saved.jpg",
@@ -3775,7 +3775,7 @@ Sim. O arquivo fica salvo no armazenamento interno do seu aparelho e pode ser ab
       name: "Minhas Hussain",
       role: "SEO Expert & Full Stack Engineer",
       avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&auto=format&fit=crop&q=80",
-      bio: "SEO Expert, WordPress Designer & Full Stack Developer",
+      bio: "Full SEO Expert, WordPress Website Designer, and Full-Stack Web Engineer",
       email: "minhashussain.wp@gmail.com"
     },
     image: "/images/articles/scribd-pdf-formatting-laptop-fix.jpg",
@@ -3854,7 +3854,7 @@ Ocurre cuando la descarga se interrumpió antes de completar el 100%. Elimina el
       name: "Minhas Hussain",
       role: "SEO Expert & Full Stack Engineer",
       avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&auto=format&fit=crop&q=80",
-      bio: "SEO Expert, WordPress Designer & Full Stack Developer",
+      bio: "Full SEO Expert, WordPress Website Designer, and Full-Stack Web Engineer",
       email: "minhashussain.wp@gmail.com"
     },
     image: "/images/articles/desktop-organized-pdf-folders.jpg",
@@ -3929,7 +3929,7 @@ Sim. Use visualizadores confiáveis como o Google Drive PDF Viewer ou o leitor p
       name: "Minhas Hussain",
       role: "SEO Expert & Full Stack Engineer",
       avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&auto=format&fit=crop&q=80",
-      bio: "SEO Expert, WordPress Designer & Full Stack Developer",
+      bio: "Full SEO Expert, WordPress Website Designer, and Full-Stack Web Engineer",
       email: "minhashussain.wp@gmail.com"
     },
     image: "/images/articles/word-pdf-conversion.jpg",
@@ -4047,7 +4047,7 @@ Calibre is a desktop application. However, once you convert the file on your com
       name: "Minhas Hussain",
       role: "SEO Expert & Full Stack Engineer",
       avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&auto=format&fit=crop&q=80",
-      bio: "SEO Expert, WordPress Designer & Full Stack Developer",
+      bio: "Full SEO Expert, WordPress Website Designer, and Full-Stack Web Engineer",
       email: "minhashussain.wp@gmail.com"
     },
     image: "/images/articles/tablet-slide-deck-presentation.jpg",
@@ -4168,7 +4168,7 @@ Scribd's migration to dual-layer HTML5 rendering demonstrates how web platforms 
       name: "Minhas Hussain",
       role: "SEO Expert & Full Stack Engineer",
       avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&auto=format&fit=crop&q=80",
-      bio: "SEO Expert, WordPress Designer & Full Stack Developer",
+      bio: "Full SEO Expert, WordPress Website Designer, and Full-Stack Web Engineer",
       email: "minhashussain.wp@gmail.com"
     },
     image: "/images/articles/research-papers-annotation-notes.jpg",

@@ -143,6 +143,36 @@ function saveCustomPagesOnServer(pages: any[]) {
   }
 }
 
+function formatW3CDate(val?: any): string {
+  if (!val) return new Date().toISOString().split("T")[0];
+  const s = String(val).trim();
+  if (/^\d{4}-\d{2}-\d{2}$/.test(s)) return s;
+  const parsed = Date.parse(s);
+  if (!isNaN(parsed)) {
+    return new Date(parsed).toISOString().split("T")[0];
+  }
+  return new Date().toISOString().split("T")[0];
+}
+
+function cleanSlugForUrl(rawSlug?: string, idFallback?: string): string {
+  if (!rawSlug) return idFallback ? cleanSlugForUrl(idFallback) : "";
+  let s = String(rawSlug).trim();
+  if (s.includes("`")) s = s.split("`")[0].trim();
+  if (s.includes("(")) s = s.split("(")[0].trim();
+  s = s.replace(/[^a-zA-Z0-9\-\/]/g, "-").replace(/-+/g, "-").replace(/^\/+|\/+$/g, "").replace(/^-+|-+$/g, "");
+  if (!s) return idFallback ? cleanSlugForUrl(idFallback) : "";
+  return s.toLowerCase();
+}
+
+function escapeXml(str: string): string {
+  return String(str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&apos;");
+}
+
 function buildServerSitemap(origin: string, postsParam?: any[], customPagesParam?: any[]): string {
   const base = origin.replace(/\/$/, "");
   const today = new Date().toISOString().split("T")[0];
@@ -168,21 +198,24 @@ function buildServerSitemap(origin: string, postsParam?: any[], customPagesParam
     priority: string,
     alternates: Array<{ lang: string; href: string }> = []
   ) => {
-    if (seenUrls.has(loc)) return;
-    seenUrls.add(loc);
+    const cleanUrl = loc.trim();
+    if (!cleanUrl || seenUrls.has(cleanUrl)) return;
+    seenUrls.add(cleanUrl);
 
     let altXml = "";
     if (alternates.length > 0) {
       altXml = alternates
-        .filter((a) => a.href)
-        .map((a) => `    <xhtml:link rel="alternate" hreflang="${a.lang}" href="${a.href}" />`)
+        .filter((a) => a.href && a.href.trim())
+        .map((a) => `    <xhtml:link rel="alternate" hreflang="${escapeXml(a.lang)}" href="${escapeXml(a.href.trim())}" />`)
         .join("\n");
       if (altXml) altXml = "\n" + altXml;
     }
 
+    const safeLastmod = formatW3CDate(lastmod);
+
     xmlEntries.push(`  <url>
-    <loc>${loc}</loc>${altXml}
-    <lastmod>${lastmod}</lastmod>
+    <loc>${escapeXml(cleanUrl)}</loc>${altXml}
+    <lastmod>${safeLastmod}</lastmod>
     <changefreq>${changefreq}</changefreq>
     <priority>${priority}</priority>
   </url>`);
@@ -228,19 +261,21 @@ function buildServerSitemap(origin: string, postsParam?: any[], customPagesParam
     }
 
     translationGroups.forEach((groupPosts) => {
-      const postToday = groupPosts[0]?.date || today;
+      const postToday = groupPosts[0]?.date ? formatW3CDate(groupPosts[0].date) : today;
       const langMap = new Map<string, string>();
       for (const p of groupPosts) {
         const pLang = p.language || "en";
-        const pSlug = (p.slug || p.id).replace(/^\/+/, "");
-        langMap.set(pLang, `${base}/${pLang}/blog/${pSlug}`);
+        const pSlug = cleanSlugForUrl(p.slug, p.id);
+        if (pSlug) {
+          langMap.set(pLang, `${base}/${pLang}/blog/${pSlug}`);
+        }
       }
 
       const refPost = groupPosts.find((p) => (p.language || "en") === "en") || groupPosts[0];
-      const refSlug = (refPost.slug || refPost.id).replace(/^\/+/, "");
+      const refSlug = cleanSlugForUrl(refPost?.slug, refPost?.id);
 
       for (const lang of languages) {
-        if (!langMap.has(lang)) {
+        if (!langMap.has(lang) && refSlug) {
           langMap.set(lang, `${base}/${lang}/blog/${refSlug}`);
         }
       }
@@ -252,8 +287,11 @@ function buildServerSitemap(origin: string, postsParam?: any[], customPagesParam
 
       for (const p of groupPosts) {
         const pLang = p.language || "en";
-        const exactUrl = langMap.get(pLang) || `${base}/${pLang}/blog/${(p.slug || p.id).replace(/^\/+/, "")}`;
-        addUrlEntry(exactUrl, p.date || postToday, "weekly", "0.8", groupAlternates);
+        const pSlug = cleanSlugForUrl(p.slug, p.id);
+        const exactUrl = langMap.get(pLang) || (pSlug ? `${base}/${pLang}/blog/${pSlug}` : "");
+        if (exactUrl) {
+          addUrlEntry(exactUrl, formatW3CDate(p.date || postToday), "weekly", "0.8", groupAlternates);
+        }
       }
 
       for (const lang of languages) {
@@ -267,8 +305,10 @@ function buildServerSitemap(origin: string, postsParam?: any[], customPagesParam
     for (const post of posts) {
       if (post.status === "draft") continue;
       const postLang = post.language || "en";
-      const postSlug = (post.slug || post.id).replace(/^\/+/, "");
-      addUrlEntry(`${base}/${postLang}/blog/${postSlug}`, post.date || today, "weekly", "0.8");
+      const postSlug = cleanSlugForUrl(post.slug, post.id);
+      if (postSlug) {
+        addUrlEntry(`${base}/${postLang}/blog/${postSlug}`, formatW3CDate(post.date || today), "weekly", "0.8");
+      }
     }
   }
 
@@ -281,10 +321,10 @@ function buildServerSitemap(origin: string, postsParam?: any[], customPagesParam
   if (Array.isArray(customPages) && customPages.length > 0) {
     for (const page of customPages) {
       if (page.status === "draft") continue;
-      const cleanSlug = (page.slug || "").replace(/^\/+/, "");
+      const cleanSlug = cleanSlugForUrl(page.slug, page.id);
       if (!cleanSlug) continue;
 
-      const pageLastMod = page.lastModified ? String(page.lastModified).split("T")[0] : today;
+      const pageLastMod = formatW3CDate(page.lastModified || page.createdAt || today);
 
       if (!page.language || page.language === "all" || page.language === "en") {
         const pageAlternates = languages.map((lang) => ({
@@ -304,6 +344,7 @@ function buildServerSitemap(origin: string, postsParam?: any[], customPagesParam
   }
 
   return `<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="/sitemap.xsl"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
 ${xmlEntries.join("\n")}
@@ -354,21 +395,45 @@ function saveRobotsTxtOnServer(content: string) {
 }
 
 function getSitemapXml(origin: string): string {
+  const base = origin.replace(/\/$/, "");
+
   if (sitemapXmlCache) {
-    if (!sitemapXmlCache.includes("example.com") && !sitemapXmlCache.includes("localhost:3000")) {
+    if (
+      !sitemapXmlCache.includes("`") &&
+      !sitemapXmlCache.includes("(no change)") &&
+      !sitemapXmlCache.includes("September ") &&
+      !sitemapXmlCache.includes("example.com")
+    ) {
+      // Check if domain needs to be adjusted
+      const locMatch = sitemapXmlCache.match(/<loc>(https?:\/\/[^\/]+)/);
+      if (locMatch && locMatch[1] && locMatch[1] !== base) {
+        sitemapXmlCache = sitemapXmlCache.replaceAll(locMatch[1], base);
+      }
       return sitemapXmlCache;
     }
   }
+
   if (fs.existsSync(SITEMAP_FILE)) {
     try {
       let content = fs.readFileSync(SITEMAP_FILE, "utf-8");
-      if (!content.includes("example.com") && !content.includes("localhost:3000") && !content.includes("scrobd-downloader.vercel.app")) {
+      if (
+        !content.includes("`") &&
+        !content.includes("(no change)") &&
+        !content.includes("September ") &&
+        !content.includes("example.com")
+      ) {
+        const locMatch = content.match(/<loc>(https?:\/\/[^\/]+)/);
+        if (locMatch && locMatch[1] && locMatch[1] !== base) {
+          content = content.replaceAll(locMatch[1], base);
+          saveSitemapXmlOnServer(content);
+        }
         sitemapXmlCache = content;
         return content;
       }
     } catch {}
   }
-  sitemapXmlCache = buildServerSitemap(origin);
+
+  sitemapXmlCache = buildServerSitemap(base);
   saveSitemapXmlOnServer(sitemapXmlCache);
   return sitemapXmlCache;
 }
@@ -755,6 +820,86 @@ async function startServer() {
     res.setHeader("Content-Type", "application/xml; charset=utf-8");
     res.setHeader("Cache-Control", "public, max-age=3600");
     return res.send(getSitemapXml(origin));
+  });
+
+  // GET /sitemap.xsl - Visual Browser Stylesheet for sitemap.xml
+  app.get("/sitemap.xsl", (_req, res) => {
+    res.setHeader("Content-Type", "text/xsl; charset=utf-8");
+    res.setHeader("Cache-Control", "public, max-age=86400");
+    const xsl = `<?xml version="1.0" encoding="UTF-8"?>
+<xsl:stylesheet version="2.0"
+  xmlns:html="http://www.w3.org/TR/REC-html40"
+  xmlns:sitemap="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml"
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+  <xsl:output method="html" version="1.0" encoding="UTF-8" indent="yes"/>
+  <xsl:template match="/">
+    <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+      <head>
+        <title>XML Sitemap | Scribd PDF Downloader</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <style>
+          body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: #0f172a; color: #f8fafc; margin: 0; padding: 32px 24px; }
+          .container { max-width: 1200px; margin: 0 auto; }
+          header { margin-bottom: 24px; padding-bottom: 20px; border-bottom: 1px solid #334155; }
+          h1 { font-size: 24px; font-weight: 800; color: #38bdf8; margin: 0 0 8px 0; }
+          p { color: #94a3b8; font-size: 14px; margin: 0; line-height: 1.6; }
+          .badge { display: inline-block; background: #1e293b; border: 1px solid #38bdf8; color: #38bdf8; font-size: 12px; font-weight: bold; padding: 4px 10px; border-radius: 9999px; margin-top: 12px; }
+          table { width: 100%; border-collapse: collapse; margin-top: 24px; background: #1e293b; border-radius: 8px; overflow: hidden; font-size: 13px; }
+          th { background: #0f172a; color: #94a3b8; text-align: left; padding: 12px 16px; font-weight: 600; border-bottom: 1px solid #334155; }
+          td { padding: 12px 16px; border-bottom: 1px solid #334155; vertical-align: top; }
+          tr:hover { background: #243248; }
+          a { color: #38bdf8; text-decoration: none; word-break: break-all; }
+          a:hover { text-decoration: underline; color: #7dd3fc; }
+          .lang-pill { display: inline-block; background: #334155; color: #cbd5e1; font-size: 11px; padding: 2px 6px; border-radius: 4px; margin-right: 4px; margin-bottom: 4px; font-family: monospace; }
+        </style>
+      </head>
+      <body>
+        <div class="container">
+          <header>
+            <h1>XML Sitemap Index</h1>
+            <p>Generated in accordance with standard Sitemap 0.9 and multilingial xhtml:link specifications. All URLs listed are canonical and indexed.</p>
+            <div class="badge">Total URLs: <xsl:value-of select="count(sitemap:urlset/sitemap:url)"/></div>
+          </header>
+          <table>
+            <thead>
+              <tr>
+                <th style="width: 50%;">URL (Location)</th>
+                <th style="width: 20%;">Alternate Languages</th>
+                <th style="width: 12%;">Last Modified</th>
+                <th style="width: 10%;">Frequency</th>
+                <th style="width: 8%;">Priority</th>
+              </tr>
+            </thead>
+            <tbody>
+              <xsl:for-each select="sitemap:urlset/sitemap:url">
+                <tr>
+                  <td>
+                    <xsl:variable name="itemUrl">
+                      <xsl:value-of select="sitemap:loc"/>
+                    </xsl:variable>
+                    <a href="{$itemUrl}" target="_blank" rel="noopener noreferrer">
+                      <xsl:value-of select="sitemap:loc"/>
+                    </a>
+                  </td>
+                  <td>
+                    <xsl:for-each select="xhtml:link">
+                      <span class="lang-pill"><xsl:value-of select="@hreflang"/></span>
+                    </xsl:for-each>
+                  </td>
+                  <td style="color: #94a3b8;"><xsl:value-of select="sitemap:lastmod"/></td>
+                  <td style="color: #94a3b8;"><xsl:value-of select="sitemap:changefreq"/></td>
+                  <td style="font-weight: bold; color: #38bdf8;"><xsl:value-of select="sitemap:priority"/></td>
+                </tr>
+              </xsl:for-each>
+            </tbody>
+          </table>
+        </div>
+      </body>
+    </html>
+  </xsl:template>
+</xsl:stylesheet>`;
+    return res.send(xsl);
   });
 
   // API: Get current robots.txt configuration & content

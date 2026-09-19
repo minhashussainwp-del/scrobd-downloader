@@ -3548,7 +3548,7 @@ Cancel where you subscribed, confirm it in three places (screen, email, statemen
   },
   {
     id: "page-49",
-    slug: "cara-mengatasi-scribd-downloader-error` (no change)",
+    slug: "cara-mengatasi-scribd-downloader-error",
     title: `Cara Mengatasi Scribd Downloader Error: Panduan Lengkap`,
     subtitle: `Scribd downloader error? Kenali masalah persis Anda — tautan salah, unduhan macet, file rusak — dan perbaiki dalam hitungan menit dengan panduan langkah demi langkah ini.
 *(158 characters)*`,
@@ -3786,7 +3786,7 @@ Obtenir un document Scribd en PDF ne demande ni compte ni logiciel : un lien col
   },
   {
     id: "page-51",
-    slug: "descargador-de-scribd-no-funciona` (no change)",
+    slug: "descargador-de-scribd-no-funciona",
     title: `Descargador de Scribd No Funciona: Cómo Arreglarlo`,
     subtitle: `¿El descargador de Scribd no funciona? Identifica tu problema exacto — enlace malo, descarga atorada, archivo mal — y arréglalo en minutos con esta guía paso a paso.
 *(158 characters)*`,
@@ -5580,7 +5580,7 @@ A safe downloader is boring on purpose: paste a link, get a PDF, nothing else ha
   },
   {
     id: "page-67",
-    slug: "scribd-downloader-kaam-nahi-kar-raha` (no change)",
+    slug: "scribd-downloader-kaam-nahi-kar-raha",
     title: `Scribd Downloader Kaam Nahi Kar Raha? Ise Kaise Theek Karein`,
     subtitle: `Scribd downloader kaam nahi kar raha? Apni exact problem pehchano — galat link, ruka hua download, kharab file — aur is step-by-step guide se minutes me fix karo.
 *(158 characters)*`,
@@ -5717,7 +5717,7 @@ Das me se nau baar "kaam nahi kar raha" ka matlab hota hai galat link ya hilta h
   },
   {
     id: "page-68",
-    slug: "scribd-downloader-ne-fonctionne-plus` (no change)",
+    slug: "scribd-downloader-ne-fonctionne-plus",
     title: `Scribd Downloader Ne Fonctionne Plus ? Voici Comment Réparer Ça`,
     subtitle: `Scribd downloader ne fonctionne plus ? Identifiez votre problème exact — mauvais lien, téléchargement bloqué, fichier incorrect — et réparez-le en quelques minutes.
 *(157 characters)*`,
@@ -5852,7 +5852,7 @@ Neuf fois sur dix, « ne fonctionne plus » signifie un mauvais lien ou une conn
   },
   {
     id: "page-69",
-    slug: "scribd-downloader-not-working` (no change)",
+    slug: "scribd-downloader-not-working",
     title: `Scribd Downloader Not Working? Here's How to Fix It`,
     subtitle: `Scribd downloader not working? Find your exact problem — bad link, stuck download, wrong-looking file — and fix it in minutes with this step-by-step guide.
 *(159 characters)*`,
@@ -8311,7 +8311,7 @@ Downloader yang aman itu sengaja membosankan: tempel link, dapat PDF, tidak ada 
   },
   {
     id: "page-90",
-    slug: "` (homepage — no change; locale variant homepage-br)",
+    slug: "homepage-br",
     title: `Baixar Documentos do Scribd Grátis — Sem Login`,
     subtitle: `Baixe documentos do Scribd grátis em PDF limpo. Sem conta, sem instalar: cole o link e salve. Veja como funciona, formatos aceitos e dúvidas frequentes.
 *(152 characters — within limit)*`,
@@ -14166,7 +14166,7 @@ Passar um documento do Scribd para Word é um processo grátis de dois passos: b
   },
   {
     id: "page-140",
-    slug: "` (homepage — no change; locale variant homepage-de)",
+    slug: "homepage-de",
     title: `Scribd-Dokumente Kostenlos Downloaden — Ohne Anmeldung`,
     subtitle: `Scribd-Dokumente kostenlos als sauberes PDF laden. Kein Konto, keine Installation — Link einfügen und speichern. So geht's, Formate und FAQ.
 *(140 characters — within limit)*`,
@@ -22087,7 +22087,7 @@ A Scribd presentation becomes a slide PDF you can study, print, or present from 
   },
   {
     id: "page-208",
-    slug: "` (homepage — no change; locale variant homepage-es)",
+    slug: "homepage-es",
     title: `Descargar Documentos de Scribd Gratis — Sin Cuenta`,
     subtitle: `Descarga documentos de Scribd gratis en PDF limpio. Sin cuenta, sin instalar: pega el enlace y guarda. Cómo funciona, formatos y preguntas frecuentes.
 *(150 characters — within limit)*`,
@@ -26412,7 +26412,7 @@ Los bots de Telegram son una forma práctica de convertir enlaces de Scribd en P
   },
   {
     id: "page-245",
-    slug: "` (homepage — no change; locale variant homepage-fr)",
+    slug: "homepage-fr",
     title: `Télécharger des Documents Scribd Gratuitement — Sans Compte`,
     subtitle: `Téléchargez des documents Scribd gratuitement en PDF propre. Sans compte, sans installation : collez le lien et enregistrez. Fonctionnement, formats et FAQ.
 *(156 characters — within limit)*`,
@@ -30867,7 +30867,7 @@ Passer un document Scribd en Word est un processus gratuit en deux étapes : té
   },
   {
     id: "page-283",
-    slug: "` (homepage — no change; locale variant homepage-id)",
+    slug: "homepage-id",
     title: `Download Dokumen Scribd Gratis — Tanpa Login`,
     subtitle: `Download dokumen Scribd gratis sebagai PDF bersih. Tanpa akun, tanpa instal — tempel tautan dan simpan. Cara kerja, format, dan FAQ.
 *(132 characters — within limit)*`,
