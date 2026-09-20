@@ -1,18 +1,138 @@
 {
-  "collections": [
-    {
-      "name": "documents",
-      "schema": {
-        "title": "string",
-        "url": "string",
-        "createdAt": "timestamp"
+  "entities": {
+    "page": {
+      "title": "Page",
+      "description": "CMS site and custom content pages with multilingual translations",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "slug": { "type": "string" },
+        "title": { "type": "string" },
+        "content": { "type": "string" },
+        "excerpt": { "type": "string" },
+        "metaTitle": { "type": "string" },
+        "metaDescription": { "type": "string" },
+        "status": { "type": "string", "enum": ["published", "draft"] },
+        "language": { "type": "string" },
+        "translationGroupId": { "type": "string" },
+        "author": { "type": "string" },
+        "lastModified": { "type": "string" },
+        "createdAt": { "type": "string" },
+        "inTrash": { "type": "boolean" }
       },
-      "rules": [
-        {
-          "allow": ["read", "write"],
-          "condition": "request.auth != null && request.auth.token.email == 'minhashussainbaltistani@gmail.com'"
-        }
-      ]
+      "required": ["id", "slug", "title", "status", "language"]
+    },
+    "post": {
+      "title": "Post",
+      "description": "CMS blog posts and instructional guides",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "slug": { "type": "string" },
+        "title": { "type": "string" },
+        "content": { "type": "string" },
+        "excerpt": { "type": "string" },
+        "category": { "type": "string" },
+        "tags": { "type": "array" },
+        "metaTitle": { "type": "string" },
+        "metaDescription": { "type": "string" },
+        "status": { "type": "string", "enum": ["published", "draft", "scheduled"] },
+        "language": { "type": "string" },
+        "translationGroupId": { "type": "string" },
+        "author": { "type": "string" },
+        "lastModified": { "type": "string" },
+        "createdAt": { "type": "string" },
+        "inTrash": { "type": "boolean" }
+      },
+      "required": ["id", "slug", "title", "status", "language"]
+    },
+    "ad": {
+      "title": "Ad",
+      "description": "Advertising placement slots, display configurations, and scripts",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "placement": { "type": "string" },
+        "type": { "type": "string" },
+        "code": { "type": "string" },
+        "imageUrl": { "type": "string" },
+        "targetUrl": { "type": "string" },
+        "status": { "type": "string", "enum": ["active", "paused"] },
+        "impressions": { "type": "number" },
+        "clicks": { "type": "number" }
+      },
+      "required": ["id", "placement", "status"]
+    },
+    "redirect": {
+      "title": "Redirect",
+      "description": "SEO 301 and 302 URL redirection rules",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "sourceUrl": { "type": "string" },
+        "targetUrl": { "type": "string" },
+        "statusCode": { "type": "number", "enum": [301, 302] },
+        "status": { "type": "string", "enum": ["active", "disabled"] },
+        "hits": { "type": "number" }
+      },
+      "required": ["id", "sourceUrl", "targetUrl", "statusCode"]
+    },
+    "setting": {
+      "title": "Setting",
+      "description": "System configuration, SEO tags, and site settings",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "siteName": { "type": "string" },
+        "siteDescription": { "type": "string" },
+        "defaultLanguage": { "type": "string" },
+        "googleAnalyticsId": { "type": "string" },
+        "adsEnabled": { "type": "boolean" },
+        "sitemapEnabled": { "type": "boolean" }
+      },
+      "required": ["id"]
+    },
+    "document": {
+      "title": "Document",
+      "description": "Document downloads and conversion sessions",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "url": { "type": "string" },
+        "title": { "type": "string" },
+        "format": { "type": "string" },
+        "status": { "type": "string" },
+        "pageCount": { "type": "number" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "url", "status"]
     }
-  ]
+  },
+  "firestore": {
+    "/pages/{pageId}": {
+      "schema": "page",
+      "description": "Collection of published and draft CMS pages"
+    },
+    "/posts/{postId}": {
+      "schema": "post",
+      "description": "Collection of blog and instructional guide posts"
+    },
+    "/ads/{adId}": {
+      "schema": "ad",
+      "description": "Collection of advertisement placements"
+    },
+    "/redirects/{redirectId}": {
+      "schema": "redirect",
+      "description": "Collection of URL redirects"
+    },
+    "/settings/{settingId}": {
+      "schema": "setting",
+      "description": "Global and module settings documents"
+    },
+    "/documents/{documentId}": {
+      "schema": "document",
+      "description": "Collection of converted document records"
+    }
+  }
 }

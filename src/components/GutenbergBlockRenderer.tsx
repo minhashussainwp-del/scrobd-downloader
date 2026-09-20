@@ -115,19 +115,146 @@ export function GutenbergBlockRenderer({ blocks }: GutenbergBlockRendererProps) 
               </figure>
             );
 
-          case "list":
+          case "list": {
+            const isOrdered = (block as any).listType === "ordered";
+            const ListTag = isOrdered ? "ol" : "ul";
+            const listClass = isOrdered
+              ? "space-y-2 list-decimal list-inside text-sm sm:text-base text-slate-700 my-4 pl-2"
+              : "space-y-2 list-disc list-inside text-sm sm:text-base text-slate-700 my-4 pl-2";
             return (
-              <ul
-                key={block.id}
-                className="space-y-2 list-disc list-inside text-sm sm:text-base text-slate-700 my-4 pl-2"
-              >
+              <ListTag key={block.id} className={listClass}>
                 {(block.listItems || []).map((item, idx) => (
                   <li key={idx} className="leading-relaxed">
                     {item}
                   </li>
                 ))}
-              </ul>
+              </ListTag>
             );
+          }
+
+          case "table": {
+            const b = block as any;
+            const headers: string[] = b.tableHeaders || [];
+            const rows: string[][] = b.tableRows || [];
+            return (
+              <div key={block.id} className="my-6 overflow-x-auto rounded-xl border border-slate-200 shadow-2xs">
+                <table className="w-full text-left text-sm text-slate-700 divide-y divide-slate-200">
+                  {b.hasHeader !== false && headers.length > 0 && (
+                    <thead className="bg-slate-50 text-slate-900 font-bold uppercase text-xs">
+                      <tr>
+                        {headers.map((h, i) => (
+                          <th key={i} className="px-4 py-3 border-r border-slate-200 last:border-r-0">
+                            {h}
+                          </th>
+                        ))}
+                      </tr>
+                    </thead>
+                  )}
+                  <tbody className="divide-y divide-slate-100 bg-white">
+                    {rows.map((row, rIdx) => (
+                      <tr key={rIdx} className="hover:bg-slate-50/50">
+                        {row.map((cell, cIdx) => (
+                          <td key={cIdx} className="px-4 py-3 border-r border-slate-100 last:border-r-0">
+                            {cell}
+                          </td>
+                        ))}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            );
+          }
+
+          case "faq": {
+            const b = block as any;
+            const items: Array<{ question: string; answer: string }> = b.faqItems || [];
+            return (
+              <div key={block.id} className="my-8 space-y-3">
+                {items.map((item, i) => (
+                  <details
+                    key={i}
+                    className="group bg-slate-50 border border-slate-200 rounded-xl overflow-hidden transition"
+                  >
+                    <summary className="p-4 font-bold text-sm sm:text-base text-slate-900 cursor-pointer list-none flex items-center justify-between hover:bg-slate-100/70 transition select-none">
+                      <span>{item.question}</span>
+                      <span className="text-slate-400 group-open:rotate-180 transition-transform text-xs font-mono">
+                        ▼
+                      </span>
+                    </summary>
+                    <div className="px-4 pb-4 pt-1 text-sm text-slate-600 leading-relaxed border-t border-slate-100 bg-white">
+                      {item.answer}
+                    </div>
+                  </details>
+                ))}
+              </div>
+            );
+          }
+
+          case "columns": {
+            const b = block as any;
+            const cols: string[] = b.columns || [];
+            const layout = b.columnLayout || "50-50";
+            const gridClass =
+              layout === "30-70"
+                ? "grid-cols-1 md:grid-cols-3"
+                : layout === "70-30"
+                ? "grid-cols-1 md:grid-cols-3"
+                : layout === "33-33-33"
+                ? "grid-cols-1 md:grid-cols-3"
+                : "grid-cols-1 md:grid-cols-2";
+
+            return (
+              <div key={block.id} className={`grid ${gridClass} gap-6 my-6`}>
+                {cols.map((col, i) => (
+                  <div key={i} className="p-4 rounded-xl bg-slate-50 border border-slate-200 text-sm text-slate-700 leading-relaxed">
+                    {col}
+                  </div>
+                ))}
+              </div>
+            );
+          }
+
+          case "button": {
+            const b = block as any;
+            const align = b.buttonAlign || "left";
+            return (
+              <div key={block.id} className={`my-6 text-${align}`}>
+                <a
+                  href={b.buttonUrl || "#"}
+                  target={b.buttonNewTab ? "_blank" : undefined}
+                  rel={b.buttonNewTab ? "noopener noreferrer" : undefined}
+                  className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm shadow-sm transition"
+                >
+                  {b.buttonText || "Click Here"}
+                </a>
+              </div>
+            );
+          }
+
+          case "ad": {
+            const b = block as any;
+            return (
+              <div
+                key={block.id}
+                className="my-8 p-4 rounded-xl border-2 border-dashed border-slate-300 bg-slate-50 text-center text-xs text-slate-500 space-y-1"
+              >
+                <span className="font-semibold uppercase tracking-wider block text-slate-400 text-[10px]">
+                  Advertisement — {b.adLabel || b.adSlot || "Sponsor"}
+                </span>
+                {b.adCode ? (
+                  <div dangerouslySetInnerHTML={{ __html: b.adCode }} />
+                ) : (
+                  <div className="py-4 text-slate-400">Sponsored editorial unit placeholder</div>
+                )}
+              </div>
+            );
+          }
+
+          case "spacer": {
+            const b = block as any;
+            return <div key={block.id} style={{ height: `${b.spacerHeight || 32}px` }} aria-hidden="true" />;
+          }
 
           case "code":
             return (

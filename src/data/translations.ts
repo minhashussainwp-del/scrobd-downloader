@@ -1,13 +1,15 @@
 import { SupportedLanguage, LanguageOption } from "../types";
 
 export const SUPPORTED_LANGUAGES: LanguageOption[] = [
-  { code: "en", name: "English (US)", nativeName: "English", flag: "🇺🇸", country: "United States", urlPrefix: "en" },
+  { code: "en", name: "English (US)", nativeName: "English", flag: "🇺🇸", country: "United States", urlPrefix: "en", isDefault: true },
   { code: "id", name: "Bahasa Indonesia", nativeName: "Bahasa Indonesia", flag: "🇮🇩", country: "Indonesia", urlPrefix: "id" },
-  { code: "es", name: "Español (México / Latam)", nativeName: "Español", flag: "🇲🇽", country: "México / Latam", urlPrefix: "es" },
-  { code: "br", name: "Português (Brasil)", nativeName: "Português (BR)", flag: "🇧🇷", country: "Brasil", urlPrefix: "br" },
-  { code: "fr", name: "Français", nativeName: "Français", flag: "🇫🇷", country: "France", urlPrefix: "fr" },
-  { code: "de", name: "Deutsch", nativeName: "Deutsch", flag: "🇩🇪", country: "Deutschland", urlPrefix: "de" },
   { code: "hi", name: "हिन्दी (Hindi)", nativeName: "हिन्दी", flag: "🇮🇳", country: "India", urlPrefix: "hi" },
+  { code: "es", name: "Español (México)", nativeName: "Español", flag: "🇲🇽", country: "México", urlPrefix: "es" },
+  { code: "fr", name: "Français", nativeName: "Français", flag: "🇫🇷", country: "France", urlPrefix: "fr" },
+  { code: "nl", name: "Nederlands (Dutch)", nativeName: "Nederlands", flag: "🇳🇱", country: "Nederland", urlPrefix: "nl" },
+  { code: "ur", name: "اردو (Urdu)", nativeName: "اردو", flag: "🇵🇰", country: "Pakistan", urlPrefix: "ur" },
+  { code: "br", name: "Português (Brasil)", nativeName: "Português (BR)", flag: "🇧🇷", country: "Brasil", urlPrefix: "br" },
+  { code: "de", name: "Deutsch", nativeName: "Deutsch", flag: "🇩🇪", country: "Deutschland", urlPrefix: "de" },
 ];
 
 export type TranslationKey = string;

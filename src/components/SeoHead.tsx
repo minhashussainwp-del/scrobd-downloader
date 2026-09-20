@@ -46,9 +46,6 @@ export function SeoHead({ page, post, customTitle, customDescription }: SeoHeadP
     } else if (page === "terms") {
       title = "Terms of Service & Fair Use - Scribd Downloader";
       description = "Review our terms of service, fair-use guidelines, and DMCA copyright policies.";
-    } else if (page === "admin") {
-      title = "Admin Dashboard | Scribd Downloader Control Center";
-      description = "Administrative management system for blog articles, pages, advertisements, SEO controls, and system analytics.";
     }
 
     if (customDescription) {

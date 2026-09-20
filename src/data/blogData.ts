@@ -803,23 +803,19 @@ export function loadAllBlogPosts(): BlogPost[] {
     if (raw) {
       const parsed: BlogPost[] = JSON.parse(raw);
       if (Array.isArray(parsed) && parsed.length > 0) {
-        // Enforce that only the 5 approved How to Download guides remain in storage
-        const allowedIds = new Set(BLOG_POSTS.map((bp) => bp.id));
-        const filtered = parsed.filter((p) => allowedIds.has(p.id));
-
-        const mapped: BlogPost[] = BLOG_POSTS.map((defaultPost) => {
-          const stored = filtered.find((p) => p.id === defaultPost.id);
-          if (!stored) return defaultPost;
-          return {
-            ...defaultPost,
-            ...stored,
-            status: "published",
-            translationGroupId: defaultPost.translationGroupId,
-          };
+        const postsMap = new Map<string, BlogPost>();
+        BLOG_POSTS.forEach((bp) => postsMap.set(bp.id, bp));
+        parsed.forEach((storedPost) => {
+          if (storedPost && storedPost.id) {
+            const existing = postsMap.get(storedPost.id);
+            postsMap.set(storedPost.id, {
+              ...(existing || {}),
+              ...storedPost,
+            });
+          }
         });
-
-        localStorage.setItem("scribd_blog_posts", JSON.stringify(mapped));
-        return mapped;
+        const merged = Array.from(postsMap.values());
+        return merged;
       }
     }
   } catch (e) {

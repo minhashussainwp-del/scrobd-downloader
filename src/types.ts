@@ -17,7 +17,7 @@ export type PageRoute =
 
 export type ViewportMode = "responsive" | "desktop" | "tablet" | "mobile" | "presentation";
 
-export type SupportedLanguage = "en" | "id" | "es" | "br" | "fr" | "de" | "hi";
+export type SupportedLanguage = "en" | "id" | "es" | "br" | "fr" | "de" | "hi" | "nl" | "ur";
 
 export interface LanguageOption {
   code: SupportedLanguage;
@@ -26,14 +26,109 @@ export interface LanguageOption {
   flag: string;
   country: string;
   urlPrefix: string;
+  isDefault?: boolean;
 }
 
-export type AdminRole = "superadmin" | "editor" | "viewer";
+export type AdminRole = "owner" | "admin" | "editor" | "author" | "translator" | "seo";
 
 export interface AdminUser {
+  id: string;
   username: string;
-  role: AdminRole;
   name: string;
+  email: string;
+  role: AdminRole;
+  avatar?: string;
+  createdAt: string;
+  lastLogin?: string;
+}
+
+export interface CmsCategory {
+  id: string;
+  name: string;
+  slug: string;
+  description?: string;
+  parentId?: string;
+  seoTitle?: string;
+  metaDescription?: string;
+  status: "active" | "inactive";
+  count?: number;
+}
+
+export interface CmsTag {
+  id: string;
+  name: string;
+  slug: string;
+  description?: string;
+  count?: number;
+}
+
+export interface CmsAd {
+  id: string;
+  name: string;
+  placement: string;
+  type: "html" | "javascript" | "network" | "image" | "custom";
+  code: string;
+  status: "active" | "disabled";
+  device: "all" | "desktop" | "tablet" | "mobile";
+  targetPage?: string;
+  targetCategory?: string;
+  targetLanguage?: string;
+  startDate?: string;
+  endDate?: string;
+  impressions?: number;
+  clicks?: number;
+}
+
+export interface CmsRedirect {
+  id: string;
+  sourceUrl: string;
+  destinationUrl: string;
+  statusCode: 301 | 302 | 307 | 308;
+  status: "active" | "disabled";
+  hits: number;
+  createdAt: string;
+  lastHit?: string;
+}
+
+export interface CmsNotFoundEntry {
+  id: string;
+  url: string;
+  hits: number;
+  firstSeen: string;
+  lastSeen: string;
+  referer?: string;
+}
+
+export interface CmsRevision {
+  id: string;
+  entityId: string;
+  entityType: "page" | "post" | "homepage" | "seo" | "settings";
+  date: string;
+  user: string;
+  title: string;
+  summary: string;
+  snapshot: any;
+}
+
+export interface CmsActivityLog {
+  id: string;
+  user: string;
+  role: string;
+  action: string;
+  object: string;
+  date: string;
+  ip?: string;
+}
+
+export interface CmsContentHealth {
+  missingMetaTitles: number;
+  missingMetaDescriptions: number;
+  missingAltText: number;
+  missingTranslations: number;
+  noindexPages: number;
+  draftPosts: number;
+  draftPages: number;
+  brokenLinks: number;
 }
 
 export type GutenbergBlockType =
@@ -44,17 +139,46 @@ export type GutenbergBlockType =
   | "callout"
   | "code"
   | "list"
-  | "divider";
+  | "table"
+  | "faq"
+  | "columns"
+  | "button"
+  | "ad"
+  | "html"
+  | "divider"
+  | "spacer";
 
 export interface GutenbergBlock {
   id: string;
   type: GutenbergBlockType;
   content: string;
-  level?: 1 | 2 | 3;
+  level?: 1 | 2 | 3 | 4 | 5 | 6;
+  textAlign?: "left" | "center" | "right";
   caption?: string;
+  altText?: string;
   styleVariant?: "info" | "warning" | "success" | "tip" | "note";
+  listType?: "unordered" | "ordered";
   listItems?: string[];
   imageUrl?: string;
+  imageAlign?: "left" | "center" | "right" | "wide" | "full";
+  hasHeader?: boolean;
+  tableHeaders?: string[];
+  tableRows?: string[][];
+  faqItems?: Array<{ question: string; answer: string }>;
+  includeFaqSchema?: boolean;
+  columns?: string[];
+  columnLayout?: "50-50" | "30-70" | "70-30" | "33-33-33";
+  buttonText?: string;
+  buttonUrl?: string;
+  buttonVariant?: "primary" | "secondary" | "outline";
+  buttonAlign?: "left" | "center" | "right";
+  buttonNewTab?: boolean;
+  adSlot?: "in-feed" | "below-hero" | "sidebar" | "article-mid";
+  adCode?: string;
+  adLabel?: string;
+  codeLanguage?: string;
+  spacerHeight?: number;
+  customClassName?: string;
 }
 
 export interface AdSettings {
@@ -119,7 +243,13 @@ export interface PageContent {
   language?: SupportedLanguage;
   title: string;
   subtitle?: string;
-  content: string;
+  content?: string;
+  metaDescription?: string;
+  h1Heading?: string;
+  heroHeading?: string;
+  heroDescription?: string;
+  ctaButtonText?: string;
+  updatedAt?: string;
 }
 
 export interface CustomPage {
@@ -140,6 +270,14 @@ export interface CustomPage {
   author?: string;
   authorName?: string;
   translationGroupId?: string;
+  featuredImage?: string;
+  excerpt?: string;
+  canonicalUrl?: string;
+  noindex?: boolean;
+  ogTitle?: string;
+  ogDescription?: string;
+  ogImage?: string;
+  inTrash?: boolean;
 }
 
 export interface SeoRobotsConfig {
@@ -272,6 +410,15 @@ export interface BlogPost {
   };
   image: string;
   featured?: boolean;
+  tags?: string[];
+  metaTitle?: string;
+  metaDescription?: string;
+  canonicalUrl?: string;
+  noindex?: boolean;
+  ogTitle?: string;
+  ogDescription?: string;
+  ogImage?: string;
+  inTrash?: boolean;
   blocks?: GutenbergBlock[];
   content?: {
     intro: string;

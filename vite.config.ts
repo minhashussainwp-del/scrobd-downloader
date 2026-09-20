@@ -18,6 +18,9 @@ export default defineConfig(() => {
       target: 'esnext',
       sourcemap: true,
       rollupOptions: {
+        input: {
+          main: path.resolve(__dirname, 'index.html'),
+        },
         output: {
           manualChunks(id) {
             if (id.includes('customPagesData')) {

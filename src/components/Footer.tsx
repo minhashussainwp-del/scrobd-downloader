@@ -126,9 +126,9 @@ export function Footer({ onNavigate, siteSettings }: FooterProps) {
                 e.preventDefault();
                 onNavigate("admin");
               }}
-              className="text-slate-400 hover:text-white transition-colors cursor-pointer"
+              className="text-slate-500 hover:text-slate-300 transition-colors cursor-pointer"
             >
-              Admin Panel
+              CMS Admin
             </a>
           </div>
         </div>

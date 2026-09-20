@@ -18,7 +18,7 @@ const LegalPage = lazy(() => import("./pages/LegalPage").then((m) => ({ default:
 const SitemapPage = lazy(() => import("./pages/SitemapPage").then((m) => ({ default: m.SitemapPage })));
 const RobotsPage = lazy(() => import("./pages/RobotsPage").then((m) => ({ default: m.RobotsPage })));
 const CustomPageView = lazy(() => import("./pages/CustomPageView").then((m) => ({ default: m.CustomPageView })));
-const AdminPanel = lazy(() => import("./components/Admin/AdminPanel").then((m) => ({ default: m.AdminPanel })));
+const AdminPanel = lazy(() => import("./components/admin/AdminPanel").then((m) => ({ default: m.AdminPanel })));
 import {
   DownloadFormat,
   DownloadJob,
@@ -56,24 +56,8 @@ function parseUrlRoute(
   const lowerHash = hash.toLowerCase();
   const lowerPath = pathname.toLowerCase();
 
-  // Admin routing check: accept both /admin and /admin123 (paths, hashes, queries)
-  if (
-    lowerHash === "#admin" ||
-    lowerHash === "#/admin" ||
-    lowerHash === "#admin123" ||
-    lowerHash === "#/admin123" ||
-    lowerHash === "#admin-panel" ||
-    lowerPath === "/admin" ||
-    lowerPath === "/admin/" ||
-    lowerPath.startsWith("/admin/") ||
-    lowerPath === "/admin123" ||
-    lowerPath === "/admin123/" ||
-    lowerPath.startsWith("/admin123/") ||
-    window.location.search.includes("admin123") ||
-    window.location.search.includes("admin")
-  ) {
-    const savedLang = (localStorage.getItem("scribd_lang") as SupportedLanguage) || "en";
-    return { page: "admin", lang: savedLang, post: null, customPage: null };
+  if (lowerHash === "#admin" || lowerHash.startsWith("#admin/") || lowerPath === "/admin" || lowerPath.startsWith("/admin/")) {
+    return { page: "admin", lang: "en", post: null, customPage: null };
   }
 
   const segments = pathname.split("/").filter(Boolean);
@@ -96,7 +80,6 @@ function parseUrlRoute(
   }
 
   const routeKey = rest[0].toLowerCase();
-  if (routeKey === "admin" || routeKey === "admin123") return { page: "admin", lang, post: null, customPage: null };
   if (routeKey === "about") return { page: "about", lang, post: null, customPage: null };
   if (routeKey === "how-it-works") return { page: "how-it-works", lang, post: null, customPage: null };
   if (routeKey === "contact") return { page: "contact", lang, post: null, customPage: null };
@@ -202,9 +185,42 @@ export default function App() {
   const [selectedPost, setSelectedPost] = useState<BlogPost | null>(initialRoute.post);
   const [selectedCustomPage, setSelectedCustomPage] = useState<CustomPage | null>(initialRoute.customPage);
 
-  // Lazy-load custom pages only if user navigates to custom page, admin or sitemap
+  // Lazy-load custom pages only if user navigates to custom page or sitemap
   useEffect(() => {
-    if (currentPage === "custom-page" || currentPage === "admin" || currentPage === "sitemap") {
+    // Sync posts from admin backend
+    fetch("/api/admin/posts")
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (data && Array.isArray(data.posts)) {
+          const allServerPosts: BlogPost[] = [];
+          data.posts.forEach((bp: any) => {
+            if (Array.isArray(bp.allTranslations) && bp.allTranslations.length > 0) {
+              bp.allTranslations.forEach((t: any) => {
+                if (!allServerPosts.some((p) => p.id === t.id)) {
+                  allServerPosts.push(t);
+                }
+              });
+            } else if (!allServerPosts.some((p) => p.id === bp.id)) {
+              allServerPosts.push(bp);
+            }
+          });
+          if (allServerPosts.length > 0) {
+            setPosts((prev) => {
+              const map = new Map<string, BlogPost>();
+              prev.forEach((p) => map.set(p.id, p));
+              allServerPosts.forEach((p) => map.set(p.id, { ...(map.get(p.id) || {}), ...p }));
+              const merged = Array.from(map.values());
+              try {
+                localStorage.setItem("scribd_blog_posts", JSON.stringify(merged));
+              } catch {}
+              return merged;
+            });
+          }
+        }
+      })
+      .catch(() => {});
+
+    if (currentPage === "custom-page" || currentPage === "sitemap") {
       import("./data/customPagesData").then((m) => {
         const loaded = m.loadCustomPages();
         setCustomPages(loaded);
@@ -216,6 +232,41 @@ export default function App() {
       });
     }
   }, [currentPage, selectedCustomPage]);
+
+  // Fetch dynamic homepage content configured via Admin Panel
+  useEffect(() => {
+    fetch(`/api/homepage?lang=${currentLang}`)
+      .then((res) => (res.ok ? res.json() : null))
+      .then((hpData) => {
+        if (hpData && hpData.seoTitle) {
+          setPageContents((prev) => {
+            const copy = [...prev];
+            const idx = copy.findIndex(
+              (c) => (c.pageKey === "home" && c.language === currentLang) || c.id === `home-${currentLang}`
+            );
+            const dynamicEntry: PageContent = {
+              id: `home-${currentLang}`,
+              pageKey: "home",
+              language: currentLang,
+              title: hpData.seoTitle,
+              metaDescription: hpData.metaDescription,
+              h1Heading: hpData.mainH1,
+              heroHeading: hpData.heroHeading,
+              heroDescription: hpData.heroDescription,
+              ctaButtonText: hpData.ctaText,
+              updatedAt: hpData.updatedAt || new Date().toISOString(),
+            };
+            if (idx >= 0) {
+              copy[idx] = { ...copy[idx], ...dynamicEntry };
+            } else {
+              copy.push(dynamicEntry);
+            }
+            return copy;
+          });
+        }
+      })
+      .catch(() => {});
+  }, [currentLang]);
 
   // Settings & Localization state
   const [siteSettings, setSiteSettings] = useState<SiteSettings>(loadSiteSettings);
@@ -570,6 +621,31 @@ export default function App() {
     );
   }
 
+  // If admin CMS mode is active, render the comprehensive CMS administration console
+  if (currentPage === "admin") {
+    return (
+      <Suspense
+        fallback={
+          <div className="min-h-screen bg-slate-900 flex items-center justify-center text-white font-mono text-xs">
+            Loading CMS Admin Console...
+          </div>
+        }
+      >
+        <AdminPanel
+          onExitToSite={() => handleNavigate("home")}
+          onPreviewUrl={(previewUrl) => {
+            window.history.pushState(null, "", previewUrl);
+            const resolved = parseUrlRoute(window.location.pathname, window.location.hash, posts, customPages);
+            setCurrentPage(resolved.page);
+            setCurrentLang(resolved.lang);
+            setSelectedPost(resolved.post);
+            setSelectedCustomPage(resolved.customPage);
+          }}
+        />
+      </Suspense>
+    );
+  }
+
   // Determine viewport width wrapper for interactive simulated previews
   const getViewportWrapperClass = () => {
     switch (viewportMode) {
@@ -612,7 +688,7 @@ export default function App() {
       />
 
       {/* Header Ad Banner Unit */}
-      {adSettings?.enabled && adSettings?.headerAd && currentPage !== "admin" && (
+      {adSettings?.enabled && adSettings?.headerAd && (
         <div className="bg-slate-50 border-b border-slate-200/80 py-2.5">
           <div className="max-w-7xl mx-auto px-4 sm:px-6">
             <HeaderAdBanner settings={adSettings} />
@@ -777,25 +853,11 @@ export default function App() {
                 currentLang={currentLang}
               />
             )}
-
-            {/* 11. COMPREHENSIVE ADMIN CONTROL PANEL */}
-            {currentPage === "admin" && (
-              <AdminPanel
-                onNavigate={handleNavigate}
-                currentLang={currentLang}
-                onLanguageChange={handleLanguageChange}
-                adSettings={adSettings}
-                onSaveAdSettings={(newSettings) => {
-                  setAdSettings(newSettings);
-                  saveAdSettings(newSettings);
-                }}
-              />
-            )}
           </Suspense>
         </main>
 
         {/* Global Footer Ad Banner Slot (Above Footer) */}
-        {adSettings?.enabled && adSettings?.footerAd && currentPage !== "admin" && (
+        {adSettings?.enabled && adSettings?.footerAd && (
           <FooterAdBanner settings={adSettings} />
         )}
 

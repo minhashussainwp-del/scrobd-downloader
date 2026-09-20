@@ -1,30 +1,60 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    
-    // Global Safety Net
-    match /{document=**} {
-      allow read, write: if false;
+
+    function isAuthenticated() {
+      return request.auth != null;
     }
 
     function isAdmin() {
-      return request.auth != null && request.auth.token.email == 'minhashussainbaltistani@gmail.com' && request.auth.token.email_verified == true;
-    }
-    
-    function isAdminWithoutVerified() {
-      // In case we create the user with email/pass and they aren't verified yet
-      return request.auth != null && request.auth.token.email == 'minhashussainbaltistani@gmail.com';
+      return isAuthenticated() &&
+        request.auth.token.email == 'minhashussainbaltistani@gmail.com';
     }
 
-    // Example collection rules for documents
-    match /documents/{docId} {
-      // Only the admin can read/write everything.
-      allow read, write: if isAdminWithoutVerified();
+    // Public pages: published & not in trash are public to read
+    match /pages/{pageId} {
+      allow read: if resource == null || (resource.data.status == 'published' && resource.data.inTrash != true) || isAdmin();
+      allow write: if isAdmin();
     }
-    
-    // Matches and queries for anything else
-    match /settings/{docId} {
-      allow read, write: if isAdminWithoutVerified();
+
+    // Public blog posts & guides: published & not in trash are public to read
+    match /posts/{postId} {
+      allow read: if resource == null || (resource.data.status == 'published' && resource.data.inTrash != true) || isAdmin();
+      allow write: if isAdmin();
+    }
+
+    // Ads: active ads can be read publicly
+    match /ads/{adId} {
+      allow read: if resource == null || resource.data.status == 'active' || isAdmin();
+      allow write: if isAdmin();
+    }
+
+    // Redirects: active redirects can be read publicly
+    match /redirects/{redirectId} {
+      allow read: if resource == null || resource.data.status == 'active' || isAdmin();
+      allow write: if isAdmin();
+    }
+
+    // Global settings & SEO configurations
+    match /settings/{settingId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // Document download records
+    match /documents/{docId} {
+      allow read, create: if true;
+      allow update, delete: if isAdmin();
+    }
+
+    // Audit logs & activity
+    match /activity_logs/{logId} {
+      allow read, write: if isAdmin();
+    }
+
+    // Default deny all other documents
+    match /{document=**} {
+      allow read, write: if false;
     }
   }
 }

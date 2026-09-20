@@ -1,0 +1,1606 @@
+[
+  {
+    "id": "page-about",
+    "slug": "about",
+    "title": "About Scribd Downloader",
+    "pageKey": "about",
+    "translationGroupId": "group-page-about",
+    "language": "en",
+    "excerpt": "A free tool that saves public Scribd documents as PDFs. No login, no install, no cost.",
+    "metaTitle": "About Us - Scribd Downloader",
+    "metaDescription": "Learn more about our mission to make public educational research papers and slide decks easily accessible offline.",
+    "author": "Minhas Hussain",
+    "authorName": "Minhas Hussain",
+    "status": "published",
+    "inTrash": false,
+    "content": "Scribd Downloader is a free web tool for one simple job: turning a public Scribd document page into a PDF you can keep.\n\nScribd is full of useful material — lecture notes, research papers, slide decks, manuals. Reading them in a browser is fine, but an offline copy is easier to highlight, print, and carry with you. This tool exists to make that copy in a few clicks, without asking you to create an account or install anything.\n\nWe don’t ask for your email, we don’t run a membership system, and we don’t keep copies of the files you download. If you only download material you’re allowed to keep — your own uploads, public-domain works, or documents shared with permission — you’re using the tool the way it was meant to be used.",
+    "blocks": [
+      {
+        "id": "b-9y0w04w-mu9m8boo",
+        "type": "paragraph",
+        "content": "Scribd Downloader is a free web tool for one simple job: turning a public Scribd document page into a PDF you can keep.",
+        "textAlign": "left"
+      },
+      {
+        "id": "b-8c49fc7-mu9m8boo",
+        "type": "paragraph",
+        "content": "Scribd is full of useful material — lecture notes, research papers, slide decks, manuals. Reading them in a browser is fine, but an offline copy is easier to highlight, print, and carry with you. This tool exists to make that copy in a few clicks, without asking you to create an account or install anything.",
+        "textAlign": "left"
+      },
+      {
+        "id": "b-i3kzu2v-mu9m8boo",
+        "type": "paragraph",
+        "content": "We don’t ask for your email, we don’t run a membership system, and we don’t keep copies of the files you download. If you only download material you’re allowed to keep — your own uploads, public-domain works, or documents shared with permission — you’re using the tool the way it was meant to be used.",
+        "textAlign": "left"
+      }
+    ],
+    "createdAt": "2026-09-20T09:30:15.720Z",
+    "lastModified": "2026-09-20T09:30:15.720Z"
+  },
+  {
+    "id": "page-about-br",
+    "slug": "about-br",
+    "title": "Sobre o Scribd Downloader",
+    "pageKey": "about",
+    "translationGroupId": "group-page-about",
+    "language": "br",
+    "excerpt": "Uma ferramenta gratuita que salva documentos públicos do Scribd em PDF. Sem login, sem instalação, sem custo.",
+    "metaTitle": "Sobre o Scribd Downloader - Scribd Downloader",
+    "metaDescription": "Uma ferramenta gratuita que salva documentos públicos do Scribd em PDF. Sem login, sem instalação, sem custo.",
+    "author": "Minhas Hussain",
+    "authorName": "Minhas Hussain",
+    "status": "published",
+    "inTrash": false,
+    "content": "O Scribd Downloader é uma ferramenta web gratuita com uma função simples: transformar uma página pública de documento do Scribd em um PDF que você pode guardar.\n\nO Scribd está cheio de material útil — anotações de aula, artigos acadêmicos, apresentações de slides, manuais. Ler no navegador é prático, mas uma cópia offline é mais fácil de destacar, imprimir e levar com você. Esta ferramenta existe para criar essa cópia em poucos cliques, sem pedir conta ou instalação.\n\nNão pedimos seu e-mail, não temos sistema de assinatura e não guardamos cópias dos arquivos que você baixa. Se você baixar apenas material que tem permissão para guardar — seus próprios envios, obras em domínio público ou documentos compartilhados com autorização — está usando a ferramenta como ela foi feita para ser usada.",
+    "blocks": [
+      {
+        "id": "b-p2ic148-mu9m8boo",
+        "type": "paragraph",
+        "content": "O Scribd Downloader é uma ferramenta web gratuita com uma função simples: transformar uma página pública de documento do Scribd em um PDF que você pode guardar.",
+        "textAlign": "left"
+      },
+      {
+        "id": "b-7rftgvu-mu9m8boo",
+        "type": "paragraph",
+        "content": "O Scribd está cheio de material útil — anotações de aula, artigos acadêmicos, apresentações de slides, manuais. Ler no navegador é prático, mas uma cópia offline é mais fácil de destacar, imprimir e levar com você. Esta ferramenta existe para criar essa cópia em poucos cliques, sem pedir conta ou instalação.",
+        "textAlign": "left"
+      },
+      {
+        "id": "b-gv8b723-mu9m8boo",
+        "type": "paragraph",
+        "content": "Não pedimos seu e-mail, não temos sistema de assinatura e não guardamos cópias dos arquivos que você baixa. Se você baixar apenas material que tem permissão para guardar — seus próprios envios, obras em domínio público ou documentos compartilhados com autorização — está usando a ferramenta como ela foi feita para ser usada.",
+        "textAlign": "left"
+      }
+    ],
+    "createdAt": "2026-09-20T09:30:15.720Z",
+    "lastModified": "2026-09-20T09:30:15.720Z"
+  },
+  {
+    "id": "page-about-es",
+    "slug": "about-es",
+    "title": "Acerca de Scribd Downloader",
+    "pageKey": "about",
+    "translationGroupId": "group-page-about",
+    "language": "es",
+    "excerpt": "Una herramienta gratuita que guarda documentos públicos de Scribd en PDF. Sin registro, sin instalación, sin costo.",
+    "metaTitle": "Acerca de Scribd Downloader - Scribd Downloader",
+    "metaDescription": "Una herramienta gratuita que guarda documentos públicos de Scribd en PDF. Sin registro, sin instalación, sin costo.",
+    "author": "Minhas Hussain",
+    "authorName": "Minhas Hussain",
+    "status": "published",
+    "inTrash": false,
+    "content": "Scribd Downloader es una herramienta web gratuita con una función simple: convertir una página pública de Scribd en un PDF que puedes conservar.\n\nScribd está lleno de material útil: apuntes de clase, artículos académicos, presentaciones, manuales. Leerlos en el navegador está bien, pero una copia sin conexión es más fácil de subrayar, imprimir y llevar contigo. Esta herramienta existe para crear esa copia en pocos clics, sin pedirte una cuenta ni instalar nada.\n\nNo pedimos tu correo, no tenemos sistema de membresías y no guardamos copias de los archivos que descargas. Si solo descargas material que tienes permitido guardar — tus propias subidas, obras de dominio público o documentos compartidos con permiso — estás usando la herramienta como fue pensada.",
+    "blocks": [
+      {
+        "id": "b-5sygpyu-mu9m8boo",
+        "type": "paragraph",
+        "content": "Scribd Downloader es una herramienta web gratuita con una función simple: convertir una página pública de Scribd en un PDF que puedes conservar.",
+        "textAlign": "left"
+      },
+      {
+        "id": "b-51y2njv-mu9m8boo",
+        "type": "paragraph",
+        "content": "Scribd está lleno de material útil: apuntes de clase, artículos académicos, presentaciones, manuales. Leerlos en el navegador está bien, pero una copia sin conexión es más fácil de subrayar, imprimir y llevar contigo. Esta herramienta existe para crear esa copia en pocos clics, sin pedirte una cuenta ni instalar nada.",
+        "textAlign": "left"
+      },
+      {
+        "id": "b-heiyi0i-mu9m8boo",
+        "type": "paragraph",
+        "content": "No pedimos tu correo, no tenemos sistema de membresías y no guardamos copias de los archivos que descargas. Si solo descargas material que tienes permitido guardar — tus propias subidas, obras de dominio público o documentos compartidos con permiso — estás usando la herramienta como fue pensada.",
+        "textAlign": "left"
+      }
+    ],
+    "createdAt": "2026-09-20T09:30:15.720Z",
+    "lastModified": "2026-09-20T09:30:15.720Z"
+  },
+  {
+    "id": "page-about-fr",
+    "slug": "about-fr",
+    "title": "À propos de Scribd Downloader",
+    "pageKey": "about",
+    "translationGroupId": "group-page-about",
+    "language": "fr",
+    "excerpt": "Un outil gratuit qui enregistre les documents publics Scribd en PDF. Sans compte, sans installation, sans frais.",
+    "metaTitle": "À propos de Scribd Downloader - Scribd Downloader",
+    "metaDescription": "Un outil gratuit qui enregistre les documents publics Scribd en PDF. Sans compte, sans installation, sans frais.",
+    "author": "Minhas Hussain",
+    "authorName": "Minhas Hussain",
+    "status": "published",
+    "inTrash": false,
+    "content": "Scribd Downloader est un outil web gratuit avec une mission simple : transformer une page publique d’un document Scribd en un PDF à conserver.\n\nScribd regorge de contenus utiles — notes de cours, articles de recherche, présentations, manuels. Les lire dans un navigateur convient, mais une copie hors ligne est plus facile à surligner, imprimer et emporter. Cet outil existe pour créer cette copie en quelques clics, sans demander de compte ni d’installation.\n\nNous ne demandons pas votre e-mail, nous n’avons pas de système d’abonnement et nous ne conservons pas de copies des fichiers téléchargés. Si vous ne téléchargez que des contenus que vous êtes autorisé à garder — vos propres envois, des œuvres du domaine public ou des documents partagés avec autorisation — vous utilisez l’outil comme il a été conçu.",
+    "blocks": [
+      {
+        "id": "b-0hba6ft-mu9m8boo",
+        "type": "paragraph",
+        "content": "Scribd Downloader est un outil web gratuit avec une mission simple : transformer une page publique d’un document Scribd en un PDF à conserver.",
+        "textAlign": "left"
+      },
+      {
+        "id": "b-vwq8nel-mu9m8boo",
+        "type": "paragraph",
+        "content": "Scribd regorge de contenus utiles — notes de cours, articles de recherche, présentations, manuels. Les lire dans un navigateur convient, mais une copie hors ligne est plus facile à surligner, imprimer et emporter. Cet outil existe pour créer cette copie en quelques clics, sans demander de compte ni d’installation.",
+        "textAlign": "left"
+      },
+      {
+        "id": "b-0g7f2di-mu9m8boo",
+        "type": "paragraph",
+        "content": "Nous ne demandons pas votre e-mail, nous n’avons pas de système d’abonnement et nous ne conservons pas de copies des fichiers téléchargés. Si vous ne téléchargez que des contenus que vous êtes autorisé à garder — vos propres envois, des œuvres du domaine public ou des documents partagés avec autorisation — vous utilisez l’outil comme il a été conçu.",
+        "textAlign": "left"
+      }
+    ],
+    "createdAt": "2026-09-20T09:30:15.720Z",
+    "lastModified": "2026-09-20T09:30:15.720Z"
+  },
+  {
+    "id": "page-about-de",
+    "slug": "about-de",
+    "title": "Über Scribd Downloader",
+    "pageKey": "about",
+    "translationGroupId": "group-page-about",
+    "language": "de",
+    "excerpt": "Ein kostenloses Tool, das öffentliche Scribd-Dokumente als PDF speichert. Ohne Anmeldung, ohne Installation, ohne Kosten.",
+    "metaTitle": "Über Scribd Downloader - Scribd Downloader",
+    "metaDescription": "Ein kostenloses Tool, das öffentliche Scribd-Dokumente als PDF speichert. Ohne Anmeldung, ohne Installation, ohne Kosten.",
+    "author": "Minhas Hussain",
+    "authorName": "Minhas Hussain",
+    "status": "published",
+    "inTrash": false,
+    "content": "Scribd Downloader ist ein kostenloses Web-Tool mit einer einfachen Aufgabe: eine öffentliche Scribd-Dokumentseite in ein PDF zu verwandeln, das du behalten kannst.\n\nScribd ist voller nützlicher Inhalte — Vorlesungsnotizen, Forschungsarbeiten, Präsentationen, Handbücher. Im Browser zu lesen ist in Ordnung, aber eine Offline-Kopie lässt sich leichter markieren, drucken und mitnehmen. Dieses Tool erstellt diese Kopie mit wenigen Klicks, ohne dass du ein Konto anlegen oder etwas installieren musst.\n\nWir fragen nicht nach deiner E-Mail, wir haben kein Mitgliedssystem und wir speichern keine Kopien deiner Downloads. Wenn du nur Material herunterlädst, das du behalten darfst — deine eigenen Uploads, gemeinfreie Werke oder Dokumente, die mit Erlaubnis geteilt wurden — nutzt du das Tool so, wie es gedacht ist.",
+    "blocks": [
+      {
+        "id": "b-mku9lq1-mu9m8boo",
+        "type": "paragraph",
+        "content": "Scribd Downloader ist ein kostenloses Web-Tool mit einer einfachen Aufgabe: eine öffentliche Scribd-Dokumentseite in ein PDF zu verwandeln, das du behalten kannst.",
+        "textAlign": "left"
+      },
+      {
+        "id": "b-q2akcn8-mu9m8boo",
+        "type": "paragraph",
+        "content": "Scribd ist voller nützlicher Inhalte — Vorlesungsnotizen, Forschungsarbeiten, Präsentationen, Handbücher. Im Browser zu lesen ist in Ordnung, aber eine Offline-Kopie lässt sich leichter markieren, drucken und mitnehmen. Dieses Tool erstellt diese Kopie mit wenigen Klicks, ohne dass du ein Konto anlegen oder etwas installieren musst.",
+        "textAlign": "left"
+      },
+      {
+        "id": "b-1gbnp5a-mu9m8boo",
+        "type": "paragraph",
+        "content": "Wir fragen nicht nach deiner E-Mail, wir haben kein Mitgliedssystem und wir speichern keine Kopien deiner Downloads. Wenn du nur Material herunterlädst, das du behalten darfst — deine eigenen Uploads, gemeinfreie Werke oder Dokumente, die mit Erlaubnis geteilt wurden — nutzt du das Tool so, wie es gedacht ist.",
+        "textAlign": "left"
+      }
+    ],
+    "createdAt": "2026-09-20T09:30:15.720Z",
+    "lastModified": "2026-09-20T09:30:15.720Z"
+  },
+  {
+    "id": "page-about-id",
+    "slug": "about-id",
+    "title": "Tentang Scribd Downloader",
+    "pageKey": "about",
+    "translationGroupId": "group-page-about",
+    "language": "id",
+    "excerpt": "Alat gratis untuk menyimpan dokumen publik Scribd sebagai PDF. Tanpa login, tanpa instalasi, tanpa biaya.",
+    "metaTitle": "Tentang Scribd Downloader - Scribd Downloader",
+    "metaDescription": "Alat gratis untuk menyimpan dokumen publik Scribd sebagai PDF. Tanpa login, tanpa instalasi, tanpa biaya.",
+    "author": "Minhas Hussain",
+    "authorName": "Minhas Hussain",
+    "status": "published",
+    "inTrash": false,
+    "content": "Scribd Downloader adalah alat web gratis dengan satu fungsi sederhana: mengubah halaman dokumen publik Scribd menjadi PDF yang bisa kamu simpan.\n\nScribd penuh dengan materi bermanfaat — catatan kuliah, makalah penelitian, presentasi slide, manual. Membacanya di browser memang bisa, tetapi salinan offline lebih mudah ditandai, dicetak, dan dibawa. Alat ini ada untuk membuat salinan itu dalam beberapa klik, tanpa meminta kamu membuat akun atau menginstal apa pun.\n\nKami tidak meminta email-mu, tidak menjalankan sistem keanggotaan, dan tidak menyimpan salinan berkas yang kamu unduh. Jika kamu hanya mengunduh materi yang memang boleh disimpan — unggahanmu sendiri, karya domain publik, atau dokumen yang dibagikan dengan izin — kamu sudah memakai alat ini sebagaimana mestinya.",
+    "blocks": [
+      {
+        "id": "b-q80viiv-mu9m8boo",
+        "type": "paragraph",
+        "content": "Scribd Downloader adalah alat web gratis dengan satu fungsi sederhana: mengubah halaman dokumen publik Scribd menjadi PDF yang bisa kamu simpan.",
+        "textAlign": "left"
+      },
+      {
+        "id": "b-qx15h1o-mu9m8boo",
+        "type": "paragraph",
+        "content": "Scribd penuh dengan materi bermanfaat — catatan kuliah, makalah penelitian, presentasi slide, manual. Membacanya di browser memang bisa, tetapi salinan offline lebih mudah ditandai, dicetak, dan dibawa. Alat ini ada untuk membuat salinan itu dalam beberapa klik, tanpa meminta kamu membuat akun atau menginstal apa pun.",
+        "textAlign": "left"
+      },
+      {
+        "id": "b-9uh9el1-mu9m8boo",
+        "type": "paragraph",
+        "content": "Kami tidak meminta email-mu, tidak menjalankan sistem keanggotaan, dan tidak menyimpan salinan berkas yang kamu unduh. Jika kamu hanya mengunduh materi yang memang boleh disimpan — unggahanmu sendiri, karya domain publik, atau dokumen yang dibagikan dengan izin — kamu sudah memakai alat ini sebagaimana mestinya.",
+        "textAlign": "left"
+      }
+    ],
+    "createdAt": "2026-09-20T09:30:15.720Z",
+    "lastModified": "2026-09-20T09:30:15.720Z"
+  },
+  {
+    "id": "page-about-hi",
+    "slug": "about-hi",
+    "title": "Scribd Downloader के बारे में",
+    "pageKey": "about",
+    "translationGroupId": "group-page-about",
+    "language": "hi",
+    "excerpt": "सार्वजनिक Scribd दस्तावेज़ों को PDF के रूप में सहेजने वाला एक मुफ्त टूल। बिना लॉगिन, बिना शुल्क।",
+    "metaTitle": "Scribd Downloader के बारे में - Scribd Downloader",
+    "metaDescription": "सार्वजनिक Scribd दस्तावेज़ों को PDF के रूप में सहेजने वाला एक मुफ्त टूल। बिना लॉगिन, बिना शुल्क।",
+    "author": "Minhas Hussain",
+    "authorName": "Minhas Hussain",
+    "status": "published",
+    "inTrash": false,
+    "content": "Scribd Downloader एक सरल और मुफ्त वेब टूल है जिसका मुख्य उद्देश्य सार्वजनिक Scribd दस्तावेज़ों को एक सुरक्षित PDF में बदलना है जिसे आप अपने पास रख सकते हैं।\n\nScribd पर उपयोगी अध्ययन सामग्री, शोध पत्र और प्रस्तुतियाँ भरी हुई हैं। ब्राउज़र में पढ़ना उपयोगी है, लेकिन ऑफ़लाइन प्रति को प्रिंट करना और साथ रखना आसान होता है। हम न तो आपसे ईमेल मांगते हैं और न ही कोई सदस्यता प्रणाली चलाते हैं।",
+    "blocks": [
+      {
+        "id": "b-lfrisal-mu9m8boo",
+        "type": "paragraph",
+        "content": "Scribd Downloader एक सरल और मुफ्त वेब टूल है जिसका मुख्य उद्देश्य सार्वजनिक Scribd दस्तावेज़ों को एक सुरक्षित PDF में बदलना है जिसे आप अपने पास रख सकते हैं।",
+        "textAlign": "left"
+      },
+      {
+        "id": "b-1xoa7l0-mu9m8boo",
+        "type": "paragraph",
+        "content": "Scribd पर उपयोगी अध्ययन सामग्री, शोध पत्र और प्रस्तुतियाँ भरी हुई हैं। ब्राउज़र में पढ़ना उपयोगी है, लेकिन ऑफ़लाइन प्रति को प्रिंट करना और साथ रखना आसान होता है। हम न तो आपसे ईमेल मांगते हैं और न ही कोई सदस्यता प्रणाली चलाते हैं।",
+        "textAlign": "left"
+      }
+    ],
+    "createdAt": "2026-09-20T09:30:15.720Z",
+    "lastModified": "2026-09-20T09:30:15.720Z"
+  },
+  {
+    "id": "page-how-it-works",
+    "slug": "how-it-works",
+    "title": "How to Download Scribd Documents as PDF",
+    "pageKey": "how-it-works",
+    "translationGroupId": "group-page-how-it-works",
+    "language": "en",
+    "excerpt": "Three simple steps between you and an offline copy. No account, no software to install.",
+    "metaTitle": "How It Works - Scribd Downloader",
+    "metaDescription": "Understand the three-step workflow to download Scribd documents directly to your device without installing software.",
+    "author": "Minhas Hussain",
+    "authorName": "Minhas Hussain",
+    "status": "published",
+    "inTrash": false,
+    "content": "Downloading a Scribd document with this tool takes less than a minute. Here’s exactly how it works, plus a few tips for when things don’t go as planned.\n\n## The three steps\n\n**1. Copy the document link.** Open the Scribd document in your browser and copy the URL from the address bar.\n\n**2. Paste it into the download box.** You’ll find the box at the top of the homepage. Paste the link and press the download button.\n\n**3. Save your PDF.** The tool reads the document’s pages and builds a PDF file for you. When it’s ready, save it to your phone, tablet, or computer.\n\n## What happens behind the scenes\n\nWhen you paste a link, the tool opens the public document page, reads its pages one by one, and assembles them into a standard PDF. Two things are worth knowing: only documents that are publicly viewable can be processed, and the result is always a regular PDF that opens in any reader.\n\n## Tips for better results\n\n- **Use the full document URL.** The complete address-bar link is the safest bet — shortened links sometimes miss the document ID.\n- **Check that the document is public.** Private or paywalled documents can’t be downloaded. If you can’t view it in your browser without logging in, the tool can’t process it either.\n- **One document at a time.** Finish one download before starting the next for the most reliable results.\n- **Large documents take longer.** A 200-page manual needs more time than a 10-slide deck. Give it a moment.\n\n## If a download fails\n\n- **“Document not found”** — double-check the URL and make sure you copied the whole link.\n- **The download never starts** — the document may be private, removed, or temporarily unavailable. Try opening it in your browser first.\n- **The PDF looks wrong** — some documents use unusual layouts. Try again; if pages are still missing, the source document itself may be incomplete.\n- **Still stuck?** Send us the link through the contact page and we’ll take a look.\n\n## A note on fair use\n\nThis tool is meant for documents you’re allowed to keep: your own uploads, public-domain works, study materials shared with permission, and personal study under fair use. Please don’t use it to redistribute other people’s copyrighted work.",
+    "blocks": [
+      {
+        "id": "b-6g4f8t3-mu9m8boo",
+        "type": "paragraph",
+        "content": "Downloading a Scribd document with this tool takes less than a minute. Here’s exactly how it works, plus a few tips for when things don’t go as planned.",
+        "textAlign": "left"
+      },
+      {
+        "id": "b-2wzpwsy-mu9m8boo",
+        "type": "heading",
+        "content": "The three steps",
+        "level": 2,
+        "textAlign": "left"
+      },
+      {
+        "id": "b-s763w34-mu9m8boo",
+        "type": "paragraph",
+        "content": "**1. Copy the document link.** Open the Scribd document in your browser and copy the URL from the address bar.",
+        "textAlign": "left"
+      },
+      {
+        "id": "b-5bpxfru-mu9m8boo",
+        "type": "paragraph",
+        "content": "**2. Paste it into the download box.** You’ll find the box at the top of the homepage. Paste the link and press the download button.",
+        "textAlign": "left"
+      },
+      {
+        "id": "b-69octup-mu9m8boo",
+        "type": "paragraph",
+        "content": "**3. Save your PDF.** The tool reads the document’s pages and builds a PDF file for you. When it’s ready, save it to your phone, tablet, or computer.",
+        "textAlign": "left"
+      },
+      {
+        "id": "b-ox9j3ng-mu9m8boo",
+        "type": "heading",
+        "content": "What happens behind the scenes",
+        "level": 2,
+        "textAlign": "left"
+      },
+      {
+        "id": "b-gb07fg7-mu9m8boo",
+        "type": "paragraph",
+        "content": "When you paste a link, the tool opens the public document page, reads its pages one by one, and assembles them into a standard PDF. Two things are worth knowing: only documents that are publicly viewable can be processed, and the result is always a regular PDF that opens in any reader.",
+        "textAlign": "left"
+      },
+      {
+        "id": "b-o7ga42n-mu9m8boo",
+        "type": "heading",
+        "content": "Tips for better results",
+        "level": 2,
+        "textAlign": "left"
+      },
+      {
+        "id": "b-pkd305i-mu9m8boo",
+        "type": "list",
+        "content": "",
+        "listType": "unordered",
+        "listItems": [
+          "**Use the full document URL.** The complete address-bar link is the safest bet — shortened links sometimes miss the document ID.",
+          "**Check that the document is public.** Private or paywalled documents can’t be downloaded. If you can’t view it in your browser without logging in, the tool can’t process it either.",
+          "**One document at a time.** Finish one download before starting the next for the most reliable results.",
+          "**Large documents take longer.** A 200-page manual needs more time than a 10-slide deck. Give it a moment."
+        ]
+      },
+      {
+        "id": "b-2vohk9k-mu9m8boo",
+        "type": "heading",
+        "content": "If a download fails",
+        "level": 2,
+        "textAlign": "left"
+      },
+      {
+        "id": "b-mmtrnmy-mu9m8boo",
+        "type": "list",
+        "content": "",
+        "listType": "unordered",
+        "listItems": [
+          "**“Document not found”** — double-check the URL and make sure you copied the whole link.",
+          "**The download never starts** — the document may be private, removed, or temporarily unavailable. Try opening it in your browser first.",
+          "**The PDF looks wrong** — some documents use unusual layouts. Try again; if pages are still missing, the source document itself may be incomplete.",
+          "**Still stuck?** Send us the link through the contact page and we’ll take a look."
+        ]
+      },
+      {
+        "id": "b-crk64zh-mu9m8boo",
+        "type": "heading",
+        "content": "A note on fair use",
+        "level": 2,
+        "textAlign": "left"
+      },
+      {
+        "id": "b-jz2hrw3-mu9m8boo",
+        "type": "paragraph",
+        "content": "This tool is meant for documents you’re allowed to keep: your own uploads, public-domain works, study materials shared with permission, and personal study under fair use. Please don’t use it to redistribute other people’s copyrighted work.",
+        "textAlign": "left"
+      }
+    ],
+    "createdAt": "2026-09-20T09:30:15.720Z",
+    "lastModified": "2026-09-20T09:30:15.720Z"
+  },
+  {
+    "id": "page-how-it-works-br",
+    "slug": "how-it-works-br",
+    "title": "Como Baixar Documentos do Scribd em PDF",
+    "pageKey": "how-it-works",
+    "translationGroupId": "group-page-how-it-works",
+    "language": "br",
+    "excerpt": "Três passos simples até a sua cópia offline. Sem conta, sem instalar nada.",
+    "metaTitle": "Como Baixar Documentos do Scribd em PDF - Scribd Downloader",
+    "metaDescription": "Três passos simples até a sua cópia offline. Sem conta, sem instalar nada.",
+    "author": "Minhas Hussain",
+    "authorName": "Minhas Hussain",
+    "status": "published",
+    "inTrash": false,
+    "content": "Baixar um documento do Scribd com esta ferramenta leva menos de um minuto. Veja exatamente como funciona, além de algumas dicas para quando algo não sair como esperado.\n\n## Os três passos\n\n**1. Copie o link do documento.** Abra o documento do Scribd no navegador e copie o URL da barra de endereços.\n\n**2. Cole na caixa de download.** Ela está no topo da página inicial. Cole o link e aperte o botão de download.\n\n**3. Salve seu PDF.** A ferramenta lê as páginas do documento e monta um arquivo PDF para você. Quando estiver pronto, salve no celular, tablet ou computador.\n\n## O que acontece por trás\n\nAo colar um link, a ferramenta abre a página pública do documento, lê as páginas uma a uma e as reúne em um PDF padrão. Vale saber duas coisas: só documentos visíveis publicamente podem ser processados, e o resultado é sempre um PDF comum que abre em qualquer leitor.\n\n## Dicas para melhores resultados\n\n- **Use o URL completo do documento.** O link completo da barra de endereços é a opção mais segura.\n- **Confira se o documento é público.** Documentos privados ou pagos não podem ser baixados.\n- **Um documento por vez.** Termine um download antes de começar o próximo.\n- **Documentos grandes demoram mais.** Um manual de 200 páginas precisa de mais tempo que uma apresentação de 10 slides.\n\n## Se o download falhar\n\n- **“Documento não encontrado”** — confira o URL e veja se copiou o link inteiro.\n- **O download nunca começa** — o documento pode ser privado, removido ou temporariamente indisponível. Tente abri-lo no navegador primeiro.\n- **O PDF saiu errado** — alguns documentos têm layouts incomuns. Tente de novo.\n- **Ainda travado?** Envie o link pela página de contato.\n\n## Uma nota sobre uso justo\n\nEsta ferramenta é para documentos que você tem permissão para guardar: seus próprios envios, obras em domínio público e materiais compartilhados com autorização. Não a use para redistribuir obras protegidas de outras pessoas.",
+    "blocks": [
+      {
+        "id": "b-kp64hqe-mu9m8boo",
+        "type": "paragraph",
+        "content": "Baixar um documento do Scribd com esta ferramenta leva menos de um minuto. Veja exatamente como funciona, além de algumas dicas para quando algo não sair como esperado.",
+        "textAlign": "left"
+      },
+      {
+        "id": "b-gqhlyi8-mu9m8boo",
+        "type": "heading",
+        "content": "Os três passos",
+        "level": 2,
+        "textAlign": "left"
+      },
+      {
+        "id": "b-022asmm-mu9m8boo",
+        "type": "paragraph",
+        "content": "**1. Copie o link do documento.** Abra o documento do Scribd no navegador e copie o URL da barra de endereços.",
+        "textAlign": "left"
+      },
+      {
+        "id": "b-0s49zpf-mu9m8boo",
+        "type": "paragraph",
+        "content": "**2. Cole na caixa de download.** Ela está no topo da página inicial. Cole o link e aperte o botão de download.",
+        "textAlign": "left"
+      },
+      {
+        "id": "b-bfoxg5l-mu9m8boo",
+        "type": "paragraph",
+        "content": "**3. Salve seu PDF.** A ferramenta lê as páginas do documento e monta um arquivo PDF para você. Quando estiver pronto, salve no celular, tablet ou computador.",
+        "textAlign": "left"
+      },
+      {
+        "id": "b-zi52mk4-mu9m8boo",
+        "type": "heading",
+        "content": "O que acontece por trás",
+        "level": 2,
+        "textAlign": "left"
+      },
+      {
+        "id": "b-7a0ix25-mu9m8boo",
+        "type": "paragraph",
+        "content": "Ao colar um link, a ferramenta abre a página pública do documento, lê as páginas uma a uma e as reúne em um PDF padrão. Vale saber duas coisas: só documentos visíveis publicamente podem ser processados, e o resultado é sempre um PDF comum que abre em qualquer leitor.",
+        "textAlign": "left"
+      },
+      {
+        "id": "b-hdogiib-mu9m8boo",
+        "type": "heading",
+        "content": "Dicas para melhores resultados",
+        "level": 2,
+        "textAlign": "left"
+      },
+      {
+        "id": "b-ka8w6wr-mu9m8boo",
+        "type": "list",
+        "content": "",
+        "listType": "unordered",
+        "listItems": [
+          "**Use o URL completo do documento.** O link completo da barra de endereços é a opção mais segura.",
+          "**Confira se o documento é público.** Documentos privados ou pagos não podem ser baixados.",
+          "**Um documento por vez.** Termine um download antes de começar o próximo.",
+          "**Documentos grandes demoram mais.** Um manual de 200 páginas precisa de mais tempo que uma apresentação de 10 slides."
+        ]
+      },
+      {
+        "id": "b-32k3ekp-mu9m8boo",
+        "type": "heading",
+        "content": "Se o download falhar",
+        "level": 2,
+        "textAlign": "left"
+      },
+      {
+        "id": "b-y18igfs-mu9m8boo",
+        "type": "list",
+        "content": "",
+        "listType": "unordered",
+        "listItems": [
+          "**“Documento não encontrado”** — confira o URL e veja se copiou o link inteiro.",
+          "**O download nunca começa** — o documento pode ser privado, removido ou temporariamente indisponível. Tente abri-lo no navegador primeiro.",
+          "**O PDF saiu errado** — alguns documentos têm layouts incomuns. Tente de novo.",
+          "**Ainda travado?** Envie o link pela página de contato."
+        ]
+      },
+      {
+        "id": "b-65g6gid-mu9m8boo",
+        "type": "heading",
+        "content": "Uma nota sobre uso justo",
+        "level": 2,
+        "textAlign": "left"
+      },
+      {
+        "id": "b-j5dp4d0-mu9m8boo",
+        "type": "paragraph",
+        "content": "Esta ferramenta é para documentos que você tem permissão para guardar: seus próprios envios, obras em domínio público e materiais compartilhados com autorização. Não a use para redistribuir obras protegidas de outras pessoas.",
+        "textAlign": "left"
+      }
+    ],
+    "createdAt": "2026-09-20T09:30:15.720Z",
+    "lastModified": "2026-09-20T09:30:15.720Z"
+  },
+  {
+    "id": "page-how-it-works-es",
+    "slug": "how-it-works-es",
+    "title": "Cómo Descargar Documentos de Scribd en PDF",
+    "pageKey": "how-it-works",
+    "translationGroupId": "group-page-how-it-works",
+    "language": "es",
+    "excerpt": "Tres simples pasos hasta tu copia sin conexión. Sin cuenta, sin instalar nada.",
+    "metaTitle": "Cómo Descargar Documentos de Scribd en PDF - Scribd Downloader",
+    "metaDescription": "Tres simples pasos hasta tu copia sin conexión. Sin cuenta, sin instalar nada.",
+    "author": "Minhas Hussain",
+    "authorName": "Minhas Hussain",
+    "status": "published",
+    "inTrash": false,
+    "content": "Descargar un documento de Scribd con esta herramienta toma menos de un minuto. Aquí explicamos exactamente cómo funciona, más algunos consejos para cuando algo no sale como esperabas.\n\n## Los tres pasos\n\n**1. Copia el enlace del documento.** Abre el documento de Scribd en tu navegador y copia el URL de la barra de direcciones.\n\n**2. Pégalo en la casilla de descarga.** Está en la parte superior de la página principal. Pega el enlace y pulsa el botón de descarga.\n\n**3. Guarda tu PDF.** La herramienta lee las páginas del documento y crea un archivo PDF. Cuando esté listo, guárdalo en tu teléfono, tableta o computadora.\n\n## Qué ocurre entre bastidores\n\nAl pegar un enlace, la herramienta abre la página pública del documento, lee sus páginas una por una y las reúne en un PDF estándar. Conviene saber dos cosas: solo se pueden procesar documentos visibles públicamente, y el resultado siempre es un PDF normal que abre en cualquier lector.\n\n## Consejos para mejores resultados\n\n- **Usa el URL completo del documento.** El enlace completo de la barra de direcciones es la opción más segura.\n- **Verifica que el documento sea público.** Los documentos privados o de pago no se pueden descargar.\n- **Un documento a la vez.** Termina una descarga antes de empezar la siguiente.\n- **Los documentos grandes tardan más.** Un manual de 200 páginas necesita más tiempo que una presentación de 10 diapositivas.\n\n## Si falla la descarga\n\n- **“Documento no encontrado”** — revisa el URL y asegúrate de haber copiado el enlace completo.\n- **La descarga nunca empieza** — el documento puede ser privado, eliminado o no disponible temporalmente. Intenta abrirlo en tu navegador primero.\n- **El PDF se ve mal** — algunos documentos tienen diseños poco comunes. Inténtalo de nuevo.\n- **¿Sigues atascado?** Envíanos el enlace desde la página de contacto.\n\n## Una nota sobre el uso justo\n\nEsta herramienta es para documentos que tienes permitido conservar: tus propias subidas, obras de dominio público y materiales compartidos con permiso. No la uses para redistribuir obras protegidas de otras personas.",
+    "blocks": [
+      {
+        "id": "b-px1ah7y-mu9m8boo",
+        "type": "paragraph",
+        "content": "Descargar un documento de Scribd con esta herramienta toma menos de un minuto. Aquí explicamos exactamente cómo funciona, más algunos consejos para cuando algo no sale como esperabas.",
+        "textAlign": "left"
+      },
+      {
+        "id": "b-bhbj1do-mu9m8boo",
+        "type": "heading",
+        "content": "Los tres pasos",
+        "level": 2,
+        "textAlign": "left"
+      },
+      {
+        "id": "b-k4kgehg-mu9m8boo",
+        "type": "paragraph",
+        "content": "**1. Copia el enlace del documento.** Abre el documento de Scribd en tu navegador y copia el URL de la barra de direcciones.",
+        "textAlign": "left"
+      },
+      {
+        "id": "b-4ec0e4g-mu9m8boo",
+        "type": "paragraph",
+        "content": "**2. Pégalo en la casilla de descarga.** Está en la parte superior de la página principal. Pega el enlace y pulsa el botón de descarga.",
+        "textAlign": "left"
+      },
+      {
+        "id": "b-7ihzbqa-mu9m8boo",
+        "type": "paragraph",
+        "content": "**3. Guarda tu PDF.** La herramienta lee las páginas del documento y crea un archivo PDF. Cuando esté listo, guárdalo en tu teléfono, tableta o computadora.",
+        "textAlign": "left"
+      },
+      {
+        "id": "b-r4dakj1-mu9m8boo",
+        "type": "heading",
+        "content": "Qué ocurre entre bastidores",
+        "level": 2,
+        "textAlign": "left"
+      },
+      {
+        "id": "b-2flb7q4-mu9m8boo",
+        "type": "paragraph",
+        "content": "Al pegar un enlace, la herramienta abre la página pública del documento, lee sus páginas una por una y las reúne en un PDF estándar. Conviene saber dos cosas: solo se pueden procesar documentos visibles públicamente, y el resultado siempre es un PDF normal que abre en cualquier lector.",
+        "textAlign": "left"
+      },
+      {
+        "id": "b-1oup4fq-mu9m8boo",
+        "type": "heading",
+        "content": "Consejos para mejores resultados",
+        "level": 2,
+        "textAlign": "left"
+      },
+      {
+        "id": "b-q6eua4w-mu9m8boo",
+        "type": "list",
+        "content": "",
+        "listType": "unordered",
+        "listItems": [
+          "**Usa el URL completo del documento.** El enlace completo de la barra de direcciones es la opción más segura.",
+          "**Verifica que el documento sea público.** Los documentos privados o de pago no se pueden descargar.",
+          "**Un documento a la vez.** Termina una descarga antes de empezar la siguiente.",
+          "**Los documentos grandes tardan más.** Un manual de 200 páginas necesita más tiempo que una presentación de 10 diapositivas."
+        ]
+      },
+      {
+        "id": "b-lopg7rv-mu9m8boo",
+        "type": "heading",
+        "content": "Si falla la descarga",
+        "level": 2,
+        "textAlign": "left"
+      },
+      {
+        "id": "b-rnhewli-mu9m8boo",
+        "type": "list",
+        "content": "",
+        "listType": "unordered",
+        "listItems": [
+          "**“Documento no encontrado”** — revisa el URL y asegúrate de haber copiado el enlace completo.",
+          "**La descarga nunca empieza** — el documento puede ser privado, eliminado o no disponible temporalmente. Intenta abrirlo en tu navegador primero.",
+          "**El PDF se ve mal** — algunos documentos tienen diseños poco comunes. Inténtalo de nuevo.",
+          "**¿Sigues atascado?** Envíanos el enlace desde la página de contacto."
+        ]
+      },
+      {
+        "id": "b-lwqg9q6-mu9m8boo",
+        "type": "heading",
+        "content": "Una nota sobre el uso justo",
+        "level": 2,
+        "textAlign": "left"
+      },
+      {
+        "id": "b-p5ldpug-mu9m8boo",
+        "type": "paragraph",
+        "content": "Esta herramienta es para documentos que tienes permitido conservar: tus propias subidas, obras de dominio público y materiales compartidos con permiso. No la uses para redistribuir obras protegidas de otras personas.",
+        "textAlign": "left"
+      }
+    ],
+    "createdAt": "2026-09-20T09:30:15.720Z",
+    "lastModified": "2026-09-20T09:30:15.720Z"
+  },
+  {
+    "id": "page-how-it-works-fr",
+    "slug": "how-it-works-fr",
+    "title": "Comment Télécharger des Documents Scribd en PDF",
+    "pageKey": "how-it-works",
+    "translationGroupId": "group-page-how-it-works",
+    "language": "fr",
+    "excerpt": "Trois étapes simples vers votre copie hors ligne. Sans compte, sans rien installer.",
+    "metaTitle": "Comment Télécharger des Documents Scribd en PDF - Scribd Downloader",
+    "metaDescription": "Trois étapes simples vers votre copie hors ligne. Sans compte, sans rien installer.",
+    "author": "Minhas Hussain",
+    "authorName": "Minhas Hussain",
+    "status": "published",
+    "inTrash": false,
+    "content": "Télécharger un document Scribd avec cet outil prend moins d’une minute. Voici exactement comment ça marche, plus quelques conseils pour les cas où ça ne se passe pas comme prévu.\n\n## Les trois étapes\n\n**1. Copiez le lien du document.** Ouvrez le document Scribd dans votre navigateur et copiez l’URL de la barre d’adresse.\n\n**2. Collez-le dans la zone de téléchargement.** Elle se trouve en haut de la page d’accueil. Collez le lien et appuyez sur le bouton de téléchargement.\n\n**3. Enregistrez votre PDF.** L’outil lit les pages du document et assemble un fichier PDF. Une fois prêt, enregistrez-le sur votre téléphone, tablette ou ordinateur.\n\n## Ce qui se passe en coulisses\n\nQuand vous collez un lien, l’outil ouvre la page publique du document, lit ses pages une à une et les assemble en un PDF standard. Deux choses à savoir : seuls les documents visibles publiquement peuvent être traités, et le résultat est toujours un PDF ordinaire qui s’ouvre dans n’importe quel lecteur.\n\n## Conseils pour de meilleurs résultats\n\n- **Utilisez l’URL complète du document.** Le lien complet de la barre d’adresse est le choix le plus sûr.\n- **Vérifiez que le document est public.** Les documents privés ou payants ne peuvent pas être téléchargés.\n- **Un document à la fois.** Terminez un téléchargement avant de commencer le suivant.\n- **Les gros documents prennent plus de temps.** Un manuel de 200 pages demande plus de temps qu’un diaporama de 10 slides.\n\n## Si le téléchargement échoue\n\n- **« Document introuvable »** — vérifiez l’URL et assurez-vous d’avoir copié le lien entier.\n- **Le téléchargement ne démarre jamais** — le document est peut-être privé, supprimé ou temporairement indisponible. Essayez d’abord de l’ouvrir dans votre navigateur.\n- **Le PDF semble incorrect** — certains documents ont des mises en page inhabituelles. Réessayez.\n- **Toujours bloqué ?** Envoyez-nous le lien via la page de contact.\n\n## Un mot sur l’usage loyal\n\nCet outil est destiné aux documents que vous êtes autorisé à conserver : vos propres envois, des œuvres du domaine public et des contenus partagés avec autorisation. Ne l’utilisez pas pour redistribuer les œuvres protégées d’autrui.",
+    "blocks": [
+      {
+        "id": "b-4x9zqmj-mu9m8boo",
+        "type": "paragraph",
+        "content": "Télécharger un document Scribd avec cet outil prend moins d’une minute. Voici exactement comment ça marche, plus quelques conseils pour les cas où ça ne se passe pas comme prévu.",
+        "textAlign": "left"
+      },
+      {
+        "id": "b-77digor-mu9m8boo",
+        "type": "heading",
+        "content": "Les trois étapes",
+        "level": 2,
+        "textAlign": "left"
+      },
+      {
+        "id": "b-t8c2eih-mu9m8boo",
+        "type": "paragraph",
+        "content": "**1. Copiez le lien du document.** Ouvrez le document Scribd dans votre navigateur et copiez l’URL de la barre d’adresse.",
+        "textAlign": "left"
+      },
+      {
+        "id": "b-xfcnl49-mu9m8boo",
+        "type": "paragraph",
+        "content": "**2. Collez-le dans la zone de téléchargement.** Elle se trouve en haut de la page d’accueil. Collez le lien et appuyez sur le bouton de téléchargement.",
+        "textAlign": "left"
+      },
+      {
+        "id": "b-72w6ec2-mu9m8boo",
+        "type": "paragraph",
+        "content": "**3. Enregistrez votre PDF.** L’outil lit les pages du document et assemble un fichier PDF. Une fois prêt, enregistrez-le sur votre téléphone, tablette ou ordinateur.",
+        "textAlign": "left"
+      },
+      {
+        "id": "b-di9xybx-mu9m8boo",
+        "type": "heading",
+        "content": "Ce qui se passe en coulisses",
+        "level": 2,
+        "textAlign": "left"
+      },
+      {
+        "id": "b-pr5tu68-mu9m8boo",
+        "type": "paragraph",
+        "content": "Quand vous collez un lien, l’outil ouvre la page publique du document, lit ses pages une à une et les assemble en un PDF standard. Deux choses à savoir : seuls les documents visibles publiquement peuvent être traités, et le résultat est toujours un PDF ordinaire qui s’ouvre dans n’importe quel lecteur.",
+        "textAlign": "left"
+      },
+      {
+        "id": "b-bqf6khq-mu9m8boo",
+        "type": "heading",
+        "content": "Conseils pour de meilleurs résultats",
+        "level": 2,
+        "textAlign": "left"
+      },
+      {
+        "id": "b-emlqv0s-mu9m8boo",
+        "type": "list",
+        "content": "",
+        "listType": "unordered",
+        "listItems": [
+          "**Utilisez l’URL complète du document.** Le lien complet de la barre d’adresse est le choix le plus sûr.",
+          "**Vérifiez que le document est public.** Les documents privés ou payants ne peuvent pas être téléchargés.",
+          "**Un document à la fois.** Terminez un téléchargement avant de commencer le suivant.",
+          "**Les gros documents prennent plus de temps.** Un manuel de 200 pages demande plus de temps qu’un diaporama de 10 slides."
+        ]
+      },
+      {
+        "id": "b-89cdfqi-mu9m8boo",
+        "type": "heading",
+        "content": "Si le téléchargement échoue",
+        "level": 2,
+        "textAlign": "left"
+      },
+      {
+        "id": "b-pvy68n3-mu9m8boo",
+        "type": "list",
+        "content": "",
+        "listType": "unordered",
+        "listItems": [
+          "**« Document introuvable »** — vérifiez l’URL et assurez-vous d’avoir copié le lien entier.",
+          "**Le téléchargement ne démarre jamais** — le document est peut-être privé, supprimé ou temporairement indisponible. Essayez d’abord de l’ouvrir dans votre navigateur.",
+          "**Le PDF semble incorrect** — certains documents ont des mises en page inhabituelles. Réessayez.",
+          "**Toujours bloqué ?** Envoyez-nous le lien via la page de contact."
+        ]
+      },
+      {
+        "id": "b-15k9gmm-mu9m8boo",
+        "type": "heading",
+        "content": "Un mot sur l’usage loyal",
+        "level": 2,
+        "textAlign": "left"
+      },
+      {
+        "id": "b-9c8p2zr-mu9m8boo",
+        "type": "paragraph",
+        "content": "Cet outil est destiné aux documents que vous êtes autorisé à conserver : vos propres envois, des œuvres du domaine public et des contenus partagés avec autorisation. Ne l’utilisez pas pour redistribuer les œuvres protégées d’autrui.",
+        "textAlign": "left"
+      }
+    ],
+    "createdAt": "2026-09-20T09:30:15.720Z",
+    "lastModified": "2026-09-20T09:30:15.720Z"
+  },
+  {
+    "id": "page-how-it-works-de",
+    "slug": "how-it-works-de",
+    "title": "So lädst du Scribd-Dokumente als PDF herunter",
+    "pageKey": "how-it-works",
+    "translationGroupId": "group-page-how-it-works",
+    "language": "de",
+    "excerpt": "Drei einfache Schritte bis zu deiner Offline-Kopie. Ohne Konto, ohne Installation.",
+    "metaTitle": "So lädst du Scribd-Dokumente als PDF herunter - Scribd Downloader",
+    "metaDescription": "Drei einfache Schritte bis zu deiner Offline-Kopie. Ohne Konto, ohne Installation.",
+    "author": "Minhas Hussain",
+    "authorName": "Minhas Hussain",
+    "status": "published",
+    "inTrash": false,
+    "content": "Ein Scribd-Dokument mit diesem Tool herunterzuladen dauert weniger als eine Minute. Hier erfährst du genau, wie es funktioniert — plus ein paar Tipps für den Fall, dass etwas nicht klappt.\n\n## Die drei Schritte\n\n**1. Kopiere den Dokument-Link.** Öffne das Scribd-Dokument in deinem Browser und kopiere die URL aus der Adressleiste.\n\n**2. Füge ihn in das Download-Feld ein.** Du findest es oben auf der Startseite. Füge den Link ein und drücke den Download-Button.\n\n**3. Speichere dein PDF.** Das Tool liest die Seiten des Dokuments und erstellt daraus eine PDF-Datei. Wenn sie fertig ist, speichere sie auf Handy, Tablet oder Computer.\n\n## Was im Hintergrund passiert\n\nWenn du einen Link einfügst, öffnet das Tool die öffentliche Dokumentseite, liest die Seiten einzeln aus und fügt sie zu einem Standard-PDF zusammen. Zwei Dinge solltest du wissen: Nur öffentlich sichtbare Dokumente können verarbeitet werden, und das Ergebnis ist immer ein normales PDF, das jeder Reader öffnet.\n\n## Tipps für bessere Ergebnisse\n\n- **Nutze die vollständige Dokument-URL.** Der komplette Link aus der Adressleiste ist die sicherste Wahl.\n- **Prüfe, ob das Dokument öffentlich ist.** Private oder kostenpflichtige Dokumente können nicht heruntergeladen werden.\n- **Ein Dokument nach dem anderen.** Schließe einen Download ab, bevor du den nächsten startest.\n- **Große Dokumente brauchen länger.** Ein 200-seitiges Handbuch dauert länger als eine Präsentation mit 10 Folien.\n\n## Wenn ein Download fehlschlägt\n\n- **„Dokument nicht gefunden“** — überprüfe die URL und stelle sicher, dass du den kompletten Link kopiert hast.\n- **Der Download startet nie** — das Dokument ist vielleicht privat, gelöscht oder vorübergehend nicht verfügbar. Öffne es zuerst in deinem Browser.\n- **Das PDF sieht falsch aus** — manche Dokumente haben ungewöhnliche Layouts. Versuch es erneut.\n- **Immer noch festgefahren?** Schick uns den Link über die Kontaktseite.\n\n## Ein Hinweis zur fairen Nutzung\n\nDieses Tool ist für Dokumente gedacht, die du behalten darfst: deine eigenen Uploads, gemeinfreie Werke und Materialien, die mit Erlaubnis geteilt wurden. Nutze es bitte nicht, um urheberrechtlich geschützte Werke anderer weiterzuverbreiten.",
+    "blocks": [
+      {
+        "id": "b-cvc1oll-mu9m8boo",
+        "type": "paragraph",
+        "content": "Ein Scribd-Dokument mit diesem Tool herunterzuladen dauert weniger als eine Minute. Hier erfährst du genau, wie es funktioniert — plus ein paar Tipps für den Fall, dass etwas nicht klappt.",
+        "textAlign": "left"
+      },
+      {
+        "id": "b-xspwhuw-mu9m8boo",
+        "type": "heading",
+        "content": "Die drei Schritte",
+        "level": 2,
+        "textAlign": "left"
+      },
+      {
+        "id": "b-nabazy6-mu9m8boo",
+        "type": "paragraph",
+        "content": "**1. Kopiere den Dokument-Link.** Öffne das Scribd-Dokument in deinem Browser und kopiere die URL aus der Adressleiste.",
+        "textAlign": "left"
+      },
+      {
+        "id": "b-y95j9kh-mu9m8boo",
+        "type": "paragraph",
+        "content": "**2. Füge ihn in das Download-Feld ein.** Du findest es oben auf der Startseite. Füge den Link ein und drücke den Download-Button.",
+        "textAlign": "left"
+      },
+      {
+        "id": "b-2y9xecn-mu9m8boo",
+        "type": "paragraph",
+        "content": "**3. Speichere dein PDF.** Das Tool liest die Seiten des Dokuments und erstellt daraus eine PDF-Datei. Wenn sie fertig ist, speichere sie auf Handy, Tablet oder Computer.",
+        "textAlign": "left"
+      },
+      {
+        "id": "b-yl02o3g-mu9m8boo",
+        "type": "heading",
+        "content": "Was im Hintergrund passiert",
+        "level": 2,
+        "textAlign": "left"
+      },
+      {
+        "id": "b-gkqgs46-mu9m8boo",
+        "type": "paragraph",
+        "content": "Wenn du einen Link einfügst, öffnet das Tool die öffentliche Dokumentseite, liest die Seiten einzeln aus und fügt sie zu einem Standard-PDF zusammen. Zwei Dinge solltest du wissen: Nur öffentlich sichtbare Dokumente können verarbeitet werden, und das Ergebnis ist immer ein normales PDF, das jeder Reader öffnet.",
+        "textAlign": "left"
+      },
+      {
+        "id": "b-yly9xox-mu9m8boo",
+        "type": "heading",
+        "content": "Tipps für bessere Ergebnisse",
+        "level": 2,
+        "textAlign": "left"
+      },
+      {
+        "id": "b-5uxonwb-mu9m8boo",
+        "type": "list",
+        "content": "",
+        "listType": "unordered",
+        "listItems": [
+          "**Nutze die vollständige Dokument-URL.** Der komplette Link aus der Adressleiste ist die sicherste Wahl.",
+          "**Prüfe, ob das Dokument öffentlich ist.** Private oder kostenpflichtige Dokumente können nicht heruntergeladen werden.",
+          "**Ein Dokument nach dem anderen.** Schließe einen Download ab, bevor du den nächsten startest.",
+          "**Große Dokumente brauchen länger.** Ein 200-seitiges Handbuch dauert länger als eine Präsentation mit 10 Folien."
+        ]
+      },
+      {
+        "id": "b-o41rqrd-mu9m8boo",
+        "type": "heading",
+        "content": "Wenn ein Download fehlschlägt",
+        "level": 2,
+        "textAlign": "left"
+      },
+      {
+        "id": "b-zgyta0e-mu9m8boo",
+        "type": "list",
+        "content": "",
+        "listType": "unordered",
+        "listItems": [
+          "**„Dokument nicht gefunden“** — überprüfe die URL und stelle sicher, dass du den kompletten Link kopiert hast.",
+          "**Der Download startet nie** — das Dokument ist vielleicht privat, gelöscht oder vorübergehend nicht verfügbar. Öffne es zuerst in deinem Browser.",
+          "**Das PDF sieht falsch aus** — manche Dokumente haben ungewöhnliche Layouts. Versuch es erneut.",
+          "**Immer noch festgefahren?** Schick uns den Link über die Kontaktseite."
+        ]
+      },
+      {
+        "id": "b-pykxw3z-mu9m8boo",
+        "type": "heading",
+        "content": "Ein Hinweis zur fairen Nutzung",
+        "level": 2,
+        "textAlign": "left"
+      },
+      {
+        "id": "b-g73hkm6-mu9m8boo",
+        "type": "paragraph",
+        "content": "Dieses Tool ist für Dokumente gedacht, die du behalten darfst: deine eigenen Uploads, gemeinfreie Werke und Materialien, die mit Erlaubnis geteilt wurden. Nutze es bitte nicht, um urheberrechtlich geschützte Werke anderer weiterzuverbreiten.",
+        "textAlign": "left"
+      }
+    ],
+    "createdAt": "2026-09-20T09:30:15.720Z",
+    "lastModified": "2026-09-20T09:30:15.720Z"
+  },
+  {
+    "id": "page-how-it-works-id",
+    "slug": "how-it-works-id",
+    "title": "Cara Mengunduh Dokumen Scribd sebagai PDF",
+    "pageKey": "how-it-works",
+    "translationGroupId": "group-page-how-it-works",
+    "language": "id",
+    "excerpt": "Tiga langkah mudah menuju salinan offline. Tanpa akun, tanpa instal perangkat lunak.",
+    "metaTitle": "Cara Mengunduh Dokumen Scribd sebagai PDF - Scribd Downloader",
+    "metaDescription": "Tiga langkah mudah menuju salinan offline. Tanpa akun, tanpa instal perangkat lunak.",
+    "author": "Minhas Hussain",
+    "authorName": "Minhas Hussain",
+    "status": "published",
+    "inTrash": false,
+    "content": "Mengunduh dokumen Scribd dengan alat ini memakan waktu kurang dari satu menit. Berikut penjelasan persis cara kerjanya, plus beberapa tips jika terjadi kendala.\n\n## Tiga langkahnya\n\n**1. Salin tautan dokumen.** Buka dokumen Scribd di browser lalu salin URL dari bilah alamat.\n\n**2. Tempel ke kotak unduhan.** Kotaknya ada di bagian atas beranda. Tempel tautan lalu tekan tombol unduh.\n\n**3. Simpan PDF-mu.** Alat akan membaca halaman-halaman dokumen dan menyusun berkas PDF untukmu. Setelah siap, simpan ke ponsel, tablet, atau komputer.\n\n## Yang terjadi di balik layar\n\nSaat kamu menempel tautan, alat membuka halaman publik dokumen, membaca halamannya satu per satu, lalu merakitnya menjadi PDF standar. Dua hal perlu kamu tahu: hanya dokumen yang terlihat publik yang bisa diproses, dan hasilnya selalu PDF biasa yang bisa dibuka di pembaca mana pun.\n\n## Tips agar hasilnya bagus\n\n- **Gunakan URL dokumen yang lengkap.** Tautan lengkap dari bilah alamat adalah pilihan paling aman.\n- **Pastikan dokumen bersifat publik.** Dokumen privat atau berbayar tidak bisa diunduh.\n- **Satu dokumen dalam satu waktu.** Selesaikan satu unduhan sebelum memulai berikutnya.\n- **Dokumen besar butuh waktu lebih lama.** Manual 200 halaman jelas lebih lama daripada presentasi 10 slide.\n\n## Jika unduhan gagal\n\n- **“Dokumen tidak ditemukan”** — periksa URL dan pastikan kamu menyalin tautan secara utuh.\n- **Unduhan tidak kunjung mulai** — dokumen mungkin privat, dihapus, atau sedang tidak tersedia. Coba buka dulu di browser.\n- **PDF terlihat aneh** — sebagian dokumen memakai tata letak yang tidak umum. Coba lagi.\n- **Masih buntu?** Kirim tautannya lewat halaman kontak.\n\n## Catatan tentang penggunaan wajar\n\nAlat ini ditujukan untuk dokumen yang memang boleh kamu simpan: unggahanmu sendiri, karya domain publik, dan materi yang dibagikan dengan izin. Jangan memakainya untuk menyebarluaskan karya berhak cipta milik orang lain.",
+    "blocks": [
+      {
+        "id": "b-fc92dek-mu9m8boo",
+        "type": "paragraph",
+        "content": "Mengunduh dokumen Scribd dengan alat ini memakan waktu kurang dari satu menit. Berikut penjelasan persis cara kerjanya, plus beberapa tips jika terjadi kendala.",
+        "textAlign": "left"
+      },
+      {
+        "id": "b-w0cz1an-mu9m8boo",
+        "type": "heading",
+        "content": "Tiga langkahnya",
+        "level": 2,
+        "textAlign": "left"
+      },
+      {
+        "id": "b-q9l7foa-mu9m8boo",
+        "type": "paragraph",
+        "content": "**1. Salin tautan dokumen.** Buka dokumen Scribd di browser lalu salin URL dari bilah alamat.",
+        "textAlign": "left"
+      },
+      {
+        "id": "b-j2lreio-mu9m8boo",
+        "type": "paragraph",
+        "content": "**2. Tempel ke kotak unduhan.** Kotaknya ada di bagian atas beranda. Tempel tautan lalu tekan tombol unduh.",
+        "textAlign": "left"
+      },
+      {
+        "id": "b-c4qjh3k-mu9m8bop",
+        "type": "paragraph",
+        "content": "**3. Simpan PDF-mu.** Alat akan membaca halaman-halaman dokumen dan menyusun berkas PDF untukmu. Setelah siap, simpan ke ponsel, tablet, atau komputer.",
+        "textAlign": "left"
+      },
+      {
+        "id": "b-5ywbx39-mu9m8bop",
+        "type": "heading",
+        "content": "Yang terjadi di balik layar",
+        "level": 2,
+        "textAlign": "left"
+      },
+      {
+        "id": "b-2k2j2fs-mu9m8bop",
+        "type": "paragraph",
+        "content": "Saat kamu menempel tautan, alat membuka halaman publik dokumen, membaca halamannya satu per satu, lalu merakitnya menjadi PDF standar. Dua hal perlu kamu tahu: hanya dokumen yang terlihat publik yang bisa diproses, dan hasilnya selalu PDF biasa yang bisa dibuka di pembaca mana pun.",
+        "textAlign": "left"
+      },
+      {
+        "id": "b-m9z2ljg-mu9m8bop",
+        "type": "heading",
+        "content": "Tips agar hasilnya bagus",
+        "level": 2,
+        "textAlign": "left"
+      },
+      {
+        "id": "b-94lzwed-mu9m8bop",
+        "type": "list",
+        "content": "",
+        "listType": "unordered",
+        "listItems": [
+          "**Gunakan URL dokumen yang lengkap.** Tautan lengkap dari bilah alamat adalah pilihan paling aman.",
+          "**Pastikan dokumen bersifat publik.** Dokumen privat atau berbayar tidak bisa diunduh.",
+          "**Satu dokumen dalam satu waktu.** Selesaikan satu unduhan sebelum memulai berikutnya.",
+          "**Dokumen besar butuh waktu lebih lama.** Manual 200 halaman jelas lebih lama daripada presentasi 10 slide."
+        ]
+      },
+      {
+        "id": "b-2kkegtq-mu9m8bop",
+        "type": "heading",
+        "content": "Jika unduhan gagal",
+        "level": 2,
+        "textAlign": "left"
+      },
+      {
+        "id": "b-3y0110d-mu9m8bop",
+        "type": "list",
+        "content": "",
+        "listType": "unordered",
+        "listItems": [
+          "**“Dokumen tidak ditemukan”** — periksa URL dan pastikan kamu menyalin tautan secara utuh.",
+          "**Unduhan tidak kunjung mulai** — dokumen mungkin privat, dihapus, atau sedang tidak tersedia. Coba buka dulu di browser.",
+          "**PDF terlihat aneh** — sebagian dokumen memakai tata letak yang tidak umum. Coba lagi.",
+          "**Masih buntu?** Kirim tautannya lewat halaman kontak."
+        ]
+      },
+      {
+        "id": "b-4j8e8ln-mu9m8bop",
+        "type": "heading",
+        "content": "Catatan tentang penggunaan wajar",
+        "level": 2,
+        "textAlign": "left"
+      },
+      {
+        "id": "b-beaaetm-mu9m8bop",
+        "type": "paragraph",
+        "content": "Alat ini ditujukan untuk dokumen yang memang boleh kamu simpan: unggahanmu sendiri, karya domain publik, dan materi yang dibagikan dengan izin. Jangan memakainya untuk menyebarluaskan karya berhak cipta milik orang lain.",
+        "textAlign": "left"
+      }
+    ],
+    "createdAt": "2026-09-20T09:30:15.721Z",
+    "lastModified": "2026-09-20T09:30:15.721Z"
+  },
+  {
+    "id": "page-how-it-works-hi",
+    "slug": "how-it-works-hi",
+    "title": "Scribd दस्तावेज़ PDF के रूप में कैसे डाउनलोड करें",
+    "pageKey": "how-it-works",
+    "translationGroupId": "group-page-how-it-works",
+    "language": "hi",
+    "excerpt": "आपकी ऑफ़लाइन प्रति के लिए तीन आसान चरण। बिना खाता बनाए, बिना ऐप इंस्टॉल किए।",
+    "metaTitle": "Scribd दस्तावेज़ PDF के रूप में कैसे डाउनलोड करें - Scribd Downloader",
+    "metaDescription": "आपकी ऑफ़लाइन प्रति के लिए तीन आसान चरण। बिना खाता बनाए, बिना ऐप इंस्टॉल किए।",
+    "author": "Minhas Hussain",
+    "authorName": "Minhas Hussain",
+    "status": "published",
+    "inTrash": false,
+    "content": "इस टूल से Scribd दस्तावेज़ डाउनलोड करने में एक मिनट से भी कम समय लगता है।\n\n## तीन सरल चरण\n\n**1. दस्तावेज़ का लिंक कॉपी करें।** ब्राउज़र में Scribd दस्तावेज़ खोलें और एड्रेस बार से URL कॉपी करें।\n\n**2. डाउनलोड बॉक्स में पेस्ट करें।** होमपेज के शीर्ष पर दिए गए बॉक्स में लिंक डालें और डाउनलोड बटन दबाएं।\n\n**3. अपनी PDF सहेजें।** टूल दस्तावेज़ के पृष्ठों को प्रोसेस करके PDF तैयार करता है। तैयार होने पर इसे अपने डिवाइस में सेव करें।",
+    "blocks": [
+      {
+        "id": "b-wsiqioo-mu9m8bop",
+        "type": "paragraph",
+        "content": "इस टूल से Scribd दस्तावेज़ डाउनलोड करने में एक मिनट से भी कम समय लगता है।",
+        "textAlign": "left"
+      },
+      {
+        "id": "b-e3o6g7l-mu9m8bop",
+        "type": "heading",
+        "content": "तीन सरल चरण",
+        "level": 2,
+        "textAlign": "left"
+      },
+      {
+        "id": "b-9m8pgve-mu9m8bop",
+        "type": "paragraph",
+        "content": "**1. दस्तावेज़ का लिंक कॉपी करें।** ब्राउज़र में Scribd दस्तावेज़ खोलें और एड्रेस बार से URL कॉपी करें।",
+        "textAlign": "left"
+      },
+      {
+        "id": "b-0ywp98w-mu9m8bop",
+        "type": "paragraph",
+        "content": "**2. डाउनलोड बॉक्स में पेस्ट करें।** होमपेज के शीर्ष पर दिए गए बॉक्स में लिंक डालें और डाउनलोड बटन दबाएं।",
+        "textAlign": "left"
+      },
+      {
+        "id": "b-vcaysp0-mu9m8bop",
+        "type": "paragraph",
+        "content": "**3. अपनी PDF सहेजें।** टूल दस्तावेज़ के पृष्ठों को प्रोसेस करके PDF तैयार करता है। तैयार होने पर इसे अपने डिवाइस में सेव करें।",
+        "textAlign": "left"
+      }
+    ],
+    "createdAt": "2026-09-20T09:30:15.721Z",
+    "lastModified": "2026-09-20T09:30:15.721Z"
+  },
+  {
+    "id": "page-contact",
+    "slug": "contact",
+    "title": "Contact Us & Developer Support",
+    "pageKey": "contact",
+    "translationGroupId": "group-page-contact",
+    "language": "en",
+    "excerpt": "Questions, broken links, or copyright requests — send us a message.",
+    "metaTitle": "Contact Us - Scribd Downloader",
+    "metaDescription": "Get in touch with our team for technical support, feature suggestions, or general inquiries.",
+    "author": "Admin Team",
+    "authorName": "Admin Team",
+    "status": "published",
+    "inTrash": false,
+    "content": "Use the form to report a problem with a download, ask a question, or request the removal of a copyrighted document.\n\nMessages are reviewed by our team. To help us respond faster, include the full Scribd link and a short description of what happened.",
+    "blocks": [
+      {
+        "id": "b-mbdss76-mu9m8bop",
+        "type": "paragraph",
+        "content": "Use the form to report a problem with a download, ask a question, or request the removal of a copyrighted document.",
+        "textAlign": "left"
+      },
+      {
+        "id": "b-jo0fohy-mu9m8bop",
+        "type": "paragraph",
+        "content": "Messages are reviewed by our team. To help us respond faster, include the full Scribd link and a short description of what happened.",
+        "textAlign": "left"
+      }
+    ],
+    "createdAt": "2026-09-20T09:30:15.721Z",
+    "lastModified": "2026-09-20T09:30:15.721Z"
+  },
+  {
+    "id": "page-contact-br",
+    "slug": "contact-br",
+    "title": "Fale Conosco",
+    "pageKey": "contact",
+    "translationGroupId": "group-page-contact",
+    "language": "br",
+    "excerpt": "Dúvidas, links quebrados ou solicitações de direitos autorais — envie uma mensagem abaixo.",
+    "metaTitle": "Fale Conosco - Scribd Downloader",
+    "metaDescription": "Dúvidas, links quebrados ou solicitações de direitos autorais — envie uma mensagem abaixo.",
+    "author": "Admin Team",
+    "authorName": "Admin Team",
+    "status": "published",
+    "inTrash": false,
+    "content": "Use o formulário para relatar um problema com um download, fazer uma pergunta ou solicitar a remoção de um documento protegido por direitos autorais.\n\nAs mensagens são revisadas pela nossa equipe. Para nos ajudar a responder mais rápido, inclua o link completo do Scribd e uma breve descrição do que aconteceu.",
+    "blocks": [
+      {
+        "id": "b-gr982na-mu9m8bop",
+        "type": "paragraph",
+        "content": "Use o formulário para relatar um problema com um download, fazer uma pergunta ou solicitar a remoção de um documento protegido por direitos autorais.",
+        "textAlign": "left"
+      },
+      {
+        "id": "b-aashql0-mu9m8bop",
+        "type": "paragraph",
+        "content": "As mensagens são revisadas pela nossa equipe. Para nos ajudar a responder mais rápido, inclua o link completo do Scribd e uma breve descrição do que aconteceu.",
+        "textAlign": "left"
+      }
+    ],
+    "createdAt": "2026-09-20T09:30:15.721Z",
+    "lastModified": "2026-09-20T09:30:15.721Z"
+  },
+  {
+    "id": "page-contact-es",
+    "slug": "contact-es",
+    "title": "Contáctanos",
+    "pageKey": "contact",
+    "translationGroupId": "group-page-contact",
+    "language": "es",
+    "excerpt": "Preguntas, enlaces rotos o solicitudes de derechos de autor: envíanos un mensaje.",
+    "metaTitle": "Contáctanos - Scribd Downloader",
+    "metaDescription": "Preguntas, enlaces rotos o solicitudes de derechos de autor: envíanos un mensaje.",
+    "author": "Admin Team",
+    "authorName": "Admin Team",
+    "status": "published",
+    "inTrash": false,
+    "content": "Usa el formulario para reportar un problema con una descarga, hacer una pregunta o solicitar la eliminación de un documento protegido.\n\nLos mensajes son revisados por nuestro equipo. Para ayudarnos a responder más rápido, incluye el enlace completo de Scribd y una breve descripción de lo ocurrido.",
+    "blocks": [
+      {
+        "id": "b-egvhuhu-mu9m8bop",
+        "type": "paragraph",
+        "content": "Usa el formulario para reportar un problema con una descarga, hacer una pregunta o solicitar la eliminación de un documento protegido.",
+        "textAlign": "left"
+      },
+      {
+        "id": "b-hmp2tgt-mu9m8bop",
+        "type": "paragraph",
+        "content": "Los mensajes son revisados por nuestro equipo. Para ayudarnos a responder más rápido, incluye el enlace completo de Scribd y una breve descripción de lo ocurrido.",
+        "textAlign": "left"
+      }
+    ],
+    "createdAt": "2026-09-20T09:30:15.721Z",
+    "lastModified": "2026-09-20T09:30:15.721Z"
+  },
+  {
+    "id": "page-contact-fr",
+    "slug": "contact-fr",
+    "title": "Nous Contacter",
+    "pageKey": "contact",
+    "translationGroupId": "group-page-contact",
+    "language": "fr",
+    "excerpt": "Questions, liens cassés ou demandes de droits d’auteur — envoyez-nous un message ci-dessous.",
+    "metaTitle": "Nous Contacter - Scribd Downloader",
+    "metaDescription": "Questions, liens cassés ou demandes de droits d’auteur — envoyez-nous un message ci-dessous.",
+    "author": "Admin Team",
+    "authorName": "Admin Team",
+    "status": "published",
+    "inTrash": false,
+    "content": "Utilisez le formulaire pour signaler un problème de téléchargement, poser une question ou demander le retrait d’un document protégé.\n\nLes messages sont examinés par notre équipe. Pour nous aider à répondre plus vite, incluez le lien Scribd complet et une courte description du problème.",
+    "blocks": [
+      {
+        "id": "b-yc9m447-mu9m8bop",
+        "type": "paragraph",
+        "content": "Utilisez le formulaire pour signaler un problème de téléchargement, poser une question ou demander le retrait d’un document protégé.",
+        "textAlign": "left"
+      },
+      {
+        "id": "b-um1z0kp-mu9m8bop",
+        "type": "paragraph",
+        "content": "Les messages sont examinés par notre équipe. Pour nous aider à répondre plus vite, incluez le lien Scribd complet et une courte description du problème.",
+        "textAlign": "left"
+      }
+    ],
+    "createdAt": "2026-09-20T09:30:15.721Z",
+    "lastModified": "2026-09-20T09:30:15.721Z"
+  },
+  {
+    "id": "page-contact-de",
+    "slug": "contact-de",
+    "title": "Kontakt",
+    "pageKey": "contact",
+    "translationGroupId": "group-page-contact",
+    "language": "de",
+    "excerpt": "Fragen, defekte Links oder Urheberrechtsanfragen — schreib uns einfach eine Nachricht.",
+    "metaTitle": "Kontakt - Scribd Downloader",
+    "metaDescription": "Fragen, defekte Links oder Urheberrechtsanfragen — schreib uns einfach eine Nachricht.",
+    "author": "Admin Team",
+    "authorName": "Admin Team",
+    "status": "published",
+    "inTrash": false,
+    "content": "Nutze das Formular, um ein Problem mit einem Download zu melden, eine Frage zu stellen oder die Entfernung eines urheberrechtlich geschützten Dokuments zu beantragen.\n\nNachrichten werden von unserem Team geprüft. Damit wir schneller antworten können, füge bitte den vollständigen Scribd-Link und eine kurze Beschreibung des Problems hinzu.",
+    "blocks": [
+      {
+        "id": "b-x464s90-mu9m8bop",
+        "type": "paragraph",
+        "content": "Nutze das Formular, um ein Problem mit einem Download zu melden, eine Frage zu stellen oder die Entfernung eines urheberrechtlich geschützten Dokuments zu beantragen.",
+        "textAlign": "left"
+      },
+      {
+        "id": "b-yo0feog-mu9m8bop",
+        "type": "paragraph",
+        "content": "Nachrichten werden von unserem Team geprüft. Damit wir schneller antworten können, füge bitte den vollständigen Scribd-Link und eine kurze Beschreibung des Problems hinzu.",
+        "textAlign": "left"
+      }
+    ],
+    "createdAt": "2026-09-20T09:30:15.721Z",
+    "lastModified": "2026-09-20T09:30:15.721Z"
+  },
+  {
+    "id": "page-contact-id",
+    "slug": "contact-id",
+    "title": "Hubungi Kami",
+    "pageKey": "contact",
+    "translationGroupId": "group-page-contact",
+    "language": "id",
+    "excerpt": "Pertanyaan, tautan rusak, atau permintaan hak cipta — kirim pesan lewat formulir di bawah.",
+    "metaTitle": "Hubungi Kami - Scribd Downloader",
+    "metaDescription": "Pertanyaan, tautan rusak, atau permintaan hak cipta — kirim pesan lewat formulir di bawah.",
+    "author": "Admin Team",
+    "authorName": "Admin Team",
+    "status": "published",
+    "inTrash": false,
+    "content": "Gunakan formulir untuk melaporkan masalah unduhan, bertanya, atau meminta penghapusan dokumen berhak cipta.\n\nPesan akan ditinjau oleh tim kami. Agar kami bisa merespons lebih cepat, sertakan tautan Scribd lengkap dan deskripsi singkat tentang apa yang terjadi.",
+    "blocks": [
+      {
+        "id": "b-mnev9cv-mu9m8bop",
+        "type": "paragraph",
+        "content": "Gunakan formulir untuk melaporkan masalah unduhan, bertanya, atau meminta penghapusan dokumen berhak cipta.",
+        "textAlign": "left"
+      },
+      {
+        "id": "b-ukfpg7w-mu9m8bop",
+        "type": "paragraph",
+        "content": "Pesan akan ditinjau oleh tim kami. Agar kami bisa merespons lebih cepat, sertakan tautan Scribd lengkap dan deskripsi singkat tentang apa yang terjadi.",
+        "textAlign": "left"
+      }
+    ],
+    "createdAt": "2026-09-20T09:30:15.721Z",
+    "lastModified": "2026-09-20T09:30:15.721Z"
+  },
+  {
+    "id": "page-contact-hi",
+    "slug": "contact-hi",
+    "title": "हमसे संपर्क करें",
+    "pageKey": "contact",
+    "translationGroupId": "group-page-contact",
+    "language": "hi",
+    "excerpt": "प्रश्न, टूटे हुए लिंक या कॉपीराइट अनुरोध — हमें नीचे संदेश भेजें।",
+    "metaTitle": "हमसे संपर्क करें - Scribd Downloader",
+    "metaDescription": "प्रश्न, टूटे हुए लिंक या कॉपीराइट अनुरोध — हमें नीचे संदेश भेजें।",
+    "author": "Admin Team",
+    "authorName": "Admin Team",
+    "status": "published",
+    "inTrash": false,
+    "content": "डाउनलोड से संबंधित समस्या की रिपोर्ट करने, प्रश्न पूछने या कॉपीराइट दस्तावेज़ को हटाने का अनुरोध करने के लिए फॉर्म का उपयोग करें। हमारी टीम सभी संदेशों की समीक्षा करती है।",
+    "blocks": [
+      {
+        "id": "b-8kaupft-mu9m8bop",
+        "type": "paragraph",
+        "content": "डाउनलोड से संबंधित समस्या की रिपोर्ट करने, प्रश्न पूछने या कॉपीराइट दस्तावेज़ को हटाने का अनुरोध करने के लिए फॉर्म का उपयोग करें। हमारी टीम सभी संदेशों की समीक्षा करती है।",
+        "textAlign": "left"
+      }
+    ],
+    "createdAt": "2026-09-20T09:30:15.721Z",
+    "lastModified": "2026-09-20T09:30:15.721Z"
+  },
+  {
+    "id": "page-privacy",
+    "slug": "privacy",
+    "title": "Privacy Policy & Ephemeral Data Processing",
+    "pageKey": "privacy",
+    "translationGroupId": "group-page-privacy",
+    "language": "en",
+    "excerpt": "Review our strict zero-log privacy policy and ephemeral file processing guidelines.",
+    "metaTitle": "Privacy Policy - Scribd Downloader",
+    "metaDescription": "Review our strict privacy guidelines: zero user logging, no account requirement, and instant file purge.",
+    "author": "Legal Dept",
+    "authorName": "Legal Dept",
+    "status": "published",
+    "inTrash": false,
+    "content": "# Privacy Policy & Ephemeral Data Processing\n\nHow Scribd Downloader guarantees user privacy, zero user tracking, and data hygiene.\n\n### 1. Zero User Registration\nWe do not require users to create an account, log in, or submit any personally identifiable information (PII). We do not collect names, passwords, credit card numbers, or physical addresses.\n\n### 2. Ephemeral Document Retention\nWhen a Scribd URL is submitted for conversion, our system fetches page tiles into temporary server memory strictly for the purpose of generating the requested PDF or ZIP file. All temporary files are permanently purged from server disks within 2 hours of generation.\n\n### 3. Analytics & Cookies\nWe do not use third-party behavioral tracking cookies, canvas fingerprinting, or ad-retargeting pixels. Client-side preferences (such as demo mode toggles or history lists) are stored exclusively in your local browser storage.\n\n### 4. Encryption in Transit\nAll communication between your browser and our scraping endpoints is protected using industry-standard TLS 1.3 encryption (HTTPS), safeguarding URL parameters from intermediary interception.",
+    "blocks": [
+      {
+        "id": "b-98akunn-mu9m8bop",
+        "type": "heading",
+        "content": "Privacy Policy & Ephemeral Data Processing",
+        "level": 1,
+        "textAlign": "left"
+      },
+      {
+        "id": "b-qv2lqyj-mu9m8bop",
+        "type": "paragraph",
+        "content": "How Scribd Downloader guarantees user privacy, zero user tracking, and data hygiene.",
+        "textAlign": "left"
+      },
+      {
+        "id": "b-fux8g1u-mu9m8bop",
+        "type": "heading",
+        "content": "1. Zero User Registration",
+        "level": 3,
+        "textAlign": "left"
+      },
+      {
+        "id": "b-vtu3xqk-mu9m8bop",
+        "type": "paragraph",
+        "content": "We do not require users to create an account, log in, or submit any personally identifiable information (PII). We do not collect names, passwords, credit card numbers, or physical addresses.",
+        "textAlign": "left"
+      },
+      {
+        "id": "b-01j75m6-mu9m8bop",
+        "type": "heading",
+        "content": "2. Ephemeral Document Retention",
+        "level": 3,
+        "textAlign": "left"
+      },
+      {
+        "id": "b-7yje7nf-mu9m8bop",
+        "type": "paragraph",
+        "content": "When a Scribd URL is submitted for conversion, our system fetches page tiles into temporary server memory strictly for the purpose of generating the requested PDF or ZIP file. All temporary files are permanently purged from server disks within 2 hours of generation.",
+        "textAlign": "left"
+      },
+      {
+        "id": "b-4ze58u2-mu9m8bop",
+        "type": "heading",
+        "content": "3. Analytics & Cookies",
+        "level": 3,
+        "textAlign": "left"
+      },
+      {
+        "id": "b-yk0bzms-mu9m8bop",
+        "type": "paragraph",
+        "content": "We do not use third-party behavioral tracking cookies, canvas fingerprinting, or ad-retargeting pixels. Client-side preferences (such as demo mode toggles or history lists) are stored exclusively in your local browser storage.",
+        "textAlign": "left"
+      },
+      {
+        "id": "b-9btke8m-mu9m8bop",
+        "type": "heading",
+        "content": "4. Encryption in Transit",
+        "level": 3,
+        "textAlign": "left"
+      },
+      {
+        "id": "b-0xph7k7-mu9m8bop",
+        "type": "paragraph",
+        "content": "All communication between your browser and our scraping endpoints is protected using industry-standard TLS 1.3 encryption (HTTPS), safeguarding URL parameters from intermediary interception.",
+        "textAlign": "left"
+      }
+    ],
+    "createdAt": "2026-09-20T09:30:15.721Z",
+    "lastModified": "2026-09-20T09:30:15.721Z"
+  },
+  {
+    "id": "page-terms",
+    "slug": "terms",
+    "title": "Terms of Service, Fair Use & DMCA Notice",
+    "pageKey": "terms",
+    "translationGroupId": "group-page-terms",
+    "language": "en",
+    "excerpt": "Review our terms of use, fair usage guidelines, and intellectual property terms.",
+    "metaTitle": "Terms of Service - Scribd Downloader",
+    "metaDescription": "Terms of service and fair use guidelines for educational document conversion.",
+    "author": "Legal Dept",
+    "authorName": "Legal Dept",
+    "status": "published",
+    "inTrash": false,
+    "content": "# Terms of Service, Fair Use & DMCA Notice\n\nAcceptable use guidelines for our educational document conversion utility.\n\n### 1. Educational & Fair Use Purpose\nScribd Downloader is provided solely for educational study, non-commercial academic research, personal archiving, and offline access to public materials. You agree not to distribute, resell, or publicly republish copyrighted works acquired through this utility.\n\n### 2. User Responsibility\nThe end user assumes sole responsibility for ensuring that downloading any document complies with local laws, publisher licensing, and terms set forth by copyright holders.\n\n### 3. DMCA & Takedown Policy\nWe respect intellectual property rights. Copyright holders may submit a notice to request the exclusion of specific document URLs or author IDs from our system engine. To submit a notice, use our Contact page or email dmca@scribddownloader.io.\n\n### 4. Disclaimer of Warranty\nThis service is provided \"as is\" without warranty of any kind. We do not guarantee uninterrupted uptime or that every Scribd document format can be extracted.",
+    "blocks": [
+      {
+        "id": "b-a7uvx1t-mu9m8bop",
+        "type": "heading",
+        "content": "Terms of Service, Fair Use & DMCA Notice",
+        "level": 1,
+        "textAlign": "left"
+      },
+      {
+        "id": "b-mvih4y9-mu9m8bop",
+        "type": "paragraph",
+        "content": "Acceptable use guidelines for our educational document conversion utility.",
+        "textAlign": "left"
+      },
+      {
+        "id": "b-1c3b9wo-mu9m8bop",
+        "type": "heading",
+        "content": "1. Educational & Fair Use Purpose",
+        "level": 3,
+        "textAlign": "left"
+      },
+      {
+        "id": "b-g7p3diz-mu9m8bop",
+        "type": "paragraph",
+        "content": "Scribd Downloader is provided solely for educational study, non-commercial academic research, personal archiving, and offline access to public materials. You agree not to distribute, resell, or publicly republish copyrighted works acquired through this utility.",
+        "textAlign": "left"
+      },
+      {
+        "id": "b-gscr0fn-mu9m8bop",
+        "type": "heading",
+        "content": "2. User Responsibility",
+        "level": 3,
+        "textAlign": "left"
+      },
+      {
+        "id": "b-i38nu98-mu9m8bop",
+        "type": "paragraph",
+        "content": "The end user assumes sole responsibility for ensuring that downloading any document complies with local laws, publisher licensing, and terms set forth by copyright holders.",
+        "textAlign": "left"
+      },
+      {
+        "id": "b-s6edtqy-mu9m8bop",
+        "type": "heading",
+        "content": "3. DMCA & Takedown Policy",
+        "level": 3,
+        "textAlign": "left"
+      },
+      {
+        "id": "b-j7bw359-mu9m8bop",
+        "type": "paragraph",
+        "content": "We respect intellectual property rights. Copyright holders may submit a notice to request the exclusion of specific document URLs or author IDs from our system engine. To submit a notice, use our Contact page or email dmca@scribddownloader.io.",
+        "textAlign": "left"
+      },
+      {
+        "id": "b-59ms2jz-mu9m8bop",
+        "type": "heading",
+        "content": "4. Disclaimer of Warranty",
+        "level": 3,
+        "textAlign": "left"
+      },
+      {
+        "id": "b-4z177jl-mu9m8bop",
+        "type": "paragraph",
+        "content": "This service is provided \"as is\" without warranty of any kind. We do not guarantee uninterrupted uptime or that every Scribd document format can be extracted.",
+        "textAlign": "left"
+      }
+    ],
+    "createdAt": "2026-09-20T09:30:15.721Z",
+    "lastModified": "2026-09-20T09:30:15.721Z"
+  },
+  {
+    "id": "page-legal",
+    "slug": "legal",
+    "title": "Legal, Privacy & Compliance Guidelines",
+    "pageKey": "legal",
+    "translationGroupId": "group-page-legal",
+    "language": "en",
+    "excerpt": "DMCA copyright notice, content removal procedure, and legal disclaimer.",
+    "metaTitle": "Legal & DMCA - Scribd Downloader",
+    "metaDescription": "DMCA copyright compliance guidelines, content removal procedure, and legal terms.",
+    "author": "Legal Dept",
+    "authorName": "Legal Dept",
+    "status": "published",
+    "inTrash": false,
+    "content": "# Legal, Privacy & Compliance Guidelines\n\nOverview of ethical offline study, copyright compliance, and ephemeral processing standards for Scribd Downloader.\n\n## Transparency & Privacy\nOur conversion proxy operates strictly without user accounts or tracking cookies. All rendered document caches are automatically purged within 2 hours.\n\n## DMCA Compliance\nIf you are a copyright holder wishing to request the exclusion of specific document URLs, please contact dmca@scribddownloader.io with the target URL.",
+    "blocks": [
+      {
+        "id": "b-nha13d3-mu9m8bop",
+        "type": "heading",
+        "content": "Legal, Privacy & Compliance Guidelines",
+        "level": 1,
+        "textAlign": "left"
+      },
+      {
+        "id": "b-7508m7x-mu9m8bop",
+        "type": "paragraph",
+        "content": "Overview of ethical offline study, copyright compliance, and ephemeral processing standards for Scribd Downloader.",
+        "textAlign": "left"
+      },
+      {
+        "id": "b-gvloxn2-mu9m8bop",
+        "type": "heading",
+        "content": "Transparency & Privacy",
+        "level": 2,
+        "textAlign": "left"
+      },
+      {
+        "id": "b-9zu36y5-mu9m8bop",
+        "type": "paragraph",
+        "content": "Our conversion proxy operates strictly without user accounts or tracking cookies. All rendered document caches are automatically purged within 2 hours.",
+        "textAlign": "left"
+      },
+      {
+        "id": "b-3o6281a-mu9m8bop",
+        "type": "heading",
+        "content": "DMCA Compliance",
+        "level": 2,
+        "textAlign": "left"
+      },
+      {
+        "id": "b-dk3dpih-mu9m8bop",
+        "type": "paragraph",
+        "content": "If you are a copyright holder wishing to request the exclusion of specific document URLs, please contact dmca@scribddownloader.io with the target URL.",
+        "textAlign": "left"
+      }
+    ],
+    "createdAt": "2026-09-20T09:30:15.721Z",
+    "lastModified": "2026-09-20T09:30:15.721Z"
+  },
+  {
+    "id": "page-legal-br",
+    "slug": "legal-br",
+    "title": "Privacidade & Termos",
+    "pageKey": "legal",
+    "translationGroupId": "group-page-legal",
+    "language": "br",
+    "excerpt": "Como tratamos dados e as regras para usar esta ferramenta.",
+    "metaTitle": "Privacidade & Termos - Scribd Downloader",
+    "metaDescription": "Como tratamos dados e as regras para usar esta ferramenta.",
+    "author": "Legal Dept",
+    "authorName": "Legal Dept",
+    "status": "published",
+    "inTrash": false,
+    "content": "Resumo: não pedimos contas nem dados pessoais, os arquivos baixados são processados temporariamente e excluídos em seguida, e esperamos que você use a ferramenta apenas para material que tem permissão para guardar. Os detalhes estão nas seções abaixo.",
+    "blocks": [
+      {
+        "id": "b-q7iei9d-mu9m8bop",
+        "type": "paragraph",
+        "content": "Resumo: não pedimos contas nem dados pessoais, os arquivos baixados são processados temporariamente e excluídos em seguida, e esperamos que você use a ferramenta apenas para material que tem permissão para guardar. Os detalhes estão nas seções abaixo.",
+        "textAlign": "left"
+      }
+    ],
+    "createdAt": "2026-09-20T09:30:15.721Z",
+    "lastModified": "2026-09-20T09:30:15.721Z"
+  },
+  {
+    "id": "page-legal-es",
+    "slug": "legal-es",
+    "title": "Privacidad y Términos",
+    "pageKey": "legal",
+    "translationGroupId": "group-page-legal",
+    "language": "es",
+    "excerpt": "Cómo tratamos los datos y las reglas para usar esta herramienta.",
+    "metaTitle": "Privacidad y Términos - Scribd Downloader",
+    "metaDescription": "Cómo tratamos los datos y las reglas para usar esta herramienta.",
+    "author": "Legal Dept",
+    "authorName": "Legal Dept",
+    "status": "published",
+    "inTrash": false,
+    "content": "En resumen: no pedimos cuentas ni datos personales, los archivos descargados se procesan temporalmente y se eliminan después, y se espera que uses la herramienta solo para material que tienes permitido conservar. Los detalles están en las secciones siguientes.",
+    "blocks": [
+      {
+        "id": "b-c63hw04-mu9m8bop",
+        "type": "paragraph",
+        "content": "En resumen: no pedimos cuentas ni datos personales, los archivos descargados se procesan temporalmente y se eliminan después, y se espera que uses la herramienta solo para material que tienes permitido conservar. Los detalles están en las secciones siguientes.",
+        "textAlign": "left"
+      }
+    ],
+    "createdAt": "2026-09-20T09:30:15.721Z",
+    "lastModified": "2026-09-20T09:30:15.721Z"
+  },
+  {
+    "id": "page-legal-fr",
+    "slug": "legal-fr",
+    "title": "Confidentialité & Conditions",
+    "pageKey": "legal",
+    "translationGroupId": "group-page-legal",
+    "language": "fr",
+    "excerpt": "Comment nous traitons les données, et les règles d’utilisation de cet outil.",
+    "metaTitle": "Confidentialité & Conditions - Scribd Downloader",
+    "metaDescription": "Comment nous traitons les données, et les règles d’utilisation de cet outil.",
+    "author": "Legal Dept",
+    "authorName": "Legal Dept",
+    "status": "published",
+    "inTrash": false,
+    "content": "En bref : nous ne demandons ni compte ni données personnelles, les fichiers téléchargés sont traités temporairement puis supprimés, et vous êtes censé n’utiliser l’outil que pour des contenus que vous êtes autorisé à conserver. Les détails figurent dans les sections ci-dessous.",
+    "blocks": [
+      {
+        "id": "b-pour5mr-mu9m8bop",
+        "type": "paragraph",
+        "content": "En bref : nous ne demandons ni compte ni données personnelles, les fichiers téléchargés sont traités temporairement puis supprimés, et vous êtes censé n’utiliser l’outil que pour des contenus que vous êtes autorisé à conserver. Les détails figurent dans les sections ci-dessous.",
+        "textAlign": "left"
+      }
+    ],
+    "createdAt": "2026-09-20T09:30:15.721Z",
+    "lastModified": "2026-09-20T09:30:15.721Z"
+  },
+  {
+    "id": "page-legal-de",
+    "slug": "legal-de",
+    "title": "Datenschutz & Bedingungen",
+    "pageKey": "legal",
+    "translationGroupId": "group-page-legal",
+    "language": "de",
+    "excerpt": "Wie wir mit Daten umgehen und die Regeln für die Nutzung dieses Tools.",
+    "metaTitle": "Datenschutz & Bedingungen - Scribd Downloader",
+    "metaDescription": "Wie wir mit Daten umgehen und die Regeln für die Nutzung dieses Tools.",
+    "author": "Legal Dept",
+    "authorName": "Legal Dept",
+    "status": "published",
+    "inTrash": false,
+    "content": "Kurz gesagt: Wir verlangen weder Konten noch persönliche Daten, heruntergeladene Dateien werden nur vorübergehend verarbeitet und danach gelöscht, und du solltest das Tool nur für Material nutzen, das du behalten darfst. Details findest du in den Abschnitten unten.",
+    "blocks": [
+      {
+        "id": "b-iywupo1-mu9m8bop",
+        "type": "paragraph",
+        "content": "Kurz gesagt: Wir verlangen weder Konten noch persönliche Daten, heruntergeladene Dateien werden nur vorübergehend verarbeitet und danach gelöscht, und du solltest das Tool nur für Material nutzen, das du behalten darfst. Details findest du in den Abschnitten unten.",
+        "textAlign": "left"
+      }
+    ],
+    "createdAt": "2026-09-20T09:30:15.721Z",
+    "lastModified": "2026-09-20T09:30:15.721Z"
+  },
+  {
+    "id": "page-legal-id",
+    "slug": "legal-id",
+    "title": "Privasi & Ketentuan",
+    "pageKey": "legal",
+    "translationGroupId": "group-page-legal",
+    "language": "id",
+    "excerpt": "Cara kami menangani data, dan aturan penggunaan alat ini.",
+    "metaTitle": "Privasi & Ketentuan - Scribd Downloader",
+    "metaDescription": "Cara kami menangani data, dan aturan penggunaan alat ini.",
+    "author": "Legal Dept",
+    "authorName": "Legal Dept",
+    "status": "published",
+    "inTrash": false,
+    "content": "Singkatnya: kami tidak meminta akun atau data pribadi, berkas yang diunduh hanya diproses sementara lalu dihapus, dan kamu diharapkan memakai alat ini hanya untuk materi yang memang boleh disimpan. Detailnya ada di bagian bawah.",
+    "blocks": [
+      {
+        "id": "b-gg324cy-mu9m8bop",
+        "type": "paragraph",
+        "content": "Singkatnya: kami tidak meminta akun atau data pribadi, berkas yang diunduh hanya diproses sementara lalu dihapus, dan kamu diharapkan memakai alat ini hanya untuk materi yang memang boleh disimpan. Detailnya ada di bagian bawah.",
+        "textAlign": "left"
+      }
+    ],
+    "createdAt": "2026-09-20T09:30:15.721Z",
+    "lastModified": "2026-09-20T09:30:15.721Z"
+  },
+  {
+    "id": "page-legal-hi",
+    "slug": "legal-hi",
+    "title": "गोपनीयता और शर्तें",
+    "pageKey": "legal",
+    "translationGroupId": "group-page-legal",
+    "language": "hi",
+    "excerpt": "हम डेटा को कैसे संभालते हैं और इस टूल के उपयोग के नियम।",
+    "metaTitle": "गोपनीयता और शर्तें - Scribd Downloader",
+    "metaDescription": "हम डेटा को कैसे संभालते हैं और इस टूल के उपयोग के नियम।",
+    "author": "Legal Dept",
+    "authorName": "Legal Dept",
+    "status": "published",
+    "inTrash": false,
+    "content": "संक्षेप में: हम कोई व्यक्तिगत खाता या व्यक्तिगत विवरण नहीं मांगते हैं। डाउनलोड की गई फ़ाइलें केवल अस्थायी रूप से संसाधित होती हैं और बाद में हटा दी जाती हैं।",
+    "blocks": [
+      {
+        "id": "b-a91msg1-mu9m8bop",
+        "type": "paragraph",
+        "content": "संक्षेप में: हम कोई व्यक्तिगत खाता या व्यक्तिगत विवरण नहीं मांगते हैं। डाउनलोड की गई फ़ाइलें केवल अस्थायी रूप से संसाधित होती हैं और बाद में हटा दी जाती हैं।",
+        "textAlign": "left"
+      }
+    ],
+    "createdAt": "2026-09-20T09:30:15.721Z",
+    "lastModified": "2026-09-20T09:30:15.721Z"
+  }
+]

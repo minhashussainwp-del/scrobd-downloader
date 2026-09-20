@@ -10,6 +10,7 @@ import * as cheerio from "cheerio";
 import PDFDocument from "pdfkit";
 import { setupMcpEndpoints } from "./server/mcpServer";
 import { setupGeminiAiEndpoints } from "./server/geminiAi";
+import { setupAdminRoutes } from "./server/adminRoutes";
 
 // Universal require compatible with tsx (ESM) and bundled dist/server.cjs
 const nodeRequire =
@@ -392,19 +393,17 @@ function buildPageSitemap(origin: string, customPagesParam?: any[]): string {
       const pageLastMod = formatYoastDate(page.lastModified || page.createdAt || today);
       const pageImg = page.metaImage || page.heroImage;
 
-      // Base root slug if language is english, all, or unspecified
-      if (!page.language || page.language === "en" || page.language === "all") {
-        addUrlEntry(`${base}/${cleanSlug}`, pageLastMod, pageImg, "0.80");
-      }
+      // Base root slug
+      addUrlEntry(`${base}/${cleanSlug}`, pageLastMod, pageImg, "0.80");
 
-      // Specific page language if specified and not 'all'
+      // Specific page language if specified
       if (page.language && page.language !== "all") {
         addUrlEntry(`${base}/${page.language}/${cleanSlug}`, pageLastMod, pageImg, "0.80");
-      } else if (page.language === "all" || !page.language) {
-        // Add for all supported languages if the page is intended for 'all' languages
-        for (const lang of languages) {
-          addUrlEntry(`${base}/${lang}/${cleanSlug}`, pageLastMod, pageImg, "0.80");
-        }
+      }
+
+      // Add for all supported languages
+      for (const lang of languages) {
+        addUrlEntry(`${base}/${lang}/${cleanSlug}`, pageLastMod, pageImg, "0.80");
       }
     }
   }
@@ -717,6 +716,10 @@ function saveRobotsTxtOnServer(content: string) {
   } catch (err) {
     console.error("Error saving robots.txt to disk:", err);
   }
+  try {
+    const publicRobots = path.join(process.cwd(), "public", "robots.txt");
+    fs.writeFileSync(publicRobots, content, "utf-8");
+  } catch {}
 }
 
 function rebuildAllSitemapsOnServer(origin: string, postsParam?: any[], customPagesParam?: any[]) {
@@ -730,14 +733,18 @@ function rebuildAllSitemapsOnServer(origin: string, postsParam?: any[], customPa
   sitemapsByOrigin.set(base, { indexXml, postXml, pageXml, allUrlsetXml, updatedAt });
   sitemapUpdatedAt = updatedAt;
 
-  // Persist only non-domain visual stylesheet to public directory
+  // Persist files to public directory
   try {
     const publicDir = path.join(process.cwd(), "public");
     if (fs.existsSync(publicDir)) {
+      fs.writeFileSync(path.join(publicDir, "sitemap.xml"), allUrlsetXml, "utf-8");
+      fs.writeFileSync(path.join(publicDir, "sitemap_index.xml"), indexXml, "utf-8");
+      fs.writeFileSync(path.join(publicDir, "post-sitemap.xml"), postXml, "utf-8");
+      fs.writeFileSync(path.join(publicDir, "page-sitemap.xml"), pageXml, "utf-8");
       fs.writeFileSync(path.join(publicDir, "main-sitemap.xsl"), getYoastXsl(), "utf-8");
     }
   } catch (err) {
-    console.warn("Notice: unable to write main-sitemap.xsl stylesheet to public folder:", err);
+    console.warn("Notice: unable to write static sitemaps to public folder:", err);
   }
 
   return { indexXml, postXml, pageXml, allUrlsetXml };
@@ -1779,6 +1786,9 @@ async function startServer() {
     },
   });
 
+  // Mount WordPress + Polylang style CMS & Admin Panel endpoints
+  setupAdminRoutes(app);
+
   // Fallback 404 for any unmatched /api/* requests to ensure they never return HTML
   app.all("/api/*", (req, res) => {
     res.status(404).json({ error: `API route ${req.method} ${req.path} not found` });
@@ -1812,9 +1822,32 @@ async function startServer() {
         req.path.startsWith("/@") ||
         req.path.startsWith("/src") ||
         req.path.startsWith("/node_modules") ||
-        req.path.includes(".")
+        (req.path.includes(".") && req.path !== "/admin.html")
       ) {
         return next();
+      }
+
+      // Check if user is navigating to Admin Panel (/admin, /admin/..., /admin.html)
+      if (req.path === "/admin" || req.path.startsWith("/admin/") || req.path === "/admin.html") {
+        try {
+          const adminPath = path.join(process.cwd(), "admin.html");
+          const indexPath = path.join(process.cwd(), "index.html");
+          const templateFile = fs.existsSync(adminPath) ? adminPath : indexPath;
+          const adminTemplate = fs.readFileSync(templateFile, "utf-8");
+          const transformed = await vite.transformIndexHtml(req.originalUrl || req.url, adminTemplate);
+          res.setHeader("Content-Type", "text/html; charset=utf-8");
+          return res.send(transformed);
+        } catch (e) {
+          console.error("Vite Admin HTML error:", e);
+          try {
+            const rawTemplate = fs.readFileSync(path.join(process.cwd(), "index.html"), "utf-8");
+            const transformed = await vite.transformIndexHtml(req.originalUrl || req.url, rawTemplate);
+            res.setHeader("Content-Type", "text/html; charset=utf-8");
+            return res.send(transformed);
+          } catch (err2) {
+            return next(err2);
+          }
+        }
       }
 
       const origin = getRequestOrigin(req);
@@ -1834,6 +1867,15 @@ async function startServer() {
   } else {
     const distPath = path.join(process.cwd(), "dist");
     app.use(express.static(distPath));
+
+    app.get(["/admin", "/admin/*", "/admin.html"], (_req, res) => {
+      const adminPath = path.join(distPath, "admin.html");
+      if (fs.existsSync(adminPath)) {
+        return res.sendFile(adminPath);
+      }
+      res.sendFile(path.join(distPath, "index.html"));
+    });
+
     app.get("*", (req, res) => {
       const origin = getRequestOrigin(req);
       try {

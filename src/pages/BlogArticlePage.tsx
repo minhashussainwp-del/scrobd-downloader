@@ -283,14 +283,14 @@ export function BlogArticlePage({
               </p>
             )}
 
-            {/* Content Rendering: htmlContent, Gutenberg blocks, or Traditional sections */}
-            {post.htmlContent ? (
-              <div className="article-body">
-                <ModernArticleRenderer content={post.htmlContent} />
-              </div>
-            ) : post.blocks && post.blocks.length > 0 ? (
+            {/* Content Rendering: Gutenberg blocks, htmlContent, or Traditional sections */}
+            {post.blocks && post.blocks.length > 0 ? (
               <div className="space-y-6">
                 <GutenbergBlockRenderer blocks={post.blocks} />
+              </div>
+            ) : post.htmlContent ? (
+              <div className="article-body">
+                <ModernArticleRenderer content={post.htmlContent} />
               </div>
             ) : (
               /* Traditional Sections */

@@ -1361,19 +1361,17 @@ export function buildYoastPageSitemap(
     const pageLastMod = formatYoastDate((page as any).lastModified || (page as any).createdAt || today);
     const pageImg = (page as any).metaImage || (page as any).heroImage;
 
-    // Base root slug if language is english, all, or unspecified
-    if (!page.language || page.language === "en" || page.language === "all") {
-      addUrlEntry(`${base}/${cleanSlug}`, pageLastMod, pageImg, "0.80");
-    }
+    // Base root slug
+    addUrlEntry(`${base}/${cleanSlug}`, pageLastMod, pageImg, "0.80");
 
-    // Specific page language if specified and not 'all'
+    // Specific page language if specified
     if (page.language && page.language !== "all") {
       addUrlEntry(`${base}/${page.language}/${cleanSlug}`, pageLastMod, pageImg, "0.80");
-    } else if (page.language === "all" || !page.language) {
-      // Add for all supported languages if the page is intended for 'all' languages
-      for (const lang of languages) {
-        addUrlEntry(`${base}/${lang}/${cleanSlug}`, pageLastMod, pageImg, "0.80");
-      }
+    }
+
+    // Add for all supported languages
+    for (const lang of languages) {
+      addUrlEntry(`${base}/${lang}/${cleanSlug}`, pageLastMod, pageImg, "0.80");
     }
   }
 
@@ -1550,20 +1548,12 @@ export function buildExactUrlsetSitemapXml(
       const cleanSlug = cleanSlugForUrl(page.slug, page.id);
       if (!cleanSlug) continue;
       const pageLastMod = formatYoastDate((page as any).lastModified || (page as any).createdAt || now);
-      
-      // Base root slug if language is english, all, or unspecified
-      if (!page.language || page.language === "en" || page.language === "all") {
-        addUrl(`${base}/${cleanSlug}`, pageLastMod, "0.80");
-      }
-
-      // Specific page language if specified and not 'all'
+      addUrl(`${base}/${cleanSlug}`, pageLastMod, "0.80");
       if (page.language && page.language !== "all") {
         addUrl(`${base}/${page.language}/${cleanSlug}`, pageLastMod, "0.80");
-      } else if (page.language === "all" || !page.language) {
-        // Add for all supported languages if the page is intended for 'all' languages
-        for (const lang of languages) {
-          addUrl(`${base}/${lang}/${cleanSlug}`, pageLastMod, "0.80");
-        }
+      }
+      for (const lang of languages) {
+        addUrl(`${base}/${lang}/${cleanSlug}`, pageLastMod, "0.80");
       }
     }
   }

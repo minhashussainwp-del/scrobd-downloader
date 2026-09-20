@@ -12,7 +12,7 @@ export function PageContentBlock({ pageId }: PageContentBlockProps) {
     const contents = loadPageContent();
     const found = contents.find((c) => c.id === pageId);
     if (found) {
-      setContent(found);
+      setContent({ title: found.title || "", content: found.content || "" });
     }
   }, [pageId]);
 

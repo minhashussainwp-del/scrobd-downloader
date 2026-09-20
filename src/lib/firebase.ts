@@ -1,16 +1,32 @@
 import { initializeApp, getApps, getApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
+import { getFirestore, doc, getDocFromServer } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyC6y_7Y-pvsPFDjIzPtSoenal2_jCIRVnU",
-  authDomain: "scribd-downloader-719ab.firebaseapp.com",
-  projectId: "scribd-downloader-719ab",
-  storageBucket: "scribd-downloader-719ab.firebasestorage.app",
-  messagingSenderId: "151987038178",
-  appId: "1:151987038178:web:67b2642c36522f6b79fbbb"
+export const firebaseConfig = {
+  apiKey: "AIzaSyC5BVSWwIXePgXz0-6CyVcchmwWReQ2D_M",
+  authDomain: "carbon-atlas-qdzmz.firebaseapp.com",
+  projectId: "carbon-atlas-qdzmz",
+  storageBucket: "carbon-atlas-qdzmz.firebasestorage.app",
+  messagingSenderId: "815265023401",
+  appId: "1:815265023401:web:bf44c034dbd71a434830b8",
+  firestoreDatabaseId: "ai-studio-scribddownloader-e21bd29b-3810-4085-9c14-431af3caba1a",
 };
 
 export const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
-export const db = getFirestore(app);
+export const db = getFirestore(app, firebaseConfig.firestoreDatabaseId);
 export const auth = getAuth(app);
+
+/**
+ * Validate connection to Firestore on initialization
+ */
+export async function testFirestoreConnection(): Promise<boolean> {
+  try {
+    await getDocFromServer(doc(db, "test", "connection"));
+    return true;
+  } catch (error) {
+    if (error instanceof Error && error.message.includes("the client is offline")) {
+      console.warn("Firestore: client is offline or network error", error);
+    }
+    return false;
+  }
+}
