@@ -55,9 +55,9 @@ interface GutenbergEditorProps {
     status: "published" | "draft";
     language: string;
   }) => Promise<void>;
-  onBack: () => void;
+  onBack?: () => void;
   onPreview?: (slug: string, lang: string) => void;
-  entityType?: "page" | "post";
+  entityType?: "page" | "post" | "homepage";
 }
 
 export function GutenbergEditor({

@@ -15,7 +15,10 @@ export type BlockType =
   | "code"
   | "html"
   | "divider"
-  | "spacer";
+  | "spacer"
+  | "hero"
+  | "steps"
+  | "features";
 
 export interface GutenbergEditorBlock {
   id: string;
@@ -66,6 +69,21 @@ export interface GutenbergEditorBlock {
   codeLanguage?: string;
   // Spacer specific
   spacerHeight?: number;
+  // Hero & Downloader specific
+  heroBadge?: string;
+  heroTitle?: string;
+  heroSubtitle?: string;
+  ctaText?: string;
+  placeholderText?: string;
+  qualityBadgeText?: string;
+  autoDownloadBadgeText?: string;
+  checklistItems?: string[];
+  // Steps / How It Works specific
+  sectionTitle?: string;
+  sectionSubtitle?: string;
+  steps?: Array<{ stepNumber: number; title: string; description: string }>;
+  // Features / Benefits specific
+  features?: Array<{ title: string; description: string; badge?: string; icon?: string }>;
   // Advanced styling
   customClassName?: string;
   backgroundColor?: string;

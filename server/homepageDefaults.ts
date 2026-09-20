@@ -40,6 +40,8 @@ export interface HomepageContent {
   faqTitle: string;
   faqSubtitle: string;
   faqs: HomepageFaq[];
+  blocks?: any[];
+  htmlContent?: string;
   lastUpdated?: string;
 }
 

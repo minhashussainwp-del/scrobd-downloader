@@ -146,7 +146,10 @@ export type GutenbergBlockType =
   | "ad"
   | "html"
   | "divider"
-  | "spacer";
+  | "spacer"
+  | "hero"
+  | "steps"
+  | "features";
 
 export interface GutenbergBlock {
   id: string;
@@ -178,6 +181,18 @@ export interface GutenbergBlock {
   adLabel?: string;
   codeLanguage?: string;
   spacerHeight?: number;
+  heroBadge?: string;
+  heroTitle?: string;
+  heroSubtitle?: string;
+  ctaText?: string;
+  placeholderText?: string;
+  qualityBadgeText?: string;
+  autoDownloadBadgeText?: string;
+  checklistItems?: string[];
+  sectionTitle?: string;
+  sectionSubtitle?: string;
+  steps?: Array<{ stepNumber: number; title: string; description: string }>;
+  features?: Array<{ title: string; description: string; badge?: string; icon?: string }>;
   customClassName?: string;
 }
 

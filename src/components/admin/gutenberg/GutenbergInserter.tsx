@@ -18,6 +18,9 @@ import {
   X,
   Layers,
   Sparkle,
+  LayoutTemplate,
+  ListOrdered,
+  Zap,
 } from "lucide-react";
 import { BlockType } from "./types";
 import { GUTENBERG_PATTERNS } from "./GutenbergPatterns";
@@ -32,11 +35,15 @@ interface BlockItemDef {
   type: BlockType;
   title: string;
   description: string;
-  category: "text" | "media" | "design" | "widgets";
+  category: "layout" | "text" | "media" | "design" | "widgets";
   icon: React.ElementType;
 }
 
 const BLOCK_DEFINITIONS: BlockItemDef[] = [
+  // Layout & Hero Sections
+  { type: "hero", title: "Hero & Downloader", description: "Interactive hero banner with URL input & CTA.", category: "layout", icon: LayoutTemplate },
+  { type: "steps", title: "How It Works (Steps)", description: "Visual 3-step process guide cards with badges.", category: "layout", icon: ListOrdered },
+  { type: "features", title: "Features & Benefits", description: "Responsive multi-card feature grid with badges.", category: "layout", icon: Zap },
   // Text
   { type: "paragraph", title: "Paragraph", description: "Start with plain text and inline links.", category: "text", icon: Type },
   { type: "heading", title: "Heading", description: "Organize content with H1 to H6 sections.", category: "text", icon: Heading },
@@ -78,6 +85,7 @@ export function GutenbergInserter({
   );
 
   const categories = [
+    { id: "layout", label: "Hero & Layout Sections" },
     { id: "text", label: "Text" },
     { id: "media", label: "Media" },
     { id: "design", label: "Design" },

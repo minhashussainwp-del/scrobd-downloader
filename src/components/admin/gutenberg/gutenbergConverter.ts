@@ -43,6 +43,21 @@ export function parseContentToBlocks(
       adSlot: b.adSlot || "in-feed",
       codeLanguage: b.codeLanguage || "text",
       spacerHeight: b.spacerHeight || 32,
+      // Hero & Downloader
+      heroBadge: b.heroBadge,
+      heroTitle: b.heroTitle,
+      heroSubtitle: b.heroSubtitle,
+      ctaText: b.ctaText,
+      placeholderText: b.placeholderText,
+      qualityBadgeText: b.qualityBadgeText,
+      autoDownloadBadgeText: b.autoDownloadBadgeText,
+      checklistItems: Array.isArray(b.checklistItems) ? b.checklistItems : undefined,
+      // Steps / How It Works
+      sectionTitle: b.sectionTitle,
+      sectionSubtitle: b.sectionSubtitle,
+      steps: Array.isArray(b.steps) ? b.steps : undefined,
+      // Features / Benefits
+      features: Array.isArray(b.features) ? b.features : undefined,
     }));
   }
 
@@ -599,6 +614,38 @@ export function serializeBlocksToHtml(blocks: GutenbergEditorBlock[]): string {
           return `<div style="height: ${block.spacerHeight || 32}px" aria-hidden="true" class="wp-block-spacer"></div>`;
         }
 
+        case "hero": {
+          const badge = block.heroBadge ? `<span class="badge">${block.heroBadge}</span>` : "";
+          const title = block.heroTitle || block.content || "Scribd Downloader";
+          const sub = block.heroSubtitle ? `<p class="hero-desc">${block.heroSubtitle}</p>` : "";
+          const cta = block.ctaText || "Download PDF";
+          return `<div class="wp-block-hero-downloader"><div class="hero-header">${badge}<h1>${title}</h1>${sub}</div><div class="downloader-input-box"><input type="url" placeholder="${block.placeholderText || "Paste link here..."}" /><button class="btn btn-primary">${cta}</button></div></div>`;
+        }
+
+        case "steps": {
+          const title = block.sectionTitle || "How It Works";
+          const sub = block.sectionSubtitle ? `<p class="steps-sub">${block.sectionSubtitle}</p>` : "";
+          const stepsHtml = (block.steps || [])
+            .map(
+              (s, i) =>
+                `<div class="step-card"><span class="step-num">${s.stepNumber || i + 1}</span><h4>${s.title}</h4><p>${s.description}</p></div>`
+            )
+            .join("");
+          return `<div class="wp-block-how-it-works"><h2>${title}</h2>${sub}<div class="steps-grid">${stepsHtml}</div></div>`;
+        }
+
+        case "features": {
+          const title = block.sectionTitle || "Key Features & Benefits";
+          const sub = block.sectionSubtitle ? `<p class="features-sub">${block.sectionSubtitle}</p>` : "";
+          const featsHtml = (block.features || [])
+            .map(
+              (f) =>
+                `<div class="feature-card">${f.badge ? `<span class="feature-badge">${f.badge}</span>` : ""}<h4>${f.title}</h4><p>${f.description}</p></div>`
+            )
+            .join("");
+          return `<div class="wp-block-features-grid"><h2>${title}</h2>${sub}<div class="features-grid">${featsHtml}</div></div>`;
+        }
+
         default:
           return `<p>${block.content || ""}</p>`;
       }
@@ -649,9 +696,188 @@ export function serializeBlocksToMarkdown(blocks: GutenbergEditorBlock[]): strin
         case "divider":
           return "---";
 
+        case "hero":
+          return `## ${block.heroTitle || "Scribd Downloader"}\n${block.heroSubtitle || ""}\n\n[CTA: ${block.ctaText || "Download PDF"}]`;
+
+        case "steps":
+          return `## ${block.sectionTitle || "How It Works"}\n${(block.steps || []).map((s, i) => `${i + 1}. **${s.title}**: ${s.description}`).join("\n")}`;
+
+        case "features":
+          return `## ${block.sectionTitle || "Features"}\n${(block.features || []).map((f) => `- **${f.title}** (${f.badge || "Feature"}): ${f.description}`).join("\n")}`;
+
         default:
           return block.content || "";
       }
     })
     .join("\n\n");
+}
+
+/**
+ * Converts HomepageContent into a unified GutenbergEditorBlock[] tree
+ */
+export function parseHomepageToBlocks(hpContent: any): GutenbergEditorBlock[] {
+  if (!hpContent) return [];
+
+  // If already contains valid Gutenberg blocks
+  if (Array.isArray(hpContent.blocks) && hpContent.blocks.length > 0) {
+    return parseContentToBlocks(null, hpContent.blocks);
+  }
+
+  const blocks: GutenbergEditorBlock[] = [];
+
+  // 1. Hero & Downloader Block
+  blocks.push({
+    id: generateBlockId(),
+    type: "hero",
+    content: hpContent.heroTitle || hpContent.h1Title || "Scribd Downloader – Free PDF Downloads",
+    heroBadge: hpContent.heroBadge || "100% Free & Secure Scribd PDF Converter",
+    heroTitle: hpContent.heroTitle || hpContent.h1Title || "Scribd Downloader – Free PDF Downloads",
+    heroSubtitle:
+      hpContent.heroSubtitle ||
+      "Save documents, research papers, and slide decks from Scribd as clean, readable PDFs. Paste the link, get the file — no account needed, no waitlist.",
+    ctaText: hpContent.ctaText || "Download PDF",
+    placeholderText:
+      hpContent.placeholderText ||
+      "Paste Scribd document link here (e.g. scribd.com/document/12345678/...)",
+    qualityBadgeText: hpContent.qualityBadgeText || "High Resolution 300 DPI",
+    autoDownloadBadgeText: hpContent.autoDownloadBadgeText || "Direct Browser Save",
+    checklistItems: Array.isArray(hpContent.checklistItems)
+      ? hpContent.checklistItems
+      : [
+          "No account or login required",
+          "Full document pages preserved",
+          "100% Free & Private — zero logs",
+        ],
+  });
+
+  // 2. How It Works (Steps) Block
+  blocks.push({
+    id: generateBlockId(),
+    type: "steps",
+    content: hpContent.howItWorksTitle || "How to Download Scribd Documents",
+    sectionTitle: hpContent.howItWorksTitle || "How to Download Scribd Documents",
+    sectionSubtitle:
+      hpContent.howItWorksSubtitle ||
+      "Three simple steps to save any public Scribd document as a PDF in seconds.",
+    steps: Array.isArray(hpContent.steps) && hpContent.steps.length > 0
+      ? hpContent.steps
+      : [
+          {
+            stepNumber: 1,
+            title: "Copy the Document Link",
+            description: "Open the document on Scribd and copy the clean URL directly from your browser address bar.",
+          },
+          {
+            stepNumber: 2,
+            title: "Paste into the Downloader",
+            description: "Paste the copied URL into the input field above and click 'Download PDF'.",
+          },
+          {
+            stepNumber: 3,
+            title: "Save Your File",
+            description: "The engine renders high-resolution pages and saves the clean PDF straight to your device.",
+          },
+        ],
+  });
+
+  // 3. Features & Benefits Block
+  blocks.push({
+    id: generateBlockId(),
+    type: "features",
+    content: hpContent.benefitsTitle || "Why Use Our Scribd Downloader?",
+    sectionTitle: hpContent.benefitsTitle || "Why Use Our Scribd Downloader?",
+    sectionSubtitle:
+      hpContent.benefitsSubtitle ||
+      "Engineered for speed, privacy, and flawless document formatting.",
+    features: Array.isArray(hpContent.benefits) && hpContent.benefits.length > 0
+      ? hpContent.benefits
+      : [
+          {
+            title: "Instant Page Processing",
+            description: "High-speed parallel rendering delivers your complete PDF in seconds without throttling.",
+            badge: "Fast",
+          },
+          {
+            title: "Complete Privacy Guaranteed",
+            description: "We never store files, capture personal data, or ask for login credentials.",
+            badge: "Safe",
+          },
+          {
+            title: "All Devices Supported",
+            description: "Works seamlessly on Android, iPhone, iPad, Windows, macOS, and Linux without any app install.",
+            badge: "Universal",
+          },
+          {
+            title: "Zero Hidden Costs",
+            description: "Unlimited free document downloads. No subscriptions, trials, or credit cards required.",
+            badge: "100% Free",
+          },
+        ],
+  });
+
+  // 4. Guide Article Section
+  if (hpContent.guideTitle) {
+    blocks.push({
+      id: generateBlockId(),
+      type: "heading",
+      content: hpContent.guideTitle,
+      level: 2,
+    });
+  }
+
+  if (hpContent.guideContent) {
+    const articleBlocks = parseContentToBlocks(hpContent.guideContent);
+    blocks.push(...articleBlocks);
+  }
+
+  return blocks;
+}
+
+/**
+ * Extracts unified Gutenberg blocks back into a HomepageContent object
+ */
+export function extractBlocksToHomepage(blocks: GutenbergEditorBlock[], baseContent: any = {}): any {
+  const result = { ...baseContent };
+  result.blocks = blocks;
+
+  // Extract Hero
+  const heroBlock = blocks.find((b) => b.type === "hero");
+  if (heroBlock) {
+    if (heroBlock.heroTitle) {
+      result.heroTitle = heroBlock.heroTitle;
+      result.h1Title = heroBlock.heroTitle;
+    }
+    if (heroBlock.heroBadge) result.heroBadge = heroBlock.heroBadge;
+    if (heroBlock.heroSubtitle) result.heroSubtitle = heroBlock.heroSubtitle;
+    if (heroBlock.ctaText) result.ctaText = heroBlock.ctaText;
+    if (heroBlock.placeholderText) result.placeholderText = heroBlock.placeholderText;
+    if (heroBlock.qualityBadgeText) result.qualityBadgeText = heroBlock.qualityBadgeText;
+    if (heroBlock.autoDownloadBadgeText) result.autoDownloadBadgeText = heroBlock.autoDownloadBadgeText;
+    if (heroBlock.checklistItems) result.checklistItems = heroBlock.checklistItems;
+  }
+
+  // Extract Steps
+  const stepsBlock = blocks.find((b) => b.type === "steps");
+  if (stepsBlock) {
+    if (stepsBlock.sectionTitle) result.howItWorksTitle = stepsBlock.sectionTitle;
+    if (stepsBlock.sectionSubtitle) result.howItWorksSubtitle = stepsBlock.sectionSubtitle;
+    if (stepsBlock.steps) result.steps = stepsBlock.steps;
+  }
+
+  // Extract Features
+  const featuresBlock = blocks.find((b) => b.type === "features");
+  if (featuresBlock) {
+    if (featuresBlock.sectionTitle) result.benefitsTitle = featuresBlock.sectionTitle;
+    if (featuresBlock.sectionSubtitle) result.benefitsSubtitle = featuresBlock.sectionSubtitle;
+    if (featuresBlock.features) result.benefits = featuresBlock.features;
+  }
+
+  // Extract Article (all blocks after or excluding hero, steps, features)
+  const articleBlocks = blocks.filter((b) => b.type !== "hero" && b.type !== "steps" && b.type !== "features");
+  if (articleBlocks.length > 0) {
+    result.guideContent = serializeBlocksToMarkdown(articleBlocks);
+    result.htmlContent = serializeBlocksToHtml(blocks);
+  }
+
+  return result;
 }

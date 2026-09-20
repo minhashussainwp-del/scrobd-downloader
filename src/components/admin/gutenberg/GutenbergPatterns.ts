@@ -161,4 +161,149 @@ export const GUTENBERG_PATTERNS: BlockPattern[] = [
       },
     ],
   },
+  {
+    id: "pattern-homepage-hero",
+    title: "Interactive Downloader Hero",
+    category: "headers",
+    description: "Full-width hero header with pill badge, URL input mockup, and security guarantees.",
+    blocks: [
+      {
+        type: "hero",
+        content: "Scribd Downloader – Free PDF Downloads",
+        heroBadge: "100% Free & Secure Scribd PDF Converter",
+        heroTitle: "Scribd Downloader – Free PDF Downloads",
+        heroSubtitle:
+          "Save documents, research papers, and slide decks from Scribd as clean, readable PDFs. Paste the link, get the file — no account needed, no waitlist.",
+        ctaText: "Download PDF",
+        placeholderText: "Paste Scribd document link here (e.g. scribd.com/document/12345678/...)",
+        qualityBadgeText: "High Resolution 300 DPI",
+        autoDownloadBadgeText: "Direct Browser Save",
+        checklistItems: [
+          "No account or login required",
+          "Full document pages preserved",
+          "100% Free & Private — zero logs",
+        ],
+      },
+    ],
+  },
+  {
+    id: "pattern-how-it-works-grid",
+    title: "How It Works (3 Steps Grid)",
+    category: "features",
+    description: "Visual 3-step numbered workflow cards with icons and descriptions.",
+    blocks: [
+      {
+        type: "steps",
+        content: "How to Download Scribd Documents",
+        sectionTitle: "How to Download Scribd Documents",
+        sectionSubtitle: "Three simple steps to save any public Scribd document as a PDF in seconds.",
+        steps: [
+          {
+            stepNumber: 1,
+            title: "Copy the Document Link",
+            description: "Open the document on Scribd and copy the clean URL directly from your browser address bar.",
+          },
+          {
+            stepNumber: 2,
+            title: "Paste into the Downloader",
+            description: "Paste the copied URL into the input field above and click 'Download PDF'.",
+          },
+          {
+            stepNumber: 3,
+            title: "Save Your File",
+            description: "The engine renders high-resolution pages and saves the clean PDF straight to your device.",
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: "pattern-features-grid",
+    title: "Features & Benefits (4-Card Grid)",
+    category: "features",
+    description: "4-column feature highlights showcasing speed, safety, compatibility, and free access.",
+    blocks: [
+      {
+        type: "features",
+        content: "Why Use Our Scribd Downloader?",
+        sectionTitle: "Why Use Our Scribd Downloader?",
+        sectionSubtitle: "Engineered for speed, privacy, and flawless document formatting.",
+        features: [
+          {
+            title: "Instant Page Processing",
+            description: "High-speed parallel rendering delivers your complete PDF in seconds without throttling.",
+            badge: "Fast",
+          },
+          {
+            title: "Complete Privacy Guaranteed",
+            description: "We never store files, capture personal data, or ask for login credentials.",
+            badge: "Safe",
+          },
+          {
+            title: "All Devices Supported",
+            description: "Works seamlessly on Android, iPhone, iPad, Windows, macOS, and Linux without any app install.",
+            badge: "Universal",
+          },
+          {
+            title: "Zero Hidden Costs",
+            description: "Unlimited free document downloads. No subscriptions, trials, or credit cards required.",
+            badge: "100% Free",
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: "pattern-complete-homepage",
+    title: "Complete Homepage Template",
+    category: "headers",
+    description: "Full ready-to-use homepage with Hero Downloader, Steps, Benefits, and Article guide.",
+    blocks: [
+      {
+        type: "hero",
+        content: "Scribd Downloader – Free PDF Downloads",
+        heroBadge: "100% Free & Secure Scribd PDF Converter",
+        heroTitle: "Scribd Downloader – Free PDF Downloads",
+        heroSubtitle: "Save documents, research papers, and slide decks from Scribd as clean, readable PDFs.",
+        ctaText: "Download PDF",
+        placeholderText: "Paste Scribd document link here...",
+        qualityBadgeText: "High Resolution 300 DPI",
+        autoDownloadBadgeText: "Direct Browser Save",
+        checklistItems: ["No login required", "Full document pages preserved", "100% Free & Private"],
+      },
+      {
+        type: "steps",
+        content: "How to Download Scribd Documents",
+        sectionTitle: "How to Download Scribd Documents",
+        sectionSubtitle: "Three simple steps to save any public Scribd document as a PDF in seconds.",
+        steps: [
+          { stepNumber: 1, title: "Copy the Link", description: "Copy the Scribd document URL." },
+          { stepNumber: 2, title: "Paste URL", description: "Paste into the box above and click download." },
+          { stepNumber: 3, title: "Get Your PDF", description: "Save the document straight to your device." },
+        ],
+      },
+      {
+        type: "features",
+        content: "Why Use Our Downloader?",
+        sectionTitle: "Why Use Our Downloader?",
+        sectionSubtitle: "Engineered for speed, privacy, and flawless document formatting.",
+        features: [
+          { title: "Fast Processing", description: "Parallel rendering delivers PDF in seconds.", badge: "Fast" },
+          { title: "100% Private", description: "Zero logs or stored files.", badge: "Safe" },
+          { title: "Universal", description: "Works on all phones and computers.", badge: "Universal" },
+          { title: "100% Free", description: "No subscription or credit card needed.", badge: "Free" },
+        ],
+      },
+      {
+        type: "heading",
+        content: "The Complete Guide to Downloading Scribd Documents",
+        level: 2,
+      },
+      {
+        type: "paragraph",
+        content:
+          "Scribd is one of the world's largest digital libraries, hosting millions of user-uploaded presentations, academic studies, case analyses, and textbooks. Our free web tool allows researchers and students to compile publicly readable pages into standard, offline-accessible PDF documents seamlessly.",
+      },
+    ],
+  },
 ];
