@@ -1,0 +1,35 @@
+[
+  {
+    "id": "usr-1",
+    "username": "admin",
+    "name": "System Administrator",
+    "email": "admin@scribddownloader.org",
+    "role": "owner",
+    "createdAt": "2026-09-21T18:13:45.823Z",
+    "lastLogin": "2026-09-22T12:41:29.830Z"
+  },
+  {
+    "id": "usr-2",
+    "username": "editor",
+    "name": "Lead Content Editor",
+    "email": "editor@scribddownloader.org",
+    "role": "editor",
+    "createdAt": "2026-09-21T18:13:45.823Z"
+  },
+  {
+    "id": "usr-3",
+    "username": "translator",
+    "name": "Multilingual Specialist",
+    "email": "translator@scribddownloader.org",
+    "role": "translator",
+    "createdAt": "2026-09-21T18:13:45.823Z"
+  },
+  {
+    "id": "usr-4",
+    "username": "seomanager",
+    "name": "Technical SEO Lead",
+    "email": "seo@scribddownloader.org",
+    "role": "seo",
+    "createdAt": "2026-09-21T18:13:45.823Z"
+  }
+]

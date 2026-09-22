@@ -11,6 +11,7 @@ import PDFDocument from "pdfkit";
 import { setupMcpEndpoints } from "./server/mcpServer";
 import { setupGeminiAiEndpoints } from "./server/geminiAi";
 import { setupAdminRoutes } from "./server/adminRoutes";
+import { generateAllSitemaps } from "./server/contentInventory";
 
 // Universal require compatible with tsx (ESM) and bundled dist/server.cjs
 const nodeRequire =
@@ -78,7 +79,7 @@ const SEO_DIR = path.join(SERVER_STORAGE_DIR, "seo");
 const PUBLIC_DIR = path.join(process.cwd(), "public");
 
 const BLOG_POSTS_FILE = path.join(SERVER_STORAGE_DIR, "blog_posts.json");
-const CUSTOM_PAGES_FILE = path.join(SERVER_STORAGE_DIR, "custom_pages.json");
+const CUSTOM_PAGES_FILE = path.join(SERVER_STORAGE_DIR, "pages.json");
 const ROBOTS_FILE = path.join(SEO_DIR, "robots.txt");
 const SITEMAP_FILE = path.join(SEO_DIR, "sitemap.xml");
 const SITEMAP_INDEX_FILE = path.join(SEO_DIR, "sitemap_index.xml");
@@ -722,30 +723,17 @@ function saveRobotsTxtOnServer(content: string) {
   } catch {}
 }
 
-function rebuildAllSitemapsOnServer(origin: string, postsParam?: any[], customPagesParam?: any[]) {
+function rebuildAllSitemapsOnServer(origin: string, _postsParam?: any[], _customPagesParam?: any[]) {
   const base = (origin || "").replace(/\/$/, "");
-  const indexXml = buildYoastSitemapIndex(base);
-  const postXml = buildPostSitemap(base, postsParam);
-  const pageXml = buildPageSitemap(base, customPagesParam);
-  const allUrlsetXml = buildExactUrlsetSitemap(base, postsParam, customPagesParam);
-  const updatedAt = new Date().toISOString();
+  const sitemaps = generateAllSitemaps(base);
+  const indexXml = sitemaps.indexXml;
+  const postXml = sitemaps.postXml;
+  const pageXml = sitemaps.pageXml;
+  const allUrlsetXml = sitemaps.sitemapXml;
+  const updatedAt = sitemaps.lastGenerated || new Date().toISOString();
 
   sitemapsByOrigin.set(base, { indexXml, postXml, pageXml, allUrlsetXml, updatedAt });
   sitemapUpdatedAt = updatedAt;
-
-  // Persist files to public directory
-  try {
-    const publicDir = path.join(process.cwd(), "public");
-    if (fs.existsSync(publicDir)) {
-      fs.writeFileSync(path.join(publicDir, "sitemap.xml"), allUrlsetXml, "utf-8");
-      fs.writeFileSync(path.join(publicDir, "sitemap_index.xml"), indexXml, "utf-8");
-      fs.writeFileSync(path.join(publicDir, "post-sitemap.xml"), postXml, "utf-8");
-      fs.writeFileSync(path.join(publicDir, "page-sitemap.xml"), pageXml, "utf-8");
-      fs.writeFileSync(path.join(publicDir, "main-sitemap.xsl"), getYoastXsl(), "utf-8");
-    }
-  } catch (err) {
-    console.warn("Notice: unable to write static sitemaps to public folder:", err);
-  }
 
   return { indexXml, postXml, pageXml, allUrlsetXml };
 }
@@ -874,12 +862,12 @@ const SAMPLES = [
   }
 ];
 
-function generatePageHtml(rawTemplate: string, reqPath: string, origin: string): string {
+function generatePageHtml(rawTemplate: string, reqPath: string, origin: string): { html: string; is404: boolean } {
   const base = (origin || "").replace(/\/$/, "");
   const cleanPath = (reqPath || "/").split("?")[0].replace(/\/+$/, "") || "/";
   const fullUrl = `${base}${cleanPath}`;
 
-  const supportedLangs = ["en", "br", "es", "fr", "de", "id"];
+  const supportedLangs = ["en", "hi", "id", "es", "fr", "br", "de"];
   const segments = cleanPath.split("/").filter(Boolean);
 
   let lang = "en";
@@ -925,6 +913,15 @@ function generatePageHtml(rawTemplate: string, reqPath: string, origin: string):
       const pSlug = cleanSlugForUrl(p.slug, p.id);
       return pSlug === pageSlug || p.id === pageSlug;
     });
+  }
+
+  const knownCorePages = ["", "home", "how-it-works", "blog", "about", "contact", "privacy", "terms", "disclaimer", "legal", "sitemap", "robots"];
+  let is404 = false;
+
+  if (isBlog && blogSlug && !matchedPost) {
+    is404 = true;
+  } else if (!isBlog && pageSlug && pageSlug !== "home" && !matchedPage && !knownCorePages.includes(pageSlug)) {
+    is404 = true;
   }
 
   let title = "Scribd Downloader - Free High-Speed Document & Presentation PDF Converter";
@@ -1171,24 +1168,55 @@ function generatePageHtml(rawTemplate: string, reqPath: string, origin: string):
   html = html.replace(/<meta\s+name="description"\s+content="[^"]*"\s*\/?>/i, `<meta name="description" content="${escapeXml(description)}" />`);
 
   // Canonical Tag
+  const canonicalUrl = cleanPath === "/en" || cleanPath === "/en/" ? `${base}/` : fullUrl;
   if (html.includes('<link rel="canonical"')) {
-    html = html.replace(/<link rel="canonical" href="[^"]*"\s*\/?>/i, `<link rel="canonical" href="${fullUrl}" />`);
+    html = html.replace(/<link rel="canonical" href="[^"]*"\s*\/?>/i, `<link rel="canonical" href="${canonicalUrl}" />`);
   } else {
-    html = html.replace("</head>", `  <link rel="canonical" href="${fullUrl}" />\n</head>`);
+    html = html.replace("</head>", `  <link rel="canonical" href="${canonicalUrl}" />\n</head>`);
   }
 
-  // Alternate Language Hreflang Tags
-  const hreflangTags = [
-    `  <link rel="alternate" hreflang="en" href="${base}/en${pathWithoutLang}" />`,
-    `  <link rel="alternate" hreflang="pt-BR" href="${base}/br${pathWithoutLang}" />`,
-    `  <link rel="alternate" hreflang="es" href="${base}/es${pathWithoutLang}" />`,
-    `  <link rel="alternate" hreflang="fr" href="${base}/fr${pathWithoutLang}" />`,
-    `  <link rel="alternate" hreflang="de" href="${base}/de${pathWithoutLang}" />`,
-    `  <link rel="alternate" hreflang="id" href="${base}/id${pathWithoutLang}" />`,
-    `  <link rel="alternate" hreflang="x-default" href="${base}/en${pathWithoutLang}" />`
-  ].join("\n");
+  // Alternate Language Hreflang Tags (only for real existing variants)
+  let hreflangLinks: string[] = [];
+  if (pageSlug === "home") {
+    hreflangLinks = [
+      `  <link rel="alternate" hreflang="en" href="${base}/" />`,
+      `  <link rel="alternate" hreflang="hi" href="${base}/hi" />`,
+      `  <link rel="alternate" hreflang="pt-BR" href="${base}/br" />`,
+      `  <link rel="alternate" hreflang="es" href="${base}/es" />`,
+      `  <link rel="alternate" hreflang="fr" href="${base}/fr" />`,
+      `  <link rel="alternate" hreflang="de" href="${base}/de" />`,
+      `  <link rel="alternate" hreflang="id" href="${base}/id" />`,
+      `  <link rel="alternate" hreflang="x-default" href="${base}/" />`
+    ];
+  } else if (matchedPage && matchedPage.translationGroupId) {
+    const siblings = allCustomPages.filter((p: any) => p.translationGroupId === matchedPage.translationGroupId && p.status !== "draft" && !p.inTrash);
+    for (const sib of siblings) {
+      const sibLang = sib.language || "en";
+      const sibSlug = cleanSlugForUrl(sib.slug, sib.id);
+      const sibUrl = sibLang === "en" ? `${base}/${sibSlug}` : `${base}/${sibLang}/${sibSlug}`;
+      const code = sibLang === "br" ? "pt-BR" : sibLang;
+      hreflangLinks.push(`  <link rel="alternate" hreflang="${code}" href="${sibUrl}" />`);
+      if (sibLang === "en") {
+        hreflangLinks.push(`  <link rel="alternate" hreflang="x-default" href="${sibUrl}" />`);
+      }
+    }
+  } else if (matchedPost && matchedPost.translationGroupId) {
+    const siblings = allPosts.filter((p: any) => p.translationGroupId === matchedPost.translationGroupId && p.status !== "draft" && !p.inTrash);
+    for (const sib of siblings) {
+      const sibLang = sib.language || "en";
+      const sibSlug = cleanSlugForUrl(sib.slug, sib.id);
+      const sibUrl = `${base}/blog/${sibSlug}`;
+      const code = sibLang === "br" ? "pt-BR" : sibLang;
+      hreflangLinks.push(`  <link rel="alternate" hreflang="${code}" href="${sibUrl}" />`);
+      if (sibLang === "en") {
+        hreflangLinks.push(`  <link rel="alternate" hreflang="x-default" href="${sibUrl}" />`);
+      }
+    }
+  }
 
-  html = html.replace("</head>", `${hreflangTags}\n</head>`);
+  if (hreflangLinks.length > 0) {
+    html = html.replace("</head>", `${hreflangLinks.join("\n")}\n</head>`);
+  }
 
   // Open Graph and Twitter Cards
   if (html.includes('<meta property="og:title"')) {
@@ -1233,7 +1261,7 @@ function generatePageHtml(rawTemplate: string, reqPath: string, origin: string):
   // Inject Pre-rendered HTML into <div id="root">
   html = html.replace('<div id="root"></div>', `<div id="root">${rootSsrHtml}</div>`);
 
-  return html;
+  return { html, is404 };
 }
 
 async function startServer() {
@@ -1708,6 +1736,43 @@ async function startServer() {
   });
 
   // API: Custom Pages Server Storage
+  app.post("/api/contact", (req, res) => {
+    const { name, email, subject, message } = req.body || {};
+    if (!name || !email || !message) {
+      return res.status(400).json({ error: "Name, email, and message are required fields." });
+    }
+
+    const submissionsFile = path.join(SERVER_STORAGE_DIR, "contact_submissions.json");
+    let existingSubmissions: any[] = [];
+    if (fs.existsSync(submissionsFile)) {
+      try {
+        existingSubmissions = JSON.parse(fs.readFileSync(submissionsFile, "utf-8"));
+      } catch {}
+    }
+
+    const nowIso = new Date().toISOString();
+    const newSubmission = {
+      id: "sub-" + Date.now(),
+      name: String(name).trim(),
+      email: String(email).trim(),
+      subject: String(subject || "General Inquiry").trim(),
+      message: String(message).trim(),
+      submittedAt: nowIso,
+      createdAt: nowIso,
+      date: nowIso,
+      isRead: false,
+    };
+
+    existingSubmissions.unshift(newSubmission);
+    try {
+      fs.writeFileSync(submissionsFile, JSON.stringify(existingSubmissions, null, 2), "utf-8");
+    } catch (err) {
+      console.error("Failed to persist contact submission:", err);
+    }
+
+    res.json({ success: true, message: "Contact inquiry recorded on server." });
+  });
+
   app.get("/api/custom-pages", (_req, res) => {
     const pages = getCustomPagesOnServer();
     res.json({ pages });
@@ -1853,7 +1918,8 @@ async function startServer() {
       const origin = getRequestOrigin(req);
       try {
         const rawTemplate = fs.readFileSync(path.join(process.cwd(), "index.html"), "utf-8");
-        const rendered = generatePageHtml(rawTemplate, req.path, origin);
+        const { html: rendered, is404 } = generatePageHtml(rawTemplate, req.path, origin);
+        if (is404) res.status(404);
         const transformed = await vite.transformIndexHtml(req.originalUrl || req.url, rendered);
         res.setHeader("Content-Type", "text/html; charset=utf-8");
         return res.send(transformed);
@@ -1880,11 +1946,12 @@ async function startServer() {
       const origin = getRequestOrigin(req);
       try {
         const rawTemplate = fs.readFileSync(path.join(distPath, "index.html"), "utf-8");
-        const rendered = generatePageHtml(rawTemplate, req.path, origin);
+        const { html: rendered, is404 } = generatePageHtml(rawTemplate, req.path, origin);
+        if (is404) res.status(404);
         res.setHeader("Content-Type", "text/html; charset=utf-8");
         return res.send(rendered);
       } catch {
-        res.sendFile(path.join(distPath, "index.html"));
+        res.status(404).sendFile(path.join(distPath, "index.html"));
       }
     });
   }

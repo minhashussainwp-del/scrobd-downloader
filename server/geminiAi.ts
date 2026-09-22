@@ -5,7 +5,7 @@ import { GoogleGenAI } from "@google/genai";
 
 const STORAGE_ROOT = path.join(process.cwd(), "server_storage");
 const BLOG_POSTS_FILE = path.join(STORAGE_ROOT, "blog_posts.json");
-const CUSTOM_PAGES_FILE = path.join(STORAGE_ROOT, "custom_pages.json");
+const PAGES_FILE = path.join(STORAGE_ROOT, "pages.json");
 const ROBOTS_FILE = path.join(STORAGE_ROOT, "seo", "robots.txt");
 
 // Lazy initialization of GoogleGenAI client as per best practices
@@ -46,9 +46,9 @@ function saveBlogPosts(posts: any[]) {
 }
 
 function loadCustomPages(): any[] {
-  if (fs.existsSync(CUSTOM_PAGES_FILE)) {
+  if (fs.existsSync(PAGES_FILE)) {
     try {
-      return JSON.parse(fs.readFileSync(CUSTOM_PAGES_FILE, "utf-8"));
+      return JSON.parse(fs.readFileSync(PAGES_FILE, "utf-8"));
     } catch {}
   }
   return [];
@@ -56,7 +56,7 @@ function loadCustomPages(): any[] {
 
 function saveCustomPages(pages: any[]) {
   try {
-    fs.writeFileSync(CUSTOM_PAGES_FILE, JSON.stringify(pages, null, 2), "utf-8");
+    fs.writeFileSync(PAGES_FILE, JSON.stringify(pages, null, 2), "utf-8");
   } catch (e) {
     console.error("Error saving custom pages:", e);
   }

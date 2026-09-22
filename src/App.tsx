@@ -143,12 +143,12 @@ function buildUrl(
   customPage?: CustomPage | null
 ): string {
   if (page === "admin") return "/admin";
-  if (page === "home") return `/${lang}`;
-  if (page === "sitemap") return `/${lang}/sitemap.xml`;
-  if (page === "robots") return `/${lang}/robots.txt`;
-  if (page === "blog-article" && post) return `/${lang}/blog/${post.slug}`;
+  if (page === "home") return lang === "en" ? "/" : `/${lang}`;
+  if (page === "sitemap") return lang === "en" ? "/sitemap.xml" : `/${lang}/sitemap.xml`;
+  if (page === "robots") return lang === "en" ? "/robots.txt" : `/${lang}/robots.txt`;
+  if (page === "blog-article" && post) return lang === "en" ? `/blog/${post.slug}` : `/${lang}/blog/${post.slug}`;
   if (page === "custom-page" && customPage) return `/${customPage.slug}`;
-  return `/${lang}/${page}`;
+  return lang === "en" ? `/${page}` : `/${lang}/${page}`;
 }
 
 export default function App() {
@@ -291,9 +291,9 @@ export default function App() {
     []
   );
 
-  // On mount: ensure URL reflects the language prefix if user arrived at root /
+  // On mount: ensure URL reflects the language prefix if user arrived at root / with a non-English language
   useEffect(() => {
-    if (window.location.pathname === "/" || window.location.pathname === "") {
+    if ((window.location.pathname === "/" || window.location.pathname === "") && currentLang !== "en") {
       navigateWithUrl("home", currentLang, null, null, true);
     }
   }, [currentLang, navigateWithUrl]);

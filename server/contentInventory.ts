@@ -45,8 +45,8 @@ const STORAGE_ROOT = path.join(process.cwd(), "server_storage");
 const SEO_DIR = path.join(STORAGE_ROOT, "seo");
 const PUBLIC_DIR = path.join(process.cwd(), "public");
 
+const PAGES_FILE = path.join(STORAGE_ROOT, "pages.json");
 const BLOG_POSTS_FILE = path.join(STORAGE_ROOT, "blog_posts.json");
-const CUSTOM_PAGES_FILE = path.join(STORAGE_ROOT, "custom_pages.json");
 const LANGUAGES_FILE = path.join(STORAGE_ROOT, "languages.json");
 const SITEMAP_CONFIG_FILE = path.join(STORAGE_ROOT, "sitemap_config.json");
 const HOMEPAGE_CONTENT_FILE = path.join(STORAGE_ROOT, "homepage_content.json");
@@ -58,15 +58,13 @@ const HOMEPAGE_CONTENT_FILE = path.join(STORAGE_ROOT, "homepage_content.json");
   }
 });
 
-// Default active languages (7 Locales: English, Indonesian, Spanish, Brazilian Portuguese, French, German, Hindi)
+// Default active languages (7 Locales: English, Hindi, Indonesian, Spanish, French, Portuguese, German)
 export const DEFAULT_LANGUAGES = [
   { code: "en", name: "English", nativeName: "English", flag: "🇺🇸", urlPrefix: "/en/", isDefault: true },
   { code: "hi", name: "Hindi", nativeName: "हिन्दी", flag: "🇮🇳", urlPrefix: "/hi/", isDefault: false },
   { code: "id", name: "Indonesian", nativeName: "Bahasa Indonesia", flag: "🇮🇩", urlPrefix: "/id/", isDefault: false },
   { code: "es", name: "Spanish (Mexico)", nativeName: "Español", flag: "🇲🇽", urlPrefix: "/es/", isDefault: false },
   { code: "fr", name: "French", nativeName: "Français", flag: "🇫🇷", urlPrefix: "/fr/", isDefault: false },
-  { code: "nl", name: "Dutch", nativeName: "Nederlands", flag: "🇳🇱", urlPrefix: "/nl/", isDefault: false },
-  { code: "ur", name: "Urdu", nativeName: "اردو", flag: "🇵🇰", urlPrefix: "/ur/", isDefault: false },
   { code: "br", name: "Portuguese", nativeName: "Português (Brasil)", flag: "🇧🇷", urlPrefix: "/br/", isDefault: false },
   { code: "de", name: "German", nativeName: "Deutsch", flag: "🇩🇪", urlPrefix: "/de/", isDefault: false },
 ];
@@ -138,27 +136,28 @@ export function formatIsoDate(date?: any): string {
  */
 export function getContentInventory(origin: string): ContentInventoryReport {
   const base = (origin || "").replace(/\/$/, "");
-  const posts = readJsonFile<any[]>(BLOG_POSTS_FILE, []);
-  const customPages = readJsonFile<any[]>(CUSTOM_PAGES_FILE, []);
+  const allPosts = readJsonFile<any[]>(BLOG_POSTS_FILE, []);
+  const allPages = readJsonFile<any[]>(PAGES_FILE, []);
   const langs = readJsonFile<any[]>(LANGUAGES_FILE, DEFAULT_LANGUAGES);
   const now = new Date().toISOString();
 
   const activeLangCodes = langs.map((l) => l.code);
   const hasHindi = activeLangCodes.includes("hi");
 
-  // Separate draft vs publish
-  const publishedCustomPages = customPages.filter((p) => p.status !== "draft");
-  const draftCustomPages = customPages.filter((p) => p.status === "draft");
+  // Separate draft vs published
+  const publishedPages = allPages.filter((p) => !p.inTrash && p.status !== "draft");
+  const draftPages = allPages.filter((p) => p.inTrash || p.status === "draft");
 
-  const publishedPosts = posts.filter((p) => p.status !== "draft");
-  const draftPosts = posts.filter((p) => p.status === "draft");
+  const publishedPosts = allPosts.filter((p) => !p.inTrash && p.status !== "draft");
+  const draftPosts = allPosts.filter((p) => p.inTrash || p.status === "draft");
 
   // 1. HOME PAGES
   const homeUrls: string[] = [];
   // English / Primary Root Homepage
   homeUrls.push(`${base}/`);
-  // Localized Homepages for each registered active language
+  // Localized Homepages for each registered active non-default language
   for (const lang of langs) {
+    if (lang.code === "en" || lang.isDefault) continue;
     const langHome = `${base}/${lang.code}`;
     if (!homeUrls.includes(langHome)) {
       homeUrls.push(langHome);
@@ -166,11 +165,10 @@ export function getContentInventory(origin: string): ContentInventoryReport {
   }
 
   // 2. STATIC PAGES (post_type = page, post_status = publish)
-  // Base Standard Pages + Custom Published Pages
   const pagesInventory: { loc: string; lang: string; title: string; lastmod: string }[] = [];
   const visitedPageUrls = new Set<string>();
 
-  // A. Core Standard Pages (in default + active languages)
+  // A. Core Standard Pages (Base default language)
   for (const stdPage of STANDARD_STATIC_PAGES) {
     const defaultUrl = `${base}/${stdPage.slug}`;
     if (!visitedPageUrls.has(defaultUrl)) {
@@ -182,66 +180,41 @@ export function getContentInventory(origin: string): ContentInventoryReport {
         lastmod: now,
       });
     }
-
-    // Localized standard pages
-    for (const lang of langs) {
-      const locUrl = `${base}/${lang.code}/${stdPage.slug}`;
-      if (!visitedPageUrls.has(locUrl)) {
-        visitedPageUrls.add(locUrl);
-        pagesInventory.push({
-          loc: locUrl,
-          lang: lang.code,
-          title: `${stdPage.title} (${lang.name})`,
-          lastmod: now,
-        });
-      }
-    }
   }
 
-  // B. Custom Published Pages
-  for (const cp of publishedCustomPages) {
-    const slug = slugify(cp.slug || cp.title);
+  // B. Real Published CMS Pages (from database, strictly respecting actual language & slug)
+  for (const p of publishedPages) {
+    const rawSlug = p.slug || p.title;
+    const slug = slugify(rawSlug);
     if (!slug) continue;
-    const pageLang = cp.language || "en";
-    const pageMod = formatIsoDate(cp.lastModified || cp.updatedAt || now);
+    const pageLang = p.language || "en";
+    const pageMod = formatIsoDate(p.lastModified || p.updatedAt || now);
 
-    const defaultUrl = `${base}/${slug}`;
-    if (!visitedPageUrls.has(defaultUrl)) {
-      visitedPageUrls.add(defaultUrl);
+    const pageUrl = pageLang === "en" ? `${base}/${slug}` : `${base}/${pageLang}/${slug}`;
+    if (!visitedPageUrls.has(pageUrl)) {
+      visitedPageUrls.add(pageUrl);
       pagesInventory.push({
-        loc: defaultUrl,
+        loc: pageUrl,
         lang: pageLang,
-        title: cp.title,
+        title: p.title,
         lastmod: pageMod,
       });
-    }
-
-    // Also include language-specific permalinks if configured
-    for (const lang of langs) {
-      const locUrl = `${base}/${lang.code}/${slug}`;
-      if (!visitedPageUrls.has(locUrl)) {
-        visitedPageUrls.add(locUrl);
-        pagesInventory.push({
-          loc: locUrl,
-          lang: lang.code,
-          title: `${cp.title} (${lang.name})`,
-          lastmod: pageMod,
-        });
-      }
     }
   }
 
   // 3. BLOG POSTS (post_type = post, post_status = publish)
+  // Strictly include only real published posts with their genuine permalinks
   const postsInventory: { loc: string; lang: string; title: string; lastmod: string }[] = [];
   const visitedPostUrls = new Set<string>();
 
   for (const post of publishedPosts) {
-    const slug = slugify(post.slug || post.title);
+    const rawSlug = post.slug || post.title;
+    const slug = slugify(rawSlug);
     if (!slug) continue;
     const postLang = post.language || "en";
     const postMod = formatIsoDate(post.updatedAt || post.date || now);
 
-    // Primary post permalink
+    // Primary post permalink (real URL only, no synthetic foreign duplicates)
     const primaryUrl = `${base}/${postLang}/blog/${slug}`;
     if (!visitedPostUrls.has(primaryUrl)) {
       visitedPostUrls.add(primaryUrl);
@@ -251,22 +224,6 @@ export function getContentInventory(origin: string): ContentInventoryReport {
         title: post.title,
         lastmod: postMod,
       });
-    }
-
-    // Translation cross-links if active in other languages
-    for (const lang of langs) {
-      if (lang.code !== postLang) {
-        const langUrl = `${base}/${lang.code}/blog/${slug}`;
-        if (!visitedPostUrls.has(langUrl)) {
-          visitedPostUrls.add(langUrl);
-          postsInventory.push({
-            loc: langUrl,
-            lang: lang.code,
-            title: `${post.title} (${lang.name})`,
-            lastmod: postMod,
-          });
-        }
-      }
     }
   }
 
@@ -278,15 +235,12 @@ export function getContentInventory(origin: string): ContentInventoryReport {
   const totalPostSitemapUrls = postsInventory.length;
   const totalSitemapUrls = totalPageSitemapUrls + totalPostSitemapUrls;
 
-  // Published static pages entity count = Standard Core Pages + Published Custom Pages
-  const publishedPagesCount = STANDARD_STATIC_PAGES.length + publishedCustomPages.length;
-
   return {
     timestamp: now,
     domain: base,
     counts: {
-      publishedPagesCount,
-      draftPagesCount: draftCustomPages.length,
+      publishedPagesCount: publishedPages.length,
+      draftPagesCount: draftPages.length,
       publishedPostsCount: publishedPosts.length,
       draftPostsCount: draftPosts.length,
       activeLanguagesCount: langs.length,

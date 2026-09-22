@@ -284,9 +284,14 @@ export function HeroSection({
                     <div className="sm:hidden pr-2 text-slate-400">
                       <Link2 className="w-4 h-4" />
                     </div>
+                    <label htmlFor="scribd-url-input" className="sr-only">
+                      Scribd Document or Presentation URL
+                    </label>
                     <input
+                      id="scribd-url-input"
                       type="text"
                       required
+                      aria-label="Scribd Document or Presentation URL"
                       value={url}
                       onChange={(e) => {
                         setUrl(e.target.value);
@@ -364,6 +369,25 @@ export function HeroSection({
                   {formError}
                 </div>
               )}
+
+              {/* Sample Document Quick Test Pills */}
+              <div className="mt-3.5 flex flex-wrap items-center justify-center gap-2 text-xs">
+                <span className="text-slate-500 font-semibold">Test sample:</span>
+                {SAMPLE_DOCS.map((sample, idx) => (
+                  <button
+                    key={idx}
+                    type="button"
+                    onClick={() => {
+                      setUrl(sample.url);
+                      if (formError) setFormError(null);
+                    }}
+                    className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-white/80 hover:bg-blue-50 hover:text-blue-700 text-slate-700 font-semibold transition cursor-pointer border border-slate-200/80 shadow-xs hover:border-blue-300"
+                  >
+                    <FileText className="w-3 h-3 text-blue-600" />
+                    <span>{sample.label}</span>
+                  </button>
+                ))}
+              </div>
             </div>
 
           <ul className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 pt-4">

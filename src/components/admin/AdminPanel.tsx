@@ -10,14 +10,20 @@ import { AdminMedia } from "./AdminMedia";
 import { AdminAds } from "./AdminAds";
 import { AdminLanguages } from "./AdminLanguages";
 import { AdminSeo } from "./AdminSeo";
+import { AdminSitemap } from "./AdminSitemap";
+import { AdminCrawlerHealth } from "./AdminCrawlerHealth";
+import { AdminCategories } from "./AdminCategories";
+import { AdminTags } from "./AdminTags";
 import { AdminRedirects } from "./AdminRedirects";
 import { AdminSettings } from "./AdminSettings";
-import { Loader2 } from "lucide-react";
+import { Loader2, ShieldCheck, Lock, User, KeyRound, AlertCircle, LogOut } from "lucide-react";
 
 interface AdminPanelProps {
   onExitToSite: () => void;
   onPreviewUrl?: (url: string) => void;
 }
+
+const DEFAULT_ADMIN_TOKEN = "sd_admin_sec_7894561230_token";
 
 export function AdminPanel({ onExitToSite, onPreviewUrl }: AdminPanelProps) {
   const [activeTab, setActiveTab] = useState<AdminTab>("dashboard");
@@ -25,6 +31,43 @@ export function AdminPanel({ onExitToSite, onPreviewUrl }: AdminPanelProps) {
   const [posts, setPosts] = useState<any[]>([]);
   const [metrics, setMetrics] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+
+  // Authentication state
+  const [authToken, setAuthToken] = useState<string>(() => {
+    return localStorage.getItem("admin_token") || DEFAULT_ADMIN_TOKEN;
+  });
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(true);
+  const [loginUsername, setLoginUsername] = useState("admin");
+  const [loginPassword, setLoginPassword] = useState("admin123");
+  const [loginError, setLoginError] = useState<string | null>(null);
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
+
+  // Patch window.fetch to automatically include Admin Bearer Token for /api/admin calls
+  useEffect(() => {
+    const originalFetch = window.fetch;
+    window.fetch = async (input: RequestInfo | URL, init?: RequestInit) => {
+      const urlString = typeof input === "string" ? input : input instanceof URL ? input.toString() : input.url;
+      const currentToken = localStorage.getItem("admin_token") || authToken || DEFAULT_ADMIN_TOKEN;
+      
+      if (urlString.includes("/api/admin")) {
+        const customInit = init ? { ...init } : {};
+        const headers = new Headers(customInit.headers || {});
+        if (!headers.has("Authorization")) {
+          headers.set("Authorization", `Bearer ${currentToken}`);
+        }
+        if (!headers.has("X-Admin-Token")) {
+          headers.set("X-Admin-Token", currentToken);
+        }
+        customInit.headers = headers;
+        return originalFetch(input, customInit);
+      }
+      return originalFetch(input, init);
+    };
+
+    return () => {
+      window.fetch = originalFetch;
+    };
+  }, [authToken]);
 
   // Pages state
   const [pageFilter, setPageFilter] = useState<"all" | "published" | "draft" | "trash">("all");
@@ -47,6 +90,13 @@ export function AdminPanel({ onExitToSite, onPreviewUrl }: AdminPanelProps) {
         fetch("/api/admin/posts"),
         fetch("/api/admin/metrics"),
       ]);
+
+      if (pagesRes.status === 401 || postsRes.status === 401 || metricsRes.status === 401) {
+        setIsAuthenticated(false);
+        setLoading(false);
+        return;
+      }
+
       const pagesData = await pagesRes.json();
       const postsData = await postsRes.json();
       const metricsData = await metricsRes.json();
@@ -54,6 +104,7 @@ export function AdminPanel({ onExitToSite, onPreviewUrl }: AdminPanelProps) {
       setPages(pagesData.pages || []);
       setPosts(postsData.posts || []);
       setMetrics(metricsData.metrics || null);
+      setIsAuthenticated(true);
     } catch (err) {
       console.error("Failed to load CMS data:", err);
     } finally {
@@ -63,7 +114,34 @@ export function AdminPanel({ onExitToSite, onPreviewUrl }: AdminPanelProps) {
 
   useEffect(() => {
     loadInitialData();
-  }, []);
+  }, [authToken]);
+
+  const handleLoginSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoggingIn(true);
+    setLoginError(null);
+    try {
+      const res = await fetch("/api/admin/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username: loginUsername, password: loginPassword }),
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        const token = data.token || DEFAULT_ADMIN_TOKEN;
+        localStorage.setItem("admin_token", token);
+        setAuthToken(token);
+        setIsAuthenticated(true);
+        loadInitialData();
+      } else {
+        setLoginError(data.error || "Invalid administrator credentials");
+      }
+    } catch (err) {
+      setLoginError("Failed to connect to authentication server.");
+    } finally {
+      setIsLoggingIn(false);
+    }
+  };
 
   // Filtered pages
   const filteredPages = pages.filter((p) => {
@@ -248,6 +326,97 @@ export function AdminPanel({ onExitToSite, onPreviewUrl }: AdminPanelProps) {
     );
   }
 
+  if (!isAuthenticated) {
+    return (
+      <div className="min-h-screen bg-slate-950 flex flex-col items-center justify-center p-4 text-slate-100">
+        <div className="w-full max-w-md bg-slate-900 border border-slate-800 rounded-2xl p-8 shadow-2xl relative overflow-hidden">
+          <div className="absolute -top-24 -right-24 w-48 h-48 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
+          
+          <div className="flex items-center gap-3 mb-6">
+            <div className="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400">
+              <ShieldCheck className="w-6 h-6" />
+            </div>
+            <div>
+              <h2 className="text-xl font-bold text-white tracking-tight">Scribd Downloader Admin</h2>
+              <p className="text-xs text-slate-400">Protected System Control Panel</p>
+            </div>
+          </div>
+
+          {loginError && (
+            <div className="mb-5 p-3.5 bg-rose-500/10 border border-rose-500/20 rounded-xl text-rose-300 text-xs flex items-center gap-2.5">
+              <AlertCircle className="w-4 h-4 shrink-0 text-rose-400" />
+              <span>{loginError}</span>
+            </div>
+          )}
+
+          <form onSubmit={handleLoginSubmit} className="space-y-4">
+            <div>
+              <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
+                Username or Email
+              </label>
+              <div className="relative">
+                <User className="w-4 h-4 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                <input
+                  type="text"
+                  value={loginUsername}
+                  onChange={(e) => setLoginUsername(e.target.value)}
+                  className="w-full pl-10 pr-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-sm text-white placeholder-slate-600 focus:outline-none focus:border-emerald-500 transition"
+                  placeholder="admin"
+                  required
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
+                Password
+              </label>
+              <div className="relative">
+                <KeyRound className="w-4 h-4 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                <input
+                  type="password"
+                  value={loginPassword}
+                  onChange={(e) => setLoginPassword(e.target.value)}
+                  className="w-full pl-10 pr-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-sm text-white placeholder-slate-600 focus:outline-none focus:border-emerald-500 transition"
+                  placeholder="••••••••"
+                  required
+                />
+              </div>
+            </div>
+
+            <button
+              type="submit"
+              disabled={isLoggingIn}
+              className="w-full mt-2 py-3 px-4 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-sm font-semibold transition flex items-center justify-center gap-2 shadow-lg shadow-emerald-950/50 disabled:opacity-50"
+            >
+              {isLoggingIn ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  <span>Authenticating...</span>
+                </>
+              ) : (
+                <>
+                  <Lock className="w-4 h-4" />
+                  <span>Sign In to Admin Portal</span>
+                </>
+              )}
+            </button>
+          </form>
+
+          <div className="mt-6 pt-6 border-t border-slate-800/80 flex items-center justify-between text-xs text-slate-500">
+            <button
+              onClick={onExitToSite}
+              className="hover:text-slate-300 transition text-xs font-medium"
+            >
+              ← Back to Main Website
+            </button>
+            <span>v2.4.0 • Server Authenticated</span>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <AdminLayout
       activeTab={activeTab}
@@ -408,6 +577,16 @@ export function AdminPanel({ onExitToSite, onPreviewUrl }: AdminPanelProps) {
         <AdminMedia />
       )}
 
+      {/* 5B. CATEGORIES */}
+      {activeTab === "categories" && (
+        <AdminCategories posts={posts} />
+      )}
+
+      {/* 5C. TAGS */}
+      {activeTab === "tags" && (
+        <AdminTags posts={posts} />
+      )}
+
       {/* 6. ADVERTISEMENTS */}
       {activeTab === "ads" && (
         <AdminAds />
@@ -426,9 +605,19 @@ export function AdminPanel({ onExitToSite, onPreviewUrl }: AdminPanelProps) {
         />
       )}
 
-      {/* 8. SEO & SITEMAPS */}
+      {/* 8. SEO SETTINGS */}
       {activeTab === "seo" && (
         <AdminSeo />
+      )}
+
+      {/* 8B. XML SITEMAPS */}
+      {activeTab === "sitemap" && (
+        <AdminSitemap />
+      )}
+
+      {/* 8C. SITE / CRAWLER HEALTH */}
+      {activeTab === "crawler-health" && (
+        <AdminCrawlerHealth />
       )}
 
       {/* 9. 301 / 302 REDIRECTS */}

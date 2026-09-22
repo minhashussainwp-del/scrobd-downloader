@@ -286,17 +286,6 @@ export function SeoHead({ page, post, customTitle, customDescription }: SeoHeadP
     });
 
     document.head.appendChild(script);
-
-    // Ensure SEOSignalX Real-Time Optimization script is in head
-    if (!document.getElementById("seosignalx-patches")) {
-      const ssxScript = document.createElement("script");
-      ssxScript.id = "seosignalx-patches";
-      ssxScript.src =
-        "https://seosignalx.com/api/patches?format=js&deployment=a87651bf5e1c9a9cafaf45f9c0ddddfd&key=ssxjs_eb8e85ec8c50ca1f569e9e53cda3193ad52cedcd14b1e4e1";
-      ssxScript.setAttribute("referrerpolicy", "origin");
-      ssxScript.defer = true;
-      document.head.appendChild(ssxScript);
-    }
   }, [page, post, customTitle, customDescription]);
 
   return null;

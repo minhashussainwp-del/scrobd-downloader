@@ -28,7 +28,7 @@ export function ContactPage({ onNavigate, currentLang = "en" }: ContactPageProps
     if (match) setPageData(match);
   }, [currentLang]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     
@@ -42,6 +42,21 @@ export function ContactPage({ onNavigate, currentLang = "en" }: ContactPageProps
       isRead: false
     };
     
+    try {
+      await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          subject: formData.subject,
+          message: formData.message,
+        }),
+      });
+    } catch (err) {
+      console.error("Server contact submission error:", err);
+    }
+
     const existing = loadContactMessages();
     saveContactMessages([...existing, newMessage]);
 
@@ -54,7 +69,7 @@ export function ContactPage({ onNavigate, currentLang = "en" }: ContactPageProps
         subject: "Document Download Issue",
         message: "",
       });
-    }, 600);
+    }, 400);
   };
 
   return (

@@ -28,21 +28,23 @@ import {
   Bell,
   ShieldCheck,
   ChevronDown,
+  Layers,
 } from "lucide-react";
 import { AdminUser, AdminRole } from "../../types";
 
 export type AdminTab =
   | "dashboard"
-  | "pages"
   | "posts"
-  | "homepage"
+  | "pages"
   | "media"
-  | "ads"
-  | "languages"
-  | "seo"
-  | "ai"
   | "categories"
   | "tags"
+  | "homepage"
+  | "seo"
+  | "sitemap"
+  | "crawler-health"
+  | "ads"
+  | "languages"
   | "redirects"
   | "404"
   | "revisions"
@@ -50,7 +52,8 @@ export type AdminTab =
   | "users"
   | "settings"
   | "backup"
-  | "trash";
+  | "trash"
+  | "ai";
 
 interface AdminLayoutProps {
   activeTab: AdminTab;
@@ -105,37 +108,34 @@ export function AdminLayout({
 
   const navGroups = [
     {
-      group: "Core Content",
+      group: "WordPress CMS",
       items: [
         { id: "dashboard" as AdminTab, label: "Dashboard", icon: LayoutDashboard },
-        { id: "pages" as AdminTab, label: "Pages", icon: FileText, badge: badgeCounts?.pages },
         { id: "posts" as AdminTab, label: "Posts", icon: BookOpen, badge: badgeCounts?.posts },
-        { id: "homepage" as AdminTab, label: "Homepage", icon: Home },
-        { id: "media" as AdminTab, label: "Media Library", icon: ImageIcon },
+        { id: "pages" as AdminTab, label: "Pages", icon: FileText, badge: badgeCounts?.pages },
+        { id: "media" as AdminTab, label: "Media", icon: ImageIcon },
         { id: "categories" as AdminTab, label: "Categories", icon: FolderTree },
         { id: "tags" as AdminTab, label: "Tags", icon: Tags },
+        { id: "homepage" as AdminTab, label: "Homepage", icon: Home },
       ],
     },
     {
-      group: "Marketing & SEO",
+      group: "SEO & Crawler Accessibility",
+      items: [
+        { id: "seo" as AdminTab, label: "SEO Settings", icon: Search },
+        { id: "sitemap" as AdminTab, label: "XML Sitemap", icon: Layers },
+        { id: "crawler-health" as AdminTab, label: "Site/Crawler Health", icon: Activity },
+        { id: "redirects" as AdminTab, label: "301 Redirects", icon: ArrowRightLeft },
+      ],
+    },
+    {
+      group: "Site Management",
       items: [
         { id: "ads" as AdminTab, label: "Advertisements", icon: Megaphone },
         { id: "languages" as AdminTab, label: "Languages", icon: Globe, badge: badgeCounts?.missingTranslations ? `${badgeCounts.missingTranslations} miss` : undefined },
-        { id: "seo" as AdminTab, label: "SEO & Sitemap", icon: Search },
-        { id: "ai" as AdminTab, label: "AI Assistant", icon: Sparkles },
-        { id: "redirects" as AdminTab, label: "Redirects", icon: ArrowRightLeft },
-        { id: "404" as AdminTab, label: "404 Monitor", icon: AlertTriangle, badge: badgeCounts?.errors404 },
-      ],
-    },
-    {
-      group: "System & Governance",
-      items: [
-        { id: "revisions" as AdminTab, label: "Revisions", icon: History },
-        { id: "activity" as AdminTab, label: "Activity Log", icon: Activity },
-        { id: "users" as AdminTab, label: "Users & Roles", icon: Users },
         { id: "settings" as AdminTab, label: "Settings", icon: Settings },
         { id: "backup" as AdminTab, label: "Backup & Restore", icon: Database },
-        { id: "trash" as AdminTab, label: "Trash", icon: Trash2, badge: badgeCounts?.trash },
+        { id: "activity" as AdminTab, label: "Activity Log", icon: History },
       ],
     },
   ];
