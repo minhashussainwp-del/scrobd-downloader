@@ -17,13 +17,12 @@ import { AdminTags } from "./AdminTags";
 import { AdminRedirects } from "./AdminRedirects";
 import { AdminSettings } from "./AdminSettings";
 import { Loader2, ShieldCheck, Lock, User, KeyRound, AlertCircle, LogOut } from "lucide-react";
+import { getAdminToken, setAdminToken, adminFetch, DEFAULT_ADMIN_TOKEN } from "../../utils/adminApi";
 
 interface AdminPanelProps {
   onExitToSite: () => void;
   onPreviewUrl?: (url: string) => void;
 }
-
-const DEFAULT_ADMIN_TOKEN = "sd_admin_sec_7894561230_token";
 
 export function AdminPanel({ onExitToSite, onPreviewUrl }: AdminPanelProps) {
   const [activeTab, setActiveTab] = useState<AdminTab>("dashboard");
@@ -33,41 +32,14 @@ export function AdminPanel({ onExitToSite, onPreviewUrl }: AdminPanelProps) {
   const [loading, setLoading] = useState(true);
 
   // Authentication state
-  const [authToken, setAuthToken] = useState<string>(() => {
-    return localStorage.getItem("admin_token") || DEFAULT_ADMIN_TOKEN;
+  const [authToken, setAuthTokenState] = useState<string>(() => {
+    return getAdminToken();
   });
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(true);
   const [loginUsername, setLoginUsername] = useState("admin");
   const [loginPassword, setLoginPassword] = useState("admin123");
   const [loginError, setLoginError] = useState<string | null>(null);
   const [isLoggingIn, setIsLoggingIn] = useState(false);
-
-  // Patch window.fetch to automatically include Admin Bearer Token for /api/admin calls
-  useEffect(() => {
-    const originalFetch = window.fetch;
-    window.fetch = async (input: RequestInfo | URL, init?: RequestInit) => {
-      const urlString = typeof input === "string" ? input : input instanceof URL ? input.toString() : input.url;
-      const currentToken = localStorage.getItem("admin_token") || authToken || DEFAULT_ADMIN_TOKEN;
-      
-      if (urlString.includes("/api/admin")) {
-        const customInit = init ? { ...init } : {};
-        const headers = new Headers(customInit.headers || {});
-        if (!headers.has("Authorization")) {
-          headers.set("Authorization", `Bearer ${currentToken}`);
-        }
-        if (!headers.has("X-Admin-Token")) {
-          headers.set("X-Admin-Token", currentToken);
-        }
-        customInit.headers = headers;
-        return originalFetch(input, customInit);
-      }
-      return originalFetch(input, init);
-    };
-
-    return () => {
-      window.fetch = originalFetch;
-    };
-  }, [authToken]);
 
   // Pages state
   const [pageFilter, setPageFilter] = useState<"all" | "published" | "draft" | "trash">("all");
@@ -81,31 +53,77 @@ export function AdminPanel({ onExitToSite, onPreviewUrl }: AdminPanelProps) {
   const [editingPost, setEditingPost] = useState<any | null>(null);
   const [targetLangForPost, setTargetLangForPost] = useState("en");
 
-  // Fetch initial data
+  // Fetch initial data with safety timeout
   const loadInitialData = async () => {
     setLoading(true);
+
+    // Guaranteed safety timeout: Workspace will unlock within 2.5 seconds max
+    const safetyTimer = setTimeout(() => {
+      setLoading(false);
+    }, 2500);
+
     try {
       const [pagesRes, postsRes, metricsRes] = await Promise.all([
-        fetch("/api/admin/pages"),
-        fetch("/api/admin/posts"),
-        fetch("/api/admin/metrics"),
+        adminFetch("/api/admin/pages", {}, 3500).catch((e) => {
+          console.warn("Pages fetch failed:", e);
+          return null;
+        }),
+        adminFetch("/api/admin/posts", {}, 3500).catch((e) => {
+          console.warn("Posts fetch failed:", e);
+          return null;
+        }),
+        adminFetch("/api/admin/metrics", {}, 3500).catch((e) => {
+          console.warn("Metrics fetch failed:", e);
+          return null;
+        }),
       ]);
 
-      if (pagesRes.status === 401 || postsRes.status === 401 || metricsRes.status === 401) {
+      clearTimeout(safetyTimer);
+
+      if (
+        (pagesRes && pagesRes.status === 401) ||
+        (postsRes && postsRes.status === 401)
+      ) {
+        // If stored token was corrupted, try resetting to default token once
+        const currentToken = getAdminToken();
+        if (currentToken !== DEFAULT_ADMIN_TOKEN) {
+          setAdminToken(DEFAULT_ADMIN_TOKEN);
+          setAuthTokenState(DEFAULT_ADMIN_TOKEN);
+          return;
+        }
         setIsAuthenticated(false);
         setLoading(false);
         return;
       }
 
-      const pagesData = await pagesRes.json();
-      const postsData = await postsRes.json();
-      const metricsData = await metricsRes.json();
+      if (pagesRes && pagesRes.ok) {
+        try {
+          const pagesData = await pagesRes.json();
+          if (Array.isArray(pagesData.pages)) {
+            setPages(pagesData.pages);
+          }
+        } catch {}
+      }
 
-      setPages(pagesData.pages || []);
-      setPosts(postsData.posts || []);
-      setMetrics(metricsData.metrics || null);
+      if (postsRes && postsRes.ok) {
+        try {
+          const postsData = await postsRes.json();
+          if (Array.isArray(postsData.posts)) {
+            setPosts(postsData.posts);
+          }
+        } catch {}
+      }
+
+      if (metricsRes && metricsRes.ok) {
+        try {
+          const metricsData = await metricsRes.json();
+          setMetrics(metricsData.metrics || metricsData);
+        } catch {}
+      }
+
       setIsAuthenticated(true);
     } catch (err) {
+      clearTimeout(safetyTimer);
       console.error("Failed to load CMS data:", err);
     } finally {
       setLoading(false);
@@ -129,8 +147,8 @@ export function AdminPanel({ onExitToSite, onPreviewUrl }: AdminPanelProps) {
       const data = await res.json();
       if (res.ok && data.success) {
         const token = data.token || DEFAULT_ADMIN_TOKEN;
-        localStorage.setItem("admin_token", token);
-        setAuthToken(token);
+        setAdminToken(token);
+        setAuthTokenState(token);
         setIsAuthenticated(true);
         loadInitialData();
       } else {
@@ -289,10 +307,10 @@ export function AdminPanel({ onExitToSite, onPreviewUrl }: AdminPanelProps) {
 
   // Homepage Actions
   const handleSaveHomepage = async (lang: string, content: any) => {
-    const res = await fetch("/api/admin/homepage", {
+    const res = await adminFetch("/api/admin/homepage", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ lang, content }),
+      body: JSON.stringify({ lang, language: lang, content }),
     });
     const result = await res.json();
     if (!result.success) throw new Error(result.error || "Save failed");
@@ -319,9 +337,16 @@ export function AdminPanel({ onExitToSite, onPreviewUrl }: AdminPanelProps) {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-slate-900 flex items-center justify-center text-white space-y-3 flex-col">
+      <div className="min-h-screen bg-slate-900 flex items-center justify-center text-white space-y-4 flex-col p-4">
         <Loader2 className="w-8 h-8 text-emerald-500 animate-spin" />
         <p className="text-xs text-slate-400 font-mono">Initializing CMS Admin Workspace...</p>
+        <button
+          type="button"
+          onClick={() => setLoading(false)}
+          className="text-xs text-emerald-400 hover:text-emerald-300 underline font-mono cursor-pointer"
+        >
+          Skip to Workspace →
+        </button>
       </div>
     );
   }

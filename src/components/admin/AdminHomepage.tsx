@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   Home,
   Save,
@@ -14,6 +14,7 @@ import {
   Loader2,
   LayoutTemplate,
   MessageSquare,
+  RefreshCw,
 } from "lucide-react";
 import { GutenbergEditor } from "./gutenberg/GutenbergEditor";
 import { GutenbergEditorBlock } from "./gutenberg/types";
@@ -21,6 +22,7 @@ import {
   parseHomepageToBlocks,
   extractBlocksToHomepage,
 } from "./gutenberg/gutenbergConverter";
+import { adminFetch } from "../../utils/adminApi";
 
 interface AdminHomepageProps {
   onSave: (lang: string, content: any) => Promise<void>;
@@ -37,6 +39,52 @@ const DEFAULT_LANGS = [
   { code: "ur", name: "Urdu", flag: "🇵🇰" },
 ];
 
+function getFallbackHomepage(lang: string) {
+  return {
+    language: lang,
+    metaTitle: "Scribd Downloader - Free Document & Presentation PDF Exporter",
+    metaDescription: "Download Scribd documents, books, and presentations in pristine vector PDF format instantly without registration.",
+    h1Title: "Free Scribd Document & Presentation Downloader",
+    heroBadge: "⚡ Instant Vector PDF Downloader",
+    heroTitle: "Download Scribd Documents, Presentations & PDFs Fast",
+    heroSubtitle: "Save complete Scribd presentations, documents, research publications, and slides directly to high-quality vector PDF format without fees or account requirements.",
+    ctaText: "Download PDF Now",
+    placeholderText: "Paste Scribd document link here (e.g. https://www.scribd.com/document/359613425/...)",
+    qualityBadgeText: "Vector PDF Format",
+    autoDownloadBadgeText: "High Resolution Clean Output",
+    checklistItems: [
+      "100% Free & Unlimited",
+      "No Registration or Credit Card",
+      "Pristine Vector Clarity",
+      "Mobile & Tablet Friendly",
+    ],
+    howItWorksTitle: "How Scribd Downloader Operates",
+    howItWorksSubtitle: "Follow 3 straightforward steps to download any public document in vector PDF format within seconds.",
+    steps: [
+      { step: "01", title: "Copy Scribd URL", description: "Navigate to Scribd and copy the document or presentation URL from your browser's address bar." },
+      { step: "02", title: "Paste Document Link", description: "Paste the copied URL into the downloader input field above and click the Download button." },
+      { step: "03", title: "Download Vector PDF", description: "Our high-speed engine parses every vector slide and delivers a complete, searchable PDF instantly." },
+    ],
+    benefitsTitle: "Why Use Our Scribd Downloader Tool?",
+    benefitsSubtitle: "Engineered specifically for researchers, students, and readers worldwide.",
+    benefits: [
+      { title: "Pure Vector Text & Crisp Images", description: "Preserves vector fonts, original layouts, and embedded charts without pixelation or compression artifacts." },
+      { title: "Completely Free With No Sign-up", description: "No subscription fees, hidden watermarks, or email verification required." },
+      { title: "Lightning Fast Extraction", description: "High-speed multi-threaded parsing downloads multi-page documents in seconds." },
+    ],
+    guideBadge: "Complete Reader Guide",
+    guideTitle: "Ultimate Guide to Downloading Scribd Documents & Presentations",
+    guideContent: "Comprehensive walkthrough and tips for extracting high-resolution PDF documents from Scribd effortlessly.",
+    faqTitle: "Frequently Asked Questions",
+    faqSubtitle: "Common inquiries about downloading documents, supported formats, and system capabilities.",
+    faqs: [
+      { question: "Is Scribd Downloader completely free to use?", answer: "Yes, our service is 100% free with no hidden charges, registration, or subscription requirements." },
+      { question: "What formats can I download?", answer: "All documents and presentations are compiled into pristine, high-resolution vector PDF files." },
+      { question: "Do I need to install any software or browser extensions?", answer: "No software or extensions are required. The entire conversion happens safely online through your web browser." },
+    ],
+  };
+}
+
 export function AdminHomepage({
   onSave,
   availableLanguages = DEFAULT_LANGS,
@@ -47,20 +95,71 @@ export function AdminHomepage({
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [saveMessage, setSaveMessage] = useState<string | null>(null);
+  const [loadError, setLoadError] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<"gutenberg" | "faq">("gutenberg");
+  const abortControllerRef = useRef<AbortController | null>(null);
 
-  // Load homepage content for active language
+  // Load homepage content for active language with timeout and error resilience
   const loadHomepage = async (lang: string) => {
     setLoading(true);
+    setLoadError(null);
+
+    // Cancel pending request if language changed rapidly
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+    }
+    const controller = new AbortController();
+    abortControllerRef.current = controller;
+
+    // Safety timeout: auto-fallback if request exceeds 4000ms
+    const timeoutTimer = setTimeout(() => {
+      if (!content) {
+        console.warn(`Homepage API slow for [${lang}], applying default template`);
+        const fallback = getFallbackHomepage(lang);
+        setContent(fallback);
+        try {
+          setBlocks(parseHomepageToBlocks(fallback));
+        } catch (e) {
+          console.error("Fallback block parsing error:", e);
+        }
+        setLoading(false);
+      }
+    }, 4000);
+
     try {
-      const res = await fetch(`/api/admin/homepage?lang=${lang}`);
+      const res = await adminFetch(`/api/admin/homepage?lang=${lang}`, {
+        signal: controller.signal,
+      }, 5000);
+
+      clearTimeout(timeoutTimer);
+
+      if (!res.ok) {
+        throw new Error(`Server returned status ${res.status}`);
+      }
+
       const data = await res.json();
-      const rawContent = data.content || {};
+      const rawContent = data.content || getFallbackHomepage(lang);
       setContent(rawContent);
-      const parsedBlocks = parseHomepageToBlocks(rawContent);
-      setBlocks(parsedBlocks);
-    } catch (err) {
+
+      try {
+        const parsedBlocks = parseHomepageToBlocks(rawContent);
+        setBlocks(parsedBlocks);
+      } catch (parseErr) {
+        console.warn("Failed to parse blocks, using fallback structure:", parseErr);
+        setBlocks(parseHomepageToBlocks(getFallbackHomepage(lang)));
+      }
+    } catch (err: any) {
+      clearTimeout(timeoutTimer);
+      if (err.name === "AbortError") return;
       console.error("Failed to load homepage content:", err);
+      setLoadError("Could not retrieve saved homepage content from server. Loaded default structure.");
+      const fallback = getFallbackHomepage(lang);
+      setContent(fallback);
+      try {
+        setBlocks(parseHomepageToBlocks(fallback));
+      } catch (e) {
+        console.error(e);
+      }
     } finally {
       setLoading(false);
     }
@@ -68,6 +167,9 @@ export function AdminHomepage({
 
   useEffect(() => {
     loadHomepage(activeLang);
+    return () => {
+      if (abortControllerRef.current) abortControllerRef.current.abort();
+    };
   }, [activeLang]);
 
   const handleFaqChange = (index: number, field: string, value: any) => {
@@ -145,16 +247,46 @@ export function AdminHomepage({
     }
   };
 
-  if (loading || !content) {
+  if (loading && !content) {
     return (
-      <div className="flex items-center justify-center py-20">
+      <div className="flex flex-col items-center justify-center py-24 space-y-3">
         <Loader2 className="w-8 h-8 text-emerald-600 animate-spin" />
+        <p className="text-xs text-slate-500 font-medium">Loading Homepage Editor for [{activeLang.toUpperCase()}]...</p>
+        <button
+          type="button"
+          onClick={() => {
+            const fallback = getFallbackHomepage(activeLang);
+            setContent(fallback);
+            setBlocks(parseHomepageToBlocks(fallback));
+            setLoading(false);
+          }}
+          className="mt-2 text-xs text-emerald-700 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 px-3 py-1.5 rounded-lg font-medium transition cursor-pointer"
+        >
+          Load Default Template Now
+        </button>
       </div>
     );
   }
 
   return (
     <div className="space-y-4 pb-12">
+      {loadError && (
+        <div className="p-3 bg-amber-50 border border-amber-200 text-amber-800 rounded-xl text-xs flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <AlertCircle className="w-4 h-4 text-amber-600 shrink-0" />
+            <span>{loadError}</span>
+          </div>
+          <button
+            type="button"
+            onClick={() => loadHomepage(activeLang)}
+            className="inline-flex items-center gap-1 font-semibold text-amber-900 underline hover:no-underline"
+          >
+            <RefreshCw className="w-3 h-3" />
+            <span>Retry Connection</span>
+          </button>
+        </div>
+      )}
+
       {/* Top Header & Navigation Bar */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white rounded-xl p-4 border border-slate-200 shadow-xs">
         <div>

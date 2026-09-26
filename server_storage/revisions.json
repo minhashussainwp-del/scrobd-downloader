@@ -1,0 +1,99 @@
+[
+  {
+    "id": "rev-1790407431293-zzc4",
+    "entityId": "homepage-en",
+    "entityType": "homepage",
+    "date": "2026-09-26T07:23:51.293Z",
+    "user": "admin",
+    "title": "Homepage [en]",
+    "summary": "Updated homepage content for en",
+    "snapshot": {
+      "language": "en",
+      "metaTitle": "Scribd Downloader - Free Scribd PDF & Presentation Downloader",
+      "metaDescription": "Download Scribd documents, presentations, and research papers as high-resolution PDF for free. No account, no credit card required.",
+      "h1Title": "Scribd Downloader – Free PDF Downloads, No Login Needed",
+      "heroBadge": "100% Free & Secure Scribd PDF Converter",
+      "heroTitle": "Scribd Downloader – Free PDF Downloads",
+      "heroSubtitle": "Save documents, research papers, and slide decks from Scribd as clean, readable PDFs. Paste the link, get the file — no account needed, no waitlist.",
+      "ctaText": "Download PDF",
+      "placeholderText": "Paste Scribd document link here (e.g. scribd.com/document/12345678/...)",
+      "qualityBadgeText": "High Resolution 300 DPI",
+      "autoDownloadBadgeText": "Direct Browser Save",
+      "checklistItems": [
+        "No account or login required",
+        "Full document pages preserved",
+        "100% Free & Private — zero logs"
+      ],
+      "howItWorksTitle": "How to Download Scribd Documents",
+      "howItWorksSubtitle": "Three simple steps to save any public Scribd document as a PDF in seconds.",
+      "steps": [
+        {
+          "stepNumber": 1,
+          "title": "Copy the Document Link",
+          "description": "Open the document on Scribd and copy the clean URL directly from your browser address bar."
+        },
+        {
+          "stepNumber": 2,
+          "title": "Paste into the Downloader",
+          "description": "Paste the copied URL into the input field above and click 'Download PDF'."
+        },
+        {
+          "stepNumber": 3,
+          "title": "Save Your File",
+          "description": "The engine renders high-resolution pages and saves the clean PDF straight to your device."
+        }
+      ],
+      "benefitsTitle": "Why Use Our Scribd Downloader?",
+      "benefitsSubtitle": "Engineered for speed, privacy, and flawless document formatting.",
+      "benefits": [
+        {
+          "title": "Instant Page Processing",
+          "description": "High-speed parallel rendering delivers your complete PDF in seconds without throttling.",
+          "badge": "Fast"
+        },
+        {
+          "title": "Complete Privacy Guaranteed",
+          "description": "We never store files, capture personal data, or ask for login credentials.",
+          "badge": "Safe"
+        },
+        {
+          "title": "All Devices Supported",
+          "description": "Works seamlessly on Android, iPhone, iPad, Windows, macOS, and Linux without any app install.",
+          "badge": "Universal"
+        },
+        {
+          "title": "Zero Hidden Costs",
+          "description": "Unlimited free document downloads. No subscriptions, trials, or credit cards required.",
+          "badge": "100% Free"
+        }
+      ],
+      "guideBadge": "Knowledge Base",
+      "guideTitle": "The Complete Guide to Downloading Scribd Documents",
+      "guideContent": "### How It Works Under the Hood\n\nWhen you paste a link into our downloader, the system accesses the publicly visible page assets of the Scribd document and compiles each rendered slide or text page into an organized, high-definition PDF file.\n\n### Key Features\n\n* **Lossless Typography:** Text elements and vector assets remain crisp and readable at any zoom level.\n* **Preserved Document Flow:** Page numbering, margins, tables, and embedded images maintain their original layout.\n* **No Software Required:** Unlike desktop utilities or APKs that pose security risks, our web-based downloader runs purely in your sandboxed browser.\n\n### Best Practices for Fast Downloads\n\n1. **Use the document's direct URL:** Avoid search result links or shortened redirect URLs.\n2. **Ensure stable internet:** For large 100+ page books or presentations, a stable Wi-Fi connection ensures uninterrupted page rendering.\n3. **Check mobile Downloads folder:** On mobile phones, files automatically land in your default 'Files' or 'Downloads' directory.",
+      "faqTitle": "Frequently Asked Questions",
+      "faqSubtitle": "Got questions? We have clear, straightforward answers.",
+      "faqs": [
+        {
+          "question": "Do I need a Scribd account or subscription to download?",
+          "answer": "No. You do not need an account, login, or subscription. The downloader works with publicly accessible documents directly in your browser."
+        },
+        {
+          "question": "Is this Scribd Downloader completely free to use?",
+          "answer": "Yes, 100% free with no hidden charges, daily quotas, or required credit card details."
+        },
+        {
+          "question": "Can I download documents on my smartphone (iPhone/Android)?",
+          "answer": "Yes. The tool runs directly inside mobile Safari, Chrome, and Firefox without needing any APK or app installation."
+        },
+        {
+          "question": "What format are downloaded documents saved in?",
+          "answer": "All documents are rendered and saved as standard, universally compatible PDF files."
+        },
+        {
+          "question": "Why did a download fail or take longer than usual?",
+          "answer": "Very large documents with hundreds of high-res slides take longer to assemble. Double-check that your URL is correct and your internet connection is active."
+        }
+      ]
+    }
+  }
+]

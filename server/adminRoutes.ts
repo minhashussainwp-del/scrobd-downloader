@@ -657,8 +657,9 @@ export function setupAdminRoutes(app: express.Express) {
   });
 
   app.post("/api/admin/homepage", (req, res) => {
-    const lang = (req.body.language as string) || "en";
-    const data = req.body as HomepageContent;
+    const body = req.body || {};
+    const lang = (body.language as string) || (body.lang as string) || "en";
+    const data = (body.content && typeof body.content === "object" ? body.content : body) as HomepageContent;
 
     const saved = readJsonFile<Record<string, HomepageContent>>(HOMEPAGE_FILE, DEFAULT_HOMEPAGE_CONTENTS);
     const prevSnapshot = saved[lang] || DEFAULT_HOMEPAGE_CONTENTS[lang];
@@ -673,7 +674,11 @@ export function setupAdminRoutes(app: express.Express) {
     saveRevision(`homepage-${lang}`, "homepage", `Homepage [${lang}]`, `Updated homepage content for ${lang}`, prevSnapshot);
     logActivity("admin", "owner", `Updated Homepage Content (${lang})`, "/");
 
-    res.json({ success: true, message: `Homepage content for [${lang}] successfully saved.` });
+    res.json({
+      success: true,
+      message: `Homepage content for [${lang}] successfully saved.`,
+      content: saved[lang],
+    });
   });
 
   // 4. BLOG POSTS CMS (SEPARATED FROM STATIC PAGES)

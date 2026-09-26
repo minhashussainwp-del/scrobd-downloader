@@ -1,0 +1,735 @@
+{
+  "en": {
+    "language": "en",
+    "metaTitle": "Scribd Downloader - Free Scribd PDF & Presentation Downloader",
+    "metaDescription": "Download Scribd documents, presentations, and research papers as high-resolution PDF for free. No account, no credit card required.",
+    "h1Title": "Scribd Downloader – Free PDF Downloads, No Login Needed",
+    "heroBadge": "100% Free & Secure Scribd PDF Converter",
+    "heroTitle": "Scribd Downloader – Free PDF Downloads",
+    "heroSubtitle": "Save documents, research papers, and slide decks from Scribd as clean, readable PDFs. Paste the link, get the file — no account needed, no waitlist.",
+    "ctaText": "Download PDF",
+    "placeholderText": "Paste Scribd document link here (e.g. scribd.com/document/12345678/...)",
+    "qualityBadgeText": "High Resolution 300 DPI",
+    "autoDownloadBadgeText": "Direct Browser Save",
+    "checklistItems": [
+      "No account or login required",
+      "Full document pages preserved",
+      "100% Free & Private — zero logs"
+    ],
+    "howItWorksTitle": "How to Download Scribd Documents",
+    "howItWorksSubtitle": "Three simple steps to save any public Scribd document as a PDF in seconds.",
+    "steps": [
+      {
+        "stepNumber": 1,
+        "title": "Copy the Document Link",
+        "description": "Open the document on Scribd and copy the clean URL directly from your browser address bar."
+      },
+      {
+        "stepNumber": 2,
+        "title": "Paste into the Downloader",
+        "description": "Paste the copied URL into the input field above and click 'Download PDF'."
+      },
+      {
+        "stepNumber": 3,
+        "title": "Save Your File",
+        "description": "The engine renders high-resolution pages and saves the clean PDF straight to your device."
+      }
+    ],
+    "benefitsTitle": "Why Use Our Scribd Downloader?",
+    "benefitsSubtitle": "Engineered for speed, privacy, and flawless document formatting.",
+    "benefits": [
+      {
+        "title": "Instant Page Processing",
+        "description": "High-speed parallel rendering delivers your complete PDF in seconds without throttling.",
+        "badge": "Fast"
+      },
+      {
+        "title": "Complete Privacy Guaranteed",
+        "description": "We never store files, capture personal data, or ask for login credentials.",
+        "badge": "Safe"
+      },
+      {
+        "title": "All Devices Supported",
+        "description": "Works seamlessly on Android, iPhone, iPad, Windows, macOS, and Linux without any app install.",
+        "badge": "Universal"
+      },
+      {
+        "title": "Zero Hidden Costs",
+        "description": "Unlimited free document downloads. No subscriptions, trials, or credit cards required.",
+        "badge": "100% Free"
+      }
+    ],
+    "guideBadge": "Knowledge Base",
+    "guideTitle": "The Complete Guide to Downloading Scribd Documents",
+    "guideContent": "### How It Works Under the Hood\n\nWhen you paste a link into our downloader, the system accesses the publicly visible page assets of the Scribd document and compiles each rendered slide or text page into an organized, high-definition PDF file.\n\n### Key Features\n\n* **Lossless Typography:** Text elements and vector assets remain crisp and readable at any zoom level.\n* **Preserved Document Flow:** Page numbering, margins, tables, and embedded images maintain their original layout.\n* **No Software Required:** Unlike desktop utilities or APKs that pose security risks, our web-based downloader runs purely in your sandboxed browser.\n\n### Best Practices for Fast Downloads\n\n1. **Use the document's direct URL:** Avoid search result links or shortened redirect URLs.\n2. **Ensure stable internet:** For large 100+ page books or presentations, a stable Wi-Fi connection ensures uninterrupted page rendering.\n3. **Check mobile Downloads folder:** On mobile phones, files automatically land in your default 'Files' or 'Downloads' directory.",
+    "faqTitle": "Frequently Asked Questions",
+    "faqSubtitle": "Got questions? We have clear, straightforward answers.",
+    "faqs": [
+      {
+        "question": "Do I need a Scribd account or subscription to download?",
+        "answer": "No. You do not need an account, login, or subscription. The downloader works with publicly accessible documents directly in your browser."
+      },
+      {
+        "question": "Is this Scribd Downloader completely free to use?",
+        "answer": "Yes, 100% free with no hidden charges, daily quotas, or required credit card details."
+      },
+      {
+        "question": "Can I download documents on my smartphone (iPhone/Android)?",
+        "answer": "Yes. The tool runs directly inside mobile Safari, Chrome, and Firefox without needing any APK or app installation."
+      },
+      {
+        "question": "What format are downloaded documents saved in?",
+        "answer": "All documents are rendered and saved as standard, universally compatible PDF files."
+      },
+      {
+        "question": "Why did a download fail or take longer than usual?",
+        "answer": "Very large documents with hundreds of high-res slides take longer to assemble. Double-check that your URL is correct and your internet connection is active."
+      }
+    ],
+    "lastUpdated": "2026-09-26T07:23:51.292Z"
+  },
+  "hi": {
+    "language": "hi",
+    "metaTitle": "स्क्रिब्ड डाउनलोडर - स्क्रिब्ड दस्तावेज़ और प्रेजेंटेशन मुफ़्त डाउनलोड करें",
+    "metaDescription": "पब्लिक स्क्रिब्ड दस्तावेज़, प्रेजेंटेशन और रिसर्च पेपर्स को हाई-रिज़ॉल्यूशन पीडीएफ में मुफ़्त डाउनलोड करें। बिना किसी लॉगिन या ऐप के।",
+    "h1Title": "स्क्रिब्ड डाउनलोडर – मुफ़्त पीडीएफ डाउनलोड, बिना लॉगिन के",
+    "heroBadge": "100% मुफ़्त एवं सुरक्षित स्क्रिब्ड पीडीएफ कन्वर्टर",
+    "heroTitle": "स्क्रिब्ड डाउनलोडर – मुफ़्त पीडीएफ डाउनलोड",
+    "heroSubtitle": "स्क्रिब्ड दस्तावेज़ों, रिसर्च पेपर्स और प्रेजेंटेशन्स को साफ़, पढ़ने योग्य पीडीएफ के रूप में सहेजें। लिंक पेस्ट करें और तुरंत डाउनलोड प्राप्त करें।",
+    "ctaText": "पीडीएफ डाउनलोड करें",
+    "placeholderText": "स्क्रिब्ड दस्तावेज़ का लिंक यहाँ पेस्ट करें (उदा: scribd.com/document/12345678/...)",
+    "qualityBadgeText": "उच्च गुणवत्ता 300 DPI",
+    "autoDownloadBadgeText": "सीधा ब्राउज़र डाउनलोड",
+    "checklistItems": [
+      "कोई खाता या लॉगिन आवश्यक नहीं",
+      "दस्तावेज़ के सभी पृष्ठ सुरक्षित",
+      "100% मुफ़्त एवं पूर्णतः निजी"
+    ],
+    "howItWorksTitle": "स्क्रिब्ड दस्तावेज़ कैसे डाउनलोड करें",
+    "howItWorksSubtitle": "किसी भी पब्लिक स्क्रिब्ड फ़ाइल को पीडीएफ के रूप में सहेजने के तीन आसान चरण।",
+    "steps": [
+      {
+        "stepNumber": 1,
+        "title": "दस्तावेज़ लिंक कॉपी करें",
+        "description": "स्क्रिब्ड पर दस्तावेज़ खोलें और अपने ब्राउज़र एड्रेस बार से उसका यूआरएल कॉपी करें।"
+      },
+      {
+        "stepNumber": 2,
+        "title": "डाउनलोडर में पेस्ट करें",
+        "description": "कॉपी किया गया लिंक ऊपर दिए गए बॉक्स में पेस्ट करें और 'पीडीएफ डाउनलोड करें' बटन दबाएं।"
+      },
+      {
+        "stepNumber": 3,
+        "title": "अपनी पीडीएफ फ़ाइल सहेजें",
+        "description": "टूल सभी पेजों को प्रोसेस करके एक साफ़ पीडीएफ आपके डिवाइस में सहेज देगा।"
+      }
+    ],
+    "benefitsTitle": "हमारा स्क्रिब्ड डाउनलोडर क्यों चुनें?",
+    "benefitsSubtitle": "सर्वश्रेष्ठ गति, गोपनीयता और स्पष्ट दस्तावेज़ फॉर्मेटिंग के लिए डिज़ाइन किया गया।",
+    "benefits": [
+      {
+        "title": "सुपरफास्ट प्रोसेसिंग",
+        "description": "समानांतर पेज रेंडरिंग कुछ ही सेकंड में आपकी पूरी पीडीएफ तैयार कर देती है।",
+        "badge": "तेज़"
+      },
+      {
+        "title": "पूर्ण डेटा सुरक्षा",
+        "description": "हम कभी भी आपकी फ़ाइलें स्टोर नहीं करते और न ही कोई व्यक्तिगत जानकारी मांगते हैं।",
+        "badge": "सुरक्षित"
+      },
+      {
+        "title": "सभी डिवाइस पर समर्थित",
+        "description": "एंड्रॉइड, आईफोन, आईपैड, विंडोज़ और मैक पर बिना किसी ऐप के काम करता है।",
+        "badge": "यूनिवर्सल"
+      },
+      {
+        "title": "पूरी तरह निःशुल्क",
+        "description": "असीमित मुफ़्त दस्तावेज़ डाउनलोड। कोई सदस्यता या छिपा हुआ शुल्क नहीं।",
+        "badge": "100% मुफ़्त"
+      }
+    ],
+    "guideBadge": "ज्ञान केंद्र एवं गाइड",
+    "guideTitle": "स्क्रिब्ड दस्तावेज़ डाउनलोड करने की पूरी विधि",
+    "guideContent": "### सिस्टम कैसे कार्य करता है\n\nजब आप हमारे डाउनलोडर में कोई लिंक पेस्ट करते हैं, तो सिस्टम स्क्रिब्ड दस्तावेज़ के सभी सार्वजनिक पेजों को प्रोसेस करता है और उन्हें एक उच्च गुणवत्ता वाली पीडीएफ फ़ाइल में बदल देता है।\n\n### मुख्य विशेषताएं\n\n* **स्पष्ट टेक्स्ट एवं चित्र:** ज़ूम करने पर भी टेक्स्ट और चित्र बिल्कुल स्पष्ट रहते हैं।\n* **मूल लेआउट सुरक्षित:** पेज नंबर, मार्जिन और टेबल अपने मूल स्वरूप में सुरक्षित रहते हैं।\n* **किसी ऐप की ज़रूरत नहीं:** जोखिम भरे थर्ड-पार्टी ऐप या एपीके डाउनलोड करने की ज़रूरत नहीं, यह सीधे ब्राउज़र में चलता है।",
+    "faqTitle": "अक्सर पूछे जाने वाले प्रश्न (FAQ)",
+    "faqSubtitle": "क्या आपके मन में कोई सवाल है? यहाँ पाएं आसान और सीधे जवाब।",
+    "faqs": [
+      {
+        "question": "क्या स्क्रिब्ड दस्तावेज़ डाउनलोड करने के लिए अकाउंट की ज़रूरत है?",
+        "answer": "नहीं, इसके लिए किसी लॉगिन, अकाउंट या क्रेडिट कार्ड की आवश्यकता नहीं है। आप सीधे लिंक पेस्ट करके डाउनलोड कर सकते हैं।"
+      },
+      {
+        "question": "क्या यह स्क्रिब्ड डाउनलोडर पूरी तरह मुफ़्त है?",
+        "answer": "हाँ, यह 100% मुफ़्त है। कोई दैनिक सीमा या छिपे हुए शुल्क नहीं हैं।"
+      },
+      {
+        "question": "क्या मैं इसे अपने मोबाइल (एंड्रॉइड / आईफोन) पर उपयोग कर सकता हूँ?",
+        "answer": "हाँ, यह क्रोम, सफारी और फ़ायरफ़ॉक्स जैसे मोबाइल ब्राउज़रों पर बिल्कुल आसानी से चलता है।"
+      },
+      {
+        "question": "डाउनलोड की गई फ़ाइलें किस फॉर्मेट में मिलती हैं?",
+        "answer": "सभी फ़ाइलें स्टैंडर्ड पीडीएफ (PDF) फॉर्मेट में तैयार होती हैं जिन्हें किसी भी डिवाइस पर खोला जा सकता है।"
+      }
+    ]
+  },
+  "id": {
+    "language": "id",
+    "metaTitle": "Scribd Downloader - Download Dokumen & Presentasi Scribd Gratis",
+    "metaDescription": "Download dokumen, presentasi, dan jurnal penelitian Scribd dalam format PDF berkualitas tinggi secara gratis tanpa login.",
+    "h1Title": "Scribd Downloader – Unduh PDF Gratis, Tanpa Perlu Login",
+    "heroBadge": "100% Gratis & Konverter PDF Scribd Aman",
+    "heroTitle": "Scribd Downloader – Unduh PDF Gratis",
+    "heroSubtitle": "Simpan dokumen, jurnal, dan slide presentasi dari Scribd sebagai PDF yang rapi. Tempel tautan, dapatkan file seketika.",
+    "ctaText": "Unduh PDF",
+    "placeholderText": "Tempel tautan dokumen Scribd di sini...",
+    "qualityBadgeText": "Resolusi Tinggi 300 DPI",
+    "autoDownloadBadgeText": "Unduh Langsung ke Perangkat",
+    "checklistItems": [
+      "Tanpa akun atau login",
+      "Halaman dokumen lengkap",
+      "100% Gratis & Privasi terjaga"
+    ],
+    "howItWorksTitle": "Cara Mengunduh Dokumen Scribd",
+    "howItWorksSubtitle": "Tiga langkah mudah untuk menyimpan dokumen Scribd ke PDF.",
+    "steps": [
+      {
+        "stepNumber": 1,
+        "title": "Salin Tautan Dokumen",
+        "description": "Buka dokumen di Scribd dan salin URL dari bilah alamat browser Anda."
+      },
+      {
+        "stepNumber": 2,
+        "title": "Tempel ke Downloader",
+        "description": "Tempelkan URL ke kolom input di atas dan klik 'Unduh PDF'."
+      },
+      {
+        "stepNumber": 3,
+        "title": "Simpan File PDF",
+        "description": "Sistem memproses halaman dan langsung menyimpan PDF ke perangkat Anda."
+      }
+    ],
+    "benefitsTitle": "Keunggulan Scribd Downloader Kami",
+    "benefitsSubtitle": "Cepat, aman, dan menjaga kualitas dokumen asli.",
+    "benefits": [
+      {
+        "title": "Proses Sangat Cepat",
+        "description": "Rendering paralel berkecepatan tinggi dalam hitungan detik.",
+        "badge": "Cepat"
+      },
+      {
+        "title": "Privasi 100% Aman",
+        "description": "Kami tidak pernah menyimpan file atau data pribadi Anda.",
+        "badge": "Aman"
+      },
+      {
+        "title": "Mendukung Semua Perangkat",
+        "description": "Bisa digunakan di Android, iPhone, PC, dan Mac tanpa instal aplikasi.",
+        "badge": "Universal"
+      },
+      {
+        "title": "Tanpa Biaya Tersembunyi",
+        "description": "Unduhan dokumen gratis tanpa batas selamanya.",
+        "badge": "Gratis"
+      }
+    ],
+    "guideBadge": "Panduan Pengguna",
+    "guideTitle": "Panduan Lengkap Mengunduh Dokumen Scribd ke PDF",
+    "guideContent": "### Cara Kerja Sistem\n\nKetika Anda memasukkan tautan dokumen Scribd publik ke dalam alat ini, sistem memproses seluruh halaman dokumen dan mengompilasinya menjadi satu file PDF yang siap dibaca secara offline.",
+    "faqTitle": "Pertanyaan yang Sering Diajukan (FAQ)",
+    "faqSubtitle": "Jawaban langsung untuk pertanyaan umum Anda.",
+    "faqs": [
+      {
+        "question": "Apakah perlu akun Scribd untuk mengunduh?",
+        "answer": "Tidak, Anda tidak memerlukan akun atau langganan apapun."
+      },
+      {
+        "question": "Apakah layanan ini benar-benar gratis?",
+        "answer": "Ya, 100% gratis tanpa biaya tersembunyi."
+      },
+      {
+        "question": "Apakah bisa digunakan di HP?",
+        "answer": "Ya, berfungsi sempurna di browser HP Android dan iPhone."
+      }
+    ]
+  },
+  "es": {
+    "language": "es",
+    "metaTitle": "Descargador de Scribd - Descarga Documentos y Presentaciones Gratis",
+    "metaDescription": "Descarga documentos, presentaciones y libros de Scribd en PDF de alta calidad gratis y sin registrarte.",
+    "h1Title": "Descargador de Scribd – Descarga PDF Gratis sin Iniciar Sesión",
+    "heroBadge": "Convertidor PDF 100% Gratis y Seguro",
+    "heroTitle": "Descargador de Scribd – Descarga PDF Gratis",
+    "heroSubtitle": "Guarda documentos, investigaciones y diapositivas de Scribd como archivos PDF limpios y legibles. Pega el enlace y descarga.",
+    "ctaText": "Descargar PDF",
+    "placeholderText": "Pega el enlace del documento de Scribd aquí...",
+    "qualityBadgeText": "Alta Resolución 300 DPI",
+    "autoDownloadBadgeText": "Descarga Directa al Navegador",
+    "checklistItems": [
+      "Sin registro ni cuenta",
+      "Páginas completas conservadas",
+      "100% Gratis y Privado"
+    ],
+    "howItWorksTitle": "Cómo Descargar Documentos de Scribd",
+    "howItWorksSubtitle": "Tres pasos sencillos para guardar cualquier documento público en PDF.",
+    "steps": [
+      {
+        "stepNumber": 1,
+        "title": "Copia el Enlace",
+        "description": "Abre el documento en Scribd y copia la URL de la barra de direcciones."
+      },
+      {
+        "stepNumber": 2,
+        "title": "Pégalo en el Descargador",
+        "description": "Pega el enlace en el campo superior y haz clic en 'Descargar PDF'."
+      },
+      {
+        "stepNumber": 3,
+        "title": "Guarda tu PDF",
+        "description": "El conversor procesa las páginas y descarga el archivo a tu dispositivo."
+      }
+    ],
+    "benefitsTitle": "¿Por Qué Usar Nuestro Descargador?",
+    "benefitsSubtitle": "Diseñado para máxima velocidad, privacidad y calidad.",
+    "benefits": [
+      {
+        "title": "Procesamiento Ultrarrápido",
+        "description": "Genera tu archivo PDF completo en segundos.",
+        "badge": "Rápido"
+      },
+      {
+        "title": "Privacidad Total",
+        "description": "No guardamos tus archivos ni pedimos datos personales.",
+        "badge": "Seguro"
+      },
+      {
+        "title": "Compatible con Todo Dispositivo",
+        "description": "Funciona en móviles Android, iPhone y ordenadores.",
+        "badge": "Universal"
+      },
+      {
+        "title": "Totalmente Gratis",
+        "description": "Descargas ilimitadas sin suscripciones ni costes ocultos.",
+        "badge": "100% Gratis"
+      }
+    ],
+    "guideBadge": "Base de Conocimiento",
+    "guideTitle": "Guía Completa para Descargar Documentos de Scribd",
+    "guideContent": "### Cómo Funciona\n\nEl sistema lee las páginas públicas del documento y genera un archivo PDF limpio y ordenado sin necesidad de programas externos.",
+    "faqTitle": "Preguntas Frecuentes (FAQ)",
+    "faqSubtitle": "Respuestas claras a las dudas más comunes.",
+    "faqs": [
+      {
+        "question": "¿Necesito una cuenta para descargar?",
+        "answer": "No, no necesitas iniciar sesión ni tener suscripción."
+      },
+      {
+        "question": "¿Es totalmente gratis?",
+        "answer": "Sí, es 100% gratuito y sin límites diarios."
+      },
+      {
+        "question": "¿Funciona en móviles?",
+        "answer": "Sí, funciona en cualquier navegador de Android e iOS."
+      }
+    ]
+  },
+  "br": {
+    "language": "br",
+    "metaTitle": "Baixar Documentos do Scribd - Baixador de PDF e Slides Grátis",
+    "metaDescription": "Baixe documentos, apresentações e trabalhos do Scribd em PDF de alta qualidade gratuitamente sem login.",
+    "h1Title": "Baixador do Scribd – Download de PDF Grátis sem Login",
+    "heroBadge": "Conversor PDF 100% Gratuito e Seguro",
+    "heroTitle": "Baixador do Scribd – Baixar PDF Grátis",
+    "heroSubtitle": "Salve documentos, artigos e apresentações do Scribd em PDF de alta definição. Cole o link e baixe agora.",
+    "ctaText": "Baixar PDF",
+    "placeholderText": "Cole o link do documento do Scribd aqui...",
+    "qualityBadgeText": "Alta Resolução 300 DPI",
+    "autoDownloadBadgeText": "Salvar no Dispositivo",
+    "checklistItems": [
+      "Sem login ou cadastro",
+      "Páginas completas",
+      "100% Grátis e Seguro"
+    ],
+    "howItWorksTitle": "Como Baixar Documentos do Scribd",
+    "howItWorksSubtitle": "Três etapas fáceis para salvar documentos em PDF.",
+    "steps": [
+      {
+        "stepNumber": 1,
+        "title": "Copie o Link",
+        "description": "Copie a URL do documento na barra de endereços do navegador."
+      },
+      {
+        "stepNumber": 2,
+        "title": "Cole no Baixador",
+        "description": "Cole o link no campo acima e clique em 'Baixar PDF'."
+      },
+      {
+        "stepNumber": 3,
+        "title": "Salve o Arquivo",
+        "description": "O sistema processa o arquivo e salva no seu celular ou computador."
+      }
+    ],
+    "benefitsTitle": "Vantagens do Nosso Baixador",
+    "benefitsSubtitle": "Velocidade, privacidade e formatação impecável.",
+    "benefits": [
+      {
+        "title": "Processamento Instantâneo",
+        "description": "Cria seu PDF em poucos segundos.",
+        "badge": "Rápido"
+      },
+      {
+        "title": "Privacidade Garantida",
+        "description": "Não armazenamos seus dados nem arquivos.",
+        "badge": "Seguro"
+      },
+      {
+        "title": "Funciona em Qualquer Dispositivo",
+        "description": "Celulares Android, iPhone, Windows e Mac.",
+        "badge": "Universal"
+      },
+      {
+        "title": "100% Grátis",
+        "description": "Sem assinaturas ou taxas ocultas.",
+        "badge": "Grátis"
+      }
+    ],
+    "guideBadge": "Guia e Dicas",
+    "guideTitle": "Guia Completo para Baixar Documentos do Scribd",
+    "guideContent": "### Como Funciona\n\nNosso conversor processa as páginas visíveis do documento Scribd e gera um arquivo PDF completo para leitura offline.",
+    "faqTitle": "Perguntas Frequentes (FAQ)",
+    "faqSubtitle": "Tire suas dúvidas sobre o baixador.",
+    "faqs": [
+      {
+        "question": "Preciso de conta no Scribd?",
+        "answer": "Não, não é necessário fazer login nem ter conta paga."
+      },
+      {
+        "question": "É gratuito?",
+        "answer": "Sim, 100% gratuito e ilimitado."
+      },
+      {
+        "question": "Funciona no celular?",
+        "answer": "Sim, diretamente no Chrome ou Safari."
+      }
+    ]
+  },
+  "fr": {
+    "language": "fr",
+    "metaTitle": "Télécharger Document Scribd - Téléchargeur PDF Gratuit",
+    "metaDescription": "Téléchargez des documents, présentations et articles Scribd en PDF haute définition gratuitement sans compte.",
+    "h1Title": "Téléchargeur Scribd – Téléchargement PDF Gratuit sans Inscription",
+    "heroBadge": "Convertisseur PDF 100% Gratuit & Sécurisé",
+    "heroTitle": "Téléchargeur Scribd – PDF Gratuit",
+    "heroSubtitle": "Enregistrez vos documents, mémoires et diaporamas Scribd au format PDF clair et lisible sans compte.",
+    "ctaText": "Télécharger le PDF",
+    "placeholderText": "Collez le lien du document Scribd ici...",
+    "qualityBadgeText": "Haute Résolution 300 DPI",
+    "autoDownloadBadgeText": "Enregistrement Direct",
+    "checklistItems": [
+      "Sans compte ni connexion",
+      "Pages complètes conservées",
+      "100% Gratuit & Privé"
+    ],
+    "howItWorksTitle": "Comment Télécharger un Document Scribd",
+    "howItWorksSubtitle": "Trois étapes simples pour enregistrer un document en PDF.",
+    "steps": [
+      {
+        "stepNumber": 1,
+        "title": "Copier le Lien",
+        "description": "Copiez l'URL du document depuis la barre d'adresse de votre navigateur."
+      },
+      {
+        "stepNumber": 2,
+        "title": "Coller dans le Téléchargeur",
+        "description": "Collez le lien ci-dessus et cliquez sur 'Télécharger le PDF'."
+      },
+      {
+        "stepNumber": 3,
+        "title": "Enregistrer le Fichier",
+        "description": "Le système compile les pages et télécharge votre PDF."
+      }
+    ],
+    "benefitsTitle": "Pourquoi Choisir Notre Téléchargeur ?",
+    "benefitsSubtitle": "Rapidité, sécurité et respect du format original.",
+    "benefits": [
+      {
+        "title": "Traitement Instantané",
+        "description": "Conversion rapide de vos documents en quelques secondes.",
+        "badge": "Rapide"
+      },
+      {
+        "title": "Confidentialité Totale",
+        "description": "Aucun fichier stocké, aucune donnée collectée.",
+        "badge": "Sécurisé"
+      },
+      {
+        "title": "Tous Appareils",
+        "description": "Compatible Android, iPhone, Windows et Mac.",
+        "badge": "Universel"
+      },
+      {
+        "title": "100% Gratuit",
+        "description": "Téléchargements illimités sans aucun frais.",
+        "badge": "Gratuit"
+      }
+    ],
+    "guideBadge": "Guide & Conseils",
+    "guideTitle": "Guide Complet pour Télécharger des Documents Scribd",
+    "guideContent": "### Fonctionnement\n\nLe convertisseur traite les pages du document Scribd public pour créer un fichier PDF clair prêt à être consulté hors ligne.",
+    "faqTitle": "Foire Aux Questions (FAQ)",
+    "faqSubtitle": "Toutes les réponses à vos questions.",
+    "faqs": [
+      {
+        "question": "Faut-il un compte Scribd ?",
+        "answer": "Non, aucun compte ni abonnement n'est requis."
+      },
+      {
+        "question": "Est-ce gratuit ?",
+        "answer": "Oui, totalement gratuit et sans limitation."
+      },
+      {
+        "question": "Est-ce compatible sur mobile ?",
+        "answer": "Oui, sur Android et iOS directement dans votre navigateur."
+      }
+    ]
+  },
+  "de": {
+    "language": "de",
+    "metaTitle": "Scribd Downloader - Kostenloser Scribd PDF & Folien Downloader",
+    "metaDescription": "Laden Sie Scribd-Dokumente, Präsentationen und Forschungsarbeiten kostenlos als hochauflösende PDF herunter.",
+    "h1Title": "Scribd Downloader – Kostenloser PDF-Download ohne Login",
+    "heroBadge": "100% Kostenloser & Sicherer PDF-Konverter",
+    "heroTitle": "Scribd Downloader – PDF Kostenlos Herunterladen",
+    "heroSubtitle": "Speichern Sie Dokumente und Präsentationen von Scribd als saubere PDFs. Link einfügen und sofort herunterladen.",
+    "ctaText": "PDF Herunterladen",
+    "placeholderText": "Scribd-Dokumentenlink hier einfügen...",
+    "qualityBadgeText": "Hohe Auflösung 300 DPI",
+    "autoDownloadBadgeText": "Direkter Browser-Download",
+    "checklistItems": [
+      "Keine Registrierung erforderlich",
+      "Vollständige Seiten",
+      "100% Kostenlos & Sicher"
+    ],
+    "howItWorksTitle": "So Laden Sie Scribd-Dokumente Herunter",
+    "howItWorksSubtitle": "Drei einfache Schritte zum Speichern als PDF.",
+    "steps": [
+      {
+        "stepNumber": 1,
+        "title": "Link Kopieren",
+        "description": "Kopieren Sie die URL des Dokuments aus der Adressleiste Ihres Browsers."
+      },
+      {
+        "stepNumber": 2,
+        "title": "In den Downloader Einfügen",
+        "description": "Fügen Sie den Link in das obige Feld ein und klicken Sie auf 'PDF Herunterladen'."
+      },
+      {
+        "stepNumber": 3,
+        "title": "PDF Speichern",
+        "description": "Das Tool erstellt die PDF-Datei und speichert sie auf Ihrem Gerät."
+      }
+    ],
+    "benefitsTitle": "Vorteile Unseres Scribd Downloaders",
+    "benefitsSubtitle": "Schnell, privat und mit perfekter Dokumentenformatierung.",
+    "benefits": [
+      {
+        "title": "Blitzschnelle Verarbeitung",
+        "description": "Erstellt vollständige PDFs in Sekundenschnelle.",
+        "badge": "Schnell"
+      },
+      {
+        "title": "Volle Privatsphäre",
+        "description": "Wir speichern keine Dateien oder persönlichen Daten.",
+        "badge": "Sicher"
+      },
+      {
+        "title": "Für Alle Geräte",
+        "description": "Funktioniert auf Android, iPhone, Windows und Mac.",
+        "badge": "Universell"
+      },
+      {
+        "title": "100% Kostenlos",
+        "description": "Unbegrenzte Downloads ohne Abonnements.",
+        "badge": "Kostenlos"
+      }
+    ],
+    "guideBadge": "Wissensbasis & Anleitung",
+    "guideTitle": "Vollständige Anleitung zum Herunterladen von Scribd-Dokumenten",
+    "guideContent": "### Funktionsweise\n\nDas System verarbeitet die sichtbaren Seiten des öffentlichen Scribd-Dokuments und wandelt sie in eine saubere, hochauflösende PDF um.",
+    "faqTitle": "Häufig Gestellte Fragen (FAQ)",
+    "faqSubtitle": "Direkte Antworten auf Ihre Fragen.",
+    "faqs": [
+      {
+        "question": "Brauche ich ein Scribd-Konto?",
+        "answer": "Nein, kein Konto oder Abonnement erforderlich."
+      },
+      {
+        "question": "Ist der Dienst wirklich kostenlos?",
+        "answer": "Ja, 100% kostenlos ohne versteckte Kosten."
+      },
+      {
+        "question": "Funktioniert es auf dem Smartphone?",
+        "answer": "Ja, in allen mobilen Webbrowsern."
+      }
+    ]
+  },
+  "nl": {
+    "language": "nl",
+    "metaTitle": "Scribd Downloader - Gratis Scribd Documenten & Presentaties Downloaden",
+    "metaDescription": "Download openbare Scribd-documenten, onderzoeksartikelen en presentaties gratis als haarscherpe PDF zonder account of login.",
+    "h1Title": "Scribd Downloader – Gratis PDF Downloaden Zonder Inloggen",
+    "heroBadge": "100% Gratis & Veilige Scribd PDF Converter",
+    "heroTitle": "Scribd Downloader – Gratis PDF Downloaden",
+    "heroSubtitle": "Sla documenten, scripties en dia's van Scribd op als overzichtelijke PDF's. Plak de link en download direct.",
+    "ctaText": "Download PDF",
+    "placeholderText": "Plak hier de Scribd-documentlink...",
+    "qualityBadgeText": "Hoge Resolutie 300 DPI",
+    "autoDownloadBadgeText": "Direct Opslaan in Browser",
+    "checklistItems": [
+      "Geen account of login vereist",
+      "Volledige pagina's behouden",
+      "100% Gratis & Privé"
+    ],
+    "howItWorksTitle": "Hoe Scribd-documenten te downloaden",
+    "howItWorksSubtitle": "Drie eenvoudige stappen om elk document als PDF op te slaan.",
+    "steps": [
+      {
+        "stepNumber": 1,
+        "title": "Kopieer de Documentlink",
+        "description": "Open het document op Scribd en kopieer de URL uit de browserbalk."
+      },
+      {
+        "stepNumber": 2,
+        "title": "Plak in de Downloader",
+        "description": "Plak de link in het invoerveld hierboven en klik op 'Download PDF'."
+      },
+      {
+        "stepNumber": 3,
+        "title": "Sla je PDF op",
+        "description": "Het systeem verwerkt de pagina's en downloadt het schone PDF-bestand."
+      }
+    ],
+    "benefitsTitle": "Waarom Onze Scribd Downloader Gebruiken?",
+    "benefitsSubtitle": "Snel, veilig en met behoud van de originele paginalay-out.",
+    "benefits": [
+      {
+        "title": "Razendsnelle Verwerking",
+        "description": "Je volledige PDF binnen enkele seconden gereed.",
+        "badge": "Snel"
+      },
+      {
+        "title": "Volledige Privacy",
+        "description": "Wij slaan geen bestanden of persoonlijke gegevens op.",
+        "badge": "Veilig"
+      },
+      {
+        "title": "Werkt op Alle Apparaten",
+        "description": "Geschikt voor Android, iPhone, iPad, Windows en Mac.",
+        "badge": "Universeel"
+      },
+      {
+        "title": "Geen Verborgen Kosten",
+        "description": "Onbeperkt gratis downloaden zonder abonnement.",
+        "badge": "Gratis"
+      }
+    ],
+    "guideBadge": "Kennisbank",
+    "guideTitle": "De Complete Handleiding voor Scribd Downloads",
+    "guideContent": "### Hoe het Systeem Werkt\nHet systeem leest de openbare pagina's van het Scribd-document en compileert deze tot een hoogwaardig PDF-bestand dat je overal offline kunt lezen.",
+    "faqTitle": "Veelgestelde Vragen (FAQ)",
+    "faqSubtitle": "Duidelijke antwoorden op veelvoorkomende vragen.",
+    "faqs": [
+      {
+        "question": "Heb ik een Scribd-account nodig?",
+        "answer": "Nee, inloggen of een betaald account is niet nodig."
+      },
+      {
+        "question": "Is deze service echt gratis?",
+        "answer": "Ja, 100% gratis zonder beperkingen of kosten."
+      },
+      {
+        "question": "Werkt dit op mobiel?",
+        "answer": "Ja, direct in Chrome, Safari of Firefox op je smartphone."
+      }
+    ]
+  },
+  "ur": {
+    "language": "ur",
+    "metaTitle": "اسکرائبڈ ڈاؤنلوڈر - مفت اسکرائبڈ دستاویزات اور پریزنٹیشنز ڈاؤن لوڈ کریں",
+    "metaDescription": "پبلک اسکرائبڈ دستاویزات، ریسرچ پیپرز اور سلائیڈز کو بغیر کسی اکاؤنٹ کے اعلیٰ کوالٹی پی ڈی ایف میں مفت ڈاؤن لوڈ کریں۔",
+    "h1Title": "اسکرائبڈ ڈاؤنلوڈر – بغیر لاگ ان مفت پی ڈی ایف ڈاؤن لوڈ",
+    "heroBadge": "100% مفت اور محفوظ اسکرائبڈ پی ڈی ایف کنورٹر",
+    "heroTitle": "اسکرائبڈ ڈاؤنلوڈر – مفت پی ڈی ایف ڈاؤن لوڈ",
+    "heroSubtitle": "اسکرائبڈ دستاویزات، تحقیقی مقالے اور پریزنٹیشنز کو باآسانی پی ڈی ایف کے طور پر محفوظ کریں۔ لنک پیسٹ کریں اور فائل حاصل کریں۔",
+    "ctaText": "پی ڈی ایف ڈاؤن لوڈ کریں",
+    "placeholderText": "اسکرائبڈ دستاویز کا لنک یہاں پیسٹ کریں...",
+    "qualityBadgeText": "اعلیٰ معیار 300 DPI",
+    "autoDownloadBadgeText": "براہ راست براؤزر ڈاؤن لوڈ",
+    "checklistItems": [
+      "کسی اکاؤنٹ یا لاگ ان کی ضرورت نہیں",
+      "مکمل صفحات محفوظ",
+      "100% مفت اور مکمل نجی"
+    ],
+    "howItWorksTitle": "اسکرائبڈ دستاویزات کیسے ڈاؤن لوڈ کریں",
+    "howItWorksSubtitle": "کسی بھی دستاویز کو پی ڈی ایف میں محفوظ کرنے کے 3 آسان مرحلے۔",
+    "steps": [
+      {
+        "stepNumber": 1,
+        "title": "دستاویز کا لنک کاپی کریں",
+        "description": "اسکرائبڈ پر دستاویز کھولیں اور ایڈریس بار سے یو آر ایل کاپی کریں۔"
+      },
+      {
+        "stepNumber": 2,
+        "title": "ڈاؤنلوڈر میں پیسٹ کریں",
+        "description": "کاپی کیا گیا لنک اوپر باکس میں ڈالیں اور 'پی ڈی ایف ڈاؤن لوڈ کریں' پر کلک کریں۔"
+      },
+      {
+        "stepNumber": 3,
+        "title": "فائل محفوظ کریں",
+        "description": "ٹول صفحات کو یکجا کرکے آپ کے فون یا کمپیوٹر پر پی ڈی ایف ڈاؤن لوڈ کر دے گا۔"
+      }
+    ],
+    "benefitsTitle": "ہمارا اسکرائبڈ ڈاؤنلوڈر کیوں منتخب کریں؟",
+    "benefitsSubtitle": "تیز رفتار، محفوظ اور بہترین فارمیٹنگ کے ساتھ۔",
+    "benefits": [
+      {
+        "title": "انتہائی تیز رفتار",
+        "description": "چند سیکنڈ میں مکمل پی ڈی ایف تیار۔",
+        "badge": "تیز"
+      },
+      {
+        "title": "مکمل رازداری",
+        "description": "ہم آپ کی فائلیں یا ذاتی ڈیٹا کبھی محفوظ نہیں کرتے۔",
+        "badge": "محفوظ"
+      },
+      {
+        "title": "تمام ڈیوائسز کے لیے موزوں",
+        "description": "اینڈرائیڈ، آئی فون اور کمپیوٹر پر بغیر کسی ایپ کے کام کرتا ہے۔",
+        "badge": "جامع"
+      },
+      {
+        "title": "مکمل مفت",
+        "description": "لامحدود مفت ڈاؤن لوڈز بغیر کسی پوشیدہ چارجز کے۔",
+        "badge": "100% مفت"
+      }
+    ],
+    "guideBadge": "معلوماتی گائیڈ",
+    "guideTitle": "اسکرائبڈ دستاویزات ڈاؤن لوڈ کرنے کا طریقہ کار",
+    "guideContent": "### یہ نظام کیسے کام کرتا ہے\nجب آپ اسکرائبڈ دستاویز کا لنک درج کرتے ہیں تو ہمارا ٹول اس کے عوامی صفحات کو یکجا کرکے ایک صاف اور پرنٹ کے لیے تیار پی ڈی ایف بناتا ہے۔",
+    "faqTitle": "عام سوالات (FAQ)",
+    "faqSubtitle": "آپ کے سوالات کے آسان اور واضح جوابات۔",
+    "faqs": [
+      {
+        "question": "کیا اس کے لیے اسکرائبڈ اکاؤنٹ درکار ہے؟",
+        "answer": "نہیں، کسی لاگ ان یا اکاؤنٹ کی ضرورت نہیں ہے۔"
+      },
+      {
+        "question": "کیا یہ واقعی مفت ہے؟",
+        "answer": "جی ہاں، یہ 100 فیصد مفت اور لامحدود ہے۔"
+      },
+      {
+        "question": "کیا یہ موبائل پر کام کرتا ہے؟",
+        "answer": "جی ہاں، تمام موبائل براؤزرز پر باآسانی چلتا ہے۔"
+      }
+    ]
+  }
+}
