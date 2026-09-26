@@ -2,242 +2,44 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>http://localhost:3000/</loc>
-    <lastmod>2026-09-22T12:41:29.041Z</lastmod>
+    <lastmod>2026-09-26T08:41:28.662Z</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>http://localhost:3000/hi</loc>
-    <lastmod>2026-09-22T12:41:29.041Z</lastmod>
+    <lastmod>2026-09-26T08:41:28.662Z</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>http://localhost:3000/id</loc>
-    <lastmod>2026-09-22T12:41:29.041Z</lastmod>
+    <lastmod>2026-09-26T08:41:28.662Z</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>http://localhost:3000/es</loc>
-    <lastmod>2026-09-22T12:41:29.041Z</lastmod>
+    <lastmod>2026-09-26T08:41:28.662Z</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>http://localhost:3000/fr</loc>
-    <lastmod>2026-09-22T12:41:29.041Z</lastmod>
+    <lastmod>2026-09-26T08:41:28.662Z</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>http://localhost:3000/br</loc>
-    <lastmod>2026-09-22T12:41:29.041Z</lastmod>
+    <lastmod>2026-09-26T08:41:28.662Z</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>http://localhost:3000/de</loc>
-    <lastmod>2026-09-22T12:41:29.041Z</lastmod>
+    <lastmod>2026-09-26T08:41:28.662Z</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
-  </url>
-  <url>
-    <loc>http://localhost:3000/how-it-works</loc>
-    <lastmod>2026-09-22T12:41:29.040Z</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>http://localhost:3000/blog</loc>
-    <lastmod>2026-09-22T12:41:29.040Z</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>http://localhost:3000/about</loc>
-    <lastmod>2026-09-22T12:41:29.040Z</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>http://localhost:3000/contact</loc>
-    <lastmod>2026-09-22T12:41:29.040Z</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>http://localhost:3000/privacy</loc>
-    <lastmod>2026-09-22T12:41:29.040Z</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>http://localhost:3000/terms</loc>
-    <lastmod>2026-09-22T12:41:29.040Z</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>http://localhost:3000/sitemap</loc>
-    <lastmod>2026-09-22T12:41:29.040Z</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>http://localhost:3000/robots</loc>
-    <lastmod>2026-09-22T12:41:29.040Z</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>http://localhost:3000/br/about-br</loc>
-    <lastmod>2026-09-20T09:30:15.720Z</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>http://localhost:3000/es/about-es</loc>
-    <lastmod>2026-09-20T09:30:15.720Z</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>http://localhost:3000/fr/about-fr</loc>
-    <lastmod>2026-09-20T09:30:15.720Z</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>http://localhost:3000/de/about-de</loc>
-    <lastmod>2026-09-20T09:30:15.720Z</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>http://localhost:3000/id/about-id</loc>
-    <lastmod>2026-09-20T09:30:15.720Z</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>http://localhost:3000/hi/about-hi</loc>
-    <lastmod>2026-09-20T09:30:15.720Z</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>http://localhost:3000/br/how-it-works-br</loc>
-    <lastmod>2026-09-20T09:30:15.720Z</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>http://localhost:3000/es/how-it-works-es</loc>
-    <lastmod>2026-09-20T09:30:15.720Z</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>http://localhost:3000/fr/how-it-works-fr</loc>
-    <lastmod>2026-09-20T09:30:15.720Z</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>http://localhost:3000/de/how-it-works-de</loc>
-    <lastmod>2026-09-20T09:30:15.720Z</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>http://localhost:3000/id/how-it-works-id</loc>
-    <lastmod>2026-09-20T09:30:15.721Z</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>http://localhost:3000/hi/how-it-works-hi</loc>
-    <lastmod>2026-09-20T09:30:15.721Z</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>http://localhost:3000/br/contact-br</loc>
-    <lastmod>2026-09-20T09:30:15.721Z</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>http://localhost:3000/es/contact-es</loc>
-    <lastmod>2026-09-20T09:30:15.721Z</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>http://localhost:3000/fr/contact-fr</loc>
-    <lastmod>2026-09-20T09:30:15.721Z</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>http://localhost:3000/de/contact-de</loc>
-    <lastmod>2026-09-20T09:30:15.721Z</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>http://localhost:3000/id/contact-id</loc>
-    <lastmod>2026-09-20T09:30:15.721Z</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>http://localhost:3000/hi/contact-hi</loc>
-    <lastmod>2026-09-20T09:30:15.721Z</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>http://localhost:3000/legal</loc>
-    <lastmod>2026-09-20T09:30:15.721Z</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>http://localhost:3000/br/legal-br</loc>
-    <lastmod>2026-09-20T09:30:15.721Z</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>http://localhost:3000/es/legal-es</loc>
-    <lastmod>2026-09-20T09:30:15.721Z</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>http://localhost:3000/fr/legal-fr</loc>
-    <lastmod>2026-09-20T09:30:15.721Z</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>http://localhost:3000/de/legal-de</loc>
-    <lastmod>2026-09-20T09:30:15.721Z</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>http://localhost:3000/id/legal-id</loc>
-    <lastmod>2026-09-20T09:30:15.721Z</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>http://localhost:3000/hi/legal-hi</loc>
-    <lastmod>2026-09-20T09:30:15.721Z</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
   </url>
 </urlset>

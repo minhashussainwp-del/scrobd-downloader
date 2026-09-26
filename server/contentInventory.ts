@@ -1,5 +1,6 @@
 import fs from "fs";
 import path from "path";
+import os from "os";
 
 export interface SitemapUrlEntry {
   loc: string;
@@ -69,26 +70,25 @@ export const DEFAULT_LANGUAGES = [
   { code: "de", name: "German", nativeName: "Deutsch", flag: "🇩🇪", urlPrefix: "/de/", isDefault: false },
 ];
 
-// Standard core WordPress static pages
-export const STANDARD_STATIC_PAGES = [
-  { slug: "how-it-works", title: "How It Works", isCore: true },
-  { slug: "blog", title: "Blog & Guides", isCore: true },
-  { slug: "about", title: "About Us", isCore: true },
-  { slug: "contact", title: "Contact Us", isCore: true },
-  { slug: "privacy", title: "Privacy Policy", isCore: true },
-  { slug: "terms", title: "Terms of Service", isCore: true },
-  { slug: "sitemap", title: "Sitemap Directory", isCore: true },
-  { slug: "robots", title: "Robots Directives", isCore: true },
-];
+// Standard core static pages (dynamically controlled from Admin Panel)
+export const STANDARD_STATIC_PAGES: Array<{ slug: string; title: string; isCore?: boolean }> = [];
+
+export function getSafeFilePath(filePath: string): string {
+  if (fs.existsSync(filePath)) return filePath;
+  const tmpPath = path.join(os.tmpdir(), path.basename(filePath));
+  if (fs.existsSync(tmpPath)) return tmpPath;
+  return filePath;
+}
 
 // Safe file reader
 export function readJsonFile<T>(filePath: string, fallback: T): T {
-  if (fs.existsSync(filePath)) {
+  const safePath = getSafeFilePath(filePath);
+  if (fs.existsSync(safePath)) {
     try {
-      const data = fs.readFileSync(filePath, "utf-8");
+      const data = fs.readFileSync(safePath, "utf-8");
       return JSON.parse(data) as T;
     } catch (err) {
-      console.error(`Error reading JSON from ${filePath}:`, err);
+      console.error(`Error reading JSON from ${safePath}:`, err);
     }
   }
   return fallback;
@@ -96,9 +96,21 @@ export function readJsonFile<T>(filePath: string, fallback: T): T {
 
 export function writeJsonFile<T>(filePath: string, data: T): boolean {
   try {
+    const parentDir = path.dirname(filePath);
+    if (!fs.existsSync(parentDir)) fs.mkdirSync(parentDir, { recursive: true });
     fs.writeFileSync(filePath, JSON.stringify(data, null, 2), "utf-8");
     return true;
-  } catch (err) {
+  } catch (err: any) {
+    if (err?.code === "EROFS" || err?.message?.includes("read-only")) {
+      try {
+        const tmpPath = path.join(os.tmpdir(), path.basename(filePath));
+        fs.writeFileSync(tmpPath, JSON.stringify(data, null, 2), "utf-8");
+        return true;
+      } catch (tmpErr) {
+        console.error(`Error writing JSON to fallback tmp file:`, tmpErr);
+        return false;
+      }
+    }
     console.error(`Error writing JSON to ${filePath}:`, err);
     return false;
   }
@@ -336,17 +348,30 @@ ${allXmlEntries.join("\n")}
 
   // Write to both /server_storage/seo/ and /public/
   try {
+    if (!fs.existsSync(SEO_DIR)) fs.mkdirSync(SEO_DIR, { recursive: true });
     fs.writeFileSync(path.join(SEO_DIR, "page-sitemap.xml"), pageSitemapXml, "utf-8");
     fs.writeFileSync(path.join(SEO_DIR, "post-sitemap.xml"), postSitemapXml, "utf-8");
     fs.writeFileSync(path.join(SEO_DIR, "sitemap.xml"), unifiedSitemapXml, "utf-8");
     fs.writeFileSync(path.join(SEO_DIR, "sitemap_index.xml"), indexSitemapXml, "utf-8");
 
+    if (!fs.existsSync(PUBLIC_DIR)) fs.mkdirSync(PUBLIC_DIR, { recursive: true });
     fs.writeFileSync(path.join(PUBLIC_DIR, "page-sitemap.xml"), pageSitemapXml, "utf-8");
     fs.writeFileSync(path.join(PUBLIC_DIR, "post-sitemap.xml"), postSitemapXml, "utf-8");
     fs.writeFileSync(path.join(PUBLIC_DIR, "sitemap.xml"), unifiedSitemapXml, "utf-8");
     fs.writeFileSync(path.join(PUBLIC_DIR, "sitemap_index.xml"), indexSitemapXml, "utf-8");
-  } catch (err) {
-    console.error("Error writing XML sitemaps:", err);
+  } catch (err: any) {
+    if (err?.code === "EROFS" || err?.message?.includes("read-only")) {
+      try {
+        const tmpSeo = path.join(os.tmpdir(), "seo");
+        if (!fs.existsSync(tmpSeo)) fs.mkdirSync(tmpSeo, { recursive: true });
+        fs.writeFileSync(path.join(tmpSeo, "page-sitemap.xml"), pageSitemapXml, "utf-8");
+        fs.writeFileSync(path.join(tmpSeo, "post-sitemap.xml"), postSitemapXml, "utf-8");
+        fs.writeFileSync(path.join(tmpSeo, "sitemap.xml"), unifiedSitemapXml, "utf-8");
+        fs.writeFileSync(path.join(tmpSeo, "sitemap_index.xml"), indexSitemapXml, "utf-8");
+      } catch {}
+    } else {
+      console.error("Error writing XML sitemaps:", err);
+    }
   }
 
   // Update last generated

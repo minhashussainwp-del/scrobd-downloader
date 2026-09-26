@@ -12,11 +12,26 @@ import {
 
 export const DEFAULT_AD_SETTINGS: AdSettings = {
   enabled: true,
-  newTabOnDownload: true,
-  newTabUrl: "https://pdfviewer.org",
+  // Download Button Ad Settings (Off by default unless admin configures custom ad URL)
+  buttonAdEnabled: false,
+  buttonAdUrl: "",
+  newTabOnDownload: false,
+  newTabUrl: "",
   preDownloadAd: false,
   preDownloadSeconds: 3,
-  postDownloadAd: true,
+  postDownloadAd: false,
+  // Core Placements: Top, Left, Bottom, Right, Center
+  topAd: false,
+  topAdCode: "",
+  bottomAd: false,
+  bottomAdCode: "",
+  leftAd: false,
+  leftAdCode: "",
+  rightAd: false,
+  rightAdCode: "",
+  centerAd: false,
+  centerAdCode: "",
+  // Legacy positions
   headerAd: false,
   headerAdCode: "",
   belowHeroAd: false,
@@ -33,9 +48,9 @@ export const DEFAULT_AD_SETTINGS: AdSettings = {
   adblockNotice: false,
   customBannerHtml: "",
   adSenseScript: "",
-  sponsorName: "CloudPDF Pro Tools",
-  sponsorTagline: "Compress, OCR, and convert documents instantly with 1-click cloud workflows.",
-  sponsorCta: "Try CloudPDF Free",
+  sponsorName: "",
+  sponsorTagline: "",
+  sponsorCta: "",
 };
 
 export const DEFAULT_DOWNLOAD_SETTINGS: DownloadSettings = {
@@ -916,7 +931,17 @@ export function saveCorePageSeo(pages: CorePageSeo[]) {
 export function loadAdSettings(): AdSettings {
   try {
     const raw = localStorage.getItem(AD_SETTINGS_KEY);
-    if (raw) return { ...DEFAULT_AD_SETTINGS, ...JSON.parse(raw) };
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      // Clean up legacy pdfviewer.org reference if present in cached localStorage
+      if (parsed.newTabUrl && parsed.newTabUrl.includes("pdfviewer.org")) {
+        parsed.newTabUrl = "";
+      }
+      if (parsed.buttonAdUrl && parsed.buttonAdUrl.includes("pdfviewer.org")) {
+        parsed.buttonAdUrl = "";
+      }
+      return { ...DEFAULT_AD_SETTINGS, ...parsed };
+    }
   } catch (e) {
     console.error(e);
   }

@@ -16,12 +16,7 @@ import {
   MessageSquare,
   RefreshCw,
 } from "lucide-react";
-import { GutenbergEditor } from "./gutenberg/GutenbergEditor";
-import { GutenbergEditorBlock } from "./gutenberg/types";
-import {
-  parseHomepageToBlocks,
-  extractBlocksToHomepage,
-} from "./gutenberg/gutenbergConverter";
+import { ClassicEditor } from "./ClassicEditor";
 import { adminFetch } from "../../utils/adminApi";
 
 interface AdminHomepageProps {
@@ -91,12 +86,11 @@ export function AdminHomepage({
 }: AdminHomepageProps) {
   const [activeLang, setActiveLang] = useState<string>("en");
   const [content, setContent] = useState<any>(null);
-  const [blocks, setBlocks] = useState<GutenbergEditorBlock[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [saveMessage, setSaveMessage] = useState<string | null>(null);
   const [loadError, setLoadError] = useState<string | null>(null);
-  const [activeTab, setActiveTab] = useState<"gutenberg" | "faq">("gutenberg");
+  const [activeTab, setActiveTab] = useState<"classic" | "faq">("classic");
   const abortControllerRef = useRef<AbortController | null>(null);
 
   // Load homepage content for active language with timeout and error resilience
@@ -117,11 +111,6 @@ export function AdminHomepage({
         console.warn(`Homepage API slow for [${lang}], applying default template`);
         const fallback = getFallbackHomepage(lang);
         setContent(fallback);
-        try {
-          setBlocks(parseHomepageToBlocks(fallback));
-        } catch (e) {
-          console.error("Fallback block parsing error:", e);
-        }
         setLoading(false);
       }
     }, 4000);
@@ -140,14 +129,6 @@ export function AdminHomepage({
       const data = await res.json();
       const rawContent = data.content || getFallbackHomepage(lang);
       setContent(rawContent);
-
-      try {
-        const parsedBlocks = parseHomepageToBlocks(rawContent);
-        setBlocks(parsedBlocks);
-      } catch (parseErr) {
-        console.warn("Failed to parse blocks, using fallback structure:", parseErr);
-        setBlocks(parseHomepageToBlocks(getFallbackHomepage(lang)));
-      }
     } catch (err: any) {
       clearTimeout(timeoutTimer);
       if (err.name === "AbortError") return;
@@ -155,11 +136,6 @@ export function AdminHomepage({
       setLoadError("Could not retrieve saved homepage content from server. Loaded default structure.");
       const fallback = getFallbackHomepage(lang);
       setContent(fallback);
-      try {
-        setBlocks(parseHomepageToBlocks(fallback));
-      } catch (e) {
-        console.error(e);
-      }
     } finally {
       setLoading(false);
     }
@@ -201,11 +177,10 @@ export function AdminHomepage({
     });
   };
 
-  const handleGutenbergSave = async (payload: {
+  const handleClassicSave = async (payload: {
     title: string;
     content: string;
     htmlContent: string;
-    blocks: GutenbergEditorBlock[];
     metadata: any;
     status: "published" | "draft";
     language: string;
@@ -213,19 +188,24 @@ export function AdminHomepage({
     setSaving(true);
     setSaveMessage(null);
     try {
-      setBlocks(payload.blocks);
-      const updatedHomepage = extractBlocksToHomepage(payload.blocks, content);
-      updatedHomepage.h1Title = payload.title || updatedHomepage.h1Title;
-      updatedHomepage.heroTitle = payload.title || updatedHomepage.heroTitle;
-      updatedHomepage.htmlContent = payload.htmlContent;
-      updatedHomepage.guideContent = payload.content;
+      const updatedHomepage = {
+        ...content,
+        language: activeLang,
+        h1Title: payload.title || content.h1Title,
+        heroTitle: payload.title || content.heroTitle,
+        heroSubtitle: payload.metadata?.subtitle || content.heroSubtitle,
+        htmlContent: payload.htmlContent,
+        guideContent: payload.content,
+        metaTitle: payload.metadata?.metaTitle || payload.title,
+        metaDescription: payload.metadata?.metaDescription || content.metaDescription,
+      };
 
       await onSave(activeLang, updatedHomepage);
       setContent(updatedHomepage);
       setSaveMessage(`Homepage for [${activeLang.toUpperCase()}] successfully saved!`);
       setTimeout(() => setSaveMessage(null), 3000);
     } catch (err: any) {
-      setSaveMessage("Failed to save: " + err.message);
+      setSaveMessage("Failed to save: " + (err.message || String(err)));
     } finally {
       setSaving(false);
     }
@@ -235,13 +215,11 @@ export function AdminHomepage({
     setSaving(true);
     setSaveMessage(null);
     try {
-      const updatedHomepage = extractBlocksToHomepage(blocks, content);
-      await onSave(activeLang, updatedHomepage);
-      setContent(updatedHomepage);
+      await onSave(activeLang, content);
       setSaveMessage(`Homepage for [${activeLang.toUpperCase()}] successfully saved!`);
       setTimeout(() => setSaveMessage(null), 3000);
     } catch (err: any) {
-      setSaveMessage("Failed to save: " + err.message);
+      setSaveMessage("Failed to save: " + (err.message || String(err)));
     } finally {
       setSaving(false);
     }
@@ -257,7 +235,6 @@ export function AdminHomepage({
           onClick={() => {
             const fallback = getFallbackHomepage(activeLang);
             setContent(fallback);
-            setBlocks(parseHomepageToBlocks(fallback));
             setLoading(false);
           }}
           className="mt-2 text-xs text-emerald-700 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 px-3 py-1.5 rounded-lg font-medium transition cursor-pointer"
@@ -341,19 +318,19 @@ export function AdminHomepage({
           ))}
         </div>
 
-        {/* Tab Toggle: Unified Gutenberg vs FAQ Accordion */}
+        {/* Tab Toggle: Classic Editor vs FAQ Accordion */}
         <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-lg border border-slate-200 self-start md:self-auto">
           <button
             type="button"
-            onClick={() => setActiveTab("gutenberg")}
+            onClick={() => setActiveTab("classic")}
             className={`px-3 py-1.5 rounded-md font-bold text-xs flex items-center gap-1.5 transition cursor-pointer ${
-              activeTab === "gutenberg"
+              activeTab === "classic"
                 ? "bg-white text-emerald-700 shadow-xs"
                 : "text-slate-600 hover:text-slate-900"
             }`}
           >
             <LayoutTemplate className="w-3.5 h-3.5 text-emerald-600" />
-            <span>Gutenberg Content Builder</span>
+            <span>Classic Content Editor</span>
           </button>
           <button
             type="button"
@@ -365,27 +342,33 @@ export function AdminHomepage({
             }`}
           >
             <MessageSquare className="w-3.5 h-3.5 text-indigo-600" />
-            <span>FAQ Accordion ({content.faqs?.length || 0})</span>
+            <span>FAQ Accordion ({content?.faqs?.length || 0})</span>
           </button>
         </div>
       </div>
 
-      {/* Tab 1: Unified Gutenberg Block Canvas */}
-      {activeTab === "gutenberg" && (
-        <div className="bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden">
-          <GutenbergEditor
-            key={`${activeLang}-${blocks.length}`}
-            initialTitle={content.heroTitle || content.h1Title || "Scribd Downloader – Free PDF Downloads"}
-            initialBlocks={blocks}
-            initialContent={content.guideContent || ""}
+      {/* Tab 1: Classic Content Editor */}
+      {activeTab === "classic" && (
+        <div className="bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden p-2">
+          <ClassicEditor
+            key={`${activeLang}-${content?.heroTitle || "home"}`}
+            initialTitle={content?.heroTitle || content?.h1Title || "Download Scribd Documents, Presentations & PDFs Fast"}
+            initialContent={content?.htmlContent || content?.guideContent || ""}
             initialMetadata={{
-              heroBadge: content.heroBadge,
-              h1Title: content.h1Title || content.heroTitle,
-              guideBadge: content.guideBadge,
-              guideTitle: content.guideTitle,
+              heroBadge: content?.heroBadge,
+              h1Title: content?.h1Title || content?.heroTitle,
+              subtitle: content?.heroSubtitle,
+              guideBadge: content?.guideBadge,
+              guideTitle: content?.guideTitle,
+              metaTitle: content?.metaTitle,
+              metaDescription: content?.metaDescription,
+              slug: activeLang === "en" ? "" : activeLang,
             }}
             targetLang={activeLang}
-            onSave={handleGutenbergSave}
+            availableLanguages={availableLanguages}
+            entityType="homepage"
+            onSave={handleClassicSave}
+            onBack={() => {}}
             onPreview={() => {
               window.open(`/${activeLang === "en" ? "" : activeLang}`, "_blank");
             }}

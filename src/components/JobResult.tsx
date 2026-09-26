@@ -22,7 +22,7 @@ import {
 import { DownloadJob, AdSettings } from "../types";
 import { ImageModal } from "./ImageModal";
 import { HorizontalSlideViewer } from "./HorizontalSlideViewer";
-import { PreDownloadModal, PostDownloadAdBanner } from "./AdBanners";
+import { PreDownloadModal } from "./AdBanners";
 import { SocialShare } from "./SocialShare";
 import { triggerNewTabAdIfConfigured } from "../utils/adTrigger";
 
@@ -207,16 +207,6 @@ export function JobResult({ job, onReset, onTryDemo, adSettings, onAdClick }: Jo
                   )}
                 </button>
               </div>
-            </div>
-          )}
-
-          {/* Post-Download Ad Recommendation (Item 10) */}
-          {adSettings?.enabled && adSettings?.postDownloadAd && (
-            <div className="mt-4">
-              <PostDownloadAdBanner
-                settings={adSettings}
-                onAdClick={() => onAdClick && onAdClick("post_download")}
-              />
             </div>
           )}
 

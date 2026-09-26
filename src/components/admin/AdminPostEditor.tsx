@@ -1,6 +1,5 @@
 import React from "react";
-import { GutenbergEditor } from "./gutenberg/GutenbergEditor";
-import { GutenbergEditorBlock } from "./gutenberg/types";
+import { ClassicEditor } from "./ClassicEditor";
 
 interface AdminPostEditorProps {
   initialPost: any;
@@ -10,6 +9,7 @@ interface AdminPostEditorProps {
   onPreview: (slug: string, lang?: string) => void;
   categories?: any[];
   availableLanguages?: Array<{ code: string; name: string; flag: string }>;
+  onOpenMediaSelector?: (callback: (url: string) => void) => void;
 }
 
 const DEFAULT_LANGS = [
@@ -35,12 +35,12 @@ export function AdminPostEditor({
     { id: "cat-4", name: "Tips" },
   ],
   availableLanguages = DEFAULT_LANGS,
+  onOpenMediaSelector,
 }: AdminPostEditorProps) {
   const handleSave = async (payload: {
     title: string;
     content: string;
     htmlContent: string;
-    blocks: GutenbergEditorBlock[];
     metadata: any;
     status: "published" | "draft";
     language: string;
@@ -52,7 +52,6 @@ export function AdminPostEditor({
       title: payload.title,
       content: payload.content,
       htmlContent: payload.htmlContent,
-      blocks: payload.blocks,
       status: payload.status,
       language: payload.language,
       slug: payload.metadata.slug,
@@ -93,10 +92,9 @@ export function AdminPostEditor({
   };
 
   return (
-    <GutenbergEditor
+    <ClassicEditor
       initialTitle={initialPost?.title || ""}
       initialContent={initialPost?.htmlContent || initialPost?.content || ""}
-      initialBlocks={initialPost?.blocks}
       initialMetadata={{
         id: initialPost?.id || "",
         slug: initialPost?.slug || "",
@@ -117,10 +115,12 @@ export function AdminPostEditor({
       }}
       targetLang={targetLang || initialPost?.language || "en"}
       availableLanguages={availableLanguages}
+      categories={categories}
       onSave={handleSave}
       onBack={onBack}
       onPreview={(slug, lang) => onPreview(slug, lang)}
       entityType="post"
+      onOpenMediaSelector={onOpenMediaSelector}
     />
   );
 }

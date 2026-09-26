@@ -12,6 +12,16 @@ import { setupMcpEndpoints } from "./server/mcpServer";
 import { setupGeminiAiEndpoints } from "./server/geminiAi";
 import { setupAdminRoutes } from "./server/adminRoutes";
 import { generateAllSitemaps } from "./server/contentInventory";
+import {
+  DownloadJob,
+  CacheEntry,
+  jobs,
+  documentCache,
+  DOWNLOADS_ROOT,
+  CACHE_ROOT,
+  runUltraScraperJob,
+  extractDocId,
+} from "./server/scribdScraper.ts";
 
 // Universal require compatible with tsx (ESM) and bundled dist/server.cjs
 const nodeRequire =
@@ -34,46 +44,6 @@ const axiosClient = axios.create({
   maxRedirects: 5,
 });
 
-interface DownloadJob {
-  id: string;
-  url: string;
-  format: "pdf" | "images";
-  status: "queued" | "fetching" | "extracting" | "converting" | "completed" | "failed";
-  progress: number;
-  stepMessage: string;
-  logs: string[];
-  createdAt: number;
-  dir: string;
-  documentTitle?: string;
-  speedStats?: {
-    totalTimeMs: number;
-    fetchTimeMs: number;
-    compileTimeMs: number;
-    pageCount: number;
-    cached?: boolean;
-    mode?: string;
-  };
-  pdfFile?: {
-    filename: string;
-    sizeBytes: number;
-    path: string;
-  };
-  imageFiles?: Array<{
-    filename: string;
-    pageNumber: number;
-    sizeBytes: number;
-  }>;
-  zipFile?: {
-    filename: string;
-    sizeBytes: number;
-  };
-  error?: string;
-  troubleshooting?: string[];
-}
-
-const jobs = new Map<string, DownloadJob>();
-const DOWNLOADS_ROOT = path.join(process.cwd(), "temp_downloads");
-const CACHE_ROOT = path.join(DOWNLOADS_ROOT, "cache");
 const SERVER_STORAGE_DIR = path.join(process.cwd(), "server_storage");
 const SEO_DIR = path.join(SERVER_STORAGE_DIR, "seo");
 const PUBLIC_DIR = path.join(process.cwd(), "public");
@@ -86,12 +56,16 @@ const SITEMAP_INDEX_FILE = path.join(SEO_DIR, "sitemap_index.xml");
 const POST_SITEMAP_FILE = path.join(SEO_DIR, "post-sitemap.xml");
 const PAGE_SITEMAP_FILE = path.join(SEO_DIR, "page-sitemap.xml");
 
-// Ensure temp, storage, and SEO directories exist
-[DOWNLOADS_ROOT, CACHE_ROOT, SERVER_STORAGE_DIR, SEO_DIR, PUBLIC_DIR].forEach((dir) => {
-  if (!fs.existsSync(dir)) {
-    fs.mkdirSync(dir, { recursive: true });
-  }
-});
+// Ensure temp, storage, and SEO directories exist safely
+try {
+  [DOWNLOADS_ROOT, CACHE_ROOT, SERVER_STORAGE_DIR, SEO_DIR, PUBLIC_DIR].forEach((dir) => {
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true });
+    }
+  });
+} catch (e) {
+  console.warn("Storage directory initialization notice:", e);
+}
 
 let robotsUpdatedAt = new Date().toISOString();
 let sitemapUpdatedAt = new Date().toISOString();
@@ -794,12 +768,6 @@ function sanitizeTitle(str: string): string {
     .replace(/^-|-$/g, "");
 }
 
-// Extract Document ID from Scribd URL
-function extractDocId(url: string): string | null {
-  const match = url.match(/(?:document|presentation|doc)\/([0-9]+)/i);
-  return match ? match[1] : null;
-}
-
 // Background cleanup: keep cache, clean temp jobs older than 2 hours
 setInterval(() => {
   const now = Date.now();
@@ -816,18 +784,6 @@ setInterval(() => {
     }
   }
 }, 30 * 60 * 1000);
-
-// In-Memory Fast Cache Metadata Store
-interface CacheEntry {
-  docId: string;
-  title: string;
-  pdfPath: string;
-  pdfSize: number;
-  images: Array<{ filename: string; pageNumber: number; sizeBytes: number; srcPath: string }>;
-  pageCount: number;
-  timestamp: number;
-}
-const documentCache = new Map<string, CacheEntry>();
 
 const SAMPLES = [
   {
@@ -1300,7 +1256,7 @@ async function startServer() {
 
   // API: Start download job
   app.post("/api/download", async (req, res) => {
-    const { url, format = "pdf", demoMode = false } = req.body;
+    const { url, format = "pdf", demoMode = false, quality } = req.body || {};
 
     if (!url || typeof url !== "string") {
       return res.status(400).json({ error: "Please provide a valid Scribd URL." });
@@ -1311,13 +1267,16 @@ async function startServer() {
       return res.status(400).json({ error: "URL must begin with http:// or https://" });
     }
 
-    if (!trimmedUrl.includes("scribd.com") && !trimmedUrl.includes("demo") && !demoMode) {
+    const docId = extractDocId(trimmedUrl);
+    if (!trimmedUrl.includes("scribd.com") && !trimmedUrl.includes("demo") && !demoMode && !docId) {
       return res.status(400).json({ error: "The provided URL is not a Scribd URL. Please paste a link from scribd.com or click Try Demo." });
     }
 
     const jobId = `job_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
     const jobDir = path.join(DOWNLOADS_ROOT, jobId);
-    fs.mkdirSync(jobDir, { recursive: true });
+    try {
+      if (!fs.existsSync(jobDir)) fs.mkdirSync(jobDir, { recursive: true });
+    } catch {}
 
     const job: DownloadJob = {
       id: jobId,
@@ -1335,12 +1294,63 @@ async function startServer() {
       dir: jobDir,
     };
     (job as any).demoMode = demoMode;
+    (job as any).quality = quality;
 
     jobs.set(jobId, job);
-    res.json({ jobId, message: "Ultra fast download job started successfully." });
 
-    // Execute in background
-    runUltraScraperJob(job);
+    // Run scraper
+    const jobPromise = runUltraScraperJob(job);
+
+    // Serverless or instant sync check
+    const isServerlessEnv = Boolean(
+      process.env.VERCEL ||
+      process.env.AWS_LAMBDA_FUNCTION_NAME ||
+      req.query.sync === "true" ||
+      req.body?.sync === true
+    );
+
+    if (isServerlessEnv) {
+      await jobPromise;
+      return res.json({
+        jobId: job.id,
+        status: job.status,
+        progress: job.progress,
+        stepMessage: job.stepMessage,
+        documentTitle: job.documentTitle,
+        pdfFile: job.pdfFile,
+        imageFiles: job.imageFiles,
+        speedStats: job.speedStats,
+        logs: job.logs,
+        error: job.error,
+        troubleshooting: job.troubleshooting,
+        message: job.status === "completed" ? "Ultra fast download job completed successfully." : "Extraction finished",
+      });
+    }
+
+    // On standard Node servers, race for 1.2s: if it finishes in <1.2s, return completed job directly!
+    const fastFinished = await Promise.race([
+      jobPromise.then(() => true),
+      new Promise((resolve) => setTimeout(() => resolve(false), 1200))
+    ]);
+
+    if (fastFinished || job.status === "completed" || job.status === "failed") {
+      return res.json({
+        jobId: job.id,
+        status: job.status,
+        progress: job.progress,
+        stepMessage: job.stepMessage,
+        documentTitle: job.documentTitle,
+        pdfFile: job.pdfFile,
+        imageFiles: job.imageFiles,
+        speedStats: job.speedStats,
+        logs: job.logs,
+        error: job.error,
+        troubleshooting: job.troubleshooting,
+        message: "Ultra fast download job completed successfully."
+      });
+    }
+
+    res.json({ jobId, message: "Ultra fast download job started successfully." });
   });
 
   // API: Quick direct download stream (Single click instant stream)
@@ -1963,743 +1973,6 @@ async function startServer() {
     // Pre-warm sample documents asynchronously in the background
     prewarmSamples().catch((err) => console.error("Prewarm error:", err));
   });
-}
-
-/**
- * Ultra-Fast Scraper Runner:
- * 1. Checks Instant Cache (<50ms)
- * 2. Uses Anti-Bot High-Authority User-Agent (Bypasses Cloudflare Client Challenge instantly with 0 retries)
- * 3. Extracts Page Assets & JSONP manifest concurrently
- * 4. Downloads all page images concurrently (concurrency = 16)
- * 5. Compiles PDF with in-memory image buffers & stream piping (<100ms)
- * 6. Caches results permanently for instant 0ms subsequent downloads
- */
-async function runUltraScraperJob(job: DownloadJob) {
-  const startTime = Date.now();
-  let fetchTime = 0;
-  let compileTime = 0;
-
-  const addLog = (msg: string) => {
-    job.logs.push(`[${new Date().toLocaleTimeString()}] ${msg}`);
-  };
-
-  try {
-    const docId = extractDocId(job.url) || job.url;
-
-    // STEP 1: Check In-Memory & Disk Cache
-    let cached = documentCache.get(docId);
-
-    // If not in memory, check if a matching PDF is on disk in CACHE_ROOT
-    if (!cached && docId) {
-      const diskPdf = path.join(CACHE_ROOT, `${docId}.pdf`);
-      if (fs.existsSync(diskPdf)) {
-        const stats = fs.statSync(diskPdf);
-        const diskImgs: Array<{ filename: string; pageNumber: number; sizeBytes: number; srcPath: string }> = [];
-        try {
-          const files = fs.readdirSync(CACHE_ROOT);
-          const prefix = `${docId}-`;
-          for (const f of files) {
-            if (f.startsWith(prefix) && (f.endsWith(".jpg") || f.endsWith(".png"))) {
-              const match = f.match(/-(\d+)-page/);
-              const pNum = match ? parseInt(match[1], 10) : 1;
-              const imgP = path.join(CACHE_ROOT, f);
-              const imgSize = fs.existsSync(imgP) ? fs.statSync(imgP).size : 1000;
-              diskImgs.push({
-                filename: f.replace(prefix, ""),
-                pageNumber: pNum,
-                sizeBytes: imgSize,
-                srcPath: imgP,
-              });
-            }
-          }
-          diskImgs.sort((a, b) => a.pageNumber - b.pageNumber);
-        } catch {}
-
-        // Quality check: Verify the cached PDF is not a low-resolution thumbnail artifact (< 25KB/page)
-        const estPages = diskImgs.length > 0 ? diskImgs.length : 1;
-        const avgPageBytes = stats.size / estPages;
-        const isHighQuality = avgPageBytes >= 30000 || estPages === 1;
-
-        if (isHighQuality) {
-          cached = {
-            docId,
-            title: `scribd-doc-${docId}`,
-            pdfPath: diskPdf,
-            pdfSize: stats.size,
-            images: diskImgs,
-            pageCount: estPages,
-            timestamp: Date.now(),
-          };
-          documentCache.set(docId, cached);
-        } else {
-          addLog(`🔄 Found previous low-resolution cache. Auto-upgrading to Ultra HD original stream...`);
-        }
-      }
-    }
-
-    // If demo requested or URL contains "demo", fallback to first available cached document
-    if (!cached && (job.url.includes("demo") || (job as any).demoMode)) {
-      const firstAvailable = documentCache.get("394290904") || documentCache.get("359613425") || Array.from(documentCache.values())[0];
-      if (firstAvailable) {
-        cached = firstAvailable;
-        addLog(`⚡ [DEMO MODE] Serving ultra-fast demo presentation from cache (${cached.title})`);
-      }
-    }
-
-    if (cached) {
-      addLog(`⚡ [ULTRA CACHE HIT] Document found in ultra-cache! Preparing instant delivery...`);
-      job.status = "extracting";
-      job.progress = 60;
-      job.stepMessage = "Retrieving pre-cached document assets...";
-
-      const title = cached.title || "scribd-document";
-      job.documentTitle = title;
-
-      if (cached.pdfPath && fs.existsSync(cached.pdfPath)) {
-        const destPdf = path.join(job.dir, path.basename(cached.pdfPath));
-        fs.copyFileSync(cached.pdfPath, destPdf);
-        const stats = fs.statSync(destPdf);
-
-        // Copy images for preview
-        job.imageFiles = [];
-        for (const img of cached.images) {
-          const destImg = path.join(job.dir, img.filename);
-          if (fs.existsSync(img.srcPath)) {
-            fs.copyFileSync(img.srcPath, destImg);
-          }
-          job.imageFiles.push({
-            filename: img.filename,
-            pageNumber: img.pageNumber,
-            sizeBytes: img.sizeBytes,
-          });
-        }
-
-        job.pdfFile = {
-          filename: path.basename(destPdf),
-          sizeBytes: stats.size,
-          path: destPdf,
-        };
-
-        const totalMs = Date.now() - startTime;
-        job.speedStats = {
-          totalTimeMs: totalMs,
-          fetchTimeMs: 0,
-          compileTimeMs: 0,
-          pageCount: cached.pageCount,
-          cached: true,
-          mode: "Ultra Instant Cache (0ms)",
-        };
-
-        job.status = "completed";
-        job.progress = 100;
-        job.stepMessage = `⚡ Ready in ${totalMs}ms! Download starting...`;
-        addLog(`⚡ Instant Cache Hit! PDF prepared in ${totalMs}ms (${(stats.size / 1024 / 1024).toFixed(2)} MB)`);
-        return;
-      }
-    }
-
-    // STEP 2: Ultra-Fast High-Speed Fetch (Multi-socket parallel request racing)
-    job.status = "fetching";
-    job.progress = 20;
-    job.stepMessage = "Connecting to Scribd with Ultra-Speed Parallel Pipeline...";
-    const fetchStart = Date.now();
-
-    addLog("Sending high-speed parallel request to Scribd server...");
-    let html = "";
-    const fetchCandidates = [
-      {
-        ua: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
-        accept: "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
-      },
-      {
-        ua: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4 Safari/605.1.15",
-        accept: "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-      },
-      {
-        ua: "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)",
-        accept: "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-      },
-    ];
-
-    // Concurrently race candidate requests with priority on full-script document payloads
-    const racePromises = fetchCandidates.map(async (candidate) => {
-      const res = await axiosClient.get(job.url, {
-        headers: {
-          "User-Agent": candidate.ua,
-          "Accept": candidate.accept,
-          "Accept-Language": "en-US,en;q=0.9",
-        },
-        timeout: 4500,
-      });
-      if (res.data && typeof res.data === "string" && res.data.length > 5000 && !res.data.includes("challenge-running")) {
-        // Prefer responses containing docManager or wordDocument
-        const hasRichData = res.data.includes("docManager.addPage") || res.data.includes("wordDocument") || res.data.includes("contentUrl:");
-        return { data: res.data, ua: candidate.ua, hasRichData };
-      }
-      throw new Error("Challenge or short response");
-    });
-
-    try {
-      // Ultra-Fast First-Winner Race: resolve immediately as soon as a rich manifest is returned
-      const richWinner = await new Promise<{ data: string; ua: string; hasRichData: boolean }>((resolve, reject) => {
-        let completed = 0;
-        let anyWinner: { data: string; ua: string; hasRichData: boolean } | null = null;
-        let isDone = false;
-
-        for (const p of racePromises) {
-          p.then((winner) => {
-            if (isDone) return;
-            if (winner.hasRichData) {
-              isDone = true;
-              resolve(winner);
-            } else {
-              if (!anyWinner) anyWinner = winner;
-            }
-          }).catch(() => {}).finally(() => {
-            completed++;
-            if (!isDone && completed === racePromises.length) {
-              if (anyWinner) {
-                isDone = true;
-                resolve(anyWinner);
-              } else {
-                reject(new Error("No candidate returned valid HTML"));
-              }
-            }
-          });
-        }
-
-        // Safety fallback: if we already have a valid response after 1000ms, don't wait for slower requests
-        setTimeout(() => {
-          if (!isDone && anyWinner) {
-            isDone = true;
-            resolve(anyWinner);
-          }
-        }, 1000);
-      });
-
-      html = richWinner.data;
-      fetchTime = Date.now() - fetchStart;
-      addLog(`⚡ Document manifest received in ${fetchTime}ms (${(html.length / 1024).toFixed(0)} KB) via ${richWinner.ua.split("/")[0]}`);
-    } catch {
-      // Fallback direct request
-      try {
-        const directRes = await axiosClient.get(job.url, {
-          timeout: 6000,
-        });
-        if (directRes.data && typeof directRes.data === "string") {
-          html = directRes.data;
-          fetchTime = Date.now() - fetchStart;
-          addLog(`⚡ Document manifest received in ${fetchTime}ms`);
-        }
-      } catch (err: any) {
-        addLog(`Fetch note: ${err.message}`);
-      }
-    }
-
-    const $ = cheerio.load(html || "");
-
-    // Parse embedded JSON state (Script <!--{...}-->)
-    let wordDoc: any = null;
-    $("script").each((_, el) => {
-      const t = $(el).html() || "";
-      if (t.includes("<!--{")) {
-        try {
-          const jsonStr = t.replace(/^\s*<!--/, "").replace(/-->\s*$/, "");
-          const parsed = JSON.parse(jsonStr);
-          if (parsed.wordDocument) {
-            wordDoc = parsed.wordDocument;
-          }
-        } catch {}
-      }
-    });
-
-    const rawTitle = wordDoc?.title || $("title").text().replace(/\|.*$/i, "").trim() || "scribd-document";
-    const title = sanitizeTitle(rawTitle) || `scribd-doc-${docId || "file"}`;
-    job.documentTitle = title;
-
-    // STEP 3: Detect Total Pages Accurately
-    let totalPages = 0;
-    if (wordDoc?.page_count && Number(wordDoc.page_count) > 0) {
-      totalPages = parseInt(wordDoc.page_count, 10);
-    }
-    if (!totalPages) {
-      const desc = $('meta[name="description"]').attr("content") || $('meta[property="og:description"]').attr("content") || "";
-      const descMatch = desc.match(/(\d+)\s*(?:pages|slides|pagine|paginas|halaman)/i);
-      if (descMatch) totalPages = parseInt(descMatch[1], 10);
-    }
-    if (!totalPages) {
-      const countMatch = html.match(/"page_count":\s*([0-9]+)/) || html.match(/"pageCount":\s*([0-9]+)/);
-      if (countMatch) totalPages = parseInt(countMatch[1], 10);
-    }
-
-    job.status = "extracting";
-    job.progress = 40;
-    job.stepMessage = totalPages > 0 ? `Target document has ${totalPages} total pages. Preparing extraction...` : "Detecting document structure...";
-    addLog(`Target detected: "${title}" (${totalPages > 0 ? `${totalPages} pages` : "dynamic pages"})`);
-
-    let pageImages: Array<{ pageNumber: number; buffer: Buffer; filename: string }> = [];
-
-    // STRATEGY 1: Ultra High-Definition Original Asset CDN Stream (100% Crisp Resolution / No Blur / No Extreme Compression)
-    let assetHash = "";
-    if (docId) {
-      // 1. Direct match with docId in original URL
-      const origRegex = new RegExp(`(?:imgv2-[0-9]-f|s-f)\\.scribdassets\\.com/img/(?:document|word_document)/${docId}/original/([a-zA-Z0-9_-]+)`, "i");
-      const m1 = html.match(origRegex);
-      if (m1 && m1[1]) {
-        assetHash = m1[1];
-      } else {
-        // 2. Generic original hash pattern
-        const m2 = html.match(/\/original\/([a-zA-Z0-9_-]{8,32})/i);
-        if (m2 && m2[1]) {
-          assetHash = m2[1];
-        } else {
-          // 3. Imgv2 asset original match
-          const m3 = html.match(/scribdassets\.com\/img\/[^\s"']+\/original\/([a-zA-Z0-9_-]+)/i);
-          if (m3 && m3[1]) {
-            assetHash = m3[1];
-          }
-        }
-      }
-    }
-
-    // Verify and download full-resolution original pages
-    if (assetHash && docId) {
-      addLog(`🌟 [ULTRA HD ENGINE] Discovered Original Asset Stream [${assetHash}]. Testing page 1 clarity...`);
-      let verifiedOriginal = false;
-      let page1Buffer: Buffer | null = null;
-
-      // Concurrent test across both CDN subdomains for instant validation
-      const testSubdomains = [1, 2];
-      try {
-        const testPromises = testSubdomains.map(async (sub) => {
-          const testUrl = `https://imgv2-${sub}-f.scribdassets.com/img/document/${docId}/original/${assetHash}/1?v=1`;
-          const testRes = await axiosClient.get(testUrl, {
-            responseType: "arraybuffer",
-            timeout: 4000,
-            headers: { "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36" },
-          });
-          if (testRes.status === 200 && testRes.data && testRes.data.length > 5000) {
-            return Buffer.from(testRes.data);
-          }
-          throw new Error("Small or invalid page 1");
-        });
-        page1Buffer = await Promise.any(testPromises);
-        verifiedOriginal = true;
-      } catch {
-        // Fallback if test fails
-      }
-
-      if (verifiedOriginal && page1Buffer) {
-        const targetPages = totalPages > 0 ? Math.min(totalPages, 1000) : 10;
-        addLog(`✨ [100% QUALITY VERIFIED] High-Definition Original Assets confirmed (${(page1Buffer.length / 1024).toFixed(0)} KB/page, full vector & crisp resolution).`);
-        job.progress = 50;
-        job.stepMessage = `Downloading ${targetPages} pages in Ultra HD original quality (parallel connection pool)...`;
-
-        const downloadStart = Date.now();
-        const downloaded: Array<{ pageNumber: number; buffer: Buffer; filename: string }> = [
-          {
-            pageNumber: 1,
-            buffer: page1Buffer,
-            filename: `1-page-1.jpg`,
-          },
-        ];
-
-        if (targetPages > 1) {
-          const remaining = Array.from({ length: targetPages - 1 }, (_, i) => i + 2);
-          const queue = [...remaining];
-          const workerCount = Math.min(48, remaining.length);
-          let completedCount = 1;
-
-          const workers = Array.from({ length: workerCount }, async () => {
-            while (queue.length > 0) {
-              const pageNum = queue.shift();
-              if (pageNum === undefined) break;
-              const cdnSub = (pageNum % 2) + 1;
-              const pageUrl = `https://imgv2-${cdnSub}-f.scribdassets.com/img/document/${docId}/original/${assetHash}/${pageNum}?v=1`;
-              try {
-                const imgRes = await axiosClient.get(pageUrl, {
-                  responseType: "arraybuffer",
-                  timeout: 5000,
-                  headers: {
-                    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
-                  },
-                });
-                if (imgRes.status === 200 && imgRes.data && imgRes.data.length > 2000) {
-                  downloaded.push({
-                    pageNumber: pageNum,
-                    buffer: Buffer.from(imgRes.data),
-                    filename: `${pageNum}-page-${pageNum}.jpg`,
-                  });
-                }
-              } catch {
-                // Ignore missing trailing page
-              }
-              completedCount++;
-              if (completedCount % 8 === 0 || completedCount === targetPages) {
-                job.progress = Math.min(85, 50 + Math.round((completedCount / targetPages) * 35));
-              }
-            }
-          });
-
-          await Promise.all(workers);
-        }
-
-        downloaded.sort((a, b) => a.pageNumber - b.pageNumber);
-        pageImages = downloaded;
-        addLog(`🌟 Ultra HD Engine successfully extracted all ${pageImages.length} uncompressed original pages in ${Date.now() - downloadStart}ms!`);
-      }
-    }
-
-    // STRATEGY 2: Universal High-Speed JSONP & Vector Document Manifest
-    if (pageImages.length === 0) {
-      const rawJsonpMatches = html.match(/(?:https?:)?(?:\/\/|\\\/\\\/)[^\s"']+\.jsonp/gi) || [];
-      let jsonpUrls = Array.from(
-        new Set(
-          rawJsonpMatches.map((m) =>
-            m.replace(/\\\//g, "/").replace(/^\/\//, "https://").replace(/^http:\/\//, "https://")
-          )
-        )
-      );
-
-      if (jsonpUrls.length === 0) {
-        // Search inside script tags
-        $("script").each((_, el) => {
-          const sText = $(el).html() || "";
-          const scriptMatches = sText.match(/(?:https?:)?(?:\/\/|\\\/\\\/)[^\s"']+\.jsonp/gi);
-          if (scriptMatches) {
-            for (const sm of scriptMatches) {
-              jsonpUrls.push(sm.replace(/\\\//g, "/").replace(/^\/\//, "https://").replace(/^http:\/\//, "https://"));
-            }
-          }
-        });
-        jsonpUrls = Array.from(new Set(jsonpUrls));
-      }
-
-      if (jsonpUrls.length > 0) {
-        addLog(`⚡ Detected ${jsonpUrls.length} vector page manifests. Fetching pages in ultra-speed parallel stream...`);
-        job.progress = 50;
-        job.stepMessage = `Parsing ${jsonpUrls.length} page manifests concurrently...`;
-
-        const downloadStart = Date.now();
-
-        // 1. Fetch all JSONP manifest files concurrently using connection pool
-        const parsedTargets = await Promise.all(
-          jsonpUrls.map(async (jUrl, idx) => {
-            try {
-              const res = await axiosClient.get(jUrl, { timeout: 4500 });
-              const dataStr = typeof res.data === "string" ? res.data : String(res.data);
-              const origMatch = dataStr.match(/orig=\\"([^\\"]+)\\"/) || dataStr.match(/orig="([^"]+)"/) || dataStr.match(/orig='([^']+)'/);
-              if (origMatch && origMatch[1]) {
-                const cleanUrl = origMatch[1].replace(/\\"/g, "").replace(/^http:\/\//, "https://");
-                return { pageNumber: idx + 1, imgUrl: cleanUrl };
-              }
-            } catch {
-              // Ignore single page error
-            }
-            return null;
-          })
-        );
-
-        const validImageTargets = parsedTargets.filter(Boolean) as Array<{ pageNumber: number; imgUrl: string }>;
-        addLog(`⚡ Parsed ${validImageTargets.length} image targets in ${Date.now() - downloadStart}ms. Downloading high-res pages...`);
-
-        // 2. Download all images concurrently in high-speed worker pool (32 concurrent sockets)
-        job.progress = 65;
-        job.stepMessage = `Downloading ${validImageTargets.length} page images in parallel...`;
-
-        const queue = [...validImageTargets];
-        const workerCount = Math.min(32, validImageTargets.length);
-        const downloadedImages: Array<{ pageNumber: number; buffer: Buffer; filename: string }> = [];
-        let completed = 0;
-
-        const workers = Array.from({ length: workerCount }, async () => {
-          while (queue.length > 0) {
-            const item = queue.shift();
-            if (!item) break;
-            try {
-              const imgRes = await axiosClient.get(item.imgUrl, {
-                responseType: "arraybuffer",
-                timeout: 5000,
-              });
-              const buf = Buffer.from(imgRes.data);
-              const filename = `${item.pageNumber}-page-${item.pageNumber}.jpg`;
-              downloadedImages.push({
-                pageNumber: item.pageNumber,
-                buffer: buf,
-                filename,
-              });
-            } catch {
-              // ignore single image failure
-            }
-            completed++;
-            if (completed % 8 === 0 || completed === validImageTargets.length) {
-              job.progress = Math.min(85, 65 + Math.round((completed / validImageTargets.length) * 20));
-            }
-          }
-        });
-
-        await Promise.all(workers);
-        downloadedImages.sort((a, b) => a.pageNumber - b.pageNumber);
-        pageImages = downloadedImages;
-        addLog(`⚡ Vector Manifest Pipeline finished: all ${pageImages.length} pages downloaded in ${Date.now() - downloadStart}ms!`);
-      }
-    }
-
-    // STRATEGY 3: Scribd Document Screenshots CDN (Fallback only if Original Assets unavailable)
-    if (pageImages.length === 0) {
-      let screenshotBaseUrl = "";
-      if (wordDoc?.botViewThumbnailData?.thumbnail_urls?.length > 0) {
-        const firstThumb = wordDoc.botViewThumbnailData.thumbnail_urls[0]?.url || "";
-        if (firstThumb.includes("/screenshots.scribd.com/")) {
-          screenshotBaseUrl = firstThumb.replace(/\/\d+\.jpeg$/, "");
-        }
-      }
-      if (!screenshotBaseUrl) {
-        const match = html.match(/https:\/\/screenshots\.scribd\.com\/Scribd\/[^\s"']+\/\d+\.jpeg/);
-        if (match) {
-          screenshotBaseUrl = match[0].replace(/\/\d+\.jpeg$/, "");
-        }
-      }
-
-      if (screenshotBaseUrl && (totalPages > 0 || docId)) {
-        const targetPages = totalPages > 0 ? Math.min(totalPages, 1000) : 50;
-        addLog(`⚠️ Fallback preview pipeline active for ${targetPages} pages...`);
-        job.progress = 50;
-        job.stepMessage = `Extracting ${targetPages} preview pages...`;
-
-        const downloadStart = Date.now();
-        const pageIndexes = Array.from({ length: targetPages }, (_, i) => i + 1);
-        const queue = [...pageIndexes];
-        const workerCount = Math.min(32, targetPages);
-        const downloaded: Array<{ pageNumber: number; buffer: Buffer; filename: string }> = [];
-        let completedCount = 0;
-
-        const workers = Array.from({ length: workerCount }, async () => {
-          while (queue.length > 0) {
-            const pageNum = queue.shift();
-            if (pageNum === undefined) break;
-            const pageUrl = `${screenshotBaseUrl}/${pageNum}.jpeg`;
-            try {
-              const imgRes = await axiosClient.get(pageUrl, {
-                responseType: "arraybuffer",
-                timeout: 5000,
-                headers: {
-                  "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
-                },
-              });
-              downloaded.push({
-                pageNumber: pageNum,
-                buffer: Buffer.from(imgRes.data),
-                filename: `${pageNum}-page-${pageNum}.jpg`,
-              });
-            } catch {
-              // ignore missing trailing page
-            }
-            completedCount++;
-            if (completedCount % 8 === 0 || completedCount === targetPages) {
-              job.progress = Math.min(85, 50 + Math.round((completedCount / targetPages) * 35));
-            }
-          }
-        });
-
-        await Promise.all(workers);
-        downloaded.sort((a, b) => a.pageNumber - b.pageNumber);
-        pageImages = downloaded;
-        addLog(`⚡ Preview pipeline extracted ${pageImages.length} of ${targetPages} pages in ${Date.now() - downloadStart}ms!`);
-      }
-    }
-
-    // STEP 4: Fallback to Fast Internal Scraper if no images found
-    if (pageImages.length === 0) {
-      addLog("Attempting secondary fast stream extraction...");
-      try {
-        // Fast secondary request with desktop UA to parse any dynamic scripts
-        const fallbackRes = await axiosClient.get(job.url, {
-          headers: {
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
-          },
-          timeout: 4000,
-        });
-        const fallbackHtml = fallbackRes.data || "";
-        const fallbackJsonp = fallbackHtml.match(/(?:https?:)?(?:\/\/|\\\/\\\/)[^\s"']+\.jsonp/gi) || [];
-        const cleanJsonp = Array.from(new Set(fallbackJsonp.map((m: string) => m.replace(/\\\//g, "/").replace(/^\/\//, "https://").replace(/^http:\/\//, "https://"))));
-
-        if (cleanJsonp.length > 0) {
-          const parsed = await Promise.all(
-            cleanJsonp.map(async (jUrl: string, idx: number) => {
-              try {
-                const jr = await axiosClient.get(jUrl, { timeout: 4000 });
-                const m = jr.data.match(/orig=\\"([^\\"]+)\\"/) || jr.data.match(/orig="([^"]+)"/);
-                if (m && m[1]) {
-                  return { pageNumber: idx + 1, imgUrl: m[1].replace(/\\"/g, "").replace(/^http:\/\//, "https://") };
-                }
-              } catch {}
-              return null;
-            })
-          );
-          const valid = parsed.filter(Boolean) as Array<{ pageNumber: number; imgUrl: string }>;
-          if (valid.length > 0) {
-            const downloaded = await Promise.all(
-              valid.map(async (item) => {
-                try {
-                  const ir = await axiosClient.get(item.imgUrl, { responseType: "arraybuffer", timeout: 4000 });
-                  return {
-                    pageNumber: item.pageNumber,
-                    buffer: Buffer.from(ir.data),
-                    filename: `${item.pageNumber}-page-${item.pageNumber}.jpg`,
-                  };
-                } catch {
-                  return null;
-                }
-              })
-            );
-            pageImages = downloaded.filter(Boolean) as Array<{ pageNumber: number; buffer: Buffer; filename: string }>;
-            pageImages.sort((a, b) => a.pageNumber - b.pageNumber);
-          }
-        }
-      } catch (err: any) {
-        addLog(`Fast fallback note: ${err.message}`);
-      }
-
-      if (pageImages.length === 0 && !job.pdfFile) {
-        // Mark job as failed only if no images and no PDF
-        job.status = "failed";
-        job.progress = 100;
-        job.stepMessage = "Extraction stopped: Scribd document could not be retrieved.";
-        job.error = "This Scribd document could not be extracted directly (it may require an active Scribd subscription, login, or has bot challenges enabled).";
-        job.troubleshooting = [
-          "1. Check if the document requires a Scribd subscription or is private.",
-          "2. Make sure the link is a valid public presentation or document.",
-          "3. Try one of our pre-cached sample documents below.",
-        ];
-        addLog("❌ Extraction stopped: No valid document pages could be extracted from Scribd.");
-        return;
-      }
-    }
-
-    // STEP 5 & 6: Concurrently save page images to disk and compile unified PDF
-    job.status = "converting";
-    job.progress = 85;
-    job.stepMessage = "Compiling unified PDF & preparing gallery at maximum speed...";
-
-    const compileStart = Date.now();
-    const pdfFileName = `${title}-${Math.random().toString(36).substring(2, 6)}.pdf`;
-    const pdfPath = path.join(job.dir, pdfFileName);
-
-    // Concurrently write images to disk for preview gallery
-    const writeImagesPromise = Promise.all(
-      pageImages.map(async (p) => {
-        const imgPath = path.join(job.dir, p.filename);
-        await fs.promises.writeFile(imgPath, p.buffer);
-        return {
-          filename: p.filename,
-          pageNumber: p.pageNumber,
-          sizeBytes: p.buffer.length,
-          srcPath: imgPath,
-        };
-      })
-    );
-
-    // Concurrently compile PDF with compress: false (instant stream without CPU zlib lag)
-    const compilePdfPromise = new Promise<void>((resolve, reject) => {
-      try {
-        const doc = new PDFDocument({ autoFirstPage: false, compress: false });
-        const stream = fs.createWriteStream(pdfPath);
-        stream.on("finish", () => resolve());
-        stream.on("error", (err) => reject(err));
-        doc.pipe(stream);
-
-        for (const p of pageImages) {
-          try {
-            const img = doc.openImage(p.buffer);
-            doc.addPage({ size: [img.width, img.height], margin: 0 });
-            doc.image(img, 0, 0, { width: img.width, height: img.height });
-          } catch (e: any) {
-            console.warn(`PDFKit frame warning on page ${p.pageNumber}:`, e.message);
-          }
-        }
-        doc.end();
-      } catch (err) {
-        reject(err);
-      }
-    });
-
-    const [diskImageFiles, _] = await Promise.all([writeImagesPromise, compilePdfPromise]);
-    diskImageFiles.sort((a, b) => a.pageNumber - b.pageNumber);
-
-    job.imageFiles = diskImageFiles.map((d) => ({
-      filename: d.filename,
-      pageNumber: d.pageNumber,
-      sizeBytes: d.sizeBytes,
-    }));
-
-    compileTime = Date.now() - compileStart;
-
-    const pdfStats = fs.statSync(pdfPath);
-    job.pdfFile = {
-      filename: pdfFileName,
-      sizeBytes: pdfStats.size,
-      path: pdfPath,
-    };
-
-    // Save to permanent cache
-    if (docId) {
-      const cachePdfPath = path.join(CACHE_ROOT, `${docId}.pdf`);
-      fs.copyFileSync(pdfPath, cachePdfPath);
-      
-      const cachedImages: Array<{ filename: string; pageNumber: number; sizeBytes: number; srcPath: string }> = [];
-      for (const img of diskImageFiles) {
-        const cacheImgPath = path.join(CACHE_ROOT, `${docId}-${img.filename}`);
-        try {
-          fs.copyFileSync(img.srcPath, cacheImgPath);
-          cachedImages.push({
-            filename: img.filename,
-            pageNumber: img.pageNumber,
-            sizeBytes: img.sizeBytes,
-            srcPath: cacheImgPath,
-          });
-        } catch {}
-      }
-
-      documentCache.set(docId, {
-        docId,
-        title,
-        pdfPath: cachePdfPath,
-        pdfSize: pdfStats.size,
-        images: cachedImages.length > 0 ? cachedImages : diskImageFiles,
-        pageCount: pageImages.length,
-        timestamp: Date.now(),
-      });
-    }
-
-    const totalTime = Date.now() - startTime;
-    job.speedStats = {
-      totalTimeMs: totalTime,
-      fetchTimeMs: fetchTime,
-      compileTimeMs: compileTime,
-      pageCount: pageImages.length,
-      cached: false,
-      mode: "Ultra Fast 16x Parallel Engine",
-    };
-
-    job.status = "completed";
-    job.progress = 100;
-    job.stepMessage = `⚡ Ultra Download Ready! (${(totalTime / 1000).toFixed(2)}s)`;
-    addLog(`⚡ Ultra PDF Compiled: ${pdfFileName} (${(pdfStats.size / 1024 / 1024).toFixed(2)} MB) in ${totalTime}ms total!`);
-    return;
-  } catch (outerErr: any) {
-    job.status = "failed";
-    job.progress = 100;
-    job.stepMessage = "Error during ultra-speed extraction.";
-    job.error = outerErr.message || String(outerErr);
-    addLog(`Fatal error: ${job.error}`);
-
-    job.troubleshooting = [
-      "1. Check if the document was deleted by its author on Scribd.",
-      "2. Check if this document is behind a Scribd paid subscription / locked vault.",
-      "3. You can click 'Try Demo Pipeline' to test instant 0.2s generation.",
-    ];
-  }
 }
 
 // Pre-warm sample documents into cache on boot

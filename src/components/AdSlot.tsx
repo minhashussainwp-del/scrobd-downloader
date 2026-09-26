@@ -100,12 +100,15 @@ export function AdSlot({ placement, settings, className = "" }: AdSlotProps) {
     );
   }
 
-  // Fallback: Elegant high-contrast native sponsor banner
-  const sponsorUrl = settings.newTabUrl || "https://pdfviewer.org";
-  const sponsorName = settings.sponsorName || "CloudPDF Pro Tools";
+  // Fallback: Only render native sponsor banner if an active sponsor URL is configured
+  const sponsorUrl = (settings.newTabUrl || settings.buttonAdUrl || "").trim();
+  if (!sponsorUrl || sponsorUrl.includes("pdfviewer.org")) {
+    return null;
+  }
+  const sponsorName = settings.sponsorName || "Sponsored Partner";
   const sponsorTagline =
     settings.sponsorTagline ||
-    "Compress, OCR, and convert documents instantly with 1-click cloud workflows.";
+    "High-speed document conversion and workflow tools.";
   const sponsorCta = settings.sponsorCta || "Learn More";
 
   if (placement === "header") {

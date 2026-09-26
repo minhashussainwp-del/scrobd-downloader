@@ -217,31 +217,45 @@ export function AdminPanel({ onExitToSite, onPreviewUrl }: AdminPanelProps) {
     trash: posts.filter((p) => p.inTrash).length,
   };
 
+  const parseJsonSafely = async (res: Response): Promise<any> => {
+    try {
+      const text = await res.text();
+      if (!text || !text.trim()) return null;
+      return JSON.parse(text);
+    } catch {
+      return null;
+    }
+  };
+
   // Page Actions
   const handleSavePage = async (pageData: any) => {
-    const res = await fetch("/api/admin/pages", {
+    const res = await adminFetch("/api/admin/pages", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(pageData),
     });
-    const result = await res.json();
-    if (!result.success) throw new Error(result.error || "Save failed");
+    const result = await parseJsonSafely(res);
+    if (!res.ok || (result && result.success === false)) {
+      throw new Error(result?.error || result?.message || `Save failed (HTTP ${res.status})`);
+    }
     // Reload pages list
-    const refreshed = await fetch("/api/admin/pages");
-    const data = await refreshed.json();
-    setPages(data.pages || []);
+    const refreshed = await adminFetch("/api/admin/pages");
+    const data = await parseJsonSafely(refreshed);
+    if (data?.pages) {
+      setPages(data.pages);
+    }
     setEditingPage(null);
   };
 
   const handleTrashPage = async (id: string) => {
-    await fetch(`/api/admin/pages/trash/${id}`, { method: "POST" });
+    await adminFetch(`/api/admin/pages/trash/${id}`, { method: "POST" });
     setPages((prev) =>
       prev.map((p) => (p.id === id ? { ...p, inTrash: true } : p))
     );
   };
 
   const handleRestorePage = async (id: string) => {
-    await fetch(`/api/admin/pages/restore/${id}`, { method: "POST" });
+    await adminFetch(`/api/admin/pages/restore/${id}`, { method: "POST" });
     setPages((prev) =>
       prev.map((p) => (p.id === id ? { ...p, inTrash: false } : p))
     );
@@ -249,43 +263,47 @@ export function AdminPanel({ onExitToSite, onPreviewUrl }: AdminPanelProps) {
 
   const handleDeletePagePermanently = async (id: string) => {
     if (!confirm("Are you sure you want to permanently delete this page?")) return;
-    await fetch(`/api/admin/pages/${id}`, { method: "DELETE" });
+    await adminFetch(`/api/admin/pages/${id}`, { method: "DELETE" });
     setPages((prev) => prev.filter((p) => p.id !== id));
   };
 
   const handleDuplicatePage = async (page: any) => {
-    const res = await fetch(`/api/admin/pages/duplicate/${page.id}`, { method: "POST" });
-    const data = await res.json();
-    if (data.duplicated) {
+    const res = await adminFetch(`/api/admin/pages/duplicate/${page.id}`, { method: "POST" });
+    const data = await parseJsonSafely(res);
+    if (data?.duplicated) {
       setPages((prev) => [data.duplicated, ...prev]);
     }
   };
 
   // Post Actions
   const handleSavePost = async (postData: any) => {
-    const res = await fetch("/api/admin/posts", {
+    const res = await adminFetch("/api/admin/posts", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(postData),
     });
-    const result = await res.json();
-    if (!result.success) throw new Error(result.error || "Save failed");
+    const result = await parseJsonSafely(res);
+    if (!res.ok || (result && result.success === false)) {
+      throw new Error(result?.error || result?.message || `Save failed (HTTP ${res.status})`);
+    }
     // Reload posts list
-    const refreshed = await fetch("/api/admin/posts");
-    const data = await refreshed.json();
-    setPosts(data.posts || []);
+    const refreshed = await adminFetch("/api/admin/posts");
+    const data = await parseJsonSafely(refreshed);
+    if (data?.posts) {
+      setPosts(data.posts);
+    }
     setEditingPost(null);
   };
 
   const handleTrashPost = async (id: string) => {
-    await fetch(`/api/admin/posts/trash/${id}`, { method: "POST" });
+    await adminFetch(`/api/admin/posts/trash/${id}`, { method: "POST" });
     setPosts((prev) =>
       prev.map((p) => (p.id === id ? { ...p, inTrash: true } : p))
     );
   };
 
   const handleRestorePost = async (id: string) => {
-    await fetch(`/api/admin/posts/restore/${id}`, { method: "POST" });
+    await adminFetch(`/api/admin/posts/restore/${id}`, { method: "POST" });
     setPosts((prev) =>
       prev.map((p) => (p.id === id ? { ...p, inTrash: false } : p))
     );
@@ -293,14 +311,14 @@ export function AdminPanel({ onExitToSite, onPreviewUrl }: AdminPanelProps) {
 
   const handleDeletePostPermanently = async (id: string) => {
     if (!confirm("Are you sure you want to permanently delete this post?")) return;
-    await fetch(`/api/admin/posts/${id}`, { method: "DELETE" });
+    await adminFetch(`/api/admin/posts/${id}`, { method: "DELETE" });
     setPosts((prev) => prev.filter((p) => p.id !== id));
   };
 
   const handleDuplicatePost = async (post: any) => {
-    const res = await fetch(`/api/admin/posts/duplicate/${post.id}`, { method: "POST" });
-    const data = await res.json();
-    if (data.duplicated) {
+    const res = await adminFetch(`/api/admin/posts/duplicate/${post.id}`, { method: "POST" });
+    const data = await parseJsonSafely(res);
+    if (data?.duplicated) {
       setPosts((prev) => [data.duplicated, ...prev]);
     }
   };
@@ -312,8 +330,10 @@ export function AdminPanel({ onExitToSite, onPreviewUrl }: AdminPanelProps) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ lang, language: lang, content }),
     });
-    const result = await res.json();
-    if (!result.success) throw new Error(result.error || "Save failed");
+    const result = await parseJsonSafely(res);
+    if (!res.ok || (result && result.success === false)) {
+      throw new Error(result?.error || result?.message || `Save failed (HTTP ${res.status})`);
+    }
   };
 
   // Previews

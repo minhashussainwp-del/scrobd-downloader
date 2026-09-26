@@ -33,6 +33,7 @@ const REVISIONS_FILE = path.join(STORAGE_ROOT, "revisions.json");
 const ACTIVITY_LOGS_FILE = path.join(STORAGE_ROOT, "activity_logs.json");
 const USERS_FILE = path.join(STORAGE_ROOT, "users.json");
 const SETTINGS_FILE = path.join(STORAGE_ROOT, "settings.json");
+const AD_SETTINGS_FILE = path.join(STORAGE_ROOT, "ad_settings.json");
 const ROBOTS_FILE = path.join(STORAGE_ROOT, "robots.txt");
 
 // Default seeded initial data
@@ -109,165 +110,118 @@ const DEFAULT_SETTINGS = {
   maintenanceMode: false,
 };
 
+const DEFAULT_SERVER_AD_SETTINGS = {
+  enabled: true,
+  buttonAdEnabled: false,
+  buttonAdUrl: "",
+  newTabOnDownload: false,
+  newTabUrl: "",
+  preDownloadAd: false,
+  preDownloadSeconds: 3,
+  postDownloadAd: false,
+  topAd: false,
+  topAdCode: "",
+  bottomAd: false,
+  bottomAdCode: "",
+  leftAd: false,
+  leftAdCode: "",
+  rightAd: false,
+  rightAdCode: "",
+  centerAd: false,
+  centerAdCode: "",
+  headerAd: false,
+  headerAdCode: "",
+  belowHeroAd: false,
+  belowHeroAdCode: "",
+  inFeedAd: false,
+  inFeedAdCode: "",
+  sidebarAd: false,
+  sidebarAdCode: "",
+  footerAd: false,
+  footerAdCode: "",
+  popupAd: false,
+  popupDelaySeconds: 15,
+  antiAdblock: false,
+  adblockNotice: false,
+  customBannerHtml: "",
+  adSenseScript: "",
+  sponsorName: "",
+  sponsorTagline: "",
+  sponsorCta: "",
+};
+
 const DEFAULT_ADS = [
   {
-    id: "ad-header",
-    name: "Top Header Responsive Banner",
-    placement: "Header",
+    id: "ad-top",
+    name: "Top Responsive Leaderboard",
+    placement: "Top",
     type: "html",
-    code: "<div class=\"p-3 bg-slate-100 text-center text-xs text-slate-500 rounded border border-slate-200\">Sponsor: High-Speed Cloud Document OCR & Compression Tools</div>",
+    code: "<div class=\"p-2.5 bg-slate-100 text-center text-xs text-slate-500 rounded border border-slate-200\">Top Placement Banner</div>",
     status: "disabled",
     device: "all",
     impressions: 0,
     clicks: 0,
   },
   {
-    id: "ad-after-hero",
-    name: "Below Hero Download Callout",
-    placement: "After Hero",
+    id: "ad-center",
+    name: "Center Content Banner",
+    placement: "Center",
     type: "html",
-    code: "<div class=\"my-4 p-4 bg-emerald-50 text-center text-sm text-emerald-800 rounded-lg border border-emerald-200 font-medium\">CloudPDF Pro: 1-Click PDF OCR & Formatter — 100% Free Trial</div>",
-    status: "active",
-    device: "all",
-    impressions: 1420,
-    clicks: 48,
-  },
-  {
-    id: "ad-in-article",
-    name: "Inside Article Sponsor Block",
-    placement: "Inside Article",
-    type: "html",
-    code: "<div class=\"my-6 p-4 bg-slate-50 border border-slate-200 rounded-lg text-sm text-slate-600\">Recommended: Export and convert multi-page documents seamlessly with desktop vector tools.</div>",
-    status: "active",
-    device: "all",
-    impressions: 890,
-    clicks: 27,
-  },
-  {
-    id: "ad-mobile-sticky",
-    name: "Mobile Footer Sticky Ad",
-    placement: "Mobile Sticky",
-    type: "html",
-    code: "<div class=\"fixed bottom-0 inset-x-0 bg-white border-t border-slate-200 p-2 text-center text-xs text-slate-600 z-40 shadow-lg\">Looking for instant PDF editing? Try CloudPDF Free.</div>",
+    code: "<div class=\"my-4 p-4 bg-emerald-50 text-center text-sm text-emerald-800 rounded-xl border border-emerald-200 font-medium\">Center Placement: Clean In-Content Banner</div>",
     status: "disabled",
-    device: "mobile",
+    device: "all",
+    impressions: 0,
+    clicks: 0,
+  },
+  {
+    id: "ad-bottom",
+    name: "Bottom Sticky Bar",
+    placement: "Bottom",
+    type: "html",
+    code: "<div class=\"p-2.5 bg-slate-900 text-center text-xs text-white rounded\">Bottom Placement Sponsor</div>",
+    status: "disabled",
+    device: "all",
+    impressions: 0,
+    clicks: 0,
+  },
+  {
+    id: "ad-left",
+    name: "Left Desktop Flank Banner",
+    placement: "Left",
+    type: "html",
+    code: "<div class=\"p-3 bg-slate-50 text-center text-xs text-slate-600 rounded border border-slate-200\">Left Flank Sponsor (Desktop)</div>",
+    status: "disabled",
+    device: "desktop",
+    impressions: 0,
+    clicks: 0,
+  },
+  {
+    id: "ad-right",
+    name: "Right Desktop Flank Banner",
+    placement: "Right",
+    type: "html",
+    code: "<div class=\"p-3 bg-slate-50 text-center text-xs text-slate-600 rounded border border-slate-200\">Right Flank Sponsor (Desktop)</div>",
+    status: "disabled",
+    device: "desktop",
+    impressions: 0,
+    clicks: 0,
+  },
+  {
+    id: "ad-button",
+    name: "Direct Download Button Sponsor",
+    placement: "Button",
+    type: "custom",
+    code: "",
+    status: "disabled",
+    device: "all",
     impressions: 0,
     clicks: 0,
   },
 ];
 
-// Seed core static pages if pages.json is empty
+// Get pages array
 function getInitialPages() {
-  const existing = readJsonFile<any[]>(PAGES_FILE, []);
-  if (existing.length > 0) return existing;
-
-  const corePages = [
-    {
-      id: "page-about",
-      slug: "about",
-      title: "About Us",
-      content: "# About Scribd Downloader\n\nWe provide a clean, fast, and free document downloader for students, researchers, and professionals worldwide.",
-      excerpt: "Learn more about our mission, privacy values, and cloud document rendering architecture.",
-      metaTitle: "About Us - Scribd Downloader",
-      metaDescription: "Learn more about our mission to make public educational research papers and slide decks easily accessible offline.",
-      status: "published",
-      language: "en",
-      translationGroupId: "group-page-about",
-      author: "Minhas Hussain",
-      authorName: "Minhas Hussain",
-      lastModified: new Date().toISOString(),
-      createdAt: new Date().toISOString(),
-      inTrash: false,
-    },
-    {
-      id: "page-how-it-works",
-      slug: "how-it-works",
-      title: "How It Works",
-      content: "# How It Works\n\nOur system compiles public slide assets into unified, print-ready PDF files in 3 simple steps.",
-      excerpt: "Step-by-step workflow for downloading Scribd documents to PDF on desktop and mobile.",
-      metaTitle: "How It Works - Scribd Downloader",
-      metaDescription: "Understand the three-step workflow to download Scribd documents directly to your device without installing software.",
-      status: "published",
-      language: "en",
-      translationGroupId: "group-page-how-it-works",
-      author: "Minhas Hussain",
-      authorName: "Minhas Hussain",
-      lastModified: new Date().toISOString(),
-      createdAt: new Date().toISOString(),
-      inTrash: false,
-    },
-    {
-      id: "page-contact",
-      slug: "contact",
-      title: "Contact Us",
-      content: "# Contact Our Support Team\n\nHave questions or technical feedback? Get in touch with our engineering team.",
-      excerpt: "Contact our technical support and DMCA copyright inquiries team.",
-      metaTitle: "Contact Us - Scribd Downloader",
-      metaDescription: "Get in touch with our team for technical support, feature suggestions, or general inquiries.",
-      status: "published",
-      language: "en",
-      translationGroupId: "group-page-contact",
-      author: "Admin Team",
-      authorName: "Admin Team",
-      lastModified: new Date().toISOString(),
-      createdAt: new Date().toISOString(),
-      inTrash: false,
-    },
-    {
-      id: "page-privacy",
-      slug: "privacy",
-      title: "Privacy Policy",
-      content: "# Privacy Policy\n\nYour privacy is paramount. We do not require accounts, log document links, or store user files permanently.",
-      excerpt: "Review our strict zero-log privacy policy and ephemeral file processing guidelines.",
-      metaTitle: "Privacy Policy - Scribd Downloader",
-      metaDescription: "Review our strict privacy guidelines: zero user logging, no account requirement, and instant file purge.",
-      status: "published",
-      language: "en",
-      translationGroupId: "group-page-privacy",
-      author: "Legal Dept",
-      authorName: "Legal Dept",
-      lastModified: new Date().toISOString(),
-      createdAt: new Date().toISOString(),
-      inTrash: false,
-    },
-    {
-      id: "page-terms",
-      slug: "terms",
-      title: "Terms of Service",
-      content: "# Terms of Service\n\nBy using this tool, you agree to download only publicly accessible materials for personal, educational use.",
-      excerpt: "Review our terms of use, fair usage guidelines, and intellectual property terms.",
-      metaTitle: "Terms of Service - Scribd Downloader",
-      metaDescription: "Terms of service and fair use guidelines for educational document conversion.",
-      status: "published",
-      language: "en",
-      translationGroupId: "group-page-terms",
-      author: "Legal Dept",
-      authorName: "Legal Dept",
-      lastModified: new Date().toISOString(),
-      createdAt: new Date().toISOString(),
-      inTrash: false,
-    },
-    {
-      id: "page-legal",
-      slug: "legal",
-      title: "Legal & DMCA Notice",
-      content: "# Legal Disclaimer & DMCA Policy\n\nWe respect intellectual property rights. This tool operates as an automated browser proxy for public web content.",
-      excerpt: "DMCA copyright notice, content removal procedure, and legal disclaimer.",
-      metaTitle: "Legal & DMCA - Scribd Downloader",
-      metaDescription: "DMCA copyright compliance guidelines, content removal procedure, and legal terms.",
-      status: "published",
-      language: "en",
-      translationGroupId: "group-page-legal",
-      author: "Legal Dept",
-      authorName: "Legal Dept",
-      lastModified: new Date().toISOString(),
-      createdAt: new Date().toISOString(),
-      inTrash: false,
-    },
-  ];
-
-  writeJsonFile(PAGES_FILE, corePages);
-  return corePages;
+  return readJsonFile<any[]>(PAGES_FILE, []);
 }
 
 // Activity logger helper
@@ -606,6 +560,7 @@ export function setupAdminRoutes(app: express.Express) {
     }
 
     writeJsonFile(PAGES_FILE, pages);
+    try { generateAllSitemaps(req.headers.origin || "https://scribddownloader.org"); } catch {}
     res.json({ success: true, page: updatedPage, message: "Page successfully saved." });
   });
 
@@ -616,6 +571,7 @@ export function setupAdminRoutes(app: express.Express) {
 
     page.inTrash = true;
     writeJsonFile(PAGES_FILE, pages);
+    try { generateAllSitemaps(req.headers.origin || "https://scribddownloader.org"); } catch {}
     logActivity("admin", "owner", `Moved page to trash: ${page.title}`, page.slug);
     res.json({ success: true, message: "Page moved to trash." });
   });
@@ -627,6 +583,7 @@ export function setupAdminRoutes(app: express.Express) {
 
     page.inTrash = false;
     writeJsonFile(PAGES_FILE, pages);
+    try { generateAllSitemaps(req.headers.origin || "https://scribddownloader.org"); } catch {}
     logActivity("admin", "owner", `Restored page from trash: ${page.title}`, page.slug);
     res.json({ success: true, message: "Page restored." });
   });
@@ -638,6 +595,7 @@ export function setupAdminRoutes(app: express.Express) {
 
     pages = pages.filter((p) => p.id !== req.params.id);
     writeJsonFile(PAGES_FILE, pages);
+    try { generateAllSitemaps(req.headers.origin || "https://scribddownloader.org"); } catch {}
     logActivity("admin", "owner", `Permanently deleted page: ${page.title}`, page.slug);
     res.json({ success: true, message: "Page permanently deleted." });
   });
@@ -807,6 +765,7 @@ export function setupAdminRoutes(app: express.Express) {
     }
 
     writeJsonFile(POSTS_FILE, posts);
+    try { generateAllSitemaps(req.headers.origin || "https://scribddownloader.org"); } catch {}
     res.json({ success: true, post: updatedPost, message: "Post successfully saved." });
   });
 
@@ -817,6 +776,7 @@ export function setupAdminRoutes(app: express.Express) {
 
     post.inTrash = true;
     writeJsonFile(POSTS_FILE, posts);
+    try { generateAllSitemaps(req.headers.origin || "https://scribddownloader.org"); } catch {}
     logActivity("admin", "owner", `Moved post to trash: ${post.title}`, post.slug);
     res.json({ success: true, message: "Post moved to trash." });
   });
@@ -828,6 +788,7 @@ export function setupAdminRoutes(app: express.Express) {
 
     post.inTrash = false;
     writeJsonFile(POSTS_FILE, posts);
+    try { generateAllSitemaps(req.headers.origin || "https://scribddownloader.org"); } catch {}
     logActivity("admin", "owner", `Restored post from trash: ${post.title}`, post.slug);
     res.json({ success: true, message: "Post restored." });
   });
@@ -839,8 +800,20 @@ export function setupAdminRoutes(app: express.Express) {
 
     posts = posts.filter((p) => p.id !== req.params.id);
     writeJsonFile(POSTS_FILE, posts);
+    try { generateAllSitemaps(req.headers.origin || "https://scribddownloader.org"); } catch {}
     logActivity("admin", "owner", `Permanently deleted post: ${post.title}`, post.slug);
     res.json({ success: true, message: "Post permanently deleted." });
+  });
+
+  // Public Endpoints for Pages & Posts
+  app.get(["/api/public/pages", "/api/pages"], (_req, res) => {
+    const pages = readJsonFile<any[]>(PAGES_FILE, []).filter((p) => !p.inTrash && p.status === "published");
+    res.json({ pages });
+  });
+
+  app.get(["/api/public/posts", "/api/posts"], (_req, res) => {
+    const posts = readJsonFile<any[]>(POSTS_FILE, []).filter((p) => !p.inTrash && p.status === "published");
+    res.json({ posts });
   });
 
   // 5. CATEGORIES & TAGS
@@ -985,16 +958,16 @@ export function setupAdminRoutes(app: express.Express) {
   app.get("/api/admin/ads", (_req, res) => {
     const ads = readJsonFile<any[]>(ADS_FILE, DEFAULT_ADS);
     const placements = [
+      "Top",
+      "Left",
+      "Bottom",
+      "Right",
+      "Center",
+      "Button",
       "Header",
       "After Hero",
       "Before Article",
-      "After Paragraph 1",
-      "After Paragraph 2",
-      "After Paragraph 3",
       "Inside Article",
-      "Before FAQ",
-      "After FAQ",
-      "Before Footer",
       "Footer",
       "Sidebar",
       "Mobile Sticky",
@@ -1034,6 +1007,26 @@ export function setupAdminRoutes(app: express.Express) {
     ads = ads.filter((a) => a.id !== req.params.id);
     writeJsonFile(ADS_FILE, ads);
     res.json({ success: true, ads });
+  });
+
+  // 7B. AD SETTINGS & BUTTON MONETIZATION
+  app.get("/api/admin/ad-settings", (_req, res) => {
+    const adSettings = readJsonFile<any>(AD_SETTINGS_FILE, DEFAULT_SERVER_AD_SETTINGS);
+    res.json({ adSettings });
+  });
+
+  app.post("/api/admin/ad-settings", (req, res) => {
+    const current = readJsonFile<any>(AD_SETTINGS_FILE, DEFAULT_SERVER_AD_SETTINGS);
+    const updated = { ...current, ...req.body };
+    writeJsonFile(AD_SETTINGS_FILE, updated);
+    logActivity("admin", "owner", "Updated Ad & Button Settings", "Monetization");
+    res.json({ success: true, adSettings: updated });
+  });
+
+  // Public endpoint for frontend components to get active ad settings
+  app.get("/api/ad-settings", (_req, res) => {
+    const adSettings = readJsonFile<any>(AD_SETTINGS_FILE, DEFAULT_SERVER_AD_SETTINGS);
+    res.json({ adSettings });
   });
 
   // Public endpoint for frontend components to get active ads

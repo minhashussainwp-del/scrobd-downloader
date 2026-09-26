@@ -2,39 +2,53 @@ import { AdSettings } from "../types";
 
 /**
  * Validates whether a valid, non-empty advertising destination URL is configured.
+ * Strictly rejects empty URLs, placeholders, and unwanted external redirects (like pdfviewer.org).
  */
 export function hasValidAdUrl(url?: string | null): boolean {
   if (!url) return false;
-  const trimmed = url.trim();
-  if (trimmed === "" || trimmed === "about:blank" || trimmed === "#") {
+  const trimmed = url.trim().toLowerCase();
+  if (
+    trimmed === "" ||
+    trimmed === "about:blank" ||
+    trimmed === "#" ||
+    trimmed.includes("pdfviewer.org")
+  ) {
     return false;
   }
   return true;
 }
 
 /**
- * Checks whether the New-Tab On-Download Ad is actively eligible to open:
+ * Checks whether the Download Button or New-Tab Ad is actively eligible to open:
  * 1. Master monetization is enabled (adSettings.enabled === true)
- * 2. New Tab on Download feature is enabled (adSettings.newTabOnDownload === true)
- * 3. A non-empty, valid ad URL is configured (hasValidAdUrl(adSettings.newTabUrl) === true)
+ * 2. Either Button Ad is enabled (buttonAdEnabled) OR New Tab on Download is enabled (newTabOnDownload)
+ * 3. A non-empty, genuine ad URL is configured (hasValidAdUrl returns true)
  * 
- * IF an ad is NOT configured (even if the toggle is ON), this returns FALSE.
+ * STRICT RULE: If NO valid ad is actively configured, this GUARANTEES return of FALSE.
  */
 export function isNewTabAdEligible(adSettings?: AdSettings): boolean {
   if (!adSettings) return false;
   if (!adSettings.enabled) return false;
-  if (!adSettings.newTabOnDownload) return false;
-  return hasValidAdUrl(adSettings.newTabUrl);
+
+  const buttonEnabled = Boolean(adSettings.buttonAdEnabled);
+  const newTabEnabled = Boolean(adSettings.newTabOnDownload);
+
+  if (!buttonEnabled && !newTabEnabled) {
+    return false;
+  }
+
+  const candidateUrl = adSettings.buttonAdUrl || adSettings.newTabUrl;
+  return hasValidAdUrl(candidateUrl);
 }
 
 /**
- * Safely triggers the monetization new-tab ad.
+ * Safely triggers the monetization button ad if and only if an ad has been added.
  * 
- * STRICT BEHAVIOR RULES (as requested):
- * - If enabled AND an ad URL is attached: Opens the ad URL in a new tab.
- * - If enabled BUT NO AD IS CONFIGURED (empty/blank URL): GUARANTEED NOT to open any new tab or blank window.
- * - If disabled: GUARANTEED NOT to open any new tab.
- * - PDF process in the current tab is never interrupted.
+ * STRICT BEHAVIOR RULES (per user request):
+ * - If ads are ADDED (enabled + valid URL): Opens the sponsor ad in a new tab.
+ * - If ads are NOT added (empty/blank URL or disabled): ABSOLUTELY NOTHING opens. 
+ *   The user download continues cleanly without any popups, redirects, or new tabs.
+ * - Under NO circumstance does pdfviewer.org ever open.
  * 
  * @returns boolean true if a new tab was opened, false otherwise.
  */
@@ -43,7 +57,11 @@ export function triggerNewTabAdIfConfigured(adSettings?: AdSettings): boolean {
     return false;
   }
 
-  const rawUrl = (adSettings!.newTabUrl || "").trim();
+  const rawUrl = (adSettings!.buttonAdUrl || adSettings!.newTabUrl || "").trim();
+  if (!hasValidAdUrl(rawUrl)) {
+    return false;
+  }
+
   let targetUrl = rawUrl;
   if (!targetUrl.startsWith("http://") && !targetUrl.startsWith("https://")) {
     targetUrl = `https://${targetUrl}`;
@@ -56,7 +74,6 @@ export function triggerNewTabAdIfConfigured(adSettings?: AdSettings): boolean {
     // Open the sponsored ad in a new tab
     const win = window.open(targetUrl, "_blank", "noopener,noreferrer");
     if (win) {
-      // Focus the original window back so the PDF process remains front-and-center
       try {
         window.focus();
       } catch (_) {}

@@ -1,6 +1,29 @@
 {
-  "outputDirectory": "dist",
   "rewrites": [
+    {
+      "source": "/api/download",
+      "destination": "/api/download"
+    },
+    {
+      "source": "/api/jobs/:id/download",
+      "destination": "/api/jobs/:id/download"
+    },
+    {
+      "source": "/api/jobs/:id",
+      "destination": "/api/jobs/:id"
+    },
+    {
+      "source": "/api/health",
+      "destination": "/api/health"
+    },
+    {
+      "source": "/api/samples",
+      "destination": "/api/samples"
+    },
+    {
+      "source": "/api/(.*)",
+      "destination": "/api/index"
+    },
     {
       "source": "/(.*)",
       "destination": "/index.html"

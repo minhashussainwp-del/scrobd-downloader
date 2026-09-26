@@ -5,6 +5,13 @@ import { Footer } from "./components/Footer";
 import { HomeContent } from "./components/HomeContent";
 import { SeoHead } from "./components/SeoHead";
 import { HeaderAdBanner, BelowHeroAdBanner, FooterAdBanner, AdBlockDetector } from "./components/AdBanners";
+import {
+  TopAdPlacement,
+  LeftAdPlacement,
+  RightAdPlacement,
+  CenterAdPlacement,
+  BottomAdPlacement,
+} from "./components/AdPlacement";
 import { BLOG_POSTS, loadAllBlogPosts, getPostTranslationGroupId } from "./data/blogData";
 import { ModernArticleRenderer } from "./components/ModernArticleRenderer";
 
@@ -27,6 +34,7 @@ import {
   BlogPost,
   SiteSettings,
   AdSettings,
+  CmsAd,
   SupportedLanguage,
   PageContent,
   CustomPage,
@@ -271,6 +279,29 @@ export default function App() {
   // Settings & Localization state
   const [siteSettings, setSiteSettings] = useState<SiteSettings>(loadSiteSettings);
   const [adSettings, setAdSettings] = useState<AdSettings>(loadAdSettings);
+  const [activeAds, setActiveAds] = useState<CmsAd[]>([]);
+
+  // Sync ad settings and active ads from server
+  useEffect(() => {
+    fetch("/api/ad-settings")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data?.adSettings) {
+          setAdSettings(data.adSettings);
+          saveAdSettings(data.adSettings);
+        }
+      })
+      .catch(() => {});
+
+    fetch("/api/ads/active")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data?.ads) {
+          setActiveAds(data.ads);
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   // URL synchronization helper
   const navigateWithUrl = useCallback(
@@ -687,7 +718,10 @@ export default function App() {
         onSelectCustomPage={(cp) => handleNavigate("custom-page", cp)}
       />
 
-      {/* Header Ad Banner Unit */}
+      {/* Top Placement Ad (Header / Below Navigation) */}
+      <TopAdPlacement settings={adSettings} ads={activeAds} />
+
+      {/* Legacy Header Ad Banner Unit if explicitly enabled */}
       {adSettings?.enabled && adSettings?.headerAd && (
         <div className="bg-slate-50 border-b border-slate-200/80 py-2.5">
           <div className="max-w-7xl mx-auto px-4 sm:px-6">
@@ -695,6 +729,10 @@ export default function App() {
           </div>
         </div>
       )}
+
+      {/* Left and Right Desktop Flank Ad Placements (Hides on mobile/tablet to protect UI/UX) */}
+      <LeftAdPlacement settings={adSettings} ads={activeAds} />
+      <RightAdPlacement settings={adSettings} ads={activeAds} />
 
       {/* Main Viewport Container */}
       <div className={`flex-1 flex flex-col ${getViewportWrapperClass()}`}>
@@ -736,7 +774,10 @@ export default function App() {
                   autoDownload={autoDownload}
                   setAutoDownload={setAutoDownload}
                 />
-                {/* Below Hero / Downloader Ad Slot */}
+                {/* Center Placement Ad (In-Content between Hero and Features) */}
+                <CenterAdPlacement settings={adSettings} ads={activeAds} />
+
+                {/* Legacy Below Hero / Downloader Ad Slot */}
                 {adSettings?.enabled && adSettings?.belowHeroAd && (
                   <div className="max-w-7xl mx-auto px-4 sm:px-6">
                     <BelowHeroAdBanner settings={adSettings} />
@@ -855,6 +896,9 @@ export default function App() {
             )}
           </Suspense>
         </main>
+
+        {/* Global Bottom / Sticky Ad Placement */}
+        <BottomAdPlacement settings={adSettings} ads={activeAds} />
 
         {/* Global Footer Ad Banner Slot (Above Footer) */}
         {adSettings?.enabled && adSettings?.footerAd && (

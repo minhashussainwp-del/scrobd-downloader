@@ -1,5 +1,32 @@
 [
   {
+    "id": "act-1790412088663-inpj",
+    "user": "admin",
+    "role": "seo",
+    "action": "Regenerated Dynamic XML Sitemaps",
+    "object": "/sitemap.xml",
+    "date": "2026-09-26T08:41:28.663Z",
+    "ip": "127.0.0.1"
+  },
+  {
+    "id": "act-1790411692564-31ys",
+    "user": "admin",
+    "role": "owner",
+    "action": "Updated Homepage Content (en)",
+    "object": "/",
+    "date": "2026-09-26T08:34:52.564Z",
+    "ip": "127.0.0.1"
+  },
+  {
+    "id": "act-1790408707405-dtzq",
+    "user": "admin",
+    "role": "owner",
+    "action": "Updated Ad & Button Settings",
+    "object": "Monetization",
+    "date": "2026-09-26T07:45:07.405Z",
+    "ip": "127.0.0.1"
+  },
+  {
     "id": "act-1790407431293-0p5d",
     "user": "admin",
     "role": "owner",

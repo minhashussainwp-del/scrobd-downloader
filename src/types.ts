@@ -198,7 +198,9 @@ export interface GutenbergBlock {
 
 export interface AdSettings {
   enabled: boolean; // Master ad toggle
-  // Download Button New-Tab Ad Trigger
+  // Download Button New-Tab / Direct Ad Trigger
+  buttonAdEnabled?: boolean;
+  buttonAdUrl?: string;
   newTabOnDownload: boolean;
   newTabUrl: string;
   // Pre-Download Interstitial Modal
@@ -206,7 +208,18 @@ export interface AdSettings {
   preDownloadSeconds: number;
   // Post-Download Card Ad
   postDownloadAd: boolean;
-  // Ad Placement Slots
+  // Core Responsive Ad Placement Slots (Top, Left, Bottom, Right, Center)
+  topAd?: boolean;
+  topAdCode?: string;
+  bottomAd?: boolean;
+  bottomAdCode?: string;
+  leftAd?: boolean;
+  leftAdCode?: string;
+  rightAd?: boolean;
+  rightAdCode?: string;
+  centerAd?: boolean;
+  centerAdCode?: string;
+  // Legacy / Additional Placements
   headerAd?: boolean;
   headerAdCode?: string;
   belowHeroAd?: boolean;

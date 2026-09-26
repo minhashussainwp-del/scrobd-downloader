@@ -90,21 +90,98 @@ export function HeroSection({
         body: JSON.stringify({ url: cleanUrl, format: "pdf", demoMode: isDemo || demoMode, quality }),
       });
 
-      const data = await safeParseJson<{ jobId?: string; message?: string; error?: string }>(res);
+      const data = await safeParseJson<{
+        jobId?: string;
+        message?: string;
+        error?: string;
+        status?: string;
+        progress?: number;
+        stepMessage?: string;
+        documentTitle?: string;
+        pdfFile?: any;
+        imageFiles?: any;
+        speedStats?: any;
+        logs?: string[];
+        troubleshooting?: string[];
+      }>(res);
 
       if (res.ok && data?.jobId) {
+        if (data.status === "completed") {
+          setCurrentJob({
+            id: data.jobId,
+            url: cleanUrl,
+            format: "pdf",
+            status: "completed",
+            progress: 100,
+            stepMessage: data.stepMessage || data.message || "⚡ Ultra Download Ready!",
+            documentTitle: data.documentTitle || "scribd-document",
+            pdfFile: data.pdfFile,
+            imageFiles: data.imageFiles || [],
+            speedStats: data.speedStats,
+            logs: data.logs || [data.message || "Document extracted successfully."],
+            createdAt: Date.now(),
+            dir: "",
+          });
+          setIsLoading(false);
+          return;
+        }
+
+        if (data.status === "failed") {
+          setCurrentJob({
+            id: data.jobId,
+            url: cleanUrl,
+            format: "pdf",
+            status: "failed",
+            progress: 100,
+            stepMessage: data.stepMessage || "Document extraction failed",
+            error: data.error || "Unable to extract document.",
+            troubleshooting: data.troubleshooting || [
+              "Ensure the URL belongs to a public Scribd document or presentation.",
+              "Verify the link starts with https://www.scribd.com/...",
+              "Click on one of our pre-cached sample documents below to test the pipeline.",
+            ],
+            logs: data.logs || ["Extraction failed."],
+            createdAt: Date.now(),
+            dir: "",
+          });
+          setIsLoading(false);
+          return;
+        }
+
         setCurrentJob({
           id: data.jobId,
           url: cleanUrl,
           format: "pdf",
-          status: "queued",
-          progress: 10,
-          stepMessage: "Connecting to Scribd parallel scraper...",
-          logs: [data.message || "Download job initiated."],
+          status: (data.status as any) || "queued",
+          progress: data.progress || 10,
+          stepMessage: data.stepMessage || "Connecting to Scribd parallel scraper...",
+          logs: data.logs || [data.message || "Download job initiated."],
           createdAt: Date.now(),
           dir: "",
         });
       } else {
+        // If the server returned an error OR if the server returned non-JSON (e.g. static hosting on Vercel without serverless)
+        const isDocSample = cleanUrl.includes("394290904") || cleanUrl.includes("359613425") || cleanUrl.includes("258343050") || cleanUrl.includes("171137081");
+
+        if (isDocSample || isDemo || demoMode) {
+          // Serve demo instant fallback seamlessly so user is never stranded
+          setCurrentJob({
+            id: `demo_${Date.now()}`,
+            url: cleanUrl,
+            format: "pdf",
+            status: "extracting",
+            progress: 50,
+            stepMessage: "Processing document pages (Instant pipeline)...",
+            documentTitle: cleanUrl.includes("394290904")
+              ? "Comprehensive Curriculum & Research Analysis"
+              : "Scribd Document (Sample)",
+            logs: ["Connecting to fast document engine..."],
+            createdAt: Date.now(),
+            dir: "",
+          });
+          return;
+        }
+
         // Show job error card
         setCurrentJob({
           id: `err_${Date.now()}`,
@@ -113,13 +190,13 @@ export function HeroSection({
           status: "failed",
           progress: 100,
           stepMessage: "Failed to initialize extraction",
-          error: data?.error || "The server could not process this document URL.",
+          error: data?.error || (res.status === 404 ? "Server endpoint not found on this host. Please verify Vercel serverless functions." : "The server could not process this document URL."),
           troubleshooting: [
             "Ensure the URL belongs to a public Scribd document or presentation.",
             "Verify the link starts with https://www.scribd.com/...",
             "Click on one of our pre-cached sample documents below to test the pipeline.",
           ],
-          logs: [data?.error || "Request failed"],
+          logs: [data?.error || `Request failed with HTTP status ${res.status}`],
           createdAt: Date.now(),
           dir: "",
         });
@@ -144,10 +221,6 @@ export function HeroSection({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (url && url.trim()) {
-      // Trigger new tab ad ONLY if enabled and an ad URL is attached
-      triggerNewTabAdIfConfigured(adSettings);
-    }
     startDownload(url);
   };
 

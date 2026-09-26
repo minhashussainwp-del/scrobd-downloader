@@ -1,6 +1,5 @@
 import React from "react";
-import { GutenbergEditor } from "./gutenberg/GutenbergEditor";
-import { GutenbergEditorBlock } from "./gutenberg/types";
+import { ClassicEditor } from "./ClassicEditor";
 
 interface AdminPageEditorProps {
   initialPage: any;
@@ -35,7 +34,6 @@ export function AdminPageEditor({
     title: string;
     content: string;
     htmlContent: string;
-    blocks: GutenbergEditorBlock[];
     metadata: any;
     status: "published" | "draft";
     language: string;
@@ -47,7 +45,6 @@ export function AdminPageEditor({
       title: payload.title,
       content: payload.content,
       htmlContent: payload.htmlContent,
-      blocks: payload.blocks,
       status: payload.status,
       language: payload.language,
       slug: payload.metadata.slug,
@@ -67,10 +64,9 @@ export function AdminPageEditor({
   };
 
   return (
-    <GutenbergEditor
+    <ClassicEditor
       initialTitle={initialPage?.title || ""}
       initialContent={initialPage?.htmlContent || initialPage?.content || ""}
-      initialBlocks={initialPage?.blocks}
       initialMetadata={{
         id: initialPage?.id || "",
         slug: initialPage?.slug || "",
@@ -92,6 +88,7 @@ export function AdminPageEditor({
       onBack={onBack}
       onPreview={(slug, lang) => onPreview(slug, lang)}
       entityType="page"
+      onOpenMediaSelector={onOpenMediaSelector}
     />
   );
 }

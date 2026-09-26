@@ -1,33 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>http://localhost:3000/en/blog/how-to-download-scribd-documents</loc>
-    <lastmod>2026-09-20T09:30:15.714Z</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>http://localhost:3000/en/blog/how-to-download-scribd-documents-on-mobile</loc>
-    <lastmod>2026-09-20T09:30:15.715Z</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>http://localhost:3000/en/blog/how-to-download-scribd-slides-presentation-pdf</loc>
-    <lastmod>2026-09-20T09:30:15.715Z</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>http://localhost:3000/en/blog/how-to-unblur-scribd-documents-free</loc>
-    <lastmod>2026-09-20T09:30:15.716Z</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>http://localhost:3000/en/blog/scribd-pdf-formatting-issues</loc>
-    <lastmod>2026-09-20T09:30:15.717Z</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
-  </url>
+
 </urlset>

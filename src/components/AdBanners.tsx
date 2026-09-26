@@ -100,7 +100,7 @@ export function SidebarAdBanner({ settings, onAdClick }: AdBannerProps) {
         </p>
 
         <a
-          href={settings.newTabUrl || "https://pdfviewer.org"}
+          href={settings.newTabUrl || settings.buttonAdUrl || "#"}
           target="_blank"
           rel="noopener noreferrer"
           onClick={() => {
@@ -212,7 +212,7 @@ export function PreDownloadModal({
           </p>
 
           <a
-            href={settings.newTabUrl || "https://pdfviewer.org"}
+            href={settings.newTabUrl || settings.buttonAdUrl || "#"}
             target="_blank"
             rel="noopener noreferrer"
             onClick={recordClick}
@@ -270,37 +270,8 @@ export function PreDownloadModal({
  * 10. Post-Download Ad Banner
  */
 export function PostDownloadAdBanner({ settings }: AdBannerProps) {
-  if (!settings.enabled || !settings.postDownloadAd) return null;
-
-  return (
-    <div className="bg-gradient-to-r from-slate-50 via-indigo-50/40 to-slate-50 border border-slate-200 rounded-xl p-4 sm:p-5 flex flex-col sm:flex-row items-center justify-between gap-4 mt-4 shadow-xs" id="post-download-ad-banner">
-      <div className="flex items-center gap-3">
-        <div className="w-10 h-10 rounded-xl bg-indigo-600 text-white flex items-center justify-center shrink-0 shadow-xs">
-          <ShieldCheck className="w-5 h-5" />
-        </div>
-        <div>
-          <div className="flex items-center gap-2">
-            <h4 className="text-xs font-bold text-slate-900">{settings.sponsorName}</h4>
-            <span className="text-[9px] uppercase font-bold px-1.5 py-0.2 rounded bg-indigo-100 text-indigo-800">Sponsor</span>
-          </div>
-          <p className="text-[11px] text-slate-600 mt-0.5">
-            Need to edit, sign, or merge your downloaded PDF? Use our recommended cloud companion tool.
-          </p>
-        </div>
-      </div>
-
-      <a
-        href={settings.newTabUrl || "https://pdfviewer.org"}
-        target="_blank"
-        rel="noopener noreferrer"
-        onClick={recordClick}
-        className="shrink-0 px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold inline-flex items-center gap-1.5 shadow-sm transition"
-      >
-        <span>{settings.sponsorCta}</span>
-        <ExternalLink className="w-3.5 h-3.5" />
-      </a>
-    </div>
-  );
+  // Explicitly removed per user directive (CSS selector div#post-download-ad-banner)
+  return null;
 }
 
 /**
@@ -341,7 +312,7 @@ export function PopupAdModal({ isOpen, onClose, settings }: PopupAdModalProps) {
 
         <div className="space-y-2 pt-2">
           <a
-            href={settings.newTabUrl || "https://pdfviewer.org"}
+            href={settings.newTabUrl || settings.buttonAdUrl || "#"}
             target="_blank"
             rel="noopener noreferrer"
             onClick={() => {
@@ -410,7 +381,7 @@ export function HeaderAdBanner({ settings, onAdClick }: AdBannerProps) {
       </div>
 
       <a
-        href={settings.newTabUrl || "https://pdfviewer.org"}
+        href={settings.newTabUrl || settings.buttonAdUrl || "#"}
         target="_blank"
         rel="noopener noreferrer"
         onClick={() => {
@@ -463,7 +434,7 @@ export function BelowHeroAdBanner({ settings, onAdClick }: AdBannerProps) {
         </div>
       </div>
       <a
-        href={settings.newTabUrl || "https://pdfviewer.org"}
+        href={settings.newTabUrl || settings.buttonAdUrl || "#"}
         target="_blank"
         rel="noopener noreferrer"
         onClick={() => {
@@ -513,7 +484,7 @@ export function FooterAdBanner({ settings, onAdClick }: AdBannerProps) {
           </div>
         </div>
         <a
-          href={settings.newTabUrl || "https://pdfviewer.org"}
+          href={settings.newTabUrl || settings.buttonAdUrl || "#"}
           target="_blank"
           rel="noopener noreferrer"
           onClick={() => {
@@ -574,7 +545,7 @@ export function InFeedAdBanner({ settings, onAdClick }: AdBannerProps) {
         </div>
 
         <a
-          href={settings.newTabUrl || "https://pdfviewer.org"}
+          href={settings.newTabUrl || settings.buttonAdUrl || "#"}
           target="_blank"
           rel="noopener noreferrer"
           onClick={() => {
