@@ -10,7 +10,7 @@ interface FooterProps {
   customPages?: CustomPage[];
 }
 
-export function Footer({ onNavigate, siteSettings }: FooterProps) {
+export function Footer({ onNavigate, siteSettings, customPages = [] }: FooterProps) {
   return (
     <footer className="bg-[#1e293b] text-slate-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 md:py-16">
@@ -67,6 +67,22 @@ export function Footer({ onNavigate, siteSettings }: FooterProps) {
                   </a>
                 </li>
               ))}
+              {(customPages || [])
+                .filter((p) => !p.inTrash && p.status === "published" && p.showInFooter)
+                .map((cp) => (
+                  <li key={cp.id}>
+                    <a
+                      href={`/${cp.slug}`}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        onNavigate("custom-page");
+                      }}
+                      className="text-sm text-slate-300 hover:text-white transition-colors cursor-pointer inline-block"
+                    >
+                      {cp.title}
+                    </a>
+                  </li>
+                ))}
             </ul>
           </div>
 

@@ -12,7 +12,7 @@ import {
   Download,
   Zap,
 } from "lucide-react";
-import { DownloadJob, AdSettings, SupportedLanguage, DownloadFormat } from "../types";
+import { DownloadJob, AdSettings, SupportedLanguage, DownloadFormat, PageContent } from "../types";
 import { JobProgress } from "./JobProgress";
 import { JobResult } from "./JobResult";
 import { t } from "../data/translations";
@@ -34,6 +34,7 @@ interface HeroSectionProps {
   currentLang: SupportedLanguage;
   autoDownload?: boolean;
   setAutoDownload?: (val: boolean) => void;
+  pageContent?: PageContent;
 }
 
 const SAMPLE_DOCS = [
@@ -65,6 +66,7 @@ export function HeroSection({
   currentLang,
   autoDownload = true,
   setAutoDownload,
+  pageContent,
 }: HeroSectionProps) {
   const [formError, setFormError] = useState<string | null>(null);
   const [quality, setQuality] = useState<"ultra" | "standard">("ultra");
@@ -247,16 +249,16 @@ export function HeroSection({
           <div>
             <span className="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-bold text-[#3b5998] bg-[#e6edff] border border-[#d0ddff] rounded-full">
               <Sparkles className="w-3.5 h-3.5 text-blue-600" />
-              {t("hero.badge", currentLang)}
+              {pageContent?.heroBadge || t("hero.badge", currentLang)}
             </span>
           </div>
           
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[54px] font-extrabold text-slate-900 leading-[1.15] tracking-tight">
-            {t("hero.title", currentLang)}
+            {pageContent?.heroHeading || pageContent?.h1Heading || t("hero.title", currentLang)}
           </h1>
           
           <p className="text-base md:text-lg text-slate-700 font-medium max-w-2xl mx-auto">
-            {t("hero.subtitle", currentLang)}
+            {pageContent?.heroDescription || t("hero.subtitle", currentLang)}
           </p>
 
           {/* Active Job Progress */}

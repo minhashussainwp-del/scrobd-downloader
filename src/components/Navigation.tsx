@@ -54,7 +54,7 @@ export function Navigation({
 
   // Filter custom pages configured to show in header
   const headerCustomPages = customPages.filter(
-    (p) => p.status === "published" && p.showInHeader
+    (p) => !p.inTrash && p.status === "published" && p.showInHeader
   );
 
   const handleLinkClick = (page: PageRoute) => {

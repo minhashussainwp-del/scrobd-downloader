@@ -193,88 +193,141 @@ export default function App() {
   const [selectedPost, setSelectedPost] = useState<BlogPost | null>(initialRoute.post);
   const [selectedCustomPage, setSelectedCustomPage] = useState<CustomPage | null>(initialRoute.customPage);
 
-  // Lazy-load custom pages only if user navigates to custom page or sitemap
-  useEffect(() => {
-    // Sync posts from admin backend
-    fetch("/api/admin/posts")
-      .then((res) => (res.ok ? res.json() : null))
+  // Unified data sync for homepage, posts, and custom pages
+  const syncAllData = React.useCallback((lang = currentLang) => {
+    // 1. Fetch dynamic homepage content
+    fetch(`/api/public/homepage?lang=${lang}&_t=${Date.now()}`)
+      .then((res) => (res.ok ? res.json() : fetch(`/api/admin/homepage?lang=${lang}`).then((r) => (r.ok ? r.json() : null))))
+      .then((resData) => {
+        if (!resData) return;
+        const hp = resData.content || resData;
+        if (!hp) return;
+
+        setPageContents((prev) => {
+          const copy = [...prev];
+          const idx = copy.findIndex(
+            (c) => (c.pageKey === "home" && c.language === lang) || c.id === `home-${lang}`
+          );
+          const dynamicEntry: PageContent = {
+            id: `home-${lang}`,
+            pageKey: "home",
+            language: lang,
+            title: hp.guideTitle || hp.h1Title || hp.heroTitle || hp.metaTitle || "",
+            metaDescription: hp.metaDescription || "",
+            h1Heading: hp.h1Title || hp.heroTitle || "",
+            heroHeading: hp.heroTitle || hp.h1Title || "",
+            heroDescription: hp.heroSubtitle || "",
+            ctaButtonText: hp.ctaText || "Download PDF",
+            content: hp.htmlContent || hp.guideContent || "",
+            htmlContent: hp.htmlContent || hp.guideContent || "",
+            guideBadge: hp.guideBadge || "",
+            guideTitle: hp.guideTitle || "",
+            heroBadge: hp.heroBadge || "",
+            faqs: hp.faqs || [],
+            updatedAt: hp.lastUpdated || new Date().toISOString(),
+            howTitle: hp.howTitle || "",
+            howStep1: hp.howStep1 || "",
+            howStep1Desc: hp.howStep1Desc || "",
+            howStep2: hp.howStep2 || "",
+            howStep2Desc: hp.howStep2Desc || "",
+            howStep3: hp.howStep3 || "",
+            howStep3Desc: hp.howStep3Desc || "",
+            benefitsTitle: hp.benefitsTitle || "",
+            benefitsFastTitle: hp.benefitsFastTitle || "",
+            benefitsFastDesc: hp.benefitsFastDesc || "",
+            benefitsSafeTitle: hp.benefitsSafeTitle || "",
+            benefitsSafeDesc: hp.benefitsSafeDesc || "",
+            benefitsDevicesTitle: hp.benefitsDevicesTitle || "",
+            benefitsDevicesDesc: hp.benefitsDevicesDesc || "",
+            benefitsFreeTitle: hp.benefitsFreeTitle || "",
+            benefitsFreeDesc: hp.benefitsFreeDesc || "",
+          };
+          if (idx >= 0) {
+            copy[idx] = { ...copy[idx], ...dynamicEntry };
+          } else {
+            copy.push(dynamicEntry);
+          }
+          return copy;
+        });
+      })
+      .catch(() => {});
+
+    // 2. Sync posts
+    fetch(`/api/public/posts?_t=${Date.now()}`)
+      .then((res) => (res.ok ? res.json() : fetch("/api/admin/posts").then((r) => (r.ok ? r.json() : null))))
       .then((data) => {
         if (data && Array.isArray(data.posts)) {
           const allServerPosts: BlogPost[] = [];
           data.posts.forEach((bp: any) => {
             if (Array.isArray(bp.allTranslations) && bp.allTranslations.length > 0) {
               bp.allTranslations.forEach((t: any) => {
-                if (!allServerPosts.some((p) => p.id === t.id)) {
+                if (!t.inTrash && t.status !== "draft" && !allServerPosts.some((p) => p.id === t.id)) {
                   allServerPosts.push(t);
                 }
               });
-            } else if (!allServerPosts.some((p) => p.id === bp.id)) {
+            } else if (!bp.inTrash && bp.status !== "draft" && !allServerPosts.some((p) => p.id === bp.id)) {
               allServerPosts.push(bp);
             }
           });
-          if (allServerPosts.length > 0) {
-            setPosts((prev) => {
-              const map = new Map<string, BlogPost>();
-              prev.forEach((p) => map.set(p.id, p));
-              allServerPosts.forEach((p) => map.set(p.id, { ...(map.get(p.id) || {}), ...p }));
-              const merged = Array.from(map.values());
-              try {
-                localStorage.setItem("scribd_blog_posts", JSON.stringify(merged));
-              } catch {}
-              return merged;
-            });
-          }
+          setPosts(allServerPosts);
+          try {
+            localStorage.setItem("scribd_blog_posts", JSON.stringify(allServerPosts));
+          } catch {}
         }
       })
       .catch(() => {});
 
-    if (currentPage === "custom-page" || currentPage === "sitemap") {
-      import("./data/customPagesData").then((m) => {
-        const loaded = m.loadCustomPages();
-        setCustomPages(loaded);
-        if (currentPage === "custom-page" && !selectedCustomPage && loaded.length > 0) {
-          const rawSlug = window.location.pathname.replace(/^\/([a-z]{2}\/)?/, "").replace(/^\//, "").toLowerCase();
-          const match = loaded.find((p) => p.slug.toLowerCase() === rawSlug || p.id === rawSlug);
-          if (match) setSelectedCustomPage(match);
-        }
-      });
-    }
-  }, [currentPage, selectedCustomPage]);
-
-  // Fetch dynamic homepage content configured via Admin Panel
-  useEffect(() => {
-    fetch(`/api/homepage?lang=${currentLang}`)
-      .then((res) => (res.ok ? res.json() : null))
-      .then((hpData) => {
-        if (hpData && hpData.seoTitle) {
-          setPageContents((prev) => {
-            const copy = [...prev];
-            const idx = copy.findIndex(
-              (c) => (c.pageKey === "home" && c.language === currentLang) || c.id === `home-${currentLang}`
-            );
-            const dynamicEntry: PageContent = {
-              id: `home-${currentLang}`,
-              pageKey: "home",
-              language: currentLang,
-              title: hpData.seoTitle,
-              metaDescription: hpData.metaDescription,
-              h1Heading: hpData.mainH1,
-              heroHeading: hpData.heroHeading,
-              heroDescription: hpData.heroDescription,
-              ctaButtonText: hpData.ctaText,
-              updatedAt: hpData.updatedAt || new Date().toISOString(),
-            };
-            if (idx >= 0) {
-              copy[idx] = { ...copy[idx], ...dynamicEntry };
-            } else {
-              copy.push(dynamicEntry);
+    // 3. Sync custom pages
+    fetch(`/api/public/pages?_t=${Date.now()}`)
+      .then((res) => (res.ok ? res.json() : fetch("/api/admin/pages").then((r) => (r.ok ? r.json() : null))))
+      .then((data) => {
+        if (data && Array.isArray(data.pages)) {
+          const allServerPages: CustomPage[] = [];
+          data.pages.forEach((p: any) => {
+            if (Array.isArray(p.allTranslations) && p.allTranslations.length > 0) {
+              p.allTranslations.forEach((t: any) => {
+                if (!t.inTrash && t.status === "published" && !allServerPages.some((x) => x.id === t.id)) {
+                  allServerPages.push(t);
+                }
+              });
+            } else if (!p.inTrash && p.status === "published" && !allServerPages.some((x) => x.id === p.id)) {
+              allServerPages.push(p);
             }
-            return copy;
           });
+          setCustomPages(allServerPages);
+          try {
+            localStorage.setItem("scribd_custom_pages", JSON.stringify(allServerPages));
+          } catch {}
         }
       })
       .catch(() => {});
   }, [currentLang]);
+
+  useEffect(() => {
+    syncAllData(currentLang);
+
+    const handleContentUpdated = () => {
+      syncAllData(currentLang);
+    };
+
+    window.addEventListener("scribd_content_updated", handleContentUpdated);
+    window.addEventListener("storage", handleContentUpdated);
+
+    return () => {
+      window.removeEventListener("scribd_content_updated", handleContentUpdated);
+      window.removeEventListener("storage", handleContentUpdated);
+    };
+  }, [currentLang, syncAllData]);
+
+  // Keep current route in sync with dynamically loaded posts/pages
+  useEffect(() => {
+    const route = parseUrlRoute(window.location.pathname, window.location.hash, posts, customPages);
+    if (route.page !== "home") {
+      setCurrentPage(route.page);
+      if (route.post) setSelectedPost(route.post);
+      if (route.customPage) setSelectedCustomPage(route.customPage);
+    }
+  }, [posts, customPages]);
 
   // Settings & Localization state
   const [siteSettings, setSiteSettings] = useState<SiteSettings>(loadSiteSettings);
@@ -773,6 +826,7 @@ export default function App() {
                   currentLang={currentLang}
                   autoDownload={autoDownload}
                   setAutoDownload={setAutoDownload}
+                  pageContent={currentHomeContent}
                 />
                 {/* Center Placement Ad (In-Content between Hero and Features) */}
                 <CenterAdPlacement settings={adSettings} ads={activeAds} />

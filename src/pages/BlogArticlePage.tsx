@@ -55,7 +55,7 @@ export function BlogArticlePage({
   // Group translations for this article
   const groupId = getPostTranslationGroupId(post);
   const translations = allPosts.filter(
-    (p) => getPostTranslationGroupId(p) === groupId && p.status !== "draft"
+    (p) => getPostTranslationGroupId(p) === groupId && !p.inTrash && p.status !== "draft"
   );
 
   // Synchronize post when currentLang changes (e.g. from header or footer language switcher)
@@ -66,6 +66,7 @@ export function BlogArticlePage({
         (p) =>
           getPostTranslationGroupId(p) === targetGroupId &&
           (p.language || "en") === currentLang &&
+          !p.inTrash &&
           p.status !== "draft"
       );
       if (match && match.id !== post.id) {
@@ -283,18 +284,20 @@ export function BlogArticlePage({
               </p>
             )}
 
-            {/* Content Rendering: Gutenberg blocks, htmlContent, or Traditional sections */}
+            {/* Content Rendering: Gutenberg blocks, htmlContent, Markdown/String, or Traditional sections */}
             {post.blocks && post.blocks.length > 0 ? (
               <div className="space-y-6">
                 <GutenbergBlockRenderer blocks={post.blocks} />
               </div>
-            ) : post.htmlContent ? (
+            ) : (post.htmlContent || typeof post.content === "string") ? (
               <div className="article-body">
-                <ModernArticleRenderer content={post.htmlContent} />
+                <ModernArticleRenderer
+                  content={post.htmlContent || (typeof post.content === "string" ? post.content : "")}
+                />
               </div>
-            ) : (
+            ) : post.content?.sections ? (
               /* Traditional Sections */
-              post.content?.sections?.map((section, idx) => (
+              post.content.sections.map((section, idx) => (
                 <section key={idx} className="space-y-4 pt-4">
                   <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">
                     {section.heading}
@@ -324,7 +327,7 @@ export function BlogArticlePage({
                   )}
                 </section>
               ))
-            )}
+            ) : null}
 
             {/* In-Article Downloader Callout */}
             <div className="mt-12 p-6 sm:p-8 rounded-2xl bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 text-white space-y-4">

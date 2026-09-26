@@ -1,1 +1,44 @@
-[]
+[
+  {
+    "id": "page-privacy-policy",
+    "title": "Privacy Policy",
+    "slug": "privacy-policy",
+    "content": "## Privacy Policy\n\nYour privacy is fundamentally respected on our platform. We do not require registration, email addresses, or payment cards to download publicly accessible Scribd documents.",
+    "htmlContent": "<h2>Privacy Policy</h2><p>Your privacy is fundamentally respected on our platform. We do not require registration, email addresses, or payment cards to download publicly accessible Scribd documents.</p><p>We do not store your uploaded links permanently or track your identity.</p>",
+    "metaTitle": "Privacy Policy - Scribd Downloader",
+    "metaDescription": "Learn about how we protect user privacy and handle data securely without storing files.",
+    "status": "published",
+    "language": "en",
+    "translationGroupId": "group-privacy-policy",
+    "createdAt": "2026-09-26T19:36:13.698Z",
+    "lastModified": "2026-09-26T19:36:13.699Z"
+  },
+  {
+    "id": "page-terms-of-service",
+    "title": "Terms of Service",
+    "slug": "terms-of-service",
+    "content": "## Terms of Service\n\nBy using this online conversion utility, you agree to respect copyright laws, intellectual property rights, and fair use terms.",
+    "htmlContent": "<h2>Terms of Service</h2><p>By using this online conversion utility, you agree to respect copyright laws, intellectual property rights, and fair use terms.</p><p>This tool is intended strictly for personal research, educational study, and archiving publicly available documents.</p>",
+    "metaTitle": "Terms of Service - Scribd Downloader",
+    "metaDescription": "Read the terms and conditions for using our document downloading utility.",
+    "status": "published",
+    "language": "en",
+    "translationGroupId": "group-terms-of-service",
+    "createdAt": "2026-09-26T19:36:13.699Z",
+    "lastModified": "2026-09-26T19:36:13.699Z"
+  },
+  {
+    "id": "page-dmca",
+    "title": "DMCA Compliance",
+    "slug": "dmca",
+    "content": "## DMCA Notice & Copyright Policy\n\nWe do not host or store any copyrighted files on our servers. All document files are processed on-the-fly and delivered directly to your web browser.",
+    "htmlContent": "<h2>DMCA Notice & Copyright Policy</h2><p>We do not host or store any copyrighted files on our servers. All document files are processed on-the-fly and delivered directly to your web browser.</p><p>If you believe content violates your intellectual property, please contact the hosting platform or our support email.</p>",
+    "metaTitle": "DMCA Policy - Scribd Downloader",
+    "metaDescription": "Copyright compliance and DMCA information for Scribd Downloader.",
+    "status": "published",
+    "language": "en",
+    "translationGroupId": "group-dmca",
+    "createdAt": "2026-09-26T19:36:13.699Z",
+    "lastModified": "2026-09-26T19:36:13.699Z"
+  }
+]

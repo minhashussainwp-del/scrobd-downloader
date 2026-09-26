@@ -36,8 +36,8 @@ export function AdminPanel({ onExitToSite, onPreviewUrl }: AdminPanelProps) {
     return getAdminToken();
   });
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(true);
-  const [loginUsername, setLoginUsername] = useState("admin");
-  const [loginPassword, setLoginPassword] = useState("admin123");
+  const [loginUsername, setLoginUsername] = useState("");
+  const [loginPassword, setLoginPassword] = useState("");
   const [loginError, setLoginError] = useState<string | null>(null);
   const [isLoggingIn, setIsLoggingIn] = useState(false);
 
@@ -243,35 +243,67 @@ export function AdminPanel({ onExitToSite, onPreviewUrl }: AdminPanelProps) {
     const data = await parseJsonSafely(refreshed);
     if (data?.pages) {
       setPages(data.pages);
+      try {
+        localStorage.setItem("scribd_custom_pages", JSON.stringify(data.pages));
+      } catch {}
     }
+    window.dispatchEvent(new CustomEvent("scribd_content_updated"));
     setEditingPage(null);
+  };
+
+  const refreshPagesFromServer = async () => {
+    try {
+      const refreshed = await adminFetch("/api/admin/pages");
+      const data = await parseJsonSafely(refreshed);
+      if (data?.pages) {
+        setPages(data.pages);
+        const activePages = data.pages.filter((p: any) => !p.inTrash && p.status === "published");
+        try { localStorage.setItem("scribd_custom_pages", JSON.stringify(activePages)); } catch {}
+      }
+    } catch (e) {
+      console.error("Failed to refresh pages from server:", e);
+    }
+  };
+
+  const refreshPostsFromServer = async () => {
+    try {
+      const refreshed = await adminFetch("/api/admin/posts");
+      const data = await parseJsonSafely(refreshed);
+      if (data?.posts) {
+        setPosts(data.posts);
+        const activePosts = data.posts.filter((p: any) => !p.inTrash && p.status === "published");
+        try { localStorage.setItem("scribd_blog_posts", JSON.stringify(activePosts)); } catch {}
+      }
+    } catch (e) {
+      console.error("Failed to refresh posts from server:", e);
+    }
   };
 
   const handleTrashPage = async (id: string) => {
     await adminFetch(`/api/admin/pages/trash/${id}`, { method: "POST" });
-    setPages((prev) =>
-      prev.map((p) => (p.id === id ? { ...p, inTrash: true } : p))
-    );
+    await refreshPagesFromServer();
+    window.dispatchEvent(new CustomEvent("scribd_content_updated"));
   };
 
   const handleRestorePage = async (id: string) => {
     await adminFetch(`/api/admin/pages/restore/${id}`, { method: "POST" });
-    setPages((prev) =>
-      prev.map((p) => (p.id === id ? { ...p, inTrash: false } : p))
-    );
+    await refreshPagesFromServer();
+    window.dispatchEvent(new CustomEvent("scribd_content_updated"));
   };
 
   const handleDeletePagePermanently = async (id: string) => {
     if (!confirm("Are you sure you want to permanently delete this page?")) return;
     await adminFetch(`/api/admin/pages/${id}`, { method: "DELETE" });
-    setPages((prev) => prev.filter((p) => p.id !== id));
+    await refreshPagesFromServer();
+    window.dispatchEvent(new CustomEvent("scribd_content_updated"));
   };
 
   const handleDuplicatePage = async (page: any) => {
     const res = await adminFetch(`/api/admin/pages/duplicate/${page.id}`, { method: "POST" });
     const data = await parseJsonSafely(res);
     if (data?.duplicated) {
-      setPages((prev) => [data.duplicated, ...prev]);
+      await refreshPagesFromServer();
+      window.dispatchEvent(new CustomEvent("scribd_content_updated"));
     }
   };
 
@@ -286,40 +318,36 @@ export function AdminPanel({ onExitToSite, onPreviewUrl }: AdminPanelProps) {
     if (!res.ok || (result && result.success === false)) {
       throw new Error(result?.error || result?.message || `Save failed (HTTP ${res.status})`);
     }
-    // Reload posts list
-    const refreshed = await adminFetch("/api/admin/posts");
-    const data = await parseJsonSafely(refreshed);
-    if (data?.posts) {
-      setPosts(data.posts);
-    }
+    await refreshPostsFromServer();
+    window.dispatchEvent(new CustomEvent("scribd_content_updated"));
     setEditingPost(null);
   };
 
   const handleTrashPost = async (id: string) => {
     await adminFetch(`/api/admin/posts/trash/${id}`, { method: "POST" });
-    setPosts((prev) =>
-      prev.map((p) => (p.id === id ? { ...p, inTrash: true } : p))
-    );
+    await refreshPostsFromServer();
+    window.dispatchEvent(new CustomEvent("scribd_content_updated"));
   };
 
   const handleRestorePost = async (id: string) => {
     await adminFetch(`/api/admin/posts/restore/${id}`, { method: "POST" });
-    setPosts((prev) =>
-      prev.map((p) => (p.id === id ? { ...p, inTrash: false } : p))
-    );
+    await refreshPostsFromServer();
+    window.dispatchEvent(new CustomEvent("scribd_content_updated"));
   };
 
   const handleDeletePostPermanently = async (id: string) => {
     if (!confirm("Are you sure you want to permanently delete this post?")) return;
     await adminFetch(`/api/admin/posts/${id}`, { method: "DELETE" });
-    setPosts((prev) => prev.filter((p) => p.id !== id));
+    await refreshPostsFromServer();
+    window.dispatchEvent(new CustomEvent("scribd_content_updated"));
   };
 
   const handleDuplicatePost = async (post: any) => {
     const res = await adminFetch(`/api/admin/posts/duplicate/${post.id}`, { method: "POST" });
     const data = await parseJsonSafely(res);
     if (data?.duplicated) {
-      setPosts((prev) => [data.duplicated, ...prev]);
+      await refreshPostsFromServer();
+      window.dispatchEvent(new CustomEvent("scribd_content_updated"));
     }
   };
 
@@ -334,6 +362,7 @@ export function AdminPanel({ onExitToSite, onPreviewUrl }: AdminPanelProps) {
     if (!res.ok || (result && result.success === false)) {
       throw new Error(result?.error || result?.message || `Save failed (HTTP ${res.status})`);
     }
+    window.dispatchEvent(new CustomEvent("scribd_content_updated"));
   };
 
   // Previews
@@ -614,7 +643,13 @@ export function AdminPanel({ onExitToSite, onPreviewUrl }: AdminPanelProps) {
 
       {/* 4. DEDICATED HOMEPAGE */}
       {activeTab === "homepage" && (
-        <AdminHomepage onSave={handleSaveHomepage} />
+        <AdminHomepage
+          onSave={handleSaveHomepage}
+          onPreviewUrl={(url) => {
+            if (onPreviewUrl) onPreviewUrl(url);
+            else window.open(url, "_blank");
+          }}
+        />
       )}
 
       {/* 5. MEDIA LIBRARY */}

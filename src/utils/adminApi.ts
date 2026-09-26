@@ -72,30 +72,6 @@ export async function adminFetch(
   }
 }
 
-// Global monkey-patching of window.fetch for /api/admin endpoints as early safety net
-if (typeof window !== "undefined") {
-  const originalFetch = window.fetch;
-  window.fetch = async (input: RequestInfo | URL, init?: RequestInit) => {
-    const urlString =
-      typeof input === "string"
-        ? input
-        : input instanceof URL
-        ? input.toString()
-        : input.url;
+// Safely enhance admin fetch without overwriting read-only window.fetch property
+export const customFetch = adminFetch;
 
-    if (urlString.includes("/api/admin")) {
-      const token = getAdminToken();
-      const customInit = init ? { ...init } : {};
-      const headers = new Headers(customInit.headers || {});
-      if (!headers.has("Authorization")) {
-        headers.set("Authorization", `Bearer ${token}`);
-      }
-      if (!headers.has("X-Admin-Token")) {
-        headers.set("X-Admin-Token", token);
-      }
-      customInit.headers = headers;
-      return originalFetch(input, customInit);
-    }
-    return originalFetch(input, init);
-  };
-}

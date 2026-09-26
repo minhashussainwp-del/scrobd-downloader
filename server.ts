@@ -12,6 +12,7 @@ import { setupMcpEndpoints } from "./server/mcpServer";
 import { setupGeminiAiEndpoints } from "./server/geminiAi";
 import { setupAdminRoutes } from "./server/adminRoutes";
 import { generateAllSitemaps } from "./server/contentInventory";
+import { initializeFirebaseAndAuth } from "./server/firebaseDb";
 import {
   DownloadJob,
   CacheEntry,
@@ -691,10 +692,6 @@ function saveRobotsTxtOnServer(content: string) {
   } catch (err) {
     console.error("Error saving robots.txt to disk:", err);
   }
-  try {
-    const publicRobots = path.join(process.cwd(), "public", "robots.txt");
-    fs.writeFileSync(publicRobots, content, "utf-8");
-  } catch {}
 }
 
 function rebuildAllSitemapsOnServer(origin: string, _postsParam?: any[], _customPagesParam?: any[]) {
@@ -1223,9 +1220,18 @@ function generatePageHtml(rawTemplate: string, reqPath: string, origin: string):
 async function startServer() {
   const app = express();
   app.set("trust proxy", true);
+  
+  // Initialize Firebase and authenticate server session
+  try {
+    await initializeFirebaseAndAuth();
+  } catch (err) {
+    console.error("[Firebase] Initialization error during boot:", err);
+  }
+
   const PORT = 3000;
 
-  app.use(express.json());
+  app.use(express.json({ limit: "50mb" }));
+  app.use(express.urlencoded({ limit: "50mb", extended: true }));
 
   // API: Health check
   app.get("/api/health", (_req, res) => {
@@ -1862,7 +1868,7 @@ async function startServer() {
   });
 
   // Mount WordPress + Polylang style CMS & Admin Panel endpoints
-  setupAdminRoutes(app);
+  setupAdminRoutes(app, invalidateSitemapCache);
 
   // Fallback 404 for any unmatched /api/* requests to ensure they never return HTML
   app.all("/api/*", (req, res) => {

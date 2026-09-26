@@ -33,7 +33,7 @@ export function CustomPageView({
     }
   };
 
-  const otherPages = allCustomPages.filter((p) => p.id !== page.id && p.status === "published");
+  const otherPages = allCustomPages.filter((p) => p.id !== page.id && !p.inTrash && p.status === "published");
 
   return (
     <div className="bg-slate-50 min-h-screen py-8 sm:py-12" id="custom-page-view">
@@ -83,7 +83,7 @@ export function CustomPageView({
             </div>
 
             <div className="article-body">
-              <ModernArticleRenderer content={page.content} />
+              <ModernArticleRenderer content={page.htmlContent || page.content} />
             </div>
 
             <div className="mt-12 p-6 rounded-2xl bg-blue-50/60 border border-blue-100 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">

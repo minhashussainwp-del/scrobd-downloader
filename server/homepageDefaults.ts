@@ -107,22 +107,8 @@ export const DEFAULT_HOMEPAGE_CONTENTS: Record<string, HomepageContent> = {
       }
     ],
     guideBadge: "Knowledge Base",
-    guideTitle: "The Complete Guide to Downloading Scribd Documents",
-    guideContent: `### How It Works Under the Hood
-
-When you paste a link into our downloader, the system accesses the publicly visible page assets of the Scribd document and compiles each rendered slide or text page into an organized, high-definition PDF file.
-
-### Key Features
-
-* **Lossless Typography:** Text elements and vector assets remain crisp and readable at any zoom level.
-* **Preserved Document Flow:** Page numbering, margins, tables, and embedded images maintain their original layout.
-* **No Software Required:** Unlike desktop utilities or APKs that pose security risks, our web-based downloader runs purely in your sandboxed browser.
-
-### Best Practices for Fast Downloads
-
-1. **Use the document's direct URL:** Avoid search result links or shortened redirect URLs.
-2. **Ensure stable internet:** For large 100+ page books or presentations, a stable Wi-Fi connection ensures uninterrupted page rendering.
-3. **Check mobile Downloads folder:** On mobile phones, files automatically land in your default 'Files' or 'Downloads' directory.`,
+    guideTitle: "",
+    guideContent: "",
     faqTitle: "Frequently Asked Questions",
     faqSubtitle: "Got questions? We have clear, straightforward answers.",
     faqs: [
@@ -209,16 +195,8 @@ When you paste a link into our downloader, the system accesses the publicly visi
       }
     ],
     guideBadge: "ज्ञान केंद्र एवं गाइड",
-    guideTitle: "स्क्रिब्ड दस्तावेज़ डाउनलोड करने की पूरी विधि",
-    guideContent: `### सिस्टम कैसे कार्य करता है
-
-जब आप हमारे डाउनलोडर में कोई लिंक पेस्ट करते हैं, तो सिस्टम स्क्रिब्ड दस्तावेज़ के सभी सार्वजनिक पेजों को प्रोसेस करता है और उन्हें एक उच्च गुणवत्ता वाली पीडीएफ फ़ाइल में बदल देता है।
-
-### मुख्य विशेषताएं
-
-* **स्पष्ट टेक्स्ट एवं चित्र:** ज़ूम करने पर भी टेक्स्ट और चित्र बिल्कुल स्पष्ट रहते हैं।
-* **मूल लेआउट सुरक्षित:** पेज नंबर, मार्जिन और टेबल अपने मूल स्वरूप में सुरक्षित रहते हैं।
-* **किसी ऐप की ज़रूरत नहीं:** जोखिम भरे थर्ड-पार्टी ऐप या एपीके डाउनलोड करने की ज़रूरत नहीं, यह सीधे ब्राउज़र में चलता है।`,
+    guideTitle: "",
+    guideContent: "",
     faqTitle: "अक्सर पूछे जाने वाले प्रश्न (FAQ)",
     faqSubtitle: "क्या आपके मन में कोई सवाल है? यहाँ पाएं आसान और सीधे जवाब।",
     faqs: [
@@ -273,10 +251,8 @@ When you paste a link into our downloader, the system accesses the publicly visi
       { title: "Tanpa Biaya Tersembunyi", description: "Unduhan dokumen gratis tanpa batas selamanya.", badge: "Gratis" }
     ],
     guideBadge: "Panduan Pengguna",
-    guideTitle: "Panduan Lengkap Mengunduh Dokumen Scribd ke PDF",
-    guideContent: `### Cara Kerja Sistem
-
-Ketika Anda memasukkan tautan dokumen Scribd publik ke dalam alat ini, sistem memproses seluruh halaman dokumen dan mengompilasinya menjadi satu file PDF yang siap dibaca secara offline.`,
+    guideTitle: "",
+    guideContent: "",
     faqTitle: "Pertanyaan yang Sering Diajukan (FAQ)",
     faqSubtitle: "Jawaban langsung untuk pertanyaan umum Anda.",
     faqs: [
@@ -314,10 +290,8 @@ Ketika Anda memasukkan tautan dokumen Scribd publik ke dalam alat ini, sistem me
       { title: "Totalmente Gratis", description: "Descargas ilimitadas sin suscripciones ni costes ocultos.", badge: "100% Gratis" }
     ],
     guideBadge: "Base de Conocimiento",
-    guideTitle: "Guía Completa para Descargar Documentos de Scribd",
-    guideContent: `### Cómo Funciona
-
-El sistema lee las páginas públicas del documento y genera un archivo PDF limpio y ordenado sin necesidad de programas externos.`,
+    guideTitle: "",
+    guideContent: "",
     faqTitle: "Preguntas Frecuentes (FAQ)",
     faqSubtitle: "Respuestas claras a las dudas más comunes.",
     faqs: [
@@ -355,10 +329,8 @@ El sistema lee las páginas públicas del documento y genera un archivo PDF limp
       { title: "100% Grátis", description: "Sem assinaturas ou taxas ocultas.", badge: "Grátis" }
     ],
     guideBadge: "Guia e Dicas",
-    guideTitle: "Guia Completo para Baixar Documentos do Scribd",
-    guideContent: `### Como Funciona
-
-Nosso conversor processa as páginas visíveis do documento Scribd e gera um arquivo PDF completo para leitura offline.`,
+    guideTitle: "",
+    guideContent: "",
     faqTitle: "Perguntas Frequentes (FAQ)",
     faqSubtitle: "Tire suas dúvidas sobre o baixador.",
     faqs: [
@@ -396,10 +368,8 @@ Nosso conversor processa as páginas visíveis do documento Scribd e gera um arq
       { title: "100% Gratuit", description: "Téléchargements illimités sans aucun frais.", badge: "Gratuit" }
     ],
     guideBadge: "Guide & Conseils",
-    guideTitle: "Guide Complet pour Télécharger des Documents Scribd",
-    guideContent: `### Fonctionnement
-
-Le convertisseur traite les pages du document Scribd public pour créer un fichier PDF clair prêt à être consulté hors ligne.`,
+    guideTitle: "",
+    guideContent: "",
     faqTitle: "Foire Aux Questions (FAQ)",
     faqSubtitle: "Toutes les réponses à vos questions.",
     faqs: [
@@ -437,10 +407,8 @@ Le convertisseur traite les pages du document Scribd public pour créer un fichi
       { title: "100% Kostenlos", description: "Unbegrenzte Downloads ohne Abonnements.", badge: "Kostenlos" }
     ],
     guideBadge: "Wissensbasis & Anleitung",
-    guideTitle: "Vollständige Anleitung zum Herunterladen von Scribd-Dokumenten",
-    guideContent: `### Funktionsweise
-
-Das System verarbeitet die sichtbaren Seiten des öffentlichen Scribd-Dokuments und wandelt sie in eine saubere, hochauflösende PDF um.`,
+    guideTitle: "",
+    guideContent: "",
     faqTitle: "Häufig Gestellte Fragen (FAQ)",
     faqSubtitle: "Direkte Antworten auf Ihre Fragen.",
     faqs: [
@@ -478,9 +446,8 @@ Das System verarbeitet die sichtbaren Seiten des öffentlichen Scribd-Dokuments 
       { title: "Geen Verborgen Kosten", description: "Onbeperkt gratis downloaden zonder abonnement.", badge: "Gratis" }
     ],
     guideBadge: "Kennisbank",
-    guideTitle: "De Complete Handleiding voor Scribd Downloads",
-    guideContent: `### Hoe het Systeem Werkt
-Het systeem leest de openbare pagina's van het Scribd-document en compileert deze tot een hoogwaardig PDF-bestand dat je overal offline kunt lezen.`,
+    guideTitle: "",
+    guideContent: "",
     faqTitle: "Veelgestelde Vragen (FAQ)",
     faqSubtitle: "Duidelijke antwoorden op veelvoorkomende vragen.",
     faqs: [
@@ -518,9 +485,8 @@ Het systeem leest de openbare pagina's van het Scribd-document en compileert dez
       { title: "مکمل مفت", description: "لامحدود مفت ڈاؤن لوڈز بغیر کسی پوشیدہ چارجز کے۔", badge: "100% مفت" }
     ],
     guideBadge: "معلوماتی گائیڈ",
-    guideTitle: "اسکرائبڈ دستاویزات ڈاؤن لوڈ کرنے کا طریقہ کار",
-    guideContent: `### یہ نظام کیسے کام کرتا ہے
-جب آپ اسکرائبڈ دستاویز کا لنک درج کرتے ہیں تو ہمارا ٹول اس کے عوامی صفحات کو یکجا کرکے ایک صاف اور پرنٹ کے لیے تیار پی ڈی ایف بناتا ہے۔`,
+    guideTitle: "",
+    guideContent: "",
     faqTitle: "عام سوالات (FAQ)",
     faqSubtitle: "آپ کے سوالات کے آسان اور واضح جوابات۔",
     faqs: [

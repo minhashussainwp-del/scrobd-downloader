@@ -272,12 +272,36 @@ export interface PageContent {
   title: string;
   subtitle?: string;
   content?: string;
+  htmlContent?: string;
   metaDescription?: string;
   h1Heading?: string;
   heroHeading?: string;
   heroDescription?: string;
   ctaButtonText?: string;
+  guideBadge?: string;
+  guideTitle?: string;
+  heroBadge?: string;
+  faqs?: Array<{ question?: string; answer?: string; q?: string; a?: string }>;
   updatedAt?: string;
+
+  // Dynamically editable homepage sections
+  howTitle?: string;
+  howStep1?: string;
+  howStep1Desc?: string;
+  howStep2?: string;
+  howStep2Desc?: string;
+  howStep3?: string;
+  howStep3Desc?: string;
+
+  benefitsTitle?: string;
+  benefitsFastTitle?: string;
+  benefitsFastDesc?: string;
+  benefitsSafeTitle?: string;
+  benefitsSafeDesc?: string;
+  benefitsDevicesTitle?: string;
+  benefitsDevicesDesc?: string;
+  benefitsFreeTitle?: string;
+  benefitsFreeDesc?: string;
 }
 
 export interface CustomPage {
@@ -286,6 +310,7 @@ export interface CustomPage {
   slug: string;
   subtitle?: string;
   content: string;
+  htmlContent?: string;
   metaTitle: string;
   metaDescription: string;
   status: "published" | "draft";

@@ -13,6 +13,7 @@ import {
 import { BlogPost, PageRoute, SupportedLanguage, PageContent } from "../types";
 import { t } from "../data/translations";
 import { ModernArticleSidebar } from "./ModernArticleSidebar";
+import { getUniquePublishedPosts } from "../data/blogData";
 
 const ModernArticleRenderer = React.lazy(() =>
   import("./ModernArticleRenderer").then((m) => ({ default: m.ModernArticleRenderer }))
@@ -35,23 +36,44 @@ export function HomeContent({
 }: HomeContentProps) {
   const [openFaq, setOpenFaq] = useState<number | null>(0);
 
-  // Dynamic FAQs based on current language
-  const faqs = [
-    { q: t("faq.q1", currentLang), a: t("faq.a1", currentLang) },
-    { q: t("faq.q2", currentLang), a: t("faq.a2", currentLang) },
-    { q: t("faq.q3", currentLang), a: t("faq.a3", currentLang) },
-    { q: t("faq.q4", currentLang), a: t("faq.a4", currentLang) },
-    { q: t("faq.q5", currentLang), a: t("faq.a5", currentLang) },
-    { q: t("faq.q6", currentLang), a: t("faq.a6", currentLang) },
-    { q: t("faq.q7", currentLang), a: t("faq.a7", currentLang) },
-    { q: t("faq.q8", currentLang), a: t("faq.a8", currentLang) },
-  ];
+  // Dynamic FAQs based on current language or admin-configured FAQs
+  const faqs = (pageContent?.faqs && pageContent.faqs.length > 0)
+    ? pageContent.faqs.map((f: any) => ({ q: f.question || f.q, a: f.answer || f.a }))
+    : [
+        { q: t("faq.q1", currentLang), a: t("faq.a1", currentLang) },
+        { q: t("faq.q2", currentLang), a: t("faq.a2", currentLang) },
+        { q: t("faq.q3", currentLang), a: t("faq.a3", currentLang) },
+        { q: t("faq.q4", currentLang), a: t("faq.a4", currentLang) },
+        { q: t("faq.q5", currentLang), a: t("faq.a5", currentLang) },
+        { q: t("faq.q6", currentLang), a: t("faq.a6", currentLang) },
+        { q: t("faq.q7", currentLang), a: t("faq.a7", currentLang) },
+        { q: t("faq.q8", currentLang), a: t("faq.a8", currentLang) },
+      ];
 
-  // Filter posts matching current language, with fallback
-  const langPosts = posts.filter(
-    (p) => (p.language || "en") === currentLang && p.status !== "draft"
-  );
-  const displayPosts = langPosts.length > 0 ? langPosts : posts.filter((p) => p.status !== "draft");
+  // Dynamic article content published via Homepage Admin CMS
+  const rawArticle = (pageContent?.htmlContent || pageContent?.content || "").trim();
+  const hasArticle = rawArticle.length > 0;
+
+  // Get all unique published posts matching current language per translation group where available
+  const displayPosts = getUniquePublishedPosts(posts, currentLang);
+
+  const howTitle = pageContent?.howTitle || t("how.title", currentLang);
+  const howStep1 = pageContent?.howStep1 || t("how.step1", currentLang);
+  const howStep1Desc = pageContent?.howStep1Desc || t("how.step1Desc", currentLang);
+  const howStep2 = pageContent?.howStep2 || t("how.step2", currentLang);
+  const howStep2Desc = pageContent?.howStep2Desc || t("how.step2Desc", currentLang);
+  const howStep3 = pageContent?.howStep3 || t("how.step3", currentLang);
+  const howStep3Desc = pageContent?.howStep3Desc || t("how.step3Desc", currentLang);
+
+  const benefitsTitle = pageContent?.benefitsTitle || t("benefits.title", currentLang);
+  const benefitsFastTitle = pageContent?.benefitsFastTitle || t("benefits.fastTitle", currentLang);
+  const benefitsFastDesc = pageContent?.benefitsFastDesc || t("benefits.fastDesc", currentLang);
+  const benefitsSafeTitle = pageContent?.benefitsSafeTitle || t("benefits.safeTitle", currentLang);
+  const benefitsSafeDesc = pageContent?.benefitsSafeDesc || t("benefits.safeDesc", currentLang);
+  const benefitsDevicesTitle = pageContent?.benefitsDevicesTitle || t("benefits.devicesTitle", currentLang);
+  const benefitsDevicesDesc = pageContent?.benefitsDevicesDesc || t("benefits.devicesDesc", currentLang);
+  const benefitsFreeTitle = pageContent?.benefitsFreeTitle || t("benefits.freeTitle", currentLang);
+  const benefitsFreeDesc = pageContent?.benefitsFreeDesc || t("benefits.freeDesc", currentLang);
 
   return (
     <div className="w-full">
@@ -59,7 +81,7 @@ export function HomeContent({
       <section className="bg-white py-16 sm:py-20 border-b border-slate-100">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <h2 className="text-3xl font-extrabold text-center text-slate-900 mb-12">
-            {t("how.title", currentLang)}
+            {howTitle}
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
             {/* Connecting lines for desktop */}
@@ -73,10 +95,10 @@ export function HomeContent({
                 <Link className="w-7 h-7 text-slate-700" />
               </div>
               <h3 className="text-xl sm:text-2xl font-bold text-slate-900 mb-2">
-                {t("how.step1", currentLang)}
+                {howStep1}
               </h3>
               <p className="text-slate-600 text-base sm:text-lg font-medium leading-relaxed">
-                {t("how.step1Desc", currentLang)}
+                {howStep1Desc}
               </p>
             </div>
 
@@ -88,10 +110,10 @@ export function HomeContent({
                 <ClipboardPaste className="w-7 h-7 text-slate-700" />
               </div>
               <h3 className="text-xl sm:text-2xl font-bold text-slate-900 mb-2">
-                {t("how.step2", currentLang)}
+                {howStep2}
               </h3>
               <p className="text-slate-600 text-base sm:text-lg font-medium leading-relaxed">
-                {t("how.step2Desc", currentLang)}
+                {howStep2Desc}
               </p>
             </div>
 
@@ -103,10 +125,10 @@ export function HomeContent({
                 <Download className="w-7 h-7 text-slate-700" />
               </div>
               <h3 className="text-xl sm:text-2xl font-bold text-slate-900 mb-2">
-                {t("how.step3", currentLang)}
+                {howStep3}
               </h3>
               <p className="text-slate-600 text-base sm:text-lg font-medium leading-relaxed">
-                {t("how.step3Desc", currentLang)}
+                {howStep3Desc}
               </p>
             </div>
           </div>
@@ -117,7 +139,7 @@ export function HomeContent({
       <section className="bg-[#f8fafc] py-16 sm:py-20 border-b border-slate-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <h2 className="text-3xl sm:text-4xl font-extrabold text-center text-slate-900 mb-12">
-            {t("benefits.title", currentLang)}
+            {benefitsTitle}
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             <div className="bg-white p-6 rounded-2xl shadow-xs border border-slate-100 flex flex-col gap-4">
@@ -125,10 +147,10 @@ export function HomeContent({
                 <Zap className="w-6 h-6 text-slate-700" />
               </div>
               <h3 className="text-xl font-bold text-slate-900">
-                {t("benefits.fastTitle", currentLang)}
+                {benefitsFastTitle}
               </h3>
               <p className="text-slate-600 text-base font-medium leading-relaxed">
-                {t("benefits.fastDesc", currentLang)}
+                {benefitsFastDesc}
               </p>
             </div>
 
@@ -137,10 +159,10 @@ export function HomeContent({
                 <ShieldCheck className="w-6 h-6 text-slate-700" />
               </div>
               <h3 className="text-xl font-bold text-slate-900">
-                {t("benefits.safeTitle", currentLang)}
+                {benefitsSafeTitle}
               </h3>
               <p className="text-slate-600 text-base font-medium leading-relaxed">
-                {t("benefits.safeDesc", currentLang)}
+                {benefitsSafeDesc}
               </p>
             </div>
 
@@ -149,10 +171,10 @@ export function HomeContent({
                 <Monitor className="w-6 h-6 text-slate-700" />
               </div>
               <h3 className="text-xl font-bold text-slate-900">
-                {t("benefits.devicesTitle", currentLang)}
+                {benefitsDevicesTitle}
               </h3>
               <p className="text-slate-600 text-base font-medium leading-relaxed">
-                {t("benefits.devicesDesc", currentLang)}
+                {benefitsDevicesDesc}
               </p>
             </div>
 
@@ -161,10 +183,10 @@ export function HomeContent({
                 <CreditCard className="w-6 h-6 text-slate-700" />
               </div>
               <h3 className="text-xl font-bold text-slate-900">
-                {t("benefits.freeTitle", currentLang)}
+                {benefitsFreeTitle}
               </h3>
               <p className="text-slate-600 text-base font-medium leading-relaxed">
-                {t("benefits.freeDesc", currentLang)}
+                {benefitsFreeDesc}
               </p>
             </div>
           </div>
@@ -177,60 +199,32 @@ export function HomeContent({
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-10">
             {/* Left Content Column (Main Guide / Editable Page Content) */}
             <div className="lg:col-span-8 space-y-8">
-              <div className="space-y-3">
-                <div>
-                  <span className="inline-flex px-2.5 py-1 text-[11px] font-bold uppercase tracking-wider text-blue-700 bg-blue-50 border border-blue-100 rounded-md">
-                    {t("guide.badge", currentLang) || "KNOWLEDGE BASE"}
-                  </span>
-                </div>
-                <h1 className="text-3xl sm:text-4xl lg:text-[42px] font-extrabold text-slate-900 tracking-tight leading-tight">
-                  {pageContent?.title || t("guide.title", currentLang)}
-                </h1>
-              </div>
-
-              {/* Guide Content Display */}
-              <div className="article-body">
-                {pageContent?.content ? (
-                  <React.Suspense fallback={<div className="animate-pulse h-32 bg-slate-50 rounded-xl" />}>
-                    <ModernArticleRenderer content={pageContent.content} />
-                  </React.Suspense>
-                ) : (
-                  <div className="space-y-4">
-                    <p className="text-slate-700 text-base sm:text-lg font-medium leading-relaxed m-0">
-                      {t("guide.p1", currentLang)}
-                    </p>
-                    <h3 className="text-xl sm:text-2xl font-bold text-slate-900 m-0 mt-8">
-                      {t("guide.subheading", currentLang)}
-                    </h3>
-                    <div className="space-y-4 pt-2">
-                      <div className="p-4 rounded-xl bg-slate-50 border border-slate-200">
-                        <h4 className="font-bold text-slate-900 text-base">
-                          {t("guide.step1Title", currentLang)}
-                        </h4>
-                        <p className="text-sm text-slate-600 mt-1">
-                          {t("guide.step1Desc", currentLang)}
-                        </p>
+              {/* Only show article section when an article has actually been published from Admin Panel */}
+              {hasArticle && (
+                <div className="space-y-8">
+                  <div className="space-y-3">
+                    {pageContent?.guideBadge && (
+                      <div>
+                        <span className="inline-flex px-2.5 py-1 text-[11px] font-bold uppercase tracking-wider text-blue-700 bg-blue-50 border border-blue-100 rounded-md">
+                          {pageContent.guideBadge}
+                        </span>
                       </div>
-                      <div className="p-4 rounded-xl bg-slate-50 border border-slate-200">
-                        <h4 className="font-bold text-slate-900 text-base">
-                          {t("guide.step2Title", currentLang)}
-                        </h4>
-                        <p className="text-sm text-slate-600 mt-1">
-                          {t("guide.step2Desc", currentLang)}
-                        </p>
-                      </div>
-                      <div className="p-4 rounded-xl bg-slate-50 border border-slate-200">
-                        <h4 className="font-bold text-slate-900 text-base">
-                          {t("guide.step3Title", currentLang)}
-                        </h4>
-                        <p className="text-sm text-slate-600 mt-1">
-                          {t("guide.step3Desc", currentLang)}
-                        </p>
-                      </div>
-                    </div>
+                    )}
+                    {(pageContent?.guideTitle || pageContent?.title) && (
+                      <h1 className="text-3xl sm:text-4xl lg:text-[42px] font-extrabold text-slate-900 tracking-tight leading-tight">
+                        {pageContent.guideTitle || pageContent.title}
+                      </h1>
+                    )}
                   </div>
-                )}
-              </div>
+
+                  {/* Guide Content Display */}
+                  <div className="article-body">
+                    <React.Suspense fallback={<div className="animate-pulse h-32 bg-slate-50 rounded-xl" />}>
+                      <ModernArticleRenderer content={rawArticle} />
+                    </React.Suspense>
+                  </div>
+                </div>
+              )}
 
               {/* FAQ Accordion */}
               <div className="mt-14">

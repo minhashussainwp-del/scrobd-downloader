@@ -2,6 +2,7 @@ import React, { useState, useMemo } from "react";
 import { Search, Calendar, Clock, ArrowRight, BookOpen, Sparkles, Filter, CheckCircle2 } from "lucide-react";
 import { BlogPost, PageRoute, SupportedLanguage } from "../types";
 import { handleImageError, DEFAULT_AUTHOR_AVATAR } from "../utils/imageFallback";
+import { getUniquePublishedPosts } from "../data/blogData";
 
 interface BlogListingPageProps {
   posts: BlogPost[];
@@ -22,10 +23,9 @@ export function BlogListingPage({
   const [subscribedEmail, setSubscribedEmail] = useState("");
   const [subscribedSuccess, setSubscribedSuccess] = useState(false);
 
+  // Get ALL published non-trash posts (matching current language per group where available)
   const langMatchingPosts = useMemo(() => {
-    const published = posts.filter((p) => p.status !== "draft");
-    const matching = published.filter((p) => (p.language || "en") === currentLang);
-    return matching.length > 0 ? matching : published;
+    return getUniquePublishedPosts(posts, currentLang);
   }, [posts, currentLang]);
 
   const categories = useMemo(() => {

@@ -259,7 +259,7 @@ function saveRevision(entityId: string, entityType: string, title: string, summa
 
 const ADMIN_SECRET_TOKEN = process.env.ADMIN_SECRET_TOKEN || "sd_admin_sec_7894561230_token";
 
-export function setupAdminRoutes(app: express.Express) {
+export function setupAdminRoutes(app: express.Express, invalidateSitemaps?: () => void) {
   // Authentication & Security Middleware for /api/admin/*
   app.use("/api/admin", (req, res, next) => {
     if (
@@ -286,25 +286,28 @@ export function setupAdminRoutes(app: express.Express) {
   // Auth: Login Endpoint
   app.post("/api/admin/auth/login", (req, res) => {
     const { username, password } = req.body || {};
-    const users = readJsonFile<any[]>(USERS_FILE, DEFAULT_USERS);
-    const user = users.find(
-      (u) =>
-        u.username.toLowerCase() === (username || "").toLowerCase() ||
-        u.email.toLowerCase() === (username || "").toLowerCase()
-    );
+    const normalizedUser = (username || "").toLowerCase().trim();
+    const targetEmail = "minhashussain.wp@gmail.com";
+    const targetPass = "Minhas@#12345";
 
-    if (user && password) {
-      user.lastLogin = new Date().toISOString();
+    if (
+      (normalizedUser === targetEmail || normalizedUser === "minhashussain.wp" || normalizedUser === "minhas") &&
+      password === targetPass
+    ) {
+      const adminUser = {
+        id: "usr-admin-firebase",
+        username: "minhashussain.wp",
+        name: "Minhas Hussain",
+        email: targetEmail,
+        role: "owner",
+        createdAt: "2026-09-26T20:00:00Z",
+        lastLogin: new Date().toISOString(),
+      };
+      
+      // Save/update this user in local cache if necessary
+      const users = [adminUser];
       writeJsonFile(USERS_FILE, users);
-      return res.json({
-        success: true,
-        token: ADMIN_SECRET_TOKEN,
-        user,
-      });
-    }
 
-    if (!password || (username === "admin" && (password === "admin" || password === "admin123")) || password === "admin123" || password === "admin") {
-      const adminUser = users[0] || DEFAULT_USERS[0];
       return res.json({
         success: true,
         token: ADMIN_SECRET_TOKEN,
@@ -312,7 +315,7 @@ export function setupAdminRoutes(app: express.Express) {
       });
     }
 
-    return res.status(401).json({ error: "Invalid username or password" });
+    return res.status(401).json({ error: "Invalid administrator email or password. Please use minhashussain.wp@gmail.com." });
   });
 
   // Auth: Status Check Endpoint
@@ -564,36 +567,53 @@ export function setupAdminRoutes(app: express.Express) {
     res.json({ success: true, page: updatedPage, message: "Page successfully saved." });
   });
 
-  app.post("/api/admin/pages/:id/trash", (req, res) => {
+  app.post(["/api/admin/pages/:id/trash", "/api/admin/pages/trash/:id"], (req, res) => {
     const pages = readJsonFile<any[]>(PAGES_FILE, getInitialPages());
-    const page = pages.find((p) => p.id === req.params.id);
+    const id = req.params.id;
+    const page = pages.find((p) => p.id === id || p.translationGroupId === id);
     if (!page) return res.status(404).json({ error: "Page not found" });
 
-    page.inTrash = true;
+    const groupId = page.translationGroupId || page.id;
+    pages.forEach((p) => {
+      if (p.id === id || p.translationGroupId === groupId || p.id === groupId) {
+        p.inTrash = true;
+      }
+    });
+
     writeJsonFile(PAGES_FILE, pages);
     try { generateAllSitemaps(req.headers.origin || "https://scribddownloader.org"); } catch {}
     logActivity("admin", "owner", `Moved page to trash: ${page.title}`, page.slug);
     res.json({ success: true, message: "Page moved to trash." });
   });
 
-  app.post("/api/admin/pages/:id/restore", (req, res) => {
+  app.post(["/api/admin/pages/:id/restore", "/api/admin/pages/restore/:id"], (req, res) => {
     const pages = readJsonFile<any[]>(PAGES_FILE, getInitialPages());
-    const page = pages.find((p) => p.id === req.params.id);
+    const id = req.params.id;
+    const page = pages.find((p) => p.id === id || p.translationGroupId === id);
     if (!page) return res.status(404).json({ error: "Page not found" });
 
-    page.inTrash = false;
+    const groupId = page.translationGroupId || page.id;
+    pages.forEach((p) => {
+      if (p.id === id || p.translationGroupId === groupId || p.id === groupId) {
+        p.inTrash = false;
+      }
+    });
+
     writeJsonFile(PAGES_FILE, pages);
     try { generateAllSitemaps(req.headers.origin || "https://scribddownloader.org"); } catch {}
     logActivity("admin", "owner", `Restored page from trash: ${page.title}`, page.slug);
     res.json({ success: true, message: "Page restored." });
   });
 
-  app.delete("/api/admin/pages/:id", (req, res) => {
+  app.delete(["/api/admin/pages/:id", "/api/admin/pages/delete/:id"], (req, res) => {
     let pages = readJsonFile<any[]>(PAGES_FILE, getInitialPages());
-    const page = pages.find((p) => p.id === req.params.id);
+    const id = req.params.id;
+    const page = pages.find((p) => p.id === id || p.translationGroupId === id);
     if (!page) return res.status(404).json({ error: "Page not found" });
 
-    pages = pages.filter((p) => p.id !== req.params.id);
+    const groupId = page.translationGroupId || page.id;
+    pages = pages.filter((p) => p.id !== id && p.translationGroupId !== groupId && p.id !== groupId);
+
     writeJsonFile(PAGES_FILE, pages);
     try { generateAllSitemaps(req.headers.origin || "https://scribddownloader.org"); } catch {}
     logActivity("admin", "owner", `Permanently deleted page: ${page.title}`, page.slug);
@@ -601,6 +621,17 @@ export function setupAdminRoutes(app: express.Express) {
   });
 
   // 3. HOMEPAGE CMS (DEDICATED SECTION, ALL 7 LANGUAGES)
+  app.get(["/api/public/homepage", "/api/homepage"], (req, res) => {
+    const lang = (req.query.lang as string) || "en";
+    const saved = readJsonFile<Record<string, HomepageContent>>(HOMEPAGE_FILE, DEFAULT_HOMEPAGE_CONTENTS);
+    const content = saved[lang] || saved.en || DEFAULT_HOMEPAGE_CONTENTS[lang] || DEFAULT_HOMEPAGE_CONTENTS.en;
+    res.json({
+      success: true,
+      content,
+      ...content,
+    });
+  });
+
   app.get("/api/admin/homepage", (req, res) => {
     const lang = (req.query.lang as string) || "en";
     const saved = readJsonFile<Record<string, HomepageContent>>(HOMEPAGE_FILE, DEFAULT_HOMEPAGE_CONTENTS);
@@ -623,6 +654,7 @@ export function setupAdminRoutes(app: express.Express) {
     const prevSnapshot = saved[lang] || DEFAULT_HOMEPAGE_CONTENTS[lang];
 
     saved[lang] = {
+      ...(saved[lang] || {}),
       ...data,
       language: lang,
       lastUpdated: new Date().toISOString(),
@@ -769,36 +801,53 @@ export function setupAdminRoutes(app: express.Express) {
     res.json({ success: true, post: updatedPost, message: "Post successfully saved." });
   });
 
-  app.post("/api/admin/posts/:id/trash", (req, res) => {
+  app.post(["/api/admin/posts/:id/trash", "/api/admin/posts/trash/:id"], (req, res) => {
     const posts = readJsonFile<any[]>(POSTS_FILE, []);
-    const post = posts.find((p) => p.id === req.params.id);
+    const id = req.params.id;
+    const post = posts.find((p) => p.id === id || p.translationGroupId === id);
     if (!post) return res.status(404).json({ error: "Post not found" });
 
-    post.inTrash = true;
+    const groupId = post.translationGroupId || post.id;
+    posts.forEach((p) => {
+      if (p.id === id || p.translationGroupId === groupId || p.id === groupId) {
+        p.inTrash = true;
+      }
+    });
+
     writeJsonFile(POSTS_FILE, posts);
     try { generateAllSitemaps(req.headers.origin || "https://scribddownloader.org"); } catch {}
     logActivity("admin", "owner", `Moved post to trash: ${post.title}`, post.slug);
     res.json({ success: true, message: "Post moved to trash." });
   });
 
-  app.post("/api/admin/posts/:id/restore", (req, res) => {
+  app.post(["/api/admin/posts/:id/restore", "/api/admin/posts/restore/:id"], (req, res) => {
     const posts = readJsonFile<any[]>(POSTS_FILE, []);
-    const post = posts.find((p) => p.id === req.params.id);
+    const id = req.params.id;
+    const post = posts.find((p) => p.id === id || p.translationGroupId === id);
     if (!post) return res.status(404).json({ error: "Post not found" });
 
-    post.inTrash = false;
+    const groupId = post.translationGroupId || post.id;
+    posts.forEach((p) => {
+      if (p.id === id || p.translationGroupId === groupId || p.id === groupId) {
+        p.inTrash = false;
+      }
+    });
+
     writeJsonFile(POSTS_FILE, posts);
     try { generateAllSitemaps(req.headers.origin || "https://scribddownloader.org"); } catch {}
     logActivity("admin", "owner", `Restored post from trash: ${post.title}`, post.slug);
     res.json({ success: true, message: "Post restored." });
   });
 
-  app.delete("/api/admin/posts/:id", (req, res) => {
+  app.delete(["/api/admin/posts/:id", "/api/admin/posts/delete/:id"], (req, res) => {
     let posts = readJsonFile<any[]>(POSTS_FILE, []);
-    const post = posts.find((p) => p.id === req.params.id);
+    const id = req.params.id;
+    const post = posts.find((p) => p.id === id || p.translationGroupId === id);
     if (!post) return res.status(404).json({ error: "Post not found" });
 
-    posts = posts.filter((p) => p.id !== req.params.id);
+    const groupId = post.translationGroupId || post.id;
+    posts = posts.filter((p) => p.id !== id && p.translationGroupId !== groupId && p.id !== groupId);
+
     writeJsonFile(POSTS_FILE, posts);
     try { generateAllSitemaps(req.headers.origin || "https://scribddownloader.org"); } catch {}
     logActivity("admin", "owner", `Permanently deleted post: ${post.title}`, post.slug);
@@ -1079,6 +1128,55 @@ export function setupAdminRoutes(app: express.Express) {
       message: "XML Sitemaps successfully regenerated.",
       totalUrls: sitemaps.totalUrls,
     });
+  });
+
+  app.get("/api/admin/sitemap/config", (req, res) => {
+    const origin = req.protocol + "://" + (req.get("host") || "localhost:3000");
+    const sitemaps = generateAllSitemaps(origin);
+    const config = readJsonFile<any>(path.join(STORAGE_ROOT, "sitemap_config.json"), {
+      isManualMode: false,
+      manualSitemapIndexXml: "",
+      manualSitemapXml: "",
+      manualPageSitemapXml: "",
+      manualPostSitemapXml: "",
+      changeFrequency: "daily",
+      homePriority: "1.0",
+      pagePriority: "0.8",
+      postPriority: "0.8",
+    });
+
+    if (!config.manualSitemapIndexXml) config.manualSitemapIndexXml = sitemaps.indexXml;
+    if (!config.manualSitemapXml) config.manualSitemapXml = sitemaps.sitemapXml;
+    if (!config.manualPageSitemapXml) config.manualPageSitemapXml = sitemaps.pageXml;
+    if (!config.manualPostSitemapXml) config.manualPostSitemapXml = sitemaps.postXml;
+
+    res.json(config);
+  });
+
+  app.post("/api/admin/sitemap/config", (req, res) => {
+    const newConfig = req.body || {};
+    const configPath = path.join(STORAGE_ROOT, "sitemap_config.json");
+    const config = readJsonFile<any>(configPath, {
+      isManualMode: false,
+      manualSitemapIndexXml: "",
+      manualSitemapXml: "",
+      manualPageSitemapXml: "",
+      manualPostSitemapXml: "",
+      changeFrequency: "daily",
+      homePriority: "1.0",
+      pagePriority: "0.8",
+      postPriority: "0.8",
+    });
+
+    const merged = { ...config, ...newConfig };
+    writeJsonFile(configPath, merged);
+
+    if (invalidateSitemaps) {
+      invalidateSitemaps();
+    }
+
+    logActivity("admin", "seo", "Updated Sitemap Configuration & Manual Code", "/sitemap.xml");
+    res.json({ success: true, message: "Sitemap configuration updated.", config: merged });
   });
 
   app.get("/api/admin/robots", (_req, res) => {

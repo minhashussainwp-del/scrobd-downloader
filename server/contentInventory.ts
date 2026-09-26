@@ -1,6 +1,32 @@
 import fs from "fs";
 import path from "path";
 import os from "os";
+import {
+  getPagesFromCache,
+  getPostsFromCache,
+  getMediaFromCache,
+  getAdsFromCache,
+  getRedirectsFromCache,
+  getSettingsFromCache,
+  getCategoriesFromCache,
+  getTagsFromCache,
+  getHomepageFromCache,
+  savePage,
+  deletePage,
+  savePost,
+  deletePost,
+  saveMediaItem,
+  deleteMediaItem,
+  saveAdsBatch,
+  saveRedirect,
+  deleteRedirect,
+  saveGlobalSettings,
+  saveCategory,
+  deleteCategory,
+  saveTag,
+  deleteTag,
+  saveHomepage,
+} from "./firebaseDb";
 
 export interface SitemapUrlEntry {
   loc: string;
@@ -71,7 +97,15 @@ export const DEFAULT_LANGUAGES = [
 ];
 
 // Standard core static pages (dynamically controlled from Admin Panel)
-export const STANDARD_STATIC_PAGES: Array<{ slug: string; title: string; isCore?: boolean }> = [];
+export const STANDARD_STATIC_PAGES = [
+  { slug: "how-it-works", title: "How It Works", isCore: true },
+  { slug: "blog", title: "Blog & Tutorials", isCore: true },
+  { slug: "about", title: "About Us", isCore: true },
+  { slug: "contact", title: "Contact Us", isCore: true },
+  { slug: "privacy", title: "Privacy Policy", isCore: true },
+  { slug: "terms", title: "Terms of Service", isCore: true },
+  { slug: "sitemap", title: "Sitemap", isCore: true },
+];
 
 export function getSafeFilePath(filePath: string): string {
   if (fs.existsSync(filePath)) return filePath;
@@ -82,6 +116,37 @@ export function getSafeFilePath(filePath: string): string {
 
 // Safe file reader
 export function readJsonFile<T>(filePath: string, fallback: T): T {
+  const baseName = path.basename(filePath);
+  
+  if (baseName === "pages.json") {
+    const cache = getPagesFromCache();
+    if (cache && cache.length > 0) return cache as any;
+  } else if (baseName === "blog_posts.json") {
+    const cache = getPostsFromCache();
+    if (cache && cache.length > 0) return cache as any;
+  } else if (baseName === "media.json") {
+    const cache = getMediaFromCache();
+    if (cache && cache.length > 0) return cache as any;
+  } else if (baseName === "ads.json") {
+    const cache = getAdsFromCache();
+    if (cache && cache.length > 0) return cache as any;
+  } else if (baseName === "redirects.json") {
+    const cache = getRedirectsFromCache();
+    if (cache && cache.length > 0) return cache as any;
+  } else if (baseName === "categories.json") {
+    const cache = getCategoriesFromCache();
+    if (cache && cache.length > 0) return cache as any;
+  } else if (baseName === "tags.json") {
+    const cache = getTagsFromCache();
+    if (cache && cache.length > 0) return cache as any;
+  } else if (baseName === "settings.json") {
+    const cache = getSettingsFromCache();
+    if (cache) return cache as any;
+  } else if (baseName === "homepage_content.json") {
+    const cache = getHomepageFromCache();
+    if (cache && Object.keys(cache).length > 0) return cache as any;
+  }
+
   const safePath = getSafeFilePath(filePath);
   if (fs.existsSync(safePath)) {
     try {
@@ -95,24 +160,158 @@ export function readJsonFile<T>(filePath: string, fallback: T): T {
 }
 
 export function writeJsonFile<T>(filePath: string, data: T): boolean {
+  // 1. Write local backup for resiliency
+  let localWritten = false;
   try {
     const parentDir = path.dirname(filePath);
     if (!fs.existsSync(parentDir)) fs.mkdirSync(parentDir, { recursive: true });
     fs.writeFileSync(filePath, JSON.stringify(data, null, 2), "utf-8");
-    return true;
+    localWritten = true;
   } catch (err: any) {
     if (err?.code === "EROFS" || err?.message?.includes("read-only")) {
       try {
         const tmpPath = path.join(os.tmpdir(), path.basename(filePath));
         fs.writeFileSync(tmpPath, JSON.stringify(data, null, 2), "utf-8");
-        return true;
+        localWritten = true;
       } catch (tmpErr) {
         console.error(`Error writing JSON to fallback tmp file:`, tmpErr);
-        return false;
+      }
+    } else {
+      console.error(`Error writing JSON to ${filePath}:`, err);
+    }
+  }
+
+  // 2. Sync to Firebase Firestore database in background
+  const baseName = path.basename(filePath);
+  try {
+    if (baseName === "pages.json" && Array.isArray(data)) {
+      syncPagesToFirestore(data);
+    } else if (baseName === "blog_posts.json" && Array.isArray(data)) {
+      syncPostsToFirestore(data);
+    } else if (baseName === "media.json" && Array.isArray(data)) {
+      syncMediaToFirestore(data);
+    } else if (baseName === "ads.json" && Array.isArray(data)) {
+      saveAdsBatch(data);
+    } else if (baseName === "redirects.json" && Array.isArray(data)) {
+      syncRedirectsToFirestore(data);
+    } else if (baseName === "settings.json") {
+      saveGlobalSettings(data);
+    } else if (baseName === "categories.json" && Array.isArray(data)) {
+      syncCategoriesToFirestore(data);
+    } else if (baseName === "tags.json" && Array.isArray(data)) {
+      syncTagsToFirestore(data);
+    } else if (baseName === "homepage_content.json") {
+      for (const [lang, content] of Object.entries(data as Record<string, any>)) {
+        if (content) saveHomepage(lang, content);
       }
     }
-    console.error(`Error writing JSON to ${filePath}:`, err);
-    return false;
+  } catch (err) {
+    console.error(`[Firebase] Async save error for ${baseName}:`, err);
+  }
+
+  return localWritten;
+}
+
+// Background sync helpers
+async function syncPagesToFirestore(list: any[]) {
+  try {
+    const oldCache = getPagesFromCache();
+    const currentIds = list.map((p) => p.id);
+    for (const page of list) {
+      if (page && page.id) await savePage(page);
+    }
+    for (const oldPage of oldCache) {
+      if (oldPage && oldPage.id && !currentIds.includes(oldPage.id)) {
+        await deletePage(oldPage.id);
+      }
+    }
+  } catch (err) {
+    console.error("[Firebase] syncPagesToFirestore error:", err);
+  }
+}
+
+async function syncPostsToFirestore(list: any[]) {
+  try {
+    const oldCache = getPostsFromCache();
+    const currentIds = list.map((p) => p.id);
+    for (const post of list) {
+      if (post && post.id) await savePost(post);
+    }
+    for (const oldPost of oldCache) {
+      if (oldPost && oldPost.id && !currentIds.includes(oldPost.id)) {
+        await deletePost(oldPost.id);
+      }
+    }
+  } catch (err) {
+    console.error("[Firebase] syncPostsToFirestore error:", err);
+  }
+}
+
+async function syncMediaToFirestore(list: any[]) {
+  try {
+    const oldCache = getMediaFromCache();
+    const currentIds = list.map((m) => m.id);
+    for (const media of list) {
+      if (media && media.id) await saveMediaItem(media);
+    }
+    for (const oldMedia of oldCache) {
+      if (oldMedia && oldMedia.id && !currentIds.includes(oldMedia.id)) {
+        await deleteMediaItem(oldMedia.id);
+      }
+    }
+  } catch (err) {
+    console.error("[Firebase] syncMediaToFirestore error:", err);
+  }
+}
+
+async function syncRedirectsToFirestore(list: any[]) {
+  try {
+    const oldCache = getRedirectsFromCache();
+    const currentIds = list.map((r) => r.id);
+    for (const redirect of list) {
+      if (redirect && redirect.id) await saveRedirect(redirect);
+    }
+    for (const oldRedirect of oldCache) {
+      if (oldRedirect && oldRedirect.id && !currentIds.includes(oldRedirect.id)) {
+        await deleteRedirect(oldRedirect.id);
+      }
+    }
+  } catch (err) {
+    console.error("[Firebase] syncRedirectsToFirestore error:", err);
+  }
+}
+
+async function syncCategoriesToFirestore(list: any[]) {
+  try {
+    const oldCache = getCategoriesFromCache();
+    const currentIds = list.map((c) => c.id);
+    for (const cat of list) {
+      if (cat && cat.id) await saveCategory(cat);
+    }
+    for (const oldCat of oldCache) {
+      if (oldCat && oldCat.id && !currentIds.includes(oldCat.id)) {
+        await deleteCategory(oldCat.id);
+      }
+    }
+  } catch (err) {
+    console.error("[Firebase] syncCategoriesToFirestore error:", err);
+  }
+}
+
+async function syncTagsToFirestore(list: any[]) {
+  try {
+    const oldCache = getTagsFromCache();
+    const currentIds = list.map((t) => t.id);
+    for (const tag of list) {
+      if (tag && tag.id) await saveTag(tag);
+    }
+    for (const oldTag of oldCache) {
+      if (oldTag && oldTag.id && !currentIds.includes(oldTag.id)) {
+        await deleteTag(oldTag.id);
+      }
+    }
+  } catch (err) {
+    console.error("[Firebase] syncTagsToFirestore error:", err);
   }
 }
 
@@ -180,8 +379,9 @@ export function getContentInventory(origin: string): ContentInventoryReport {
   const pagesInventory: { loc: string; lang: string; title: string; lastmod: string }[] = [];
   const visitedPageUrls = new Set<string>();
 
-  // A. Core Standard Pages (Base default language)
+  // A. Core Standard Pages (Base default language + localized)
   for (const stdPage of STANDARD_STATIC_PAGES) {
+    // English (Default)
     const defaultUrl = `${base}/${stdPage.slug}`;
     if (!visitedPageUrls.has(defaultUrl)) {
       visitedPageUrls.add(defaultUrl);
@@ -191,6 +391,21 @@ export function getContentInventory(origin: string): ContentInventoryReport {
         title: stdPage.title,
         lastmod: now,
       });
+    }
+
+    // Localized
+    for (const lang of langs) {
+      if (lang.code === "en" || lang.isDefault) continue;
+      const localizedUrl = `${base}/${lang.code}/${stdPage.slug}`;
+      if (!visitedPageUrls.has(localizedUrl)) {
+        visitedPageUrls.add(localizedUrl);
+        pagesInventory.push({
+          loc: localizedUrl,
+          lang: lang.code,
+          title: `${stdPage.title} (${lang.name})`,
+          lastmod: now,
+        });
+      }
     }
   }
 
@@ -227,7 +442,7 @@ export function getContentInventory(origin: string): ContentInventoryReport {
     const postMod = formatIsoDate(post.updatedAt || post.date || now);
 
     // Primary post permalink (real URL only, no synthetic foreign duplicates)
-    const primaryUrl = `${base}/${postLang}/blog/${slug}`;
+    const primaryUrl = postLang === "en" ? `${base}/blog/${slug}` : `${base}/${postLang}/blog/${slug}`;
     if (!visitedPostUrls.has(primaryUrl)) {
       visitedPostUrls.add(primaryUrl);
       postsInventory.push({
@@ -287,7 +502,24 @@ export function generateXmlSitemapsFromInventory(origin: string) {
     homePriority: "1.0",
     pagePriority: "0.8",
     postPriority: "0.8",
+    isManualMode: false,
+    manualSitemapIndexXml: "",
+    manualSitemapXml: "",
+    manualPageSitemapXml: "",
+    manualPostSitemapXml: "",
   });
+
+  if (config.isManualMode) {
+    return {
+      inventory,
+      sitemapXml: config.manualSitemapXml || "",
+      indexXml: config.manualSitemapIndexXml || "",
+      pageXml: config.manualPageSitemapXml || "",
+      postXml: config.manualPostSitemapXml || "",
+      totalUrls: (config.manualSitemapXml || "").match(/<url>/g)?.length || 0,
+      lastGenerated: config.lastGenerated || now,
+    };
+  }
 
   const pageXmlEntries: string[] = [];
   const postXmlEntries: string[] = [];
@@ -346,19 +578,13 @@ ${allXmlEntries.join("\n")}
   </sitemap>
 </sitemapindex>`;
 
-  // Write to both /server_storage/seo/ and /public/
+  // Write only to /server_storage/seo/ (Express routes serve them dynamically and rewrite domains)
   try {
     if (!fs.existsSync(SEO_DIR)) fs.mkdirSync(SEO_DIR, { recursive: true });
     fs.writeFileSync(path.join(SEO_DIR, "page-sitemap.xml"), pageSitemapXml, "utf-8");
     fs.writeFileSync(path.join(SEO_DIR, "post-sitemap.xml"), postSitemapXml, "utf-8");
     fs.writeFileSync(path.join(SEO_DIR, "sitemap.xml"), unifiedSitemapXml, "utf-8");
     fs.writeFileSync(path.join(SEO_DIR, "sitemap_index.xml"), indexSitemapXml, "utf-8");
-
-    if (!fs.existsSync(PUBLIC_DIR)) fs.mkdirSync(PUBLIC_DIR, { recursive: true });
-    fs.writeFileSync(path.join(PUBLIC_DIR, "page-sitemap.xml"), pageSitemapXml, "utf-8");
-    fs.writeFileSync(path.join(PUBLIC_DIR, "post-sitemap.xml"), postSitemapXml, "utf-8");
-    fs.writeFileSync(path.join(PUBLIC_DIR, "sitemap.xml"), unifiedSitemapXml, "utf-8");
-    fs.writeFileSync(path.join(PUBLIC_DIR, "sitemap_index.xml"), indexSitemapXml, "utf-8");
   } catch (err: any) {
     if (err?.code === "EROFS" || err?.message?.includes("read-only")) {
       try {

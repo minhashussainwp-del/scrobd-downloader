@@ -1,8 +1,12 @@
 {
   "en": {
     "heroTitle": "Download Scribd Documents, Presentations & PDFs Fast",
+    "guideTitle": "How to Download Scribd Documents & Presentations as PDF",
+    "htmlContent": "<h2>Ultimate Scribd PDF Downloader Guide</h2><p>This is a live test article published from Admin CMS. It preserves all formatting, paragraphs, and headings!</p><h3>Why Choose High-Resolution Vector Export?</h3><p>Vector exports ensure 300 DPI clarity across all devices.</p>",
     "language": "en",
-    "lastUpdated": "2026-09-26T08:34:52.563Z"
+    "lastUpdated": "2026-09-26T19:39:21.016Z",
+    "guideContent": "",
+    "guideBadge": "OFFICIAL GUIDE"
   },
   "hi": {
     "language": "hi",
@@ -65,8 +69,8 @@
       }
     ],
     "guideBadge": "ज्ञान केंद्र एवं गाइड",
-    "guideTitle": "स्क्रिब्ड दस्तावेज़ डाउनलोड करने की पूरी विधि",
-    "guideContent": "### सिस्टम कैसे कार्य करता है\n\nजब आप हमारे डाउनलोडर में कोई लिंक पेस्ट करते हैं, तो सिस्टम स्क्रिब्ड दस्तावेज़ के सभी सार्वजनिक पेजों को प्रोसेस करता है और उन्हें एक उच्च गुणवत्ता वाली पीडीएफ फ़ाइल में बदल देता है।\n\n### मुख्य विशेषताएं\n\n* **स्पष्ट टेक्स्ट एवं चित्र:** ज़ूम करने पर भी टेक्स्ट और चित्र बिल्कुल स्पष्ट रहते हैं।\n* **मूल लेआउट सुरक्षित:** पेज नंबर, मार्जिन और टेबल अपने मूल स्वरूप में सुरक्षित रहते हैं।\n* **किसी ऐप की ज़रूरत नहीं:** जोखिम भरे थर्ड-पार्टी ऐप या एपीके डाउनलोड करने की ज़रूरत नहीं, यह सीधे ब्राउज़र में चलता है।",
+    "guideTitle": "",
+    "guideContent": "",
     "faqTitle": "अक्सर पूछे जाने वाले प्रश्न (FAQ)",
     "faqSubtitle": "क्या आपके मन में कोई सवाल है? यहाँ पाएं आसान और सीधे जवाब।",
     "faqs": [
@@ -86,7 +90,8 @@
         "question": "डाउनलोड की गई फ़ाइलें किस फॉर्मेट में मिलती हैं?",
         "answer": "सभी फ़ाइलें स्टैंडर्ड पीडीएफ (PDF) फॉर्मेट में तैयार होती हैं जिन्हें किसी भी डिवाइस पर खोला जा सकता है।"
       }
-    ]
+    ],
+    "htmlContent": ""
   },
   "id": {
     "language": "id",
@@ -149,8 +154,8 @@
       }
     ],
     "guideBadge": "Panduan Pengguna",
-    "guideTitle": "Panduan Lengkap Mengunduh Dokumen Scribd ke PDF",
-    "guideContent": "### Cara Kerja Sistem\n\nKetika Anda memasukkan tautan dokumen Scribd publik ke dalam alat ini, sistem memproses seluruh halaman dokumen dan mengompilasinya menjadi satu file PDF yang siap dibaca secara offline.",
+    "guideTitle": "",
+    "guideContent": "",
     "faqTitle": "Pertanyaan yang Sering Diajukan (FAQ)",
     "faqSubtitle": "Jawaban langsung untuk pertanyaan umum Anda.",
     "faqs": [
@@ -166,7 +171,8 @@
         "question": "Apakah bisa digunakan di HP?",
         "answer": "Ya, berfungsi sempurna di browser HP Android dan iPhone."
       }
-    ]
+    ],
+    "htmlContent": ""
   },
   "es": {
     "language": "es",
@@ -229,8 +235,8 @@
       }
     ],
     "guideBadge": "Base de Conocimiento",
-    "guideTitle": "Guía Completa para Descargar Documentos de Scribd",
-    "guideContent": "### Cómo Funciona\n\nEl sistema lee las páginas públicas del documento y genera un archivo PDF limpio y ordenado sin necesidad de programas externos.",
+    "guideTitle": "",
+    "guideContent": "",
     "faqTitle": "Preguntas Frecuentes (FAQ)",
     "faqSubtitle": "Respuestas claras a las dudas más comunes.",
     "faqs": [
@@ -246,7 +252,8 @@
         "question": "¿Funciona en móviles?",
         "answer": "Sí, funciona en cualquier navegador de Android e iOS."
       }
-    ]
+    ],
+    "htmlContent": ""
   },
   "br": {
     "language": "br",
@@ -309,8 +316,8 @@
       }
     ],
     "guideBadge": "Guia e Dicas",
-    "guideTitle": "Guia Completo para Baixar Documentos do Scribd",
-    "guideContent": "### Como Funciona\n\nNosso conversor processa as páginas visíveis do documento Scribd e gera um arquivo PDF completo para leitura offline.",
+    "guideTitle": "",
+    "guideContent": "",
     "faqTitle": "Perguntas Frequentes (FAQ)",
     "faqSubtitle": "Tire suas dúvidas sobre o baixador.",
     "faqs": [
@@ -326,7 +333,8 @@
         "question": "Funciona no celular?",
         "answer": "Sim, diretamente no Chrome ou Safari."
       }
-    ]
+    ],
+    "htmlContent": ""
   },
   "fr": {
     "language": "fr",
@@ -389,8 +397,8 @@
       }
     ],
     "guideBadge": "Guide & Conseils",
-    "guideTitle": "Guide Complet pour Télécharger des Documents Scribd",
-    "guideContent": "### Fonctionnement\n\nLe convertisseur traite les pages du document Scribd public pour créer un fichier PDF clair prêt à être consulté hors ligne.",
+    "guideTitle": "",
+    "guideContent": "",
     "faqTitle": "Foire Aux Questions (FAQ)",
     "faqSubtitle": "Toutes les réponses à vos questions.",
     "faqs": [
@@ -406,7 +414,8 @@
         "question": "Est-ce compatible sur mobile ?",
         "answer": "Oui, sur Android et iOS directement dans votre navigateur."
       }
-    ]
+    ],
+    "htmlContent": ""
   },
   "de": {
     "language": "de",
@@ -469,8 +478,8 @@
       }
     ],
     "guideBadge": "Wissensbasis & Anleitung",
-    "guideTitle": "Vollständige Anleitung zum Herunterladen von Scribd-Dokumenten",
-    "guideContent": "### Funktionsweise\n\nDas System verarbeitet die sichtbaren Seiten des öffentlichen Scribd-Dokuments und wandelt sie in eine saubere, hochauflösende PDF um.",
+    "guideTitle": "",
+    "guideContent": "",
     "faqTitle": "Häufig Gestellte Fragen (FAQ)",
     "faqSubtitle": "Direkte Antworten auf Ihre Fragen.",
     "faqs": [
@@ -486,7 +495,8 @@
         "question": "Funktioniert es auf dem Smartphone?",
         "answer": "Ja, in allen mobilen Webbrowsern."
       }
-    ]
+    ],
+    "htmlContent": ""
   },
   "nl": {
     "language": "nl",
@@ -549,8 +559,8 @@
       }
     ],
     "guideBadge": "Kennisbank",
-    "guideTitle": "De Complete Handleiding voor Scribd Downloads",
-    "guideContent": "### Hoe het Systeem Werkt\nHet systeem leest de openbare pagina's van het Scribd-document en compileert deze tot een hoogwaardig PDF-bestand dat je overal offline kunt lezen.",
+    "guideTitle": "",
+    "guideContent": "",
     "faqTitle": "Veelgestelde Vragen (FAQ)",
     "faqSubtitle": "Duidelijke antwoorden op veelvoorkomende vragen.",
     "faqs": [
@@ -566,7 +576,8 @@
         "question": "Werkt dit op mobiel?",
         "answer": "Ja, direct in Chrome, Safari of Firefox op je smartphone."
       }
-    ]
+    ],
+    "htmlContent": ""
   },
   "ur": {
     "language": "ur",
@@ -629,8 +640,8 @@
       }
     ],
     "guideBadge": "معلوماتی گائیڈ",
-    "guideTitle": "اسکرائبڈ دستاویزات ڈاؤن لوڈ کرنے کا طریقہ کار",
-    "guideContent": "### یہ نظام کیسے کام کرتا ہے\nجب آپ اسکرائبڈ دستاویز کا لنک درج کرتے ہیں تو ہمارا ٹول اس کے عوامی صفحات کو یکجا کرکے ایک صاف اور پرنٹ کے لیے تیار پی ڈی ایف بناتا ہے۔",
+    "guideTitle": "",
+    "guideContent": "",
     "faqTitle": "عام سوالات (FAQ)",
     "faqSubtitle": "آپ کے سوالات کے آسان اور واضح جوابات۔",
     "faqs": [
@@ -646,6 +657,7 @@
         "question": "کیا یہ موبائل پر کام کرتا ہے؟",
         "answer": "جی ہاں، تمام موبائل براؤزرز پر باآسانی چلتا ہے۔"
       }
-    ]
+    ],
+    "htmlContent": ""
   }
 }

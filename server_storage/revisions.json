@@ -1,5 +1,69 @@
 [
   {
+    "id": "rev-1790451561017-cahy",
+    "entityId": "homepage-en",
+    "entityType": "homepage",
+    "date": "2026-09-26T19:39:21.017Z",
+    "user": "admin",
+    "title": "Homepage [en]",
+    "summary": "Updated homepage content for en",
+    "snapshot": {
+      "heroTitle": "Download Scribd Documents, Presentations & PDFs Fast",
+      "guideTitle": "",
+      "htmlContent": "",
+      "language": "en",
+      "lastUpdated": "2026-09-26T19:24:07.065Z",
+      "guideContent": ""
+    }
+  },
+  {
+    "id": "rev-1790450647066-ueg3",
+    "entityId": "homepage-en",
+    "entityType": "homepage",
+    "date": "2026-09-26T19:24:07.066Z",
+    "user": "admin",
+    "title": "Homepage [en]",
+    "summary": "Updated homepage content for en",
+    "snapshot": {
+      "heroTitle": "Download Scribd Documents, Presentations & PDFs Fast",
+      "language": "en",
+      "lastUpdated": "2026-09-26T19:15:26.835Z",
+      "h1Title": "Download Scribd Documents, Presentations & PDFs Fast",
+      "htmlContent": "",
+      "guideContent": "",
+      "metaTitle": "Download Scribd Documents, Presentations & PDFs Fast",
+      "guideTitle": ""
+    }
+  },
+  {
+    "id": "rev-1790450126837-ilbp",
+    "entityId": "homepage-en",
+    "entityType": "homepage",
+    "date": "2026-09-26T19:15:26.837Z",
+    "user": "admin",
+    "title": "Homepage [en]",
+    "summary": "Updated homepage content for en",
+    "snapshot": {
+      "heroTitle": "Download Scribd Documents, Presentations & PDFs Fast",
+      "language": "en",
+      "lastUpdated": "2026-09-26T19:11:20.026Z"
+    }
+  },
+  {
+    "id": "rev-1790449880027-f07c",
+    "entityId": "homepage-en",
+    "entityType": "homepage",
+    "date": "2026-09-26T19:11:20.027Z",
+    "user": "admin",
+    "title": "Homepage [en]",
+    "summary": "Updated homepage content for en",
+    "snapshot": {
+      "heroTitle": "Download Scribd Documents, Presentations & PDFs Fast",
+      "language": "en",
+      "lastUpdated": "2026-09-26T08:34:52.563Z"
+    }
+  },
+  {
     "id": "rev-1790411692564-vo50",
     "entityId": "homepage-en",
     "entityType": "homepage",

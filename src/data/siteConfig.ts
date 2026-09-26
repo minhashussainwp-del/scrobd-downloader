@@ -114,47 +114,7 @@ export const INITIAL_PAGE_CONTENT: PageContent[] = [
     language: "en",
     title: "Scribd Downloader – Free PDF Downloads, No Login Needed",
     subtitle: "Save Scribd documents, presentations, and research papers as clean, readable PDFs. Paste a link, hit download, done.",
-    content: `A Scribd downloader is a free online tool that saves public Scribd documents to your device as PDF files. No account, no app install, no subscription. You paste the link to a document, and you get a clean PDF you can read offline, print, or keep in your study folder.
-
-Scribd hosts millions of documents — lecture notes, research papers, slide presentations, manuals, and ebooks. Reading them online is fine, but an offline copy is easier to highlight, annotate, and carry around. That's what this tool is for: turning a Scribd page you can view into a PDF you can keep.
-
-![Illustration of downloading a Scribd document as a PDF on a laptop](/images/home-download-guide.jpg)
-
-## How to download a Scribd document
-
-It takes three steps, and you don't need to create an account at any point.
-
-**1. Copy the document link.** Open the Scribd document in your browser and copy the URL from the address bar.
-
-**2. Paste it above.** Put the link in the download box at the top of this page.
-
-**3. Download the PDF.** The tool reads the document's pages and builds a PDF for you. Save it to your phone, tablet, or computer.
-
-![Step-by-step workflow of converting and downloading documents to PDF](/images/scribd-downloader-3-steps.jpg)
-
-## What you can download
-
-- **Documents and ebooks** — notes, guides, manuals, and books shared publicly on Scribd.
-- **Research papers** — academic papers and reports, handy for citations and offline reading.
-- **Presentations** — slide decks saved page by page, so nothing gets cut off.
-- **Study materials** — past papers, summaries, and class notes.
-
-The output is always a standard PDF, so it opens in any reader — your browser, Adobe Reader, Preview, or your phone's built-in viewer.
-
-![Downloading and viewing high-resolution PDF documents on any device](/images/scribd-downloader-save-pdf-laptop.jpg)
-
-## Why people use a Scribd downloader
-
-- **No login.** There's no account system, so there's nothing to sign up for.
-- **Free.** Downloading public documents costs nothing.
-- **Clean PDFs.** Pages come out readable and print-friendly.
-- **Works everywhere.** It's a website, so it runs on phones, tablets, laptops, and desktops.
-
-## A quick note on copyright
-
-Only download documents you have the right to keep — your own uploads, public-domain works, or materials shared with permission. Creators put real work into their documents. If something helped you, consider supporting the author or getting it through official channels too.
-
-Files you generate here are processed on our server, and temporary working files are cleaned up automatically afterward. We may keep a short-term cached copy to serve repeat requests faster, but we never publish or share your downloads.`
+    content: ""
   },
   {
     id: "home-br",
@@ -162,45 +122,7 @@ Files you generate here are processed on our server, and temporary working files
     language: "br",
     title: "Scribd Downloader – Baixar PDFs Grátis, Sem Login",
     subtitle: "Salve documentos, apresentações e artigos do Scribd em PDF. Cole o link, baixe, pronto.",
-    content: `Um baixador de Scribd é uma ferramenta online gratuita que salva documentos públicos do Scribd no seu dispositivo em formato PDF. Sem conta, sem instalar aplicativo, sem assinatura. Você cola o link do documento e recebe um PDF limpo para ler offline, imprimir ou guardar na sua pasta de estudos.
-
-O Scribd reúne milhões de documentos — apostilas, artigos acadêmicos, apresentações de slides, manuais e livros. Ler online funciona, mas ter uma cópia offline facilita grifar, anotar e levar com você. É para isso que esta ferramenta serve: transformar uma página do Scribd que você pode ver em um PDF que você pode guardar.
-
-![Ilustração de download de documento do Scribd em PDF no notebook](/images/home-download-guide.jpg)
-
-## Como baixar um documento do Scribd
-
-São três passos, e você não precisa criar conta em nenhum momento.
-
-**1. Copie o link do documento.** Abra o documento no navegador e copie a URL da barra de endereços.
-
-**2. Cole o link acima.** Coloque o endereço na caixa de download no topo desta página.
-
-**3. Baixe o PDF.** A ferramenta lê as páginas do documento e monta um PDF para você. Salve no celular, tablet ou computador.
-
-![Processo passo a passo para baixar documentos do Scribd em PDF](/images/scribd-downloader-3-steps.jpg)
-
-## O que você pode baixar
-
-- **Documentos e livros** — apostilas, guias, manuais e livros compartilhados publicamente no Scribd.
-- **Artigos acadêmicos** — trabalhos e relatórios, úteis para citações e leitura offline.
-- **Apresentações** — slides salvos página por página, sem cortes.
-- **Materiais de estudo** — provas antigas, resumos e anotações de aula.
-
-O resultado é sempre um PDF padrão, que abre em qualquer leitor.
-
-![Documentos do Scribd salvos em alta resolução no computador](/images/scribd-downloader-save-pdf-laptop.jpg)
-
-## Por que usar um baixador de Scribd
-
-- **Sem login.** Não há sistema de contas, então não há cadastro.
-- **Grátis.** Baixar documentos públicos não custa nada.
-- **PDFs limpos.** Páginas legíveis e prontas para impressão.
-- **Funciona em tudo.** É um site, então roda no celular, tablet e computador.
-
-## Uma nota sobre direitos autorais
-
-Baixe apenas documentos que você tem direito de guardar — seus próprios uploads, obras em domínio público ou materiais compartilhados com permissão. Os arquivos gerados são processados temporariamente e excluídos automaticamente depois. Não guardamos cópias dos seus downloads.`
+    content: ""
   },
   {
     id: "home-es",
@@ -208,45 +130,7 @@ Baixe apenas documentos que você tem direito de guardar — seus próprios uplo
     language: "es",
     title: "Scribd Downloader – Descargar PDF Gratis, Sin Registro",
     subtitle: "Guarda documentos, presentaciones y artículos de Scribd en PDF. Pega el enlace, descarga, listo.",
-    content: `Un descargador de Scribd es una herramienta online gratuita que guarda documentos públicos de Scribd en tu dispositivo como archivos PDF. Sin cuenta, sin instalar nada, sin suscripción. Pegas el enlace del documento y recibes un PDF limpio para leer sin conexión, imprimir o guardar en tu carpeta de estudio.
-
-Scribd reúne millones de documentos: apuntes, artículos académicos, presentaciones, manuales y libros. Leerlos online está bien, pero una copia sin conexión es más fácil de subrayar, anotar y llevar contigo. Para eso sirve esta herramienta: convertir una página de Scribd que puedes ver en un PDF que puedes guardar.
-
-![Ilustración de descarga de un documento de Scribd en PDF en un portátil](/images/home-download-guide.jpg)
-
-## Cómo descargar un documento de Scribd
-
-Son tres pasos, y no necesitas crear una cuenta en ningún momento.
-
-**1. Copia el enlace del documento.** Abre el documento en tu navegador y copia la URL de la barra de direcciones.
-
-**2. Pégalo arriba.** Coloca el enlace en la casilla de descarga en la parte superior de esta página.
-
-**3. Descarga el PDF.** La herramienta lee las páginas del documento y genera un PDF. Guárdalo en tu móvil, tableta u ordenador.
-
-![Proceso paso a paso para descargar documentos de Scribd en PDF](/images/scribd-downloader-3-steps.jpg)
-
-## Qué puedes descargar
-
-- **Documentos y libros** — apuntes, guías, manuales y libros compartidos públicamente en Scribd.
-- **Artículos académicos** — trabajos e informes, útiles para citas y lectura sin conexión.
-- **Presentaciones** — diapositivas guardadas página por página, sin recortes.
-- **Material de estudio** — exámenes anteriores, resúmenes y apuntes de clase.
-
-El resultado es siempre un PDF estándar, que se abre en cualquier lector.
-
-![Documentos de Scribd guardados en alta resolución en ordenador](/images/scribd-downloader-save-pdf-laptop.jpg)
-
-## Por qué usar un descargador de Scribd
-
-- **Sin registro.** No hay sistema de cuentas, así que no hay nada que crear.
-- **Gratis.** Descargar documentos públicos no cuesta nada.
-- **PDF limpios.** Páginas legibles y listas para imprimir.
-- **Funciona en todo.** Es una web, así que funciona en móvil, tableta y ordenador.
-
-## Una nota sobre derechos de autor
-
-Descarga solo documentos que tengas derecho a guardar: tus propias subidas, obras de dominio público o materiales compartidos con permiso. Los archivos generados se procesan de forma temporal y se eliminan automáticamente después. No conservamos copias de tus descargas.`
+    content: ""
   },
   {
     id: "home-fr",
@@ -254,45 +138,7 @@ Descarga solo documentos que tengas derecho a guardar: tus propias subidas, obra
     language: "fr",
     title: "Scribd Downloader – Télécharger des PDF Gratuitement, Sans Compte",
     subtitle: "Enregistrez documents, présentations et articles Scribd en PDF. Collez le lien, téléchargez, c'est tout.",
-    content: `Un téléchargeur Scribd est un outil en ligne gratuit qui enregistre les documents publics de Scribd sur votre appareil au format PDF. Sans compte, sans installation, sans abonnement. Vous collez le lien du document et vous recevez un PDF propre à lire hors ligne, à imprimer ou à garder dans votre dossier d'étude.
-
-Scribd regroupe des millions de documents : notes de cours, articles de recherche, présentations, manuels et livres. Les lire en ligne, c'est bien, mais une copie hors ligne est plus simple à surligner, à annoter et à emporter. C'est à cela que sert cet outil : transformer une page Scribd que vous pouvez voir en un PDF que vous pouvez garder.
-
-![Illustration du téléchargement d'un document Scribd en PDF sur un ordinateur portable](/images/home-download-guide.jpg)
-
-## Comment télécharger un document Scribd
-
-Trois étapes suffisent, et vous n'avez besoin d'aucun compte.
-
-**1. Copiez le lien du document.** Ouvrez le document dans votre navigateur et copiez l'URL depuis la barre d'adresse.
-
-**2. Collez-le ci-dessus.** Mettez le lien dans la zone de téléchargement en haut de cette page.
-
-**3. Téléchargez le PDF.** L'outil lit les pages du document et génère un PDF. Enregistrez-le sur votre téléphone, tablette ou ordinateur.
-
-![Guide étape par étape pour télécharger des documents Scribd en PDF](/images/scribd-downloader-3-steps.jpg)
-
-## Ce que vous pouvez télécharger
-
-- **Documents et livres** — notes, guides, manuels et livres partagés publiquement sur Scribd.
-- **Articles de recherche** — travaux et rapports, pratiques pour les citations et la lecture hors ligne.
-- **Présentations** — diapositives enregistrées page par page, sans coupure.
-- **Supports d'étude** — anciens examens, résumés et notes de cours.
-
-Le résultat est toujours un PDF standard, lisible dans n'importe quel lecteur.
-
-![Documents Scribd enregistrés en haute résolution sur ordinateur](/images/scribd-downloader-save-pdf-laptop.jpg)
-
-## Pourquoi utiliser un téléchargeur Scribd
-
-- **Sans compte.** Il n'y a pas de système de comptes, donc rien à créer.
-- **Gratuit.** Télécharger des documents publics ne coûte rien.
-- **Des PDF propres.** Des pages lisibles, prêtes à imprimer.
-- **Partout.** C'est un site web : il fonctionne sur téléphone, tablette et ordinateur.
-
-## Un mot sur le droit d'auteur
-
-Téléchargez uniquement les documents que vous avez le droit de conserver : vos propres fichiers, des œuvres du domaine public ou des contenus partagés avec autorisation. Les fichiers générés sont traités temporairement puis supprimés automatiquement. Nous ne conservons aucune copie de vos téléchargements.`
+    content: ""
   },
   {
     id: "home-de",
@@ -300,45 +146,7 @@ Téléchargez uniquement les documents que vous avez le droit de conserver : vos
     language: "de",
     title: "Scribd Downloader – Kostenlos PDFs laden, ohne Anmeldung",
     subtitle: "Scribd-Dokumente, Präsentationen und Studienarbeiten als saubere PDFs speichern. Link einfügen, laden, fertig.",
-    content: `Ein Scribd-Downloader ist ein kostenloses Online-Tool, das öffentliche Scribd-Dokumente als PDF auf dein Gerät speichert. Kein Konto, keine App-Installation, kein Abo. Du fügst den Link zum Dokument ein und erhältst ein sauberes PDF zum Offline-Lesen, Drucken oder Ablegen in deinem Studienordner.
-
-Scribd versammelt Millionen von Dokumenten: Skripte, wissenschaftliche Arbeiten, Präsentationen, Handbücher und Bücher. Online lesen geht, aber eine Offline-Kopie lässt sich leichter markieren, kommentieren und mitnehmen. Genau dafür ist dieses Tool da: Es macht aus einer Scribd-Seite, die du sehen kannst, ein PDF, das du behalten kannst.
-
-![Illustration: Scribd-Dokument als PDF auf einen Laptop herunterladen](/images/home-download-guide.jpg)
-
-## So lädst du ein Scribd-Dokument herunter
-
-Drei Schritte genügen, ganz ohne Konto.
-
-**1. Link kopieren.** Öffne das Dokument im Browser und kopiere die URL aus der Adresszeile.
-
-**2. Oben einfügen.** Füge den Link in das Download-Feld oben auf dieser Seite ein.
-
-**3. PDF herunterladen.** Das Tool liest die Seiten des Dokuments und erstellt ein PDF. Speichere es auf Handy, Tablet oder Computer.
-
-![Schritt-für-Schritt-Anleitung zum Herunterladen von Scribd-Dokumenten als PDF](/images/scribd-downloader-3-steps.jpg)
-
-## Was du herunterladen kannst
-
-- **Dokumente und Bücher** — Skripte, Anleitungen, Handbücher und Bücher, die öffentlich auf Scribd geteilt werden.
-- **Wissenschaftliche Arbeiten** — Aufsätze und Berichte, praktisch für Zitate und zum Offline-Lesen.
-- **Präsentationen** — Folien, Seite für Seite gespeichert, nichts wird abgeschnitten.
-- **Lernmaterial** — alte Klausuren, Zusammenfassungen und Vorlesungsnotizen.
-
-Das Ergebnis ist immer ein Standard-PDF, das sich in jedem Reader öffnen lässt.
-
-![Heruntergeladene Scribd-PDF-Dateien in hoher Auflösung](/images/scribd-downloader-save-pdf-laptop.jpg)
-
-## Warum ein Scribd-Downloader nützlich ist
-
-- **Ohne Anmeldung.** Es gibt kein Kontosystem, also nichts einzurichten.
-- **Kostenlos.** Öffentliche Dokumente zu laden kostet nichts.
-- **Saubere PDFs.** Lesbare Seiten, druckfertig aufbereitet.
-- **Überall nutzbar.** Es ist eine Website und läuft auf Handy, Tablet und Rechner.
-
-## Ein Hinweis zum Urheberrecht
-
-Lade nur Dokumente herunter, die du behalten darfst: eigene Uploads, gemeinfreie Werke oder Inhalte, die mit Erlaubnis geteilt wurden. Erzeugte Dateien werden nur vorübergehend verarbeitet und danach automatisch gelöscht. Wir speichern keine Kopien deiner Downloads.`
+    content: ""
   },
   {
     id: "home-id",
@@ -346,45 +154,7 @@ Lade nur Dokumente herunter, die du behalten darfst: eigene Uploads, gemeinfreie
     language: "id",
     title: "Scribd Downloader – Unduh PDF Gratis, Tanpa Login",
     subtitle: "Simpan dokumen, presentasi, dan makalah Scribd sebagai PDF yang rapi. Tempel tautan, unduh, selesai.",
-    content: `Pengunduh Scribd adalah alat online gratis yang menyimpan dokumen publik Scribd ke perangkatmu sebagai berkas PDF. Tanpa akun, tanpa instal aplikasi, tanpa langganan. Kamu tempel tautan dokumen, lalu dapat PDF yang rapi untuk dibaca luring, dicetak, atau disimpan di folder belajarmu.
-
-Scribd menghimpun jutaan dokumen: catatan kuliah, makalah penelitian, presentasi slide, panduan, dan buku. Membacanya online boleh saja, tapi salinan luring lebih mudah ditandai, dianotasi, dan dibawa ke mana-mana. Di situlah gunanya alat ini: mengubah halaman Scribd yang bisa kamu lihat menjadi PDF yang bisa kamu simpan.
-
-![Ilustrasi mengunduh dokumen Scribd sebagai PDF di laptop](/images/home-download-guide.jpg)
-
-## Cara mengunduh dokumen Scribd
-
-Cukup tiga langkah, tanpa perlu membuat akun sama sekali.
-
-**1. Salin tautan dokumen.** Buka dokumen di peramban, lalu salin URL dari bilah alamat.
-
-**2. Tempel di atas.** Masukkan tautan ke kolom unduhan di bagian atas halaman ini.
-
-**3. Unduh PDF-nya.** Alat akan membaca halaman dokumen dan membuatkan PDF untukmu. Simpan ke ponsel, tablet, atau komputermu.
-
-![Panduan langkah demi langkah mengunduh dokumen Scribd menjadi PDF](/images/scribd-downloader-3-steps.jpg)
-
-## Yang bisa kamu unduh
-
-- **Dokumen dan buku** — catatan, panduan, manual, dan buku yang dibagikan secara publik di Scribd.
-- **Makalah penelitian** — artikel dan laporan, berguna untuk sitasi dan bacaan luring.
-- **Presentasi** — slide tersimpan halaman demi halaman, tidak ada yang terpotong.
-- **Materi belajar** — soal ujian lama, rangkuman, dan catatan kuliah.
-
-Hasilnya selalu PDF standar yang bisa dibuka di pembaca mana pun.
-
-![Dokumen Scribd tersimpan dalam resolusi tinggi di komputer](/images/scribd-downloader-save-pdf-laptop.jpg)
-
-## Kenapa memakai pengunduh Scribd
-
-- **Tanpa login.** Tidak ada sistem akun, jadi tidak ada yang perlu didaftarkan.
-- **Gratis.** Mengunduh dokumen publik tidak dipungut biaya.
-- **PDF yang rapi.** Halaman mudah dibaca dan siap cetak.
-- **Bisa di mana saja.** Ini situs web, jadi berjalan di ponsel, tablet, maupun komputer.
-
-## Catatan soal hak cipta
-
-Unduh hanya dokumen yang memang boleh kamu simpan: unggahanmu sendiri, karya domain publik, atau materi yang dibagikan dengan izin. Berkas yang dihasilkan hanya diproses sementara lalu dihapus otomatis. Kami tidak menyimpan salinan unduhanmu.`
+    content: ""
   },
 
   // 2. ABOUT PAGE - 6 Variations
@@ -808,45 +578,7 @@ Pesan akan ditinjau oleh tim kami. Agar kami bisa merespons lebih cepat, sertaka
     language: "hi",
     title: "Scribd Downloader – फ्री में Scribd PDF डाउनलोड करें, बिना लॉगिन",
     subtitle: "Scribd के दस्तावेज़, प्रस्तुतियाँ और शोध पत्र साफ़ PDF में सहेजें। लिंक पेस्ट करें, डाउनलोड करें।",
-    content: `Scribd Downloader एक मुफ्त ऑनलाइन टूल है जो सार्वजनिक Scribd दस्तावेज़ों को आपके डिवाइस पर PDF फ़ाइल के रूप में सहेजता है। कोई खाता नहीं, कोई ऐप इंस्टॉल नहीं, कोई सदस्यता नहीं। आप दस्तावेज़ का लिंक पेस्ट करते हैं, और आपको एक साफ़ PDF मिलता है जिसे आप ऑफ़लाइन पढ़ सकते हैं, प्रिंट कर सकते हैं या अपने अध्ययन फ़ोल्डर में रख सकते हैं।
-
-Scribd पर लाखों दस्तावेज़ उपलब्ध हैं — व्याख्यान नोट्स, शोध पत्र, स्लाइड प्रस्तुतियाँ, मैनुअल और ई-पुस्तकें। उन्हें ऑनलाइन पढ़ना ठीक है, लेकिन एक ऑफ़लाइन प्रति को हाइलाइट करना, एनोटेट करना और साथ ले जाना आसान होता है। यह टूल इसी काम के लिए बनाया गया है: Scribd पृष्ठ को एक ऐसी PDF में बदलना जिसे आप सहेज सकें।
-
-![Illustration of downloading a Scribd document as a PDF on a laptop](/images/home-download-guide.jpg)
-
-## Scribd दस्तावेज़ कैसे डाउनलोड करें
-
-इसमें केवल तीन आसान चरण हैं, और आपको किसी भी समय खाता बनाने की आवश्यकता नहीं है।
-
-**1. दस्तावेज़ का लिंक कॉपी करें।** अपने ब्राउज़र में Scribd दस्तावेज़ खोलें और एड्रेस बार से URL कॉपी करें।
-
-**2. ऊपर पेस्ट करें।** इस पृष्ठ के शीर्ष पर स्थित डाउनलोड बॉक्स में लिंक डालें।
-
-**3. PDF डाउनलोड करें।** टूल दस्तावेज़ के पृष्ठों को पढ़कर आपके लिए PDF तैयार करता है। इसे अपने फोन, टैबलेट या कंप्यूटर पर सहेजें।
-
-![Step-by-step workflow of converting and downloading documents to PDF](/images/scribd-downloader-3-steps.jpg)
-
-## आप क्या डाउनलोड कर सकते हैं
-
-- **दस्तावेज़ और पुस्तकें** — Scribd पर सार्वजनिक रूप से साझा किए गए नोट्स, गाइड, मैनुअल और पुस्तकें।
-- **शोध पत्र** — शैक्षणिक शोध पत्र और रिपोर्ट, संदर्भ और ऑफ़लाइन पढ़ने के लिए उपयोगी।
-- **प्रस्तुतियाँ** — स्लाइड डेक पृष्ठ-दर-पृष्ठ सहेजे जाते हैं, ताकि कुछ भी कटे नहीं।
-- **अध्ययन सामग्री** — पुराने प्रश्न पत्र, सारांश और कक्षा नोट्स।
-
-परिणाम हमेशा एक मानक PDF होता है, जो किसी भी PDF रीडर में आसानी से खुलता है।
-
-![Downloading and viewing high-resolution PDF documents on any device](/images/scribd-downloader-save-pdf-laptop.jpg)
-
-## लोग Scribd Downloader का उपयोग क्यों करते हैं
-
-- **बिना लॉगिन।** कोई खाता प्रणाली नहीं है, इसलिए साइन अप करने की कोई आवश्यकता नहीं है।
-- **मुफ़्त।** सार्वजनिक दस्तावेज़ डाउनलोड करने का कोई शुल्क नहीं है।
-- **साफ़ PDF।** पृष्ठ पढ़ने योग्य और प्रिंट करने में आसान होते हैं।
-- **हर जगह काम करता है।** यह एक वेबसाइट है, इसलिए यह फोन, टैबलेट और कंप्यूटर पर काम करती है।
-
-## कॉपीराइट पर एक संक्षिप्त टिप्पणी
-
-केवल वे दस्तावेज़ डाउनलोड करें जिन्हें रखने का आपके पास अधिकार है — आपके अपने अपलोड, सार्वजनिक डोमेन कार्य, या अनुमति के साथ साझा की गई सामग्री। यहां उत्पन्न फ़ाइलें हमारे सर्वर पर संसाधित होती हैं और अस्थायी फ़ाइलें बाद में स्वचालित रूप से साफ़ कर दी जाती हैं।`
+    content: ""
   },
   {
     id: "about-hi",
@@ -1051,38 +783,9 @@ export function loadPageContent(): PageContent[] {
     const raw = localStorage.getItem(PAGE_CONTENT_KEY);
     if (raw) {
       const parsed: PageContent[] = JSON.parse(raw);
-      const cleaned = parsed.map((p) => {
-        if (p.pageKey === "home" || p.id?.startsWith("home-")) {
-          const initMatch = INITIAL_PAGE_CONTENT.find(
-            (ip) => ip.id === p.id || (ip.pageKey === p.pageKey && ip.language === p.language)
-          );
-          if (
-            initMatch &&
-            (!p.content?.includes("scribd-downloader-3-steps.jpg") ||
-              !p.content?.includes("scribd-downloader-save-pdf-laptop.jpg"))
-          ) {
-            return { ...p, content: initMatch.content, title: initMatch.title };
-          }
-          const cleanContent = p.content
-            ? p.content
-                .replace(/^## The Ultimate Free Scribd Downloader\s*\n?/m, "")
-                .replace(/^## Download Seguro e Sem Assinatura\s*\n?/m, "")
-                .replace(/^## Descargas Rápidas y Sin Registros\s*\n?/m, "")
-                .replace(/^## Accès Hors Ligne Garanti\s*\n?/m, "")
-                .replace(/^## Schnell, Sicher und Ohne Registrierung\s*\n?/m, "")
-                .replace(/^## Akses Luring Tanpa Ribet\s*\n?/m, "")
-            : p.content;
-          return { ...p, content: cleanContent };
-        }
-        return p;
-      });
-      const merged = [...cleaned];
-      for (const init of INITIAL_PAGE_CONTENT) {
-        if (!merged.some((p) => p.id === init.id || (p.pageKey && p.pageKey === init.pageKey && p.language === init.language))) {
-          merged.push(init);
-        }
+      if (Array.isArray(parsed)) {
+        return parsed;
       }
-      return merged;
     }
   } catch (e) {
     console.error(e);
@@ -1251,7 +954,7 @@ export function buildYoastPostSitemap(
 
   const translationGroups = new Map<string, BlogPost[]>();
   for (const post of posts) {
-    if (post.status === "draft") continue;
+    if (post.status === "draft" || (post as any).inTrash) continue;
     const tgId = post.translationGroupId || `tg-${post.id}`;
     if (!translationGroups.has(tgId)) {
       translationGroups.set(tgId, []);
@@ -1296,7 +999,7 @@ export function buildYoastPostSitemap(
   });
 
   for (const post of posts) {
-    if (post.status === "draft") continue;
+    if (post.status === "draft" || (post as any).inTrash) continue;
     const postLang = (post.language as SupportedLanguage) || "en";
     const postSlug = cleanSlugForUrl(post.slug, post.id);
     if (postSlug) {
@@ -1379,7 +1082,7 @@ export function buildYoastPageSitemap(
 
   // 3. Custom Pages - exact URLs for all language variations
   for (const page of customPages) {
-    if (page.status === "draft") continue;
+    if (page.status === "draft" || (page as any).inTrash) continue;
     const cleanSlug = cleanSlugForUrl(page.slug, page.id);
     if (!cleanSlug) continue;
 
@@ -1511,7 +1214,7 @@ export function buildExactUrlsetSitemapXml(
   if (Array.isArray(posts) && posts.length > 0) {
     const translationGroups = new Map<string, BlogPost[]>();
     for (const post of posts) {
-      if (post.status === "draft") continue;
+      if (post.status === "draft" || (post as any).inTrash) continue;
       const tgId = post.translationGroupId || `tg-${post.id}`;
       if (!translationGroups.has(tgId)) translationGroups.set(tgId, []);
       translationGroups.get(tgId)!.push(post);
@@ -1554,7 +1257,7 @@ export function buildExactUrlsetSitemapXml(
     });
 
     for (const post of posts) {
-      if (post.status === "draft") continue;
+      if (post.status === "draft" || (post as any).inTrash) continue;
       const postLang = (post.language as SupportedLanguage) || "en";
       const postSlug = cleanSlugForUrl(post.slug, post.id);
       if (postSlug) {
@@ -1569,7 +1272,7 @@ export function buildExactUrlsetSitemapXml(
   // 6. Custom pages across all languages (priority 0.80)
   if (Array.isArray(customPages) && customPages.length > 0) {
     for (const page of customPages) {
-      if (page.status === "draft") continue;
+      if (page.status === "draft" || (page as any).inTrash) continue;
       const cleanSlug = cleanSlugForUrl(page.slug, page.id);
       if (!cleanSlug) continue;
       const pageLastMod = formatYoastDate((page as any).lastModified || (page as any).createdAt || now);

@@ -55,13 +55,32 @@ export function AdminSitemap() {
   const [selectedFilter, setSelectedFilter] = useState<"all" | "home" | "pages" | "posts" | "hindi">("all");
   const [feedback, setFeedback] = useState<string | null>(null);
 
+  // Manual Sitemap Mode & Content state
+  const [isManualMode, setIsManualMode] = useState(false);
+  const [manualSitemapIndexXml, setManualSitemapIndexXml] = useState("");
+  const [manualSitemapXml, setManualSitemapXml] = useState("");
+  const [manualPageSitemapXml, setManualPageSitemapXml] = useState("");
+  const [manualPostSitemapXml, setManualPostSitemapXml] = useState("");
+  const [activeXmlTab, setActiveXmlTab] = useState<"index" | "all" | "pages" | "posts">("index");
+  const [savingConfig, setSavingConfig] = useState(false);
+
   const loadStats = async () => {
     try {
-      const res = await fetch("/api/admin/sitemap/stats");
-      const json = await res.json();
-      setData(json);
+      const [statsRes, configRes] = await Promise.all([
+        fetch("/api/admin/sitemap/stats"),
+        fetch("/api/admin/sitemap/config"),
+      ]);
+      const statsJson = await statsRes.json();
+      const configJson = await configRes.json();
+
+      setData(statsJson);
+      setIsManualMode(configJson.isManualMode || false);
+      setManualSitemapIndexXml(configJson.manualSitemapIndexXml || "");
+      setManualSitemapXml(configJson.manualSitemapXml || "");
+      setManualPageSitemapXml(configJson.manualPageSitemapXml || "");
+      setManualPostSitemapXml(configJson.manualPostSitemapXml || "");
     } catch (err) {
-      console.error("Failed to load sitemap stats:", err);
+      console.error("Failed to load sitemap stats & configuration:", err);
     } finally {
       setLoading(false);
       setRegenerating(false);
@@ -82,6 +101,76 @@ export function AdminSitemap() {
       await loadStats();
     } catch (err) {
       setFeedback("Failed to regenerate sitemaps.");
+    } finally {
+      setRegenerating(false);
+      setTimeout(() => setFeedback(null), 4000);
+    }
+  };
+
+  const handleSaveConfig = async (updatedMode?: boolean) => {
+    setSavingConfig(true);
+    setFeedback(null);
+    try {
+      const modeToSave = typeof updatedMode === "boolean" ? updatedMode : isManualMode;
+      const res = await fetch("/api/admin/sitemap/config", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          isManualMode: modeToSave,
+          manualSitemapIndexXml,
+          manualSitemapXml,
+          manualPageSitemapXml,
+          manualPostSitemapXml,
+        }),
+      });
+      const result = await res.json();
+      if (result.success) {
+        setFeedback("Sitemap configuration and manual code successfully saved.");
+        setIsManualMode(result.config.isManualMode);
+        setManualSitemapIndexXml(result.config.manualSitemapIndexXml);
+        setManualSitemapXml(result.config.manualSitemapXml);
+        setManualPageSitemapXml(result.config.manualPageSitemapXml);
+        setManualPostSitemapXml(result.config.manualPostSitemapXml);
+      } else {
+        setFeedback("Failed to save sitemap configuration.");
+      }
+    } catch (err: any) {
+      setFeedback("Failed to save sitemap configuration: " + err.message);
+    } finally {
+      setSavingConfig(false);
+      setTimeout(() => setFeedback(null), 4000);
+    }
+  };
+
+  const handleResetToDynamic = async () => {
+    if (!confirm("Overwrite all manual XML inputs with the currently generated live dynamic XML feeds?")) return;
+    setRegenerating(true);
+    try {
+      // Rebuild on server
+      await fetch("/api/admin/sitemap/regenerate", { method: "POST" });
+
+      // Fetch dynamic content
+      const [indexRes, allRes, pagesRes, postsRes] = await Promise.all([
+        fetch("/api/seo/sitemap?type=index"),
+        fetch("/api/seo/sitemap?type=all"),
+        fetch("/api/seo/sitemap?type=pages"),
+        fetch("/api/seo/sitemap?type=posts"),
+      ]);
+
+      const indexData = await indexRes.json();
+      const allData = await allRes.json();
+      const pagesData = await pagesRes.json();
+      const postsData = await postsRes.json();
+
+      setManualSitemapIndexXml(indexData.content || "");
+      setManualSitemapXml(allData.content || "");
+      setManualPageSitemapXml(pagesData.content || "");
+      setManualPostSitemapXml(postsData.content || "");
+
+      setFeedback("Pre-populated manual code editors with dynamic XML feeds.");
+    } catch (err) {
+      console.error("Error pre-populating sitemaps:", err);
+      setFeedback("Failed to load current dynamic XML feeds.");
     } finally {
       setRegenerating(false);
       setTimeout(() => setFeedback(null), 4000);
@@ -166,7 +255,7 @@ export function AdminSitemap() {
             <h1 className="text-xl font-bold text-slate-900">WordPress XML Sitemap Management</h1>
           </div>
           <p className="text-xs text-slate-500 mt-1">
-            Standard dynamic XML sitemaps automatically updated with every published Page, Blog Post, and multilingual URL.
+            Configure XML sitemaps built automatically or manually written for custom technical index coverage.
           </p>
         </div>
 
@@ -177,16 +266,177 @@ export function AdminSitemap() {
               <span>{feedback}</span>
             </div>
           )}
-          <button
-            type="button"
-            onClick={handleRegenerate}
-            disabled={regenerating}
-            className="flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-semibold shadow-sm transition disabled:opacity-50"
-          >
-            <RefreshCw className={`w-3.5 h-3.5 ${regenerating ? "animate-spin" : ""}`} />
-            <span>Regenerate Dynamic Sitemaps</span>
-          </button>
+          {!isManualMode && (
+            <button
+              type="button"
+              onClick={handleRegenerate}
+              disabled={regenerating}
+              className="flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-semibold shadow-sm transition disabled:opacity-50"
+            >
+              <RefreshCw className={`w-3.5 h-3.5 ${regenerating ? "animate-spin" : ""}`} />
+              <span>Regenerate Dynamic Sitemaps</span>
+            </button>
+          )}
         </div>
+      </div>
+
+      {/* Sitemap operational mode toggle */}
+      <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <h2 className="text-sm font-bold text-slate-900">Sitemap Operational Mode</h2>
+            <p className="text-xs text-slate-500 mt-0.5">
+              Choose whether sitemaps are generated dynamically from database content or written manually as custom static XML code.
+            </p>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className={`text-xs font-semibold ${!isManualMode ? "text-indigo-600" : "text-slate-400"}`}>
+              Dynamic Mode
+            </span>
+            <button
+              type="button"
+              onClick={() => {
+                const nextMode = !isManualMode;
+                setIsManualMode(nextMode);
+                handleSaveConfig(nextMode);
+              }}
+              disabled={savingConfig}
+              className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
+                isManualMode ? "bg-indigo-600" : "bg-slate-200"
+              }`}
+            >
+              <span
+                className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow-sm ring-0 transition duration-200 ease-in-out ${
+                  isManualMode ? "translate-x-5" : "translate-x-0"
+                }`}
+              />
+            </button>
+            <span className={`text-xs font-semibold ${isManualMode ? "text-indigo-600" : "text-slate-400"}`}>
+              Manual Mode
+            </span>
+          </div>
+        </div>
+
+        {isManualMode && (
+          <div className="pt-4 border-t border-slate-100 space-y-4">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 bg-indigo-50/50 p-3 rounded-xl border border-indigo-100">
+              <div className="text-xs text-indigo-800 font-medium">
+                📝 <strong>Manual Mode Active:</strong> Edit the raw XML for each sitemap endpoint below. Click <strong>Save Manual Sitemaps</strong> to publish them.
+              </div>
+              <button
+                type="button"
+                onClick={handleResetToDynamic}
+                className="text-[11px] text-indigo-700 hover:text-indigo-900 font-bold underline shrink-0"
+              >
+                Reset & Pre-populate from Dynamic XML
+              </button>
+            </div>
+
+            {/* XML Editor Tabs */}
+            <div className="flex items-center gap-1.5 border-b border-slate-100 pb-2 text-xs font-semibold">
+              <button
+                type="button"
+                onClick={() => setActiveXmlTab("index")}
+                className={`px-3 py-1.5 rounded-lg border transition ${
+                  activeXmlTab === "index"
+                    ? "bg-indigo-50 text-indigo-700 border-indigo-200 font-bold"
+                    : "border-transparent text-slate-500 hover:text-slate-800"
+                }`}
+              >
+                sitemap_index.xml
+              </button>
+              <button
+                type="button"
+                onClick={() => setActiveXmlTab("all")}
+                className={`px-3 py-1.5 rounded-lg border transition ${
+                  activeXmlTab === "all"
+                    ? "bg-indigo-50 text-indigo-700 border-indigo-200 font-bold"
+                    : "border-transparent text-slate-500 hover:text-slate-800"
+                }`}
+              >
+                sitemap.xml (Unified)
+              </button>
+              <button
+                type="button"
+                onClick={() => setActiveXmlTab("pages")}
+                className={`px-3 py-1.5 rounded-lg border transition ${
+                  activeXmlTab === "pages"
+                    ? "bg-indigo-50 text-indigo-700 border-indigo-200 font-bold"
+                    : "border-transparent text-slate-500 hover:text-slate-800"
+                }`}
+              >
+                page-sitemap.xml
+              </button>
+              <button
+                type="button"
+                onClick={() => setActiveXmlTab("posts")}
+                className={`px-3 py-1.5 rounded-lg border transition ${
+                  activeXmlTab === "posts"
+                    ? "bg-indigo-50 text-indigo-700 border-indigo-200 font-bold"
+                    : "border-transparent text-slate-500 hover:text-slate-800"
+                }`}
+              >
+                post-sitemap.xml
+              </button>
+            </div>
+
+            {/* Textarea Code Editors */}
+            <div>
+              {activeXmlTab === "index" && (
+                <textarea
+                  rows={12}
+                  value={manualSitemapIndexXml}
+                  onChange={(e) => setManualSitemapIndexXml(e.target.value)}
+                  className="w-full p-4 rounded-xl border border-slate-200 font-mono text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 bg-slate-900 text-emerald-400 leading-relaxed"
+                  placeholder="Paste manual sitemap_index.xml code here..."
+                />
+              )}
+              {activeXmlTab === "all" && (
+                <textarea
+                  rows={12}
+                  value={manualSitemapXml}
+                  onChange={(e) => setManualSitemapXml(e.target.value)}
+                  className="w-full p-4 rounded-xl border border-slate-200 font-mono text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 bg-slate-900 text-emerald-400 leading-relaxed"
+                  placeholder="Paste manual sitemap.xml code here..."
+                />
+              )}
+              {activeXmlTab === "pages" && (
+                <textarea
+                  rows={12}
+                  value={manualPageSitemapXml}
+                  onChange={(e) => setManualPageSitemapXml(e.target.value)}
+                  className="w-full p-4 rounded-xl border border-slate-200 font-mono text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 bg-slate-900 text-emerald-400 leading-relaxed"
+                  placeholder="Paste manual page-sitemap.xml code here..."
+                />
+              )}
+              {activeXmlTab === "posts" && (
+                <textarea
+                  rows={12}
+                  value={manualPostSitemapXml}
+                  onChange={(e) => setManualPostSitemapXml(e.target.value)}
+                  className="w-full p-4 rounded-xl border border-slate-200 font-mono text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 bg-slate-900 text-emerald-400 leading-relaxed"
+                  placeholder="Paste manual post-sitemap.xml code here..."
+                />
+              )}
+            </div>
+
+            <div className="flex justify-end pt-1">
+              <button
+                type="button"
+                onClick={() => handleSaveConfig()}
+                disabled={savingConfig}
+                className="flex items-center gap-1.5 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-semibold shadow-sm transition disabled:opacity-50"
+              >
+                {savingConfig ? (
+                  <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                ) : (
+                  <Check className="w-3.5 h-3.5" />
+                )}
+                <span>Save Manual Sitemaps</span>
+              </button>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* KPI Cards Grid */}

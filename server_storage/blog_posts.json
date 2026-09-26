@@ -1,1 +1,56 @@
-[]
+[
+  {
+    "id": "post-1",
+    "title": "How to Download Documents from Scribd (Educational Guide)",
+    "slug": "how-to-download-from-scribd-for-free-guide",
+    "category": "Guides",
+    "readTime": "4 min read",
+    "status": "published",
+    "language": "en",
+    "date": "September 20, 2026",
+    "excerpt": "A complete step-by-step educational guide on downloading public documents and presentations as clean vector PDFs.",
+    "content": "## Complete Step-by-Step Guide\n\nDownloading public research papers and presentations from Scribd is fast and simple. In this guide, we walk through the process of exporting documents into high-resolution vector PDF files.\n\n### Step 1: Locate the Document\nCopy the full URL of the public document from your browser address bar.\n\n### Step 2: Paste and Process\nPaste the link into the downloader input field and select your desired resolution format.\n\n### Step 3: Save to Device\nClick download and save the resulting PDF directly to your device.",
+    "htmlContent": "<h2>Complete Step-by-Step Guide</h2><p>Downloading public research papers and presentations from Scribd is fast and simple. In this guide, we walk through the process of exporting documents into high-resolution vector PDF files.</p><h3>Step 1: Locate the Document</h3><p>Copy the full URL of the public document from your browser address bar.</p><h3>Step 2: Paste and Process</h3><p>Paste the link into the downloader input field and select your desired resolution format.</p><h3>Step 3: Save to Device</h3><p>Click download and save the resulting PDF directly to your device.</p>",
+    "metaTitle": "How to Download Documents from Scribd (Educational Guide)",
+    "metaDescription": "Step-by-step tutorial on downloading public documents and slide decks as clean vector PDFs.",
+    "image": "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=1200&auto=format&fit=crop&q=80",
+    "author": {
+      "name": "Minhas Hussain",
+      "role": "Lead Document Specialist",
+      "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200"
+    },
+    "translationGroupId": "group-post-1",
+    "tags": [
+      "Scribd",
+      "PDF",
+      "Guide"
+    ]
+  },
+  {
+    "id": "post-2",
+    "title": "Converting Scribd Slide Decks into High-Resolution PDFs",
+    "slug": "turn-scribd-slides-into-high-res-pdf-presentations",
+    "category": "Tutorials",
+    "readTime": "5 min read",
+    "status": "published",
+    "language": "en",
+    "date": "September 18, 2026",
+    "excerpt": "Learn how to preserve vector fonts and high-definition diagrams when exporting presentation decks.",
+    "content": "## Preserving Presentation Quality\n\nSlide decks often contain delicate vector shapes, typography, and charts. Using our direct PDF generator preserves pristine 300 DPI vector clarity.\n\n### Why Vector Resolution Matters\nUnlike screenshot-based tools, vector conversion ensures text remains sharp and fully searchable.",
+    "htmlContent": "<h2>Preserving Presentation Quality</h2><p>Slide decks often contain delicate vector shapes, typography, and charts. Using our direct PDF generator preserves pristine 300 DPI vector clarity.</p><h3>Why Vector Resolution Matters</h3><p>Unlike screenshot-based tools, vector conversion ensures text remains sharp and fully searchable.</p>",
+    "metaTitle": "Converting Scribd Slide Decks into High-Resolution PDFs",
+    "metaDescription": "How to save Scribd presentation slides with crisp vector graphics and searchable text.",
+    "image": "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=1200&auto=format&fit=crop&q=80",
+    "author": {
+      "name": "Minhas Hussain",
+      "role": "Lead Document Specialist",
+      "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200"
+    },
+    "translationGroupId": "group-post-2",
+    "tags": [
+      "Presentations",
+      "Slides",
+      "Vector"
+    ]
+  }
+]
