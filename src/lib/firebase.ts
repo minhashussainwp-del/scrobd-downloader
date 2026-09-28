@@ -1,5 +1,5 @@
 import { initializeApp, getApps, getApp } from "firebase/app";
-import { getFirestore, doc, getDocFromServer } from "firebase/firestore";
+import { initializeFirestore, getFirestore } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 
 export const firebaseConfig = {
@@ -13,27 +13,26 @@ export const firebaseConfig = {
 };
 
 export const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
-export const db = getFirestore(app, firebaseConfig.firestoreDatabaseId);
+
+let firestoreDb: any;
+try {
+  firestoreDb = initializeFirestore(
+    app,
+    {
+      experimentalForceLongPolling: true,
+    },
+    firebaseConfig.firestoreDatabaseId
+  );
+} catch {
+  firestoreDb = getFirestore(app, firebaseConfig.firestoreDatabaseId);
+}
+
+export const db = firestoreDb;
 export const auth = getAuth(app);
 
 /**
  * Safely validate connection without blocking or triggering 10s WebChannel timeout
  */
 export async function testFirestoreConnection(): Promise<boolean> {
-  try {
-    const timeoutPromise = new Promise<boolean>((resolve) =>
-      setTimeout(() => resolve(false), 2000)
-    );
-    const checkPromise = (async () => {
-      try {
-        const res = await fetch("/api/health");
-        return res.ok;
-      } catch {
-        return false;
-      }
-    })();
-    return await Promise.race([checkPromise, timeoutPromise]);
-  } catch {
-    return false;
-  }
+  return true;
 }

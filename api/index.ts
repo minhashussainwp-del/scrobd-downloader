@@ -11,13 +11,12 @@ const app = express();
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ limit: "50mb", extended: true }));
 
-// Serverless Firebase Initialization Middleware (non-blocking for fast cold-starts)
-app.use(async (_req, _res, next) => {
-  try {
-    const quickInitTimeout = new Promise<void>((resolve) => setTimeout(resolve, 800));
-    await Promise.race([initializeFirebaseAndAuth(), quickInitTimeout]);
-  } catch (err) {
-    console.warn("[Vercel] Firebase background sync notice:", err);
+// Non-blocking background Firebase sync on cold start
+let initTriggered = false;
+app.use((_req, _res, next) => {
+  if (!initTriggered) {
+    initTriggered = true;
+    initializeFirebaseAndAuth().catch(() => {});
   }
   next();
 });

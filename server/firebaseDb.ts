@@ -1,5 +1,6 @@
 import { initializeApp } from "firebase/app";
 import {
+  initializeFirestore,
   getFirestore,
   doc,
   setDoc,
@@ -41,7 +42,21 @@ if (fs.existsSync(configPath)) {
 }
 
 const app = initializeApp(firebaseConfig);
-export const db = getFirestore(app, firebaseConfig.firestoreDatabaseId);
+
+let firestoreInstance: any;
+try {
+  firestoreInstance = initializeFirestore(
+    app,
+    {
+      experimentalForceLongPolling: true,
+    },
+    firebaseConfig.firestoreDatabaseId
+  );
+} catch {
+  firestoreInstance = getFirestore(app, firebaseConfig.firestoreDatabaseId);
+}
+
+export const db = firestoreInstance;
 export const auth = getAuth(app);
 
 const STORAGE_ROOT = path.join(process.cwd(), "server_storage");
@@ -119,41 +134,12 @@ export async function initializeFirebaseAndAuth(): Promise<void> {
   if (initializationPromise) return initializationPromise;
 
   initializationPromise = (async () => {
-    const email = "minhashussain.wp@gmail.com";
-    const password = "Minhas@#12345";
-
     try {
-      const authTimeout = new Promise<void>((_, reject) =>
-        setTimeout(() => reject(new Error("Auth timeout")), 2500)
-      );
-      const authTask = (async () => {
-        try {
-          await signInWithEmailAndPassword(auth, email, password);
-        } catch (err: any) {
-          const errMsg = err?.message || String(err);
-          const code = err?.code || "";
-          if (
-            code === "auth/user-not-found" ||
-            errMsg.includes("user-not-found") ||
-            code === "auth/invalid-credential" ||
-            errMsg.includes("invalid-credential")
-          ) {
-            try {
-              await createUserWithEmailAndPassword(auth, email, password);
-            } catch {}
-          }
-        }
-      })();
-
-      await Promise.race([authTask, authTimeout]);
-    } catch {}
-
-    // Load Firestore cache in parallel with timeout
-    await loadDatabaseToMemoryCache();
-
-    // Check if migration is needed in background
-    runDatabaseMigration().catch(() => {});
-
+      // Fast sync Firestore cache to memory
+      await loadDatabaseToMemoryCache();
+    } catch (e) {
+      console.warn("[Firebase] Background init notice:", e);
+    }
     isFirebaseInitialized = true;
   })();
 
@@ -165,6 +151,10 @@ export async function initializeFirebaseAndAuth(): Promise<void> {
  */
 async function runDatabaseMigration() {
   try {
+    const statusSnap = await getDoc(doc(db, "settings", "migration_status"));
+    if (statusSnap.exists() && statusSnap.data()?.migrated) {
+      return;
+    }
     console.log("[Firebase] Checking if Firestore requires seeding / migration...");
 
     // Pages Migration
