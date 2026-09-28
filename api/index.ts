@@ -5,10 +5,21 @@ import downloadStreamHandler from "./jobs/[id]/download.ts";
 import healthHandler from "./health.ts";
 import samplesHandler from "./samples.ts";
 import { setupAdminRoutes } from "../server/adminRoutes.ts";
+import { initializeFirebaseAndAuth } from "../server/firebaseDb.ts";
 
 const app = express();
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ limit: "50mb", extended: true }));
+
+// Serverless Firebase Initialization Middleware
+app.use(async (_req, _res, next) => {
+  try {
+    await initializeFirebaseAndAuth();
+  } catch (err) {
+    console.error("[Vercel] Failed to initialize Firebase for request:", err);
+  }
+  next();
+});
 
 // Set CORS
 app.use((_req, res, next) => {

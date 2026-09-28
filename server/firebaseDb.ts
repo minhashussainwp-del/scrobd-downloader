@@ -98,46 +98,58 @@ function readLocalJsonFile<T>(filePath: string, fallback: T): T {
   return fallback;
 }
 
+let isFirebaseInitialized = false;
+let initializationPromise: Promise<void> | null = null;
+
 /**
  * Initialize Firebase, Authenticate Server Session, Run Migration and Load Cache
  */
-export async function initializeFirebaseAndAuth() {
-  const email = "minhashussain.wp@gmail.com";
-  const password = "Minhas@#12345";
+export async function initializeFirebaseAndAuth(): Promise<void> {
+  if (isFirebaseInitialized) return;
+  if (initializationPromise) return initializationPromise;
 
-  try {
-    console.log(`[Firebase] Authenticating server as admin: ${email}...`);
-    await signInWithEmailAndPassword(auth, email, password);
-    console.log("[Firebase] Server session authenticated successfully.");
-  } catch (err: any) {
-    const errMsg = err?.message || String(err);
-    const code = err?.code || "";
-    if (
-      code === "auth/user-not-found" ||
-      errMsg.includes("user-not-found") ||
-      code === "auth/invalid-credential" ||
-      errMsg.includes("invalid-credential")
-    ) {
-      console.log(`[Firebase] Admin user not found or invalid credentials. Attempting to auto-register: ${email}...`);
-      try {
-        await createUserWithEmailAndPassword(auth, email, password);
-        console.log(`[Firebase] Admin user ${email} registered and authenticated successfully.`);
-      } catch (createErr: any) {
-        console.warn(`[Firebase] Auto-registration warning (might be disabled in console):`, createErr?.message || createErr);
+  initializationPromise = (async () => {
+    const email = "minhashussain.wp@gmail.com";
+    const password = "Minhas@#12345";
+
+    try {
+      console.log(`[Firebase] Authenticating server as admin: ${email}...`);
+      await signInWithEmailAndPassword(auth, email, password);
+      console.log("[Firebase] Server session authenticated successfully.");
+    } catch (err: any) {
+      const errMsg = err?.message || String(err);
+      const code = err?.code || "";
+      if (
+        code === "auth/user-not-found" ||
+        errMsg.includes("user-not-found") ||
+        code === "auth/invalid-credential" ||
+        errMsg.includes("invalid-credential")
+      ) {
+        console.log(`[Firebase] Admin user not found or invalid credentials. Attempting to auto-register: ${email}...`);
+        try {
+          await createUserWithEmailAndPassword(auth, email, password);
+          console.log(`[Firebase] Admin user ${email} registered and authenticated successfully.`);
+        } catch (createErr: any) {
+          console.warn(`[Firebase] Auto-registration warning (might be disabled in console):`, createErr?.message || createErr);
+        }
+      } else {
+        console.error("[Firebase] Auth warning during startup:", err);
       }
-    } else {
-      console.error("[Firebase] Auth warning during startup:", err);
     }
-  }
 
-  // 1. Load current Firestore cache first to prepare
-  await loadDatabaseToMemoryCache();
+    // 1. Load current Firestore cache first to prepare
+    await loadDatabaseToMemoryCache();
 
-  // 2. Run database migration if Firestore is empty
-  await runDatabaseMigration();
+    // 2. Run database migration if Firestore is empty
+    await runDatabaseMigration();
 
-  // 3. Load Firestore data into memory cache again to synchronize
-  await loadDatabaseToMemoryCache();
+    // 3. Load Firestore data into memory cache again to synchronize
+    await loadDatabaseToMemoryCache();
+
+    isFirebaseInitialized = true;
+  })();
+
+  return initializationPromise;
 }
 
 /**
