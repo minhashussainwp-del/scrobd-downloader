@@ -386,6 +386,35 @@ function parseMarkdownToBlocks(text: string): GutenbergEditorBlock[] {
  */
 function parseHtmlToBlocks(html: string): GutenbergEditorBlock[] {
   const blocks: GutenbergEditorBlock[] = [];
+
+  // Support WordPress Gutenberg <!-- wp:html --> blocks
+  if (html.includes("<!-- wp:html -->")) {
+    const wpHtmlRegex = /<!-- wp:html -->([\s\S]*?)<!-- \/wp:html -->/gi;
+    let matchHtml: RegExpExecArray | null;
+    let lastPos = 0;
+    while ((matchHtml = wpHtmlRegex.exec(html)) !== null) {
+      const before = html.substring(lastPos, matchHtml.index).trim();
+      if (before) {
+        // Parse preceding non-html-block content
+        const sub = parseHtmlToBlocks(before);
+        blocks.push(...sub);
+      }
+      blocks.push({
+        id: generateBlockId(),
+        type: "html",
+        content: matchHtml[1].trim(),
+        htmlPreviewMode: "html",
+      });
+      lastPos = matchHtml.index + matchHtml[0].length;
+    }
+    const remainder = html.substring(lastPos).trim();
+    if (remainder) {
+      const sub = parseHtmlToBlocks(remainder);
+      blocks.push(...sub);
+    }
+    if (blocks.length > 0) return blocks;
+  }
+
   const temp = html
     .replace(/\r?\n/g, " ")
     .replace(/<br\s*\/?>/gi, "\n");
@@ -603,7 +632,7 @@ export function serializeBlocksToHtml(blocks: GutenbergEditorBlock[]): string {
         }
 
         case "html": {
-          return block.content;
+          return `<!-- wp:html -->\n${block.content}\n<!-- /wp:html -->`;
         }
 
         case "divider": {

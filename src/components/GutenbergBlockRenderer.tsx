@@ -269,6 +269,15 @@ export function GutenbergBlockRenderer({ blocks }: GutenbergBlockRendererProps) 
           case "divider":
             return <hr key={block.id} className="border-slate-200 my-8" />;
 
+          case "html":
+            return (
+              <div
+                key={block.id}
+                className="my-6 custom-html-block w-full overflow-x-auto text-slate-800"
+                dangerouslySetInnerHTML={{ __html: block.content }}
+              />
+            );
+
           default:
             return (
               <p key={block.id} className="text-base text-slate-700">

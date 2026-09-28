@@ -84,6 +84,8 @@ export interface GutenbergEditorBlock {
   steps?: Array<{ stepNumber: number; title: string; description: string }>;
   // Features / Benefits specific
   features?: Array<{ title: string; description: string; badge?: string; icon?: string }>;
+  // Custom HTML specific
+  htmlPreviewMode?: "html" | "preview";
   // Advanced styling
   customClassName?: string;
   backgroundColor?: string;

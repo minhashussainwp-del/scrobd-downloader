@@ -30,6 +30,7 @@ export function AdminPanel({ onExitToSite, onPreviewUrl }: AdminPanelProps) {
   const [posts, setPosts] = useState<any[]>([]);
   const [metrics, setMetrics] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [isAiCopilotOpen, setIsAiCopilotOpen] = useState(false);
 
   // Authentication state
   const [authToken, setAuthTokenState] = useState<string>(() => {
@@ -491,6 +492,40 @@ export function AdminPanel({ onExitToSite, onPreviewUrl }: AdminPanelProps) {
     );
   }
 
+  // Active Context for omnipresent Gemini AI SEO Agent
+  const activePageContext = editingPost
+    ? {
+        type: "post",
+        id: editingPost.id,
+        title: editingPost.title,
+        slug: editingPost.slug,
+        excerpt: editingPost.excerpt,
+        content: editingPost.htmlContent || editingPost.content,
+        metaTitle: editingPost.metaTitle,
+        metaDescription: editingPost.metaDescription,
+        category: editingPost.category,
+        language: targetLangForPost || editingPost.language,
+        tags: editingPost.tags,
+      }
+    : editingPage
+    ? {
+        type: "page",
+        id: editingPage.id,
+        title: editingPage.title,
+        slug: editingPage.slug,
+        excerpt: editingPage.excerpt,
+        content: editingPage.htmlContent || editingPage.content,
+        metaTitle: editingPage.metaTitle,
+        metaDescription: editingPage.metaDescription,
+        language: targetLangForPage || editingPage.language,
+      }
+    : {
+        type: "general",
+        activeTab,
+        pagesCount: pageCounts.all,
+        postsCount: postCounts.all,
+      };
+
   return (
     <AdminLayout
       activeTab={activeTab}
@@ -506,6 +541,9 @@ export function AdminPanel({ onExitToSite, onPreviewUrl }: AdminPanelProps) {
         ads: 5,
         media: 12,
       }}
+      pageContext={activePageContext}
+      isAiCopilotOpen={isAiCopilotOpen}
+      onToggleAiCopilot={() => setIsAiCopilotOpen((prev) => !prev)}
     >
       {/* 1. DASHBOARD */}
       {activeTab === "dashboard" && (
@@ -516,6 +554,7 @@ export function AdminPanel({ onExitToSite, onPreviewUrl }: AdminPanelProps) {
             setEditingPost(null);
           }}
           metrics={metrics}
+          onTriggerAiAudit={() => setIsAiCopilotOpen(true)}
         />
       )}
 

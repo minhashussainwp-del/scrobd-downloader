@@ -21,6 +21,7 @@ import {
   LayoutTemplate,
   ListOrdered,
   Zap,
+  FileCode,
 } from "lucide-react";
 import { BlockType } from "./types";
 import { GUTENBERG_PATTERNS } from "./GutenbergPatterns";
@@ -59,6 +60,7 @@ const BLOCK_DEFINITIONS: BlockItemDef[] = [
   { type: "divider", title: "Separator", description: "Horizontal dividing rule between sections.", category: "design", icon: Minus },
   { type: "spacer", title: "Spacer", description: "Adjustable whitespace height spacer.", category: "design", icon: MoveVertical },
   // Widgets / Custom
+  { type: "html", title: "Custom HTML", description: "Write raw HTML code and preview it live inside the block.", category: "widgets", icon: FileCode },
   { type: "callout", title: "Callout / Notice", description: "Important tip, alert or informative box.", category: "widgets", icon: AlertCircle },
   { type: "faq", title: "FAQ Accordion", description: "Expandable questions with Schema markup.", category: "widgets", icon: HelpCircle },
   { type: "ad", title: "Ad Placement", description: "Responsive ad banner placeholder unit.", category: "widgets", icon: Sparkles },

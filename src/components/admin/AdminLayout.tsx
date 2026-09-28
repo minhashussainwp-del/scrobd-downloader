@@ -31,6 +31,7 @@ import {
   Layers,
 } from "lucide-react";
 import { AdminUser, AdminRole } from "../../types";
+import { AdminAiCopilot } from "./AdminAiCopilot";
 
 export type AdminTab =
   | "dashboard"
@@ -78,6 +79,9 @@ interface AdminLayoutProps {
     ads?: number;
     media?: number;
   };
+  pageContext?: any;
+  isAiCopilotOpen?: boolean;
+  onToggleAiCopilot?: () => void;
   children: React.ReactNode;
 }
 
@@ -100,11 +104,17 @@ export function AdminLayout({
   breadcrumbs = [{ label: "Dashboard", tab: "dashboard" }],
   badgeCounts,
   counts,
+  pageContext = {},
+  isAiCopilotOpen,
+  onToggleAiCopilot,
   children,
 }: AdminLayoutProps) {
   const handleExit = onExitToSite || onVisitSite || (() => { window.location.href = "/"; });
   const [mobileOpen, setMobileOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const [internalAiOpen, setInternalAiOpen] = useState(false);
+  const aiOpen = isAiCopilotOpen !== undefined ? isAiCopilotOpen : internalAiOpen;
+  const toggleAi = onToggleAiCopilot || (() => setInternalAiOpen((prev) => !prev));
 
   const navGroups = [
     {
@@ -190,6 +200,19 @@ export function AdminLayout({
             <kbd className="bg-slate-900 text-slate-400 px-1.5 py-0.5 rounded text-[10px] border border-slate-700 font-mono">
               Ctrl+K
             </kbd>
+          </button>
+
+          {/* AI SEO Agent Header Button */}
+          <button
+            type="button"
+            onClick={() => {
+              if (!aiOpen) toggleAi();
+            }}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-indigo-600/90 hover:bg-indigo-600 text-white text-xs font-bold transition shadow-xs cursor-pointer border border-indigo-500/40"
+            title="Open Gemini AI SEO Copilot"
+          >
+            <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+            <span className="hidden sm:inline">AI SEO Agent</span>
           </button>
 
           {/* Save Status Pill */}
@@ -386,6 +409,14 @@ export function AdminLayout({
           </div>
         </main>
       </div>
+
+      {/* Omnipresent Gemini SEO & Code Agent Copilot */}
+      <AdminAiCopilot
+        activeTab={activeTab}
+        pageContext={pageContext}
+        isOpen={aiOpen}
+        onToggle={toggleAi}
+      />
     </div>
   );
 }

@@ -4,7 +4,6 @@ import {
   BookOpen,
   Image as ImageIcon,
   Globe,
-  Megaphone,
   AlertTriangle,
   Search,
   CheckCircle2,
@@ -17,10 +16,60 @@ import {
   Plus,
   ShieldCheck,
   Zap,
-  Loader2,
+  Code2,
+  Layers,
+  ArrowRight,
+  Bot,
 } from "lucide-react";
 import { AdminTab } from "./AdminLayout";
 import { adminFetch } from "../../utils/adminApi";
+
+export interface DashboardData {
+  counts: {
+    pages: number;
+    publishedPages: number;
+    draftPages: number;
+    trashPages: number;
+    posts: number;
+    publishedPosts: number;
+    draftPosts: number;
+    scheduledPosts: number;
+    trashPosts: number;
+    media: number;
+    mediaSizeBytes: number;
+    languages: number;
+    missingTranslations: number;
+    activeAds: number;
+    totalAds: number;
+    errors404: number;
+  };
+  seoHealth: {
+    missingMetaTitles: number;
+    missingMetaDescriptions: number;
+    missingAltText: number;
+    missingTranslations: number;
+    noindexPages: number;
+    draftPosts: number;
+    draftPages: number;
+    brokenLinks: number;
+  };
+  systemHealth: {
+    database: { status: string; provider: string };
+    storage: { status: string; path: string; totalItems: number };
+    sitemap: { status: string; dynamic: boolean; lastGenerated: string };
+    robotsTxt: { status: string; configured: boolean };
+    api: { status: string; latencyMs: number };
+    auth: { status: string; activeUsers: number };
+  };
+  recentActivity: Array<{
+    id: string;
+    user: string;
+    role: string;
+    action: string;
+    object: string;
+    date: string;
+  }>;
+}
 
 const DEFAULT_METRICS_FALLBACK: DashboardData = {
   counts: {
@@ -71,53 +120,6 @@ const DEFAULT_METRICS_FALLBACK: DashboardData = {
   ],
 };
 
-interface DashboardData {
-  counts: {
-    pages: number;
-    publishedPages: number;
-    draftPages: number;
-    trashPages: number;
-    posts: number;
-    publishedPosts: number;
-    draftPosts: number;
-    scheduledPosts: number;
-    trashPosts: number;
-    media: number;
-    mediaSizeBytes: number;
-    languages: number;
-    missingTranslations: number;
-    activeAds: number;
-    totalAds: number;
-    errors404: number;
-  };
-  seoHealth: {
-    missingMetaTitles: number;
-    missingMetaDescriptions: number;
-    missingAltText: number;
-    missingTranslations: number;
-    noindexPages: number;
-    draftPosts: number;
-    draftPages: number;
-    brokenLinks: number;
-  };
-  systemHealth: {
-    database: { status: string; provider: string };
-    storage: { status: string; path: string; totalItems: number };
-    sitemap: { status: string; dynamic: boolean; lastGenerated: string };
-    robotsTxt: { status: string; configured: boolean };
-    api: { status: string; latencyMs: number };
-    auth: { status: string; activeUsers: number };
-  };
-  recentActivity: Array<{
-    id: string;
-    user: string;
-    role: string;
-    action: string;
-    object: string;
-    date: string;
-  }>;
-}
-
 interface AdminDashboardProps {
   data?: DashboardData | null;
   metrics?: any;
@@ -126,6 +128,7 @@ interface AdminDashboardProps {
   onQuickNewPage?: () => void;
   onQuickNewPost?: () => void;
   onRegenerateSitemaps?: () => void;
+  onTriggerAiAudit?: (prompt?: string) => void;
   regeneratingSitemaps?: boolean;
 }
 
@@ -137,6 +140,7 @@ export function AdminDashboard({
   onQuickNewPage = () => onNavigate("pages"),
   onQuickNewPost = () => onNavigate("posts"),
   onRegenerateSitemaps,
+  onTriggerAiAudit,
   regeneratingSitemaps: propRegeneratingSitemaps = false,
 }: AdminDashboardProps) {
   const [internalMetrics, setInternalMetrics] = useState<any>(data || metrics || null);
@@ -161,7 +165,6 @@ export function AdminDashboard({
         const json = await res.json();
         setInternalMetrics(json.metrics || json);
       } else {
-        // Use fallback if response not OK
         setInternalMetrics((prev: any) => prev || DEFAULT_METRICS_FALLBACK);
       }
     } catch (e) {
@@ -175,7 +178,6 @@ export function AdminDashboard({
   useEffect(() => {
     if (!internalMetrics) {
       fetchMetricsDirectly();
-      // Safety guarantee: under NO circumstance wait longer than 2.5 seconds
       const timer = setTimeout(() => {
         setInternalMetrics((prev: any) => prev || DEFAULT_METRICS_FALLBACK);
         setFetchingStats(false);
@@ -192,7 +194,7 @@ export function AdminDashboard({
     setRegenerating(true);
     try {
       await adminFetch("/api/admin/sitemap/regenerate", { method: "POST" });
-      setToastMessage("Sitemaps successfully regenerated!");
+      setToastMessage("XML Sitemaps successfully regenerated!");
       setTimeout(() => setToastMessage(null), 3500);
     } catch (e) {
       console.error(e);
@@ -208,19 +210,9 @@ export function AdminDashboard({
 
   if (isStillLoading) {
     return (
-      <div className="flex flex-col items-center justify-center py-24 space-y-3">
-        <div className="w-10 h-10 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin mx-auto"></div>
-        <p className="text-sm text-slate-500 font-medium">Gathering real-time CMS statistics...</p>
-        <button
-          type="button"
-          onClick={() => {
-            setInternalMetrics(DEFAULT_METRICS_FALLBACK);
-            setFetchingStats(false);
-          }}
-          className="text-xs text-emerald-700 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 px-3 py-1.5 rounded-lg font-medium transition cursor-pointer"
-        >
-          Open Dashboard Now
-        </button>
+      <div className="flex flex-col items-center justify-center py-20 space-y-3">
+        <div className="w-9 h-9 border-3 border-emerald-600 border-t-transparent rounded-full animate-spin mx-auto"></div>
+        <p className="text-xs text-slate-500 font-medium tracking-wide">Syncing CMS metrics...</p>
       </div>
     );
   }
@@ -241,88 +233,96 @@ export function AdminDashboard({
   const isBusy = propRegeneratingSitemaps || regenerating;
 
   return (
-    <div className="space-y-6">
-      {/* Top Banner & Quick Actions */}
-      <div className="bg-white rounded-xl border border-slate-200 p-5 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
+    <div className="space-y-6 max-w-7xl mx-auto">
+      {/* 1. Header Banner - Clean, uncluttered, executive */}
+      <div className="bg-white rounded-2xl border border-slate-200/80 p-6 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-xl font-bold text-slate-900 tracking-tight flex items-center gap-2">
-            <span>WordPress Content Management Dashboard</span>
-            <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800">
+          <div className="flex items-center gap-2.5">
+            <h1 className="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">
+              Admin Dashboard
+            </h1>
+            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
               Live Synchronized
             </span>
-          </h1>
+          </div>
           <p className="text-xs text-slate-500 mt-1">
-            Real-time control over static pages, blog articles, multilingual translations, advertisements, and technical SEO.
+            Complete management over Scribd Downloader static pages, blog articles, custom HTML blocks, and technical SEO.
           </p>
         </div>
 
         <div className="flex flex-wrap items-center gap-2">
           <button
             type="button"
-            onClick={onQuickNewPage}
-            className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold shadow-xs transition"
-          >
-            <Plus className="w-4 h-4" />
-            <span>New Page</span>
-          </button>
-          <button
-            type="button"
             onClick={onQuickNewPost}
-            className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold shadow-xs transition"
+            className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold shadow-xs transition cursor-pointer"
           >
             <Plus className="w-4 h-4" />
             <span>New Post</span>
           </button>
+
+          <button
+            type="button"
+            onClick={onQuickNewPage}
+            className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold shadow-xs transition cursor-pointer"
+          >
+            <Plus className="w-4 h-4" />
+            <span>New Page</span>
+          </button>
+
+          {onTriggerAiAudit && (
+            <button
+              type="button"
+              onClick={() => onTriggerAiAudit("Perform a comprehensive technical SEO audit of the site.")}
+              className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 text-xs font-bold transition cursor-pointer"
+              title="Run Deep SEO Audit with Gemini AI Agent"
+            >
+              <Sparkles className="w-3.5 h-3.5 text-indigo-600" />
+              <span>AI SEO Audit</span>
+            </button>
+          )}
+
           <button
             type="button"
             onClick={fetchMetricsDirectly}
             disabled={fetchingStats}
-            className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs font-medium transition shadow-xs disabled:opacity-50 cursor-pointer"
-            title="Reload real-time CMS metrics"
+            className="p-2 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-600 transition cursor-pointer disabled:opacity-50"
+            title="Refresh metrics"
           >
-            <RefreshCw className={`w-3.5 h-3.5 text-slate-500 ${fetchingStats ? "animate-spin" : ""}`} />
-            <span>Refresh Stats</span>
-          </button>
-          <button
-            type="button"
-            onClick={handleRegenerate}
-            disabled={isBusy}
-            className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs font-medium transition shadow-xs disabled:opacity-50 cursor-pointer"
-          >
-            <RefreshCw className={`w-3.5 h-3.5 text-slate-500 ${isBusy ? "animate-spin" : ""}`} />
-            <span>Regenerate Sitemaps</span>
+            <RefreshCw className={`w-4 h-4 ${fetchingStats ? "animate-spin text-emerald-600" : ""}`} />
           </button>
         </div>
       </div>
 
       {toastMessage && (
-        <div className="p-3 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-xl text-xs flex items-center gap-2">
+        <div className="p-3.5 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-xl text-xs flex items-center gap-2 animate-in fade-in">
           <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-          <span>{toastMessage}</span>
+          <span className="font-medium">{toastMessage}</span>
         </div>
       )}
 
-      {/* Real-time Dynamic Metrics Cards */}
+      {/* 2. Core KPI Stat Cards - Ultra Clean */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {/* Static Pages */}
+        {/* Pages */}
         <div
           onClick={() => onNavigate("pages")}
-          className="bg-white rounded-xl p-4 border border-slate-200 hover:border-emerald-300 hover:shadow-sm cursor-pointer transition flex flex-col justify-between"
+          className="bg-white rounded-2xl p-5 border border-slate-200/80 hover:border-slate-300 hover:shadow-xs cursor-pointer transition flex flex-col justify-between group"
         >
           <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Static Pages</span>
-            <div className="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center">
+            <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Pages</span>
+            <div className="w-8 h-8 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center transition group-hover:scale-105">
               <FileText className="w-4 h-4" />
             </div>
           </div>
-          <div className="mt-3 flex items-baseline gap-2">
-            <span className="text-2xl font-bold text-slate-900">{counts.pages}</span>
-            <span className="text-xs text-slate-500">
-              ({counts.publishedPages} published, {counts.draftPages} drafts)
-            </span>
+          <div className="mt-3">
+            <div className="text-3xl font-extrabold text-slate-900 tracking-tight">{counts.pages}</div>
+            <div className="text-xs text-slate-500 mt-0.5">
+              <span className="font-semibold text-emerald-600">{counts.publishedPages} published</span>
+              {counts.draftPages > 0 && <span className="ml-1 text-slate-400">• {counts.draftPages} drafts</span>}
+            </div>
           </div>
-          <div className="mt-2 pt-2 border-t border-slate-100 flex items-center justify-between text-[11px] text-blue-600 font-medium">
-            <span>Manage non-blog pages</span>
+          <div className="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-blue-600 font-semibold">
+            <span>Manage Pages</span>
             <ArrowUpRight className="w-3.5 h-3.5" />
           </div>
         </div>
@@ -330,233 +330,272 @@ export function AdminDashboard({
         {/* Blog Posts */}
         <div
           onClick={() => onNavigate("posts")}
-          className="bg-white rounded-xl p-4 border border-slate-200 hover:border-emerald-300 hover:shadow-sm cursor-pointer transition flex flex-col justify-between"
+          className="bg-white rounded-2xl p-5 border border-slate-200/80 hover:border-slate-300 hover:shadow-xs cursor-pointer transition flex flex-col justify-between group"
         >
           <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Blog Articles</span>
-            <div className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center">
+            <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Blog Articles</span>
+            <div className="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center transition group-hover:scale-105">
               <BookOpen className="w-4 h-4" />
             </div>
           </div>
-          <div className="mt-3 flex items-baseline gap-2">
-            <span className="text-2xl font-bold text-slate-900">{counts.posts}</span>
-            <span className="text-xs text-slate-500">
-              ({counts.publishedPosts} live, {counts.draftPosts} drafts)
-            </span>
+          <div className="mt-3">
+            <div className="text-3xl font-extrabold text-slate-900 tracking-tight">{counts.posts}</div>
+            <div className="text-xs text-slate-500 mt-0.5">
+              <span className="font-semibold text-emerald-600">{counts.publishedPosts} live articles</span>
+              {counts.draftPosts > 0 && <span className="ml-1 text-slate-400">• {counts.draftPosts} drafts</span>}
+            </div>
           </div>
-          <div className="mt-2 pt-2 border-t border-slate-100 flex items-center justify-between text-[11px] text-emerald-600 font-medium">
-            <span>Manage blog posts</span>
+          <div className="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-emerald-600 font-semibold">
+            <span>Manage Posts</span>
             <ArrowUpRight className="w-3.5 h-3.5" />
           </div>
         </div>
 
-        {/* Multilingual Coverage */}
+        {/* Polylang Coverage */}
         <div
           onClick={() => onNavigate("languages")}
-          className="bg-white rounded-xl p-4 border border-slate-200 hover:border-emerald-300 hover:shadow-sm cursor-pointer transition flex flex-col justify-between"
+          className="bg-white rounded-2xl p-5 border border-slate-200/80 hover:border-slate-300 hover:shadow-xs cursor-pointer transition flex flex-col justify-between group"
         >
           <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Polylang Coverage</span>
-            <div className="w-8 h-8 rounded-lg bg-purple-50 text-purple-600 flex items-center justify-center">
+            <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Languages</span>
+            <div className="w-8 h-8 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center transition group-hover:scale-105">
               <Globe className="w-4 h-4" />
             </div>
           </div>
-          <div className="mt-3 flex items-baseline gap-2">
-            <span className="text-2xl font-bold text-slate-900">{counts.languages}</span>
-            <span className="text-xs text-slate-500">Active Locales</span>
+          <div className="mt-3">
+            <div className="text-3xl font-extrabold text-slate-900 tracking-tight">{counts.languages}</div>
+            <div className="text-xs text-slate-500 mt-0.5">
+              {counts.missingTranslations > 0 ? (
+                <span className="text-amber-600 font-medium">{counts.missingTranslations} missing translations</span>
+              ) : (
+                <span className="text-emerald-600 font-medium">100% Translations active</span>
+              )}
+            </div>
           </div>
-          <div className="mt-2 pt-2 border-t border-slate-100 flex items-center justify-between text-[11px]">
-            {counts.missingTranslations > 0 ? (
-              <span className="text-amber-600 font-semibold flex items-center gap-1">
-                <AlertTriangle className="w-3 h-3" />
-                {counts.missingTranslations} missing translations
-              </span>
-            ) : (
-              <span className="text-emerald-600 font-semibold flex items-center gap-1">
-                <CheckCircle2 className="w-3 h-3" />
-                100% Translations complete
-              </span>
-            )}
-            <ArrowUpRight className="w-3.5 h-3.5 text-purple-600" />
+          <div className="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-purple-600 font-semibold">
+            <span>Manage Languages</span>
+            <ArrowUpRight className="w-3.5 h-3.5" />
           </div>
         </div>
 
-        {/* Media & Ads */}
+        {/* Media Assets */}
         <div
           onClick={() => onNavigate("media")}
-          className="bg-white rounded-xl p-4 border border-slate-200 hover:border-emerald-300 hover:shadow-sm cursor-pointer transition flex flex-col justify-between"
+          className="bg-white rounded-2xl p-5 border border-slate-200/80 hover:border-slate-300 hover:shadow-xs cursor-pointer transition flex flex-col justify-between group"
         >
           <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Media Library</span>
-            <div className="w-8 h-8 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center">
+            <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Media Library</span>
+            <div className="w-8 h-8 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center transition group-hover:scale-105">
               <ImageIcon className="w-4 h-4" />
             </div>
           </div>
-          <div className="mt-3 flex items-baseline gap-2">
-            <span className="text-2xl font-bold text-slate-900">{counts.media}</span>
-            <span className="text-xs text-slate-500">Assets ({formatBytes(counts.mediaSizeBytes)})</span>
+          <div className="mt-3">
+            <div className="text-3xl font-extrabold text-slate-900 tracking-tight">{counts.media}</div>
+            <div className="text-xs text-slate-500 mt-0.5">
+              <span>{formatBytes(counts.mediaSizeBytes)} total size</span>
+            </div>
           </div>
-          <div className="mt-2 pt-2 border-t border-slate-100 flex items-center justify-between text-[11px] text-amber-600 font-medium">
-            <span>Browse uploaded files</span>
+          <div className="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-amber-600 font-semibold">
+            <span>Browse Media</span>
             <ArrowUpRight className="w-3.5 h-3.5" />
           </div>
         </div>
       </div>
 
-      {/* Two-Column Grid: SEO Health Checklist + System Architecture Status */}
+      {/* 3. Clean Quick Action Feature Strip: Gutenberg Custom HTML + AI SEO Agent */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {/* Gutenberg & Custom HTML Card */}
+        <div className="bg-gradient-to-br from-slate-900 to-slate-800 rounded-2xl p-5 text-white shadow-xs flex flex-col justify-between">
+          <div className="space-y-2">
+            <div className="flex items-center gap-2">
+              <span className="p-1.5 rounded-lg bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+                <Code2 className="w-4 h-4" />
+              </span>
+              <span className="text-xs font-bold text-emerald-400 uppercase tracking-wider">Editor Feature</span>
+            </div>
+            <h3 className="text-base font-bold text-white">Gutenberg Custom HTML Support</h3>
+            <p className="text-xs text-slate-300 leading-relaxed">
+              Create and embed raw HTML blocks with live HTML/Preview switcher, snippet presets (tables, badges, CTAs), and automatic Gutenberg block serialization.
+            </p>
+          </div>
+          <div className="mt-4 pt-4 border-t border-slate-700/60 flex items-center justify-between">
+            <button
+              type="button"
+              onClick={onQuickNewPost}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-bold transition cursor-pointer"
+            >
+              <span>Open in Post Editor</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </button>
+            <span className="text-[11px] text-slate-400 font-mono">&lt;!-- wp:html --&gt;</span>
+          </div>
+        </div>
+
+        {/* Gemini AI SEO Agent Card */}
+        <div className="bg-gradient-to-br from-indigo-900 to-slate-900 rounded-2xl p-5 text-white shadow-xs flex flex-col justify-between">
+          <div className="space-y-2">
+            <div className="flex items-center gap-2">
+              <span className="p-1.5 rounded-lg bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">
+                <Bot className="w-4 h-4" />
+              </span>
+              <span className="text-xs font-bold text-indigo-300 uppercase tracking-wider">Gemini Copilot</span>
+            </div>
+            <h3 className="text-base font-bold text-white">Omnipresent AI SEO & Code Agent</h3>
+            <p className="text-xs text-slate-300 leading-relaxed">
+              Diagnose SEO errors, pinpoint issues on any page, analyze technical code & sitemaps, and write optimized meta tags or HTML snippets on command.
+            </p>
+          </div>
+          <div className="mt-4 pt-4 border-t border-slate-700/60 flex items-center justify-between">
+            <button
+              type="button"
+              onClick={() => onTriggerAiAudit ? onTriggerAiAudit("Scan for any SEO problems, broken tags, or indexing obstacles.") : onNavigate("ai")}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-indigo-500 hover:bg-indigo-400 text-white text-xs font-bold transition cursor-pointer"
+            >
+              <Sparkles className="w-3.5 h-3.5" />
+              <span>Launch AI Copilot</span>
+            </button>
+            <span className="text-[11px] text-indigo-300/80 font-mono">gemini-3.8-flash</span>
+          </div>
+        </div>
+      </div>
+
+      {/* 4. Two Clean Columns: SEO Quality Health + Technical System Status */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* SEO & Quality Checklist */}
-        <div className="bg-white rounded-xl border border-slate-200 p-5 shadow-xs space-y-4">
+        {/* Left Column: Technical SEO Health */}
+        <div className="bg-white rounded-2xl border border-slate-200/80 p-5 shadow-xs space-y-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <Search className="w-4 h-4 text-emerald-600" />
-              <h2 className="text-sm font-bold text-slate-900">SEO & Content Quality Health</h2>
+              <h2 className="text-sm font-bold text-slate-900">Technical SEO & Content Health</h2>
             </div>
             <button
               type="button"
               onClick={() => onNavigate("seo")}
-              className="text-xs text-emerald-600 hover:text-emerald-700 font-semibold"
+              className="text-xs text-emerald-600 hover:text-emerald-700 font-bold"
             >
               SEO Tools →
             </button>
           </div>
 
-          <div className="space-y-2.5">
-            <div className="flex items-center justify-between p-2.5 rounded-lg bg-slate-50 text-xs">
-              <span className="text-slate-700 font-medium">Missing Meta Titles</span>
+          <div className="space-y-2">
+            <div className="flex items-center justify-between p-3 rounded-xl bg-slate-50/80 text-xs">
+              <span className="text-slate-700 font-medium">Meta Titles Coverage</span>
               <span
                 className={`font-semibold px-2 py-0.5 rounded-full ${
                   seoHealth.missingMetaTitles > 0 ? "bg-amber-100 text-amber-800" : "bg-emerald-100 text-emerald-800"
                 }`}
               >
-                {seoHealth.missingMetaTitles === 0 ? "0 (All Set)" : `${seoHealth.missingMetaTitles} issues`}
+                {seoHealth.missingMetaTitles === 0 ? "100% Configured" : `${seoHealth.missingMetaTitles} missing`}
               </span>
             </div>
 
-            <div className="flex items-center justify-between p-2.5 rounded-lg bg-slate-50 text-xs">
-              <span className="text-slate-700 font-medium">Missing Meta Descriptions</span>
+            <div className="flex items-center justify-between p-3 rounded-xl bg-slate-50/80 text-xs">
+              <span className="text-slate-700 font-medium">Meta Descriptions</span>
               <span
                 className={`font-semibold px-2 py-0.5 rounded-full ${
                   seoHealth.missingMetaDescriptions > 0 ? "bg-amber-100 text-amber-800" : "bg-emerald-100 text-emerald-800"
                 }`}
               >
-                {seoHealth.missingMetaDescriptions === 0 ? "0 (All Set)" : `${seoHealth.missingMetaDescriptions} issues`}
+                {seoHealth.missingMetaDescriptions === 0 ? "100% Configured" : `${seoHealth.missingMetaDescriptions} missing`}
               </span>
             </div>
 
-            <div className="flex items-center justify-between p-2.5 rounded-lg bg-slate-50 text-xs">
-              <span className="text-slate-700 font-medium">Missing Image Alt Text</span>
+            <div className="flex items-center justify-between p-3 rounded-xl bg-slate-50/80 text-xs">
+              <span className="text-slate-700 font-medium">Image Alt Attributes</span>
               <span
                 className={`font-semibold px-2 py-0.5 rounded-full ${
                   seoHealth.missingAltText > 0 ? "bg-amber-100 text-amber-800" : "bg-emerald-100 text-emerald-800"
                 }`}
               >
-                {seoHealth.missingAltText === 0 ? "0 (Optimized)" : `${seoHealth.missingAltText} images`}
+                {seoHealth.missingAltText === 0 ? "All Alt Tags Present" : `${seoHealth.missingAltText} missing`}
               </span>
             </div>
 
-            <div className="flex items-center justify-between p-2.5 rounded-lg bg-slate-50 text-xs">
-              <span className="text-slate-700 font-medium">Tracked 404 Errors</span>
+            <div className="flex items-center justify-between p-3 rounded-xl bg-slate-50/80 text-xs">
+              <span className="text-slate-700 font-medium">404 Error Diagnostics</span>
               <span
                 className={`font-semibold px-2 py-0.5 rounded-full ${
                   counts.errors404 > 0 ? "bg-rose-100 text-rose-800" : "bg-emerald-100 text-emerald-800"
                 }`}
               >
-                {counts.errors404} logged
-              </span>
-            </div>
-
-            <div className="flex items-center justify-between p-2.5 rounded-lg bg-slate-50 text-xs">
-              <span className="text-slate-700 font-medium">Pages with noindex Directive</span>
-              <span className="font-semibold px-2 py-0.5 rounded-full bg-slate-200 text-slate-700">
-                {seoHealth.noindexPages} deliberate
+                {counts.errors404 === 0 ? "0 Broken URLs" : `${counts.errors404} logged`}
               </span>
             </div>
           </div>
         </div>
 
-        {/* System & Architecture Status */}
-        <div className="bg-white rounded-xl border border-slate-200 p-5 shadow-xs space-y-4">
+        {/* Right Column: Crawler & Infrastructure Status */}
+        <div className="bg-white rounded-2xl border border-slate-200/80 p-5 shadow-xs space-y-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <Server className="w-4 h-4 text-emerald-600" />
-              <h2 className="text-sm font-bold text-slate-900">System & Database Status</h2>
-            </div>
-            <span className="text-[11px] font-mono font-medium text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded">
-              All Systems Operational
-            </span>
-          </div>
-
-          <div className="grid grid-cols-2 gap-3 text-xs">
-            <div className="p-3 rounded-lg border border-slate-100 bg-slate-50/70 space-y-1">
-              <div className="text-slate-500 flex items-center gap-1.5">
-                <HardDrive className="w-3.5 h-3.5 text-slate-400" />
-                <span>Primary Storage</span>
-              </div>
-              <div className="font-bold text-slate-800 flex items-center gap-1.5">
-                <div className="w-2 h-2 rounded-full bg-emerald-500"></div>
-                <span>JSON / Firestore Ready</span>
-              </div>
-              <div className="text-[11px] text-slate-500">{systemHealth.storage.totalItems} stored records</div>
-            </div>
-
-            <div className="p-3 rounded-lg border border-slate-100 bg-slate-50/70 space-y-1">
-              <div className="text-slate-500 flex items-center gap-1.5">
-                <RefreshCw className="w-3.5 h-3.5 text-slate-400" />
-                <span>XML Sitemaps</span>
-              </div>
-              <div className="font-bold text-slate-800 flex items-center gap-1.5">
-                <div className="w-2 h-2 rounded-full bg-emerald-500"></div>
-                <span>Dynamic Index (Active)</span>
-              </div>
-              <div className="text-[11px] text-slate-500">Auto-updates on save</div>
-            </div>
-
-            <div className="p-3 rounded-lg border border-slate-100 bg-slate-50/70 space-y-1">
-              <div className="text-slate-500 flex items-center gap-1.5">
-                <ShieldCheck className="w-3.5 h-3.5 text-slate-400" />
-                <span>Security & Roles</span>
-              </div>
-              <div className="font-bold text-slate-800 flex items-center gap-1.5">
-                <div className="w-2 h-2 rounded-full bg-emerald-500"></div>
-                <span>RBAC Active</span>
-              </div>
-              <div className="text-[11px] text-slate-500">{systemHealth.auth.activeUsers} configured users</div>
-            </div>
-
-            <div className="p-3 rounded-lg border border-slate-100 bg-slate-50/70 space-y-1">
-              <div className="text-slate-500 flex items-center gap-1.5">
-                <Zap className="w-3.5 h-3.5 text-slate-400" />
-                <span>API Latency</span>
-              </div>
-              <div className="font-bold text-slate-800 flex items-center gap-1.5">
-                <div className="w-2 h-2 rounded-full bg-emerald-500"></div>
-                <span>{systemHealth.api.latencyMs} ms Response</span>
-              </div>
-              <div className="text-[11px] text-slate-500">Port 3000 Ingress</div>
-            </div>
-          </div>
-
-          <div className="p-3 bg-emerald-50/60 rounded-lg border border-emerald-100 text-xs flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <Sparkles className="w-4 h-4 text-emerald-600" />
-              <span className="font-medium text-emerald-900">
-                Gemini 2.5 AI Assistant is configured on the server
-              </span>
+              <h2 className="text-sm font-bold text-slate-900">Crawler & Server Architecture</h2>
             </div>
             <button
               type="button"
-              onClick={() => onNavigate("ai")}
-              className="font-bold text-emerald-700 hover:text-emerald-800"
+              onClick={handleRegenerate}
+              disabled={isBusy}
+              className="text-xs text-slate-600 hover:text-slate-900 font-semibold inline-flex items-center gap-1 cursor-pointer disabled:opacity-50"
             >
-              Open AI Workbench →
+              <RefreshCw className={`w-3 h-3 ${isBusy ? "animate-spin text-emerald-600" : ""}`} />
+              <span>Regenerate Sitemaps</span>
             </button>
+          </div>
+
+          <div className="grid grid-cols-2 gap-3 text-xs">
+            <div className="p-3 rounded-xl border border-slate-100 bg-slate-50/70 space-y-1">
+              <div className="text-slate-400 flex items-center gap-1 text-[11px] font-semibold uppercase tracking-wider">
+                <Layers className="w-3.5 h-3.5 text-slate-400" />
+                <span>XML Sitemaps</span>
+              </div>
+              <div className="font-bold text-slate-900 flex items-center gap-1.5">
+                <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+                <span>Active & Synced</span>
+              </div>
+              <p className="text-[11px] text-slate-500">Manual & Dynamic support</p>
+            </div>
+
+            <div className="p-3 rounded-xl border border-slate-100 bg-slate-50/70 space-y-1">
+              <div className="text-slate-400 flex items-center gap-1 text-[11px] font-semibold uppercase tracking-wider">
+                <ShieldCheck className="w-3.5 h-3.5 text-slate-400" />
+                <span>Robots.txt</span>
+              </div>
+              <div className="font-bold text-slate-900 flex items-center gap-1.5">
+                <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+                <span>Crawler Enabled</span>
+              </div>
+              <p className="text-[11px] text-slate-500">Googlebot / Bingbot ready</p>
+            </div>
+
+            <div className="p-3 rounded-xl border border-slate-100 bg-slate-50/70 space-y-1">
+              <div className="text-slate-400 flex items-center gap-1 text-[11px] font-semibold uppercase tracking-wider">
+                <HardDrive className="w-3.5 h-3.5 text-slate-400" />
+                <span>Persistence</span>
+              </div>
+              <div className="font-bold text-slate-900 flex items-center gap-1.5">
+                <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+                <span>Firestore / Disk</span>
+              </div>
+              <p className="text-[11px] text-slate-500">{systemHealth.storage.totalItems} stored items</p>
+            </div>
+
+            <div className="p-3 rounded-xl border border-slate-100 bg-slate-50/70 space-y-1">
+              <div className="text-slate-400 flex items-center gap-1 text-[11px] font-semibold uppercase tracking-wider">
+                <Zap className="w-3.5 h-3.5 text-slate-400" />
+                <span>API Speed</span>
+              </div>
+              <div className="font-bold text-slate-900 flex items-center gap-1.5">
+                <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+                <span>{systemHealth.api.latencyMs}ms Latency</span>
+              </div>
+              <p className="text-[11px] text-slate-500">Port 3000 Ingress</p>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Recent Activity Audit Trail */}
-      <div className="bg-white rounded-xl border border-slate-200 p-5 shadow-xs space-y-3">
+      {/* 5. Clean Activity Audit Trail */}
+      <div className="bg-white rounded-2xl border border-slate-200/80 p-5 shadow-xs space-y-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Clock className="w-4 h-4 text-slate-500" />
@@ -565,21 +604,21 @@ export function AdminDashboard({
           <button
             type="button"
             onClick={() => onNavigate("activity")}
-            className="text-xs text-slate-500 hover:text-slate-800 font-medium"
+            className="text-xs text-slate-500 hover:text-slate-800 font-semibold"
           >
-            View Full Audit Log ({recentActivity.length}) →
+            View Full Log ({recentActivity.length}) →
           </button>
         </div>
 
         {recentActivity.length === 0 ? (
-          <p className="text-xs text-slate-500 italic py-3">No activity logged yet.</p>
+          <p className="text-xs text-slate-400 italic py-3">No activity recorded yet.</p>
         ) : (
-          <div className="divide-y divide-slate-100 overflow-x-auto">
-            {recentActivity.slice(0, 6).map((item) => (
+          <div className="divide-y divide-slate-100">
+            {recentActivity.slice(0, 5).map((item) => (
               <div key={item.id} className="py-2.5 flex items-center justify-between text-xs">
                 <div className="flex items-center gap-3">
                   <div className="w-6 h-6 rounded-full bg-slate-100 text-slate-700 flex items-center justify-center font-bold text-[10px]">
-                    {item.user[0].toUpperCase()}
+                    {item.user ? item.user[0].toUpperCase() : "A"}
                   </div>
                   <div>
                     <span className="font-semibold text-slate-800">{item.action}</span>
