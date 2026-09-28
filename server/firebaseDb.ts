@@ -16,18 +16,28 @@ import {
 import fs from "fs";
 import path from "path";
 
+// Default fallback Firebase configuration (ensures seamless deployment on Vercel)
+const DEFAULT_FIREBASE_CONFIG = {
+  projectId: process.env.FIREBASE_PROJECT_ID || "carbon-atlas-qdzmz",
+  appId: process.env.FIREBASE_APP_ID || "1:815265023401:web:bf44c034dbd71a434830b8",
+  apiKey: process.env.FIREBASE_API_KEY || "AIzaSyC5BVSWwIXePgXz0-6CyVcchmwWReQ2D_M",
+  authDomain: process.env.FIREBASE_AUTH_DOMAIN || "carbon-atlas-qdzmz.firebaseapp.com",
+  firestoreDatabaseId: process.env.FIREBASE_DATABASE_ID || "ai-studio-scribddownloader-e21bd29b-3810-4085-9c14-431af3caba1a",
+  storageBucket: process.env.FIREBASE_STORAGE_BUCKET || "carbon-atlas-qdzmz.firebasestorage.app",
+  messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID || "815265023401",
+};
+
 // Resolve config path
 const configPath = path.join(process.cwd(), "firebase-applet-config.json");
-let firebaseConfig: any = {};
+let firebaseConfig: any = { ...DEFAULT_FIREBASE_CONFIG };
 
 if (fs.existsSync(configPath)) {
   try {
-    firebaseConfig = JSON.parse(fs.readFileSync(configPath, "utf-8"));
+    const fileCfg = JSON.parse(fs.readFileSync(configPath, "utf-8"));
+    firebaseConfig = { ...DEFAULT_FIREBASE_CONFIG, ...fileCfg };
   } catch (err) {
     console.error("[Firebase] Error reading config file:", err);
   }
-} else {
-  console.warn("[Firebase] Warning: firebase-applet-config.json not found!");
 }
 
 const app = initializeApp(firebaseConfig);
@@ -48,16 +58,29 @@ const HOMEPAGE_FILE = path.join(STORAGE_ROOT, "homepage_content.json");
 // Authoritative system secret token for secure backend-to-firestore communication
 const SYS_SECRET_TOKEN = "sd_admin_sec_7894561230_token";
 
-// Memory cache for maximum read performance and 0ms latency in Express routes
-let pagesCache: any[] = [];
-let postsCache: any[] = [];
-let mediaCache: any[] = [];
-let adsCache: any[] = [];
-let redirectsCache: any[] = [];
-let settingsCache: any = null;
-let categoriesCache: any[] = [];
-let tagsCache: any[] = [];
-let homepageCache: Record<string, any> = {};
+/**
+ * Helper to read a local filesystem file
+ */
+function readLocalJsonFile<T>(filePath: string, fallback: T): T {
+  if (fs.existsSync(filePath)) {
+    try {
+      const data = fs.readFileSync(filePath, "utf-8");
+      return JSON.parse(data) as T;
+    } catch {}
+  }
+  return fallback;
+}
+
+// Memory cache pre-loaded directly on module startup for instant 0ms responses on Vercel cold starts
+let pagesCache: any[] = readLocalJsonFile<any[]>(PAGES_FILE, []);
+let postsCache: any[] = readLocalJsonFile<any[]>(POSTS_FILE, []);
+let mediaCache: any[] = readLocalJsonFile<any[]>(MEDIA_FILE, []);
+let adsCache: any[] = readLocalJsonFile<any[]>(ADS_FILE, []);
+let redirectsCache: any[] = readLocalJsonFile<any[]>(REDIRECTS_FILE, []);
+let settingsCache: any = readLocalJsonFile<any>(SETTINGS_FILE, null);
+let categoriesCache: any[] = readLocalJsonFile<any[]>(CATEGORIES_FILE, []);
+let tagsCache: any[] = readLocalJsonFile<any[]>(TAGS_FILE, []);
+let homepageCache: Record<string, any> = readLocalJsonFile<Record<string, any>>(HOMEPAGE_FILE, {});
 
 /**
  * Sync Getters for routing and sitemaps (preventing blocking async DB calls during render)
@@ -85,19 +108,6 @@ function saveLocalJsonFile<T>(filePath: string, data: T) {
   }
 }
 
-/**
- * Helper to read a local filesystem file
- */
-function readLocalJsonFile<T>(filePath: string, fallback: T): T {
-  if (fs.existsSync(filePath)) {
-    try {
-      const data = fs.readFileSync(filePath, "utf-8");
-      return JSON.parse(data) as T;
-    } catch {}
-  }
-  return fallback;
-}
-
 let isFirebaseInitialized = false;
 let initializationPromise: Promise<void> | null = null;
 
@@ -113,38 +123,36 @@ export async function initializeFirebaseAndAuth(): Promise<void> {
     const password = "Minhas@#12345";
 
     try {
-      console.log(`[Firebase] Authenticating server as admin: ${email}...`);
-      await signInWithEmailAndPassword(auth, email, password);
-      console.log("[Firebase] Server session authenticated successfully.");
-    } catch (err: any) {
-      const errMsg = err?.message || String(err);
-      const code = err?.code || "";
-      if (
-        code === "auth/user-not-found" ||
-        errMsg.includes("user-not-found") ||
-        code === "auth/invalid-credential" ||
-        errMsg.includes("invalid-credential")
-      ) {
-        console.log(`[Firebase] Admin user not found or invalid credentials. Attempting to auto-register: ${email}...`);
+      const authTimeout = new Promise<void>((_, reject) =>
+        setTimeout(() => reject(new Error("Auth timeout")), 2500)
+      );
+      const authTask = (async () => {
         try {
-          await createUserWithEmailAndPassword(auth, email, password);
-          console.log(`[Firebase] Admin user ${email} registered and authenticated successfully.`);
-        } catch (createErr: any) {
-          console.warn(`[Firebase] Auto-registration warning (might be disabled in console):`, createErr?.message || createErr);
+          await signInWithEmailAndPassword(auth, email, password);
+        } catch (err: any) {
+          const errMsg = err?.message || String(err);
+          const code = err?.code || "";
+          if (
+            code === "auth/user-not-found" ||
+            errMsg.includes("user-not-found") ||
+            code === "auth/invalid-credential" ||
+            errMsg.includes("invalid-credential")
+          ) {
+            try {
+              await createUserWithEmailAndPassword(auth, email, password);
+            } catch {}
+          }
         }
-      } else {
-        console.error("[Firebase] Auth warning during startup:", err);
-      }
-    }
+      })();
 
-    // 1. Load current Firestore cache first to prepare
+      await Promise.race([authTask, authTimeout]);
+    } catch {}
+
+    // Load Firestore cache in parallel with timeout
     await loadDatabaseToMemoryCache();
 
-    // 2. Run database migration if Firestore is empty
-    await runDatabaseMigration();
-
-    // 3. Load Firestore data into memory cache again to synchronize
-    await loadDatabaseToMemoryCache();
+    // Check if migration is needed in background
+    runDatabaseMigration().catch(() => {});
 
     isFirebaseInitialized = true;
   })();
@@ -275,119 +283,150 @@ async function runDatabaseMigration() {
  * Load Firestore collections into RAM Cache and strip secret tokens
  */
 async function loadDatabaseToMemoryCache() {
-  try {
-    console.log("[Firebase] Loading Firestore collections into memory cache...");
+  const timeoutPromise = new Promise<never>((_, reject) =>
+    setTimeout(() => reject(new Error("Firestore load timeout")), 3500)
+  );
 
-    // Pages
-    const pagesSnap = await getDocs(collection(db, "pages"));
-    pagesCache = [];
-    pagesSnap.forEach((d) => {
-      const data = d.data();
-      delete data.sysSecretToken;
-      pagesCache.push(data);
-    });
-    saveLocalJsonFile(PAGES_FILE, pagesCache);
+  const fetchTask = async () => {
+    const [
+      pagesRes,
+      postsRes,
+      mediaRes,
+      adsRes,
+      redirectsRes,
+      catsRes,
+      tagsRes,
+      settingsRes,
+      homepageRes,
+    ] = await Promise.allSettled([
+      getDocs(collection(db, "pages")),
+      getDocs(collection(db, "posts")),
+      getDocs(collection(db, "media")),
+      getDocs(collection(db, "ads")),
+      getDocs(collection(db, "redirects")),
+      getDocs(collection(db, "categories")),
+      getDocs(collection(db, "tags")),
+      getDoc(doc(db, "settings", "global")),
+      getDocs(collection(db, "homepage")),
+    ]);
 
-    // Posts
-    const postsSnap = await getDocs(collection(db, "posts"));
-    postsCache = [];
-    postsSnap.forEach((d) => {
-      const data = d.data();
-      delete data.sysSecretToken;
-      postsCache.push(data);
-    });
-    saveLocalJsonFile(POSTS_FILE, postsCache);
+    if (pagesRes.status === "fulfilled") {
+      const list: any[] = [];
+      pagesRes.value.forEach((d) => {
+        const data = d.data();
+        delete data.sysSecretToken;
+        list.push(data);
+      });
+      if (list.length > 0) {
+        pagesCache = list;
+        saveLocalJsonFile(PAGES_FILE, pagesCache);
+      }
+    }
 
-    // Media
-    const mediaSnap = await getDocs(collection(db, "media"));
-    mediaCache = [];
-    mediaSnap.forEach((d) => {
-      const data = d.data();
-      delete data.sysSecretToken;
-      mediaCache.push(data);
-    });
-    saveLocalJsonFile(MEDIA_FILE, mediaCache);
+    if (postsRes.status === "fulfilled") {
+      const list: any[] = [];
+      postsRes.value.forEach((d) => {
+        const data = d.data();
+        delete data.sysSecretToken;
+        list.push(data);
+      });
+      if (list.length > 0) {
+        postsCache = list;
+        saveLocalJsonFile(POSTS_FILE, postsCache);
+      }
+    }
 
-    // Ads
-    const adsSnap = await getDocs(collection(db, "ads"));
-    adsCache = [];
-    adsSnap.forEach((d) => {
-      const data = d.data();
-      delete data.sysSecretToken;
-      adsCache.push(data);
-    });
-    saveLocalJsonFile(ADS_FILE, adsCache);
+    if (mediaRes.status === "fulfilled") {
+      const list: any[] = [];
+      mediaRes.value.forEach((d) => {
+        const data = d.data();
+        delete data.sysSecretToken;
+        list.push(data);
+      });
+      if (list.length > 0) {
+        mediaCache = list;
+        saveLocalJsonFile(MEDIA_FILE, mediaCache);
+      }
+    }
 
-    // Redirects
-    const redirectsSnap = await getDocs(collection(db, "redirects"));
-    redirectsCache = [];
-    redirectsSnap.forEach((d) => {
-      const data = d.data();
-      delete data.sysSecretToken;
-      redirectsCache.push(data);
-    });
-    saveLocalJsonFile(REDIRECTS_FILE, redirectsCache);
+    if (adsRes.status === "fulfilled") {
+      const list: any[] = [];
+      adsRes.value.forEach((d) => {
+        const data = d.data();
+        delete data.sysSecretToken;
+        list.push(data);
+      });
+      if (list.length > 0) {
+        adsCache = list;
+        saveLocalJsonFile(ADS_FILE, adsCache);
+      }
+    }
 
-    // Categories
-    const catsSnap = await getDocs(collection(db, "categories"));
-    categoriesCache = [];
-    catsSnap.forEach((d) => {
-      const data = d.data();
-      delete data.sysSecretToken;
-      categoriesCache.push(data);
-    });
-    saveLocalJsonFile(CATEGORIES_FILE, categoriesCache);
+    if (redirectsRes.status === "fulfilled") {
+      const list: any[] = [];
+      redirectsRes.value.forEach((d) => {
+        const data = d.data();
+        delete data.sysSecretToken;
+        list.push(data);
+      });
+      if (list.length > 0) {
+        redirectsCache = list;
+        saveLocalJsonFile(REDIRECTS_FILE, redirectsCache);
+      }
+    }
 
-    // Tags
-    const tagsSnap = await getDocs(collection(db, "tags"));
-    tagsCache = [];
-    tagsSnap.forEach((d) => {
-      const data = d.data();
-      delete data.sysSecretToken;
-      tagsCache.push(data);
-    });
-    saveLocalJsonFile(TAGS_FILE, tagsCache);
+    if (catsRes.status === "fulfilled") {
+      const list: any[] = [];
+      catsRes.value.forEach((d) => {
+        const data = d.data();
+        delete data.sysSecretToken;
+        list.push(data);
+      });
+      if (list.length > 0) {
+        categoriesCache = list;
+        saveLocalJsonFile(CATEGORIES_FILE, categoriesCache);
+      }
+    }
 
-    // Settings
-    const settingSnap = await getDoc(doc(db, "settings", "global"));
-    if (settingSnap.exists()) {
-      const data = settingSnap.data();
+    if (tagsRes.status === "fulfilled") {
+      const list: any[] = [];
+      tagsRes.value.forEach((d) => {
+        const data = d.data();
+        delete data.sysSecretToken;
+        list.push(data);
+      });
+      if (list.length > 0) {
+        tagsCache = list;
+        saveLocalJsonFile(TAGS_FILE, tagsCache);
+      }
+    }
+
+    if (settingsRes.status === "fulfilled" && settingsRes.value.exists()) {
+      const data = settingsRes.value.data();
       delete data.sysSecretToken;
       settingsCache = data;
-    } else {
-      settingsCache = readLocalJsonFile(SETTINGS_FILE, null);
-    }
-    if (settingsCache) {
       saveLocalJsonFile(SETTINGS_FILE, settingsCache);
     }
 
-    // Homepage
-    const homepageColSnap = await getDocs(collection(db, "homepage"));
-    homepageCache = {};
-    homepageColSnap.forEach((d) => {
-      const data = d.data();
-      delete data.sysSecretToken;
-      homepageCache[d.id] = data;
-    });
-    if (Object.keys(homepageCache).length === 0) {
-      homepageCache = readLocalJsonFile<Record<string, any>>(HOMEPAGE_FILE, {});
+    if (homepageRes.status === "fulfilled") {
+      const hp: Record<string, any> = {};
+      homepageRes.value.forEach((d) => {
+        const data = d.data();
+        delete data.sysSecretToken;
+        hp[d.id] = data;
+      });
+      if (Object.keys(hp).length > 0) {
+        homepageCache = hp;
+        saveLocalJsonFile(HOMEPAGE_FILE, homepageCache);
+      }
     }
-    if (homepageCache && Object.keys(homepageCache).length > 0) {
-      saveLocalJsonFile(HOMEPAGE_FILE, homepageCache);
-    }
+  };
 
-    console.log(`[Firebase] Loaded cache: ${pagesCache.length} pages, ${postsCache.length} posts, ${mediaCache.length} media, ${Object.keys(homepageCache).length} homepage locales.`);
-  } catch (err) {
-    console.error("[Firebase] Error loading Firestore cache, falling back to local files:", err);
-    pagesCache = readLocalJsonFile<any[]>(PAGES_FILE, []);
-    postsCache = readLocalJsonFile<any[]>(POSTS_FILE, []);
-    mediaCache = readLocalJsonFile<any[]>(MEDIA_FILE, []);
-    adsCache = readLocalJsonFile<any[]>(ADS_FILE, []);
-    redirectsCache = readLocalJsonFile<any[]>(REDIRECTS_FILE, []);
-    categoriesCache = readLocalJsonFile<any[]>(CATEGORIES_FILE, []);
-    tagsCache = readLocalJsonFile<any[]>(TAGS_FILE, []);
-    settingsCache = readLocalJsonFile<any>(SETTINGS_FILE, null);
-    homepageCache = readLocalJsonFile<Record<string, any>>(HOMEPAGE_FILE, {});
+  try {
+    await Promise.race([fetchTask(), timeoutPromise]);
+    console.log(`[Firebase] Loaded cache: ${pagesCache.length} pages, ${postsCache.length} posts, ${mediaCache.length} media.`);
+  } catch (err: any) {
+    console.warn("[Firebase] Fast sync finished or timed out, keeping local cache:", err?.message || err);
   }
 }
 

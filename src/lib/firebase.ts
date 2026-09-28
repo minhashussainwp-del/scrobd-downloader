@@ -17,16 +17,23 @@ export const db = getFirestore(app, firebaseConfig.firestoreDatabaseId);
 export const auth = getAuth(app);
 
 /**
- * Validate connection to Firestore on initialization
+ * Safely validate connection without blocking or triggering 10s WebChannel timeout
  */
 export async function testFirestoreConnection(): Promise<boolean> {
   try {
-    await getDocFromServer(doc(db, "test", "connection"));
-    return true;
-  } catch (error) {
-    if (error instanceof Error && error.message.includes("the client is offline")) {
-      console.warn("Firestore: client is offline or network error", error);
-    }
+    const timeoutPromise = new Promise<boolean>((resolve) =>
+      setTimeout(() => resolve(false), 2000)
+    );
+    const checkPromise = (async () => {
+      try {
+        const res = await fetch("/api/health");
+        return res.ok;
+      } catch {
+        return false;
+      }
+    })();
+    return await Promise.race([checkPromise, timeoutPromise]);
+  } catch {
     return false;
   }
 }

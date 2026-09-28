@@ -95,6 +95,12 @@ service cloud.firestore {
       allow delete: if isAdmin();
     }
 
+    // Test connection health check
+    match /test/{testId} {
+      allow read: if true;
+      allow write: if isAdmin() || isServerAuth();
+    }
+
     // Default catch-all security net: deny all unrecognized collections
     match /{document=**} {
       allow read, write: if false;
